@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.qifu.core.mapper.TbSysExprJobMapper">
+
+  <resultMap id="BaseResultMap" type="org.qifu.core.entity.TbSysExprJob">
+    <id column="OID" jdbcType="CHAR" property="oid" />
+    <result column="SYSTEM" jdbcType="VARCHAR" property="system" />
+    <result column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="NAME" jdbcType="VARCHAR" property="name" />
+    <result column="ACTIVE" jdbcType="VARCHAR" property="active" />
+    <result column="DESCRIPTION" jdbcType="VARCHAR" property="description" />
+    <result column="RUN_STATUS" jdbcType="VARCHAR" property="runStatus" />
+    <result column="CHECK_FAULT" jdbcType="VARCHAR" property="checkFault" />
+    <result column="EXPR_ID" jdbcType="VARCHAR" property="exprId" />
+    <result column="RUN_DAY_OF_WEEK" jdbcType="VARCHAR" property="runDayOfWeek" />
+    <result column="RUN_HOUR" jdbcType="VARCHAR" property="runHour" />
+    <result column="RUN_MINUTE" jdbcType="VARCHAR" property="runMinute" />
+    <result column="CONTACT_MODE" jdbcType="VARCHAR" property="contactMode" />
+    <result column="CONTACT" jdbcType="VARCHAR" property="contact" />
+    <result column="CUSERID" jdbcType="VARCHAR" property="cuserid" />
+    <result column="CDATE" jdbcType="TIMESTAMP" property="cdate" />
+    <result column="UUSERID" jdbcType="VARCHAR" property="uuserid" />
+    <result column="UDATE" jdbcType="TIMESTAMP" property="udate" />
+  </resultMap>
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select *
+    from <include refid="org.qifu.core.mapper.DB1Config.schema"/>tb_sys_expr_job
+    where OID = #{oid,jdbcType=CHAR}
+  </select>  
+  
+  <select id="selectListByParams" parameterType="java.util.HashMap" resultMap="BaseResultMap">
+    select *
+    from <include refid="org.qifu.core.mapper.DB1Config.schema"/>tb_sys_expr_job
+    WHERE 1=1
+	<if test="system != null and system != '' ">
+		AND SYSTEM = #{system,jdbcType=VARCHAR}
+	</if>    
+	<if test="id != null and id != '' ">
+		AND ID = #{id,jdbcType=VARCHAR}
+	</if>
+	<if test="name != null and name != '' ">
+		AND NAME = #{name,jdbcType=VARCHAR}
+	</if>
+	<if test="active != null and active != '' ">
+		AND ACTIVE = #{active,jdbcType=VARCHAR}
+	</if>				
+	<if test="orderBy != null and orderBy != '' and sortType != null and sortType != '' ">
+		ORDER BY  ${orderBy} ${sortType}
+	</if>	
+  </select>    
+  
+  <select id="findPage" parameterType="java.util.HashMap" resultMap="BaseResultMap">
+  	<include refid="org.qifu.core.mapper.DB1Config.sql1"/>
+  	
+    select *
+    from <include refid="org.qifu.core.mapper.DB1Config.schema"/>tb_sys_expr_job
+    WHERE 1=1
+	<if test="system != null and system != '' ">
+		AND SYSTEM = #{system,jdbcType=VARCHAR}
+	</if>    
+	<if test="id != null and id != '' ">
+		AND ID = #{id,jdbcType=VARCHAR}
+	</if>
+	<if test="name != null and name != '' ">
+		AND NAME LIKE #{name,jdbcType=VARCHAR}
+	</if>
+	<if test="active != null and active != '' ">
+		AND ACTIVE = #{active,jdbcType=VARCHAR}
+	</if>	
+		
+	<include refid="org.qifu.core.mapper.DB1Config.sql2"/>
+  </select>  
+  
+  <select id="count" parameterType="java.util.HashMap" resultType="java.lang.Long">
+    select count(*) from <include refid="org.qifu.core.mapper.DB1Config.schema"/>tb_sys_expr_job
+    WHERE 1=1
+	<if test="system != null and system != '' ">
+		AND SYSTEM = #{system,jdbcType=VARCHAR}
+	</if>    
+	<if test="id != null and id != '' ">
+		AND ID = #{id,jdbcType=VARCHAR}
+	</if>
+	<if test="name != null and name != '' ">
+		AND NAME LIKE #{name,jdbcType=VARCHAR}
+	</if>
+	<if test="active != null and active != '' ">
+		AND ACTIVE = #{active,jdbcType=VARCHAR}
+	</if>	
+  </select>  
+  
+  <insert id="insert" parameterType="org.qifu.core.entity.TbSysExprJob"> 
+    insert into <include refid="org.qifu.core.mapper.DB1Config.schema"/>tb_sys_expr_job
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="oid != null">
+        OID,
+      </if>
+      <if test="system != null">
+        SYSTEM,
+      </if>
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="name != null">
+        NAME,
+      </if>
+      <if test="active != null">
+        ACTIVE,
+      </if>
+      <if test="description != null">
+        DESCRIPTION,
+      </if>
+      <if test="runStatus != null">
+        RUN_STATUS,
+      </if>
+      <if test="checkFault != null">
+        CHECK_FAULT,
+      </if>
+      <if test="exprId != null">
+        EXPR_ID,
+      </if>
+      <if test="runDayOfWeek != null">
+        RUN_DAY_OF_WEEK,
+      </if>
+      <if test="runHour != null">
+        RUN_HOUR,
+      </if>
+      <if test="runMinute != null">
+        RUN_MINUTE,
+      </if>
+      <if test="contactMode != null">
+        CONTACT_MODE,
+      </if>
+      <if test="contact != null">
+        CONTACT,
+      </if>
+      <if test="cuserid != null">
+        CUSERID,
+      </if>
+      <if test="cdate != null">
+        CDATE,
+      </if>
+      <if test="uuserid != null">
+        UUSERID,
+      </if>
+      <if test="udate != null">
+        UDATE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="oid != null">
+        #{oid,jdbcType=CHAR},
+      </if>
+      <if test="system != null">
+        #{system,jdbcType=VARCHAR},
+      </if>
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="active != null">
+        #{active,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="runStatus != null">
+        #{runStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="checkFault != null">
+        #{checkFault,jdbcType=VARCHAR},
+      </if>
+      <if test="exprId != null">
+        #{exprId,jdbcType=VARCHAR},
+      </if>
+      <if test="runDayOfWeek != null">
+        #{runDayOfWeek,jdbcType=VARCHAR},
+      </if>
+      <if test="runHour != null">
+        #{runHour,jdbcType=VARCHAR},
+      </if>
+      <if test="runMinute != null">
+        #{runMinute,jdbcType=VARCHAR},
+      </if>
+      <if test="contactMode != null">
+        #{contactMode,jdbcType=VARCHAR},
+      </if>
+      <if test="contact != null">
+        #{contact,jdbcType=VARCHAR},
+      </if>
+      <if test="cuserid != null">
+        #{cuserid,jdbcType=VARCHAR},
+      </if>
+      <if test="cdate != null">
+        #{cdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="uuserid != null">
+        #{uuserid,jdbcType=VARCHAR},
+      </if>
+      <if test="udate != null">
+        #{udate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>  
+  
+  <update id="update" parameterType="org.qifu.core.entity.TbSysExprJob">
+    update <include refid="org.qifu.core.mapper.DB1Config.schema"/>tb_sys_expr_job
+    <set>
+      <if test="system != null">
+        SYSTEM = #{system,jdbcType=VARCHAR},
+      </if>
+      <if test="id != null">
+        ID = #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        NAME = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="active != null">
+        ACTIVE = #{active,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+        DESCRIPTION = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="runStatus != null">
+        RUN_STATUS = #{runStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="checkFault != null">
+        CHECK_FAULT = #{checkFault,jdbcType=VARCHAR},
+      </if>
+      <if test="exprId != null">
+        EXPR_ID = #{exprId,jdbcType=VARCHAR},
+      </if>
+      <if test="runDayOfWeek != null">
+        RUN_DAY_OF_WEEK = #{runDayOfWeek,jdbcType=VARCHAR},
+      </if>
+      <if test="runHour != null">
+        RUN_HOUR = #{runHour,jdbcType=VARCHAR},
+      </if>
+      <if test="runMinute != null">
+        RUN_MINUTE = #{runMinute,jdbcType=VARCHAR},
+      </if>
+      <if test="contactMode != null">
+        CONTACT_MODE = #{contactMode,jdbcType=VARCHAR},
+      </if>
+      <if test="contact != null">
+        CONTACT = #{contact,jdbcType=VARCHAR},
+      </if>
+      <!--  
+      <if test="cuserid != null">
+        CUSERID = #{cuserid,jdbcType=VARCHAR},
+      </if>
+      <if test="cdate != null">
+        CDATE = #{cdate,jdbcType=TIMESTAMP},
+      </if>
+      -->
+      <if test="uuserid != null">
+        UUSERID = #{uuserid,jdbcType=VARCHAR},
+      </if>
+      <if test="udate != null">
+        UDATE = #{udate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where OID = #{oid,jdbcType=CHAR}
+  </update>  
+  
+  <delete id="delete" parameterType="org.qifu.core.entity.TbSysExprJob">
+    delete from <include refid="org.qifu.core.mapper.DB1Config.schema"/>tb_sys_expr_job
+    where OID = #{oid,jdbcType=CHAR}
+  </delete>  
+  
+</mapper>

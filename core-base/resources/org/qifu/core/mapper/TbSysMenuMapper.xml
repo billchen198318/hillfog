@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.qifu.core.mapper.TbSysMenuMapper">
+
+  <resultMap id="BaseResultMap" type="org.qifu.core.entity.TbSysMenu">
+    <id column="OID" jdbcType="CHAR" property="oid" />
+    <result column="PROG_ID" jdbcType="VARCHAR" property="progId" />
+    <result column="PARENT_OID" jdbcType="CHAR" property="parentOid" />
+    <result column="ENABLE_FLAG" jdbcType="VARCHAR" property="enableFlag" />
+    <result column="CUSERID" jdbcType="VARCHAR" property="cuserid" />
+    <result column="CDATE" jdbcType="TIMESTAMP" property="cdate" />
+    <result column="UUSERID" jdbcType="VARCHAR" property="uuserid" />
+    <result column="UDATE" jdbcType="TIMESTAMP" property="udate" />
+  </resultMap>
+  
+  <!-- 組成選單需要的資料 -->
+  <resultMap id="MenuGeneratorResultMap" type="org.qifu.core.vo.SysMenuVO">
+  	<result column="OID" jdbcType="CHAR" property="oid" />
+  	<result column="PROG_ID" jdbcType="VARCHAR" property="progId" />
+  	<result column="PARENT_OID" jdbcType="CHAR" property="parentOid" />
+  	<result column="ENABLE_FLAG" jdbcType="VARCHAR" property="enableFlag" />
+  	<result column="NAME" jdbcType="VARCHAR" property="name" />
+  	<result column="URL" jdbcType="VARCHAR" property="url" />
+  	<result column="PROG_SYSTEM" jdbcType="VARCHAR" property="progSystem" />
+  	<result column="ITEM_TYPE" jdbcType="VARCHAR" property="itemType" />
+  	<result column="ICON" jdbcType="VARCHAR" property="icon" />
+  </resultMap>
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select *
+    from <include refid="org.qifu.core.mapper.DB1Config.schema"/>tb_sys_menu
+    where OID = #{oid,jdbcType=CHAR}
+  </select>  
+  
+  <select id="selectListByParams" parameterType="java.util.HashMap" resultMap="BaseResultMap">
+    select *
+    from <include refid="org.qifu.core.mapper.DB1Config.schema"/>tb_sys_menu
+    WHERE 1=1
+	<if test="progId != null and progId != '' ">
+		AND PROG_ID = #{progId,jdbcType=VARCHAR}
+	</if>
+	<if test="parentOid != null and parentOid != '' ">
+		AND PARENT_OID = #{parentOid,jdbcType=VARCHAR}
+	</if>	
+	<if test="enableFlag != null and enableFlag != '' ">
+		AND ENABLE_FLAG = #{enableFlag,jdbcType=VARCHAR}
+	</if>			
+	<if test="orderBy != null and orderBy != '' and sortType != null and sortType != '' ">
+		ORDER BY  ${orderBy} ${sortType}
+	</if>	
+  </select>    
+  
+  <select id="findPage" parameterType="java.util.HashMap" resultMap="BaseResultMap">
+  	<include refid="org.qifu.core.mapper.DB1Config.sql1"/>
+  	
+    select *
+    from <include refid="org.qifu.core.mapper.DB1Config.schema"/>tb_sys_menu
+    WHERE 1=1
+	<if test="progId != null and progId != '' ">
+		AND PROG_ID = #{progId,jdbcType=VARCHAR}
+	</if>
+	<if test="parentOid != null and parentOid != '' ">
+		AND PARENT_OID = #{parentOid,jdbcType=VARCHAR}
+	</if>	
+	<if test="enableFlag != null and enableFlag != '' ">
+		AND ENABLE_FLAG = #{enableFlag,jdbcType=VARCHAR}
+	</if>	
+		
+	<include refid="org.qifu.core.mapper.DB1Config.sql2"/>
+  </select>  
+  
+  <select id="count" parameterType="java.util.HashMap" resultType="java.lang.Long">
+    select count(*) from <include refid="org.qifu.core.mapper.DB1Config.schema"/>tb_sys_menu
+    WHERE 1=1
+	<if test="progId != null and progId != '' ">
+		AND PROG_ID = #{progId,jdbcType=VARCHAR}
+	</if>
+	<if test="parentOid != null and parentOid != '' ">
+		AND PARENT_OID = #{parentOid,jdbcType=VARCHAR}
+	</if>	
+	<if test="enableFlag != null and enableFlag != '' ">
+		AND ENABLE_FLAG = #{enableFlag,jdbcType=VARCHAR}
+	</if>
+  </select>  
+  
+  <insert id="insert" parameterType="org.qifu.core.entity.TbSysMenu"> 
+    insert into <include refid="org.qifu.core.mapper.DB1Config.schema"/>tb_sys_menu
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="oid != null">
+        OID,
+      </if>
+      <if test="progId != null">
+        PROG_ID,
+      </if>
+      <if test="parentOid != null">
+        PARENT_OID,
+      </if>
+      <if test="enableFlag != null">
+        ENABLE_FLAG,
+      </if>
+      <if test="cuserid != null">
+        CUSERID,
+      </if>
+      <if test="cdate != null">
+        CDATE,
+      </if>
+      <if test="uuserid != null">
+        UUSERID,
+      </if>
+      <if test="udate != null">
+        UDATE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="oid != null">
+        #{oid,jdbcType=CHAR},
+      </if>
+      <if test="progId != null">
+        #{progId,jdbcType=VARCHAR},
+      </if>
+      <if test="parentOid != null">
+        #{parentOid,jdbcType=CHAR},
+      </if>
+      <if test="enableFlag != null">
+        #{enableFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="cuserid != null">
+        #{cuserid,jdbcType=VARCHAR},
+      </if>
+      <if test="cdate != null">
+        #{cdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="uuserid != null">
+        #{uuserid,jdbcType=VARCHAR},
+      </if>
+      <if test="udate != null">
+        #{udate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>  
+  
+  <update id="update" parameterType="org.qifu.core.entity.TbSysMenu">
+    update <include refid="org.qifu.core.mapper.DB1Config.schema"/>tb_sys_menu
+    <set>
+      <if test="progId != null">
+        PROG_ID = #{progId,jdbcType=VARCHAR},
+      </if>
+      <if test="parentOid != null">
+        PARENT_OID = #{parentOid,jdbcType=CHAR},
+      </if>
+      <if test="enableFlag != null">
+        ENABLE_FLAG = #{enableFlag,jdbcType=VARCHAR},
+      </if>
+      <!--  
+      <if test="cuserid != null">
+        CUSERID = #{cuserid,jdbcType=VARCHAR},
+      </if>
+      <if test="cdate != null">
+        CDATE = #{cdate,jdbcType=TIMESTAMP},
+      </if>
+      -->
+      <if test="uuserid != null">
+        UUSERID = #{uuserid,jdbcType=VARCHAR},
+      </if>
+      <if test="udate != null">
+        UDATE = #{udate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where OID = #{oid,jdbcType=CHAR}
+  </update>  
+  
+  <delete id="delete" parameterType="org.qifu.core.entity.TbSysMenu">
+    delete from <include refid="org.qifu.core.mapper.DB1Config.schema"/>tb_sys_menu
+    where OID = #{oid,jdbcType=CHAR}
+  </delete>  
+  
+  <!-- 組成選單需要的資料 -->
+  <select id="selectForMenuGenerator" parameterType="java.util.HashMap" resultMap="MenuGeneratorResultMap">
+	SELECT 
+		sm.OID, 
+		sm.PROG_ID, 
+		sm.PARENT_OID, 
+		sm.ENABLE_FLAG, 
+		sp.NAME, 
+		sp.URL, 
+		sp.PROG_SYSTEM, 
+		sp.ITEM_TYPE, 
+		sp.ICON
+	FROM 
+	<include refid="org.qifu.core.mapper.DB1Config.schema"/>tb_sys_menu sm,
+	<include refid="org.qifu.core.mapper.DB1Config.schema"/>tb_sys_prog sp
+	WHERE sm.PROG_ID = sp.PROG_ID
+	AND sp.PROG_SYSTEM = #{progSystem,jdbcType=VARCHAR}
+	<if test="account != null and account != '' ">
+	AND sm.PROG_ID IN (
+		SELECT PROG_ID FROM tb_sys_menu_role WHERE ROLE IN (
+			SELECT ROLE FROM tb_user_role WHERE ACCOUNT = #{account,jdbcType=VARCHAR}
+		)
+	)
+	</if>
+	ORDER BY sp.PROG_ID, sp.NAME ASC
+  </select> 
+  
+</mapper>

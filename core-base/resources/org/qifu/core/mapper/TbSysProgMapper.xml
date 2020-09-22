@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.qifu.core.mapper.TbSysProgMapper">
+
+  <resultMap id="BaseResultMap" type="org.qifu.core.entity.TbSysProg">
+    <id column="OID" jdbcType="CHAR" property="oid" />
+    <result column="PROG_ID" jdbcType="VARCHAR" property="progId" />
+    <result column="NAME" jdbcType="VARCHAR" property="name" />
+    <result column="URL" jdbcType="VARCHAR" property="url" />
+    <result column="EDIT_MODE" jdbcType="VARCHAR" property="editMode" />
+    <result column="IS_DIALOG" jdbcType="VARCHAR" property="isDialog" />
+    <result column="DIALOG_W" jdbcType="INTEGER" property="dialogW" />
+    <result column="DIALOG_H" jdbcType="INTEGER" property="dialogH" />
+    <result column="PROG_SYSTEM" jdbcType="VARCHAR" property="progSystem" />
+    <result column="ITEM_TYPE" jdbcType="VARCHAR" property="itemType" />
+    <result column="ICON" jdbcType="VARCHAR" property="icon" />
+    <result column="CUSERID" jdbcType="VARCHAR" property="cuserid" />
+    <result column="CDATE" jdbcType="TIMESTAMP" property="cdate" />
+    <result column="UUSERID" jdbcType="VARCHAR" property="uuserid" />
+    <result column="UDATE" jdbcType="TIMESTAMP" property="udate" />
+  </resultMap>
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select *
+    from <include refid="org.qifu.core.mapper.DB1Config.schema"/>tb_sys_prog
+    where OID = #{oid,jdbcType=CHAR}
+  </select>  
+  
+  <select id="selectListByParams" parameterType="java.util.HashMap" resultMap="BaseResultMap">
+    select *
+    from <include refid="org.qifu.core.mapper.DB1Config.schema"/>tb_sys_prog
+    WHERE 1=1
+	<if test="progId != null and progId != '' ">
+		AND PROG_ID = #{progId,jdbcType=VARCHAR}
+	</if>
+	<if test="name != null and name != '' ">
+		AND NAME = #{name,jdbcType=VARCHAR}
+	</if>	
+	<if test="editMode != null and editMode != '' ">
+		AND EDIT_MODE = #{editMode,jdbcType=VARCHAR}
+	</if>	
+	<if test="progSystem != null and progSystem != '' ">
+		AND PROG_SYSTEM = #{progSystem,jdbcType=VARCHAR}
+	</if>	
+	<if test="itemType != null and itemType != '' ">
+		AND ITEM_TYPE = #{itemType,jdbcType=VARCHAR}
+	</if>				
+	<if test="orderBy != null and orderBy != '' and sortType != null and sortType != '' ">
+		ORDER BY  ${orderBy} ${sortType}
+	</if>	
+  </select>    
+  
+  <select id="findPage" parameterType="java.util.HashMap" resultMap="BaseResultMap">
+  	<include refid="org.qifu.core.mapper.DB1Config.sql1"/>
+  	
+    select *
+    from <include refid="org.qifu.core.mapper.DB1Config.schema"/>tb_sys_prog
+    WHERE 1=1
+	<if test="progId != null and progId != '' ">
+		AND PROG_ID = #{progId,jdbcType=VARCHAR}
+	</if>
+	<if test="name != null and name != '' ">
+		AND NAME LIKE #{name,jdbcType=VARCHAR}
+	</if>	
+	<if test="editMode != null and editMode != '' ">
+		AND EDIT_MODE = #{editMode,jdbcType=VARCHAR}
+	</if>	
+	<if test="progSystem != null and progSystem != '' ">
+		AND PROG_SYSTEM = #{progSystem,jdbcType=VARCHAR}
+	</if>	
+	<if test="itemType != null and itemType != '' ">
+		AND ITEM_TYPE = #{itemType,jdbcType=VARCHAR}
+	</if>		
+		
+	<include refid="org.qifu.core.mapper.DB1Config.sql2"/>
+  </select>  
+  
+  <select id="count" parameterType="java.util.HashMap" resultType="java.lang.Long">
+    select count(*) from <include refid="org.qifu.core.mapper.DB1Config.schema"/>tb_sys_prog
+    WHERE 1=1
+	<if test="progId != null and progId != '' ">
+		AND PROG_ID = #{progId,jdbcType=VARCHAR}
+	</if>
+	<if test="name != null and name != '' ">
+		AND NAME LIKE #{name,jdbcType=VARCHAR}
+	</if>	
+	<if test="editMode != null and editMode != '' ">
+		AND EDIT_MODE = #{editMode,jdbcType=VARCHAR}
+	</if>	
+	<if test="progSystem != null and progSystem != '' ">
+		AND PROG_SYSTEM = #{progSystem,jdbcType=VARCHAR}
+	</if>	
+	<if test="itemType != null and itemType != '' ">
+		AND ITEM_TYPE = #{itemType,jdbcType=VARCHAR}
+	</if>
+  </select>  
+  
+  <insert id="insert" parameterType="org.qifu.core.entity.TbSysProg"> 
+    insert into <include refid="org.qifu.core.mapper.DB1Config.schema"/>tb_sys_prog
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="oid != null">
+        OID,
+      </if>
+      <if test="progId != null">
+        PROG_ID,
+      </if>
+      <if test="name != null">
+        NAME,
+      </if>
+      <if test="url != null">
+        URL,
+      </if>
+      <if test="editMode != null">
+        EDIT_MODE,
+      </if>
+      <if test="isDialog != null">
+        IS_DIALOG,
+      </if>
+      <if test="dialogW != null">
+        DIALOG_W,
+      </if>
+      <if test="dialogH != null">
+        DIALOG_H,
+      </if>
+      <if test="progSystem != null">
+        PROG_SYSTEM,
+      </if>
+      <if test="itemType != null">
+        ITEM_TYPE,
+      </if>
+      <if test="icon != null">
+        ICON,
+      </if>
+      <if test="cuserid != null">
+        CUSERID,
+      </if>
+      <if test="cdate != null">
+        CDATE,
+      </if>
+      <if test="uuserid != null">
+        UUSERID,
+      </if>
+      <if test="udate != null">
+        UDATE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="oid != null">
+        #{oid,jdbcType=CHAR},
+      </if>
+      <if test="progId != null">
+        #{progId,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null">
+        #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="editMode != null">
+        #{editMode,jdbcType=VARCHAR},
+      </if>
+      <if test="isDialog != null">
+        #{isDialog,jdbcType=VARCHAR},
+      </if>
+      <if test="dialogW != null">
+        #{dialogW,jdbcType=INTEGER},
+      </if>
+      <if test="dialogH != null">
+        #{dialogH,jdbcType=INTEGER},
+      </if>
+      <if test="progSystem != null">
+        #{progSystem,jdbcType=VARCHAR},
+      </if>
+      <if test="itemType != null">
+        #{itemType,jdbcType=VARCHAR},
+      </if>
+      <if test="icon != null">
+        #{icon,jdbcType=VARCHAR},
+      </if>
+      <if test="cuserid != null">
+        #{cuserid,jdbcType=VARCHAR},
+      </if>
+      <if test="cdate != null">
+        #{cdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="uuserid != null">
+        #{uuserid,jdbcType=VARCHAR},
+      </if>
+      <if test="udate != null">
+        #{udate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>  
+  
+  <update id="update" parameterType="org.qifu.core.entity.TbSysProg">
+    update <include refid="org.qifu.core.mapper.DB1Config.schema"/>tb_sys_prog
+    <set>
+      <if test="progId != null">
+        PROG_ID = #{progId,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        NAME = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null">
+        URL = #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="editMode != null">
+        EDIT_MODE = #{editMode,jdbcType=VARCHAR},
+      </if>
+      <if test="isDialog != null">
+        IS_DIALOG = #{isDialog,jdbcType=VARCHAR},
+      </if>
+      <if test="dialogW != null">
+        DIALOG_W = #{dialogW,jdbcType=INTEGER},
+      </if>
+      <if test="dialogH != null">
+        DIALOG_H = #{dialogH,jdbcType=INTEGER},
+      </if>
+      <if test="progSystem != null">
+        PROG_SYSTEM = #{progSystem,jdbcType=VARCHAR},
+      </if>
+      <if test="itemType != null">
+        ITEM_TYPE = #{itemType,jdbcType=VARCHAR},
+      </if>
+      <if test="icon != null">
+        ICON = #{icon,jdbcType=VARCHAR},
+      </if>
+      <!--  
+      <if test="cuserid != null">
+        CUSERID = #{cuserid,jdbcType=VARCHAR},
+      </if>
+      <if test="cdate != null">
+        CDATE = #{cdate,jdbcType=TIMESTAMP},
+      </if>
+      -->
+      <if test="uuserid != null">
+        UUSERID = #{uuserid,jdbcType=VARCHAR},
+      </if>
+      <if test="udate != null">
+        UDATE = #{udate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where OID = #{oid,jdbcType=CHAR}
+  </update>  
+  
+  <delete id="delete" parameterType="org.qifu.core.entity.TbSysProg">
+    delete from <include refid="org.qifu.core.mapper.DB1Config.schema"/>tb_sys_prog
+    where OID = #{oid,jdbcType=CHAR}
+  </delete>  
+  
+  <!-- 找在選單中(FOLDER) 之下已存在的項目 -->
+  <select id="findForInTheFolderMenuItems" parameterType="java.util.HashMap" resultMap="BaseResultMap">
+    SELECT *
+    FROM <include refid="org.qifu.core.mapper.DB1Config.schema"/>tb_sys_prog
+    WHERE PROG_ID IN (
+    	SELECT PROG_ID
+    	FROM <include refid="org.qifu.core.mapper.DB1Config.schema"/>tb_sys_menu
+    	WHERE 1 = 1
+		<if test="menuParentOid != null and menuParentOid != '' ">
+			AND PARENT_OID = #{menuParentOid,jdbcType=CHAR}
+		</if>
+    )
+    AND EDIT_MODE = 'N'
+    <if test="progSystem != null and progSystem != '' ">
+    	AND PROG_SYSTEM = #{progSystem,jdbcType=VARCHAR}
+    </if>
+    <if test="itemType != null and itemType != '' ">
+    	AND ITEM_TYPE = #{itemType,jdbcType=VARCHAR}
+    </if>
+    ORDER BY PROG_ID ASC
+  </select>     
+  
+</mapper>

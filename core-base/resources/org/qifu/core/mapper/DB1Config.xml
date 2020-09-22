@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.qifu.core.mapper.DB1Config">
+	<!-- CORE DB1 is MySQL or MariaDB -->
+	<!-- run with Linux/FreeBSD UNIX, need settings "lower_case_table_names=1" on MySQL or MariaDB -->
+	<sql id="schema"></sql>
+	<sql id="sql1">SELECT A.* FROM (</sql>
+	<sql id="sql2">) A ORDER BY ${orderBy} ${sortType} LIMIT ${offsetRow}, ${showRow}</sql>	
+</mapper>
