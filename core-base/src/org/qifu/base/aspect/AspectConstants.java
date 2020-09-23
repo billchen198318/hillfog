@@ -33,12 +33,12 @@ public class AspectConstants {
 	 * 注意 service.*.*   不是 service..*.* , 如果兩個點..*.* 就會包含 service.logic.
 	 * 注意 base.service.*.* 不是 base.service..*.*
 	 */
-	public static final String BASE_SERVICE_PACKAGE = " @annotation(org.qifu.base.aspect.EnableAspectForSimpleOrBaseServiceMethod) || execution(* org.qifu.core.service.*.*(..) ) || execution(* org.qifu.base.service.*.*(..) ) ";
+	public static final String BASE_SERVICE_PACKAGE = " @annotation(org.qifu.base.aspect.EnableAspectForSimpleOrBaseServiceMethod) || execution(* org.qifu.core.service.*.*(..) ) || execution(* org.qifu.base.service.*.*(..) || execution(* org.qifu.hillfog.service.*.*(..) ) ";
 	
 	/**
 	 * 注意 base.service.logic.*.* 不是 base.service.logic..*.*
 	 */
-	public static final String LOGIC_SERVICE_PACKAGE = " @annotation(org.qifu.base.aspect.EnableAspectForLogicServiceMethod) || execution(* org.qifu.core.logic.*.*(..) ) || execution(* org.qifu.base.logic..*.*(..) ) ";
+	public static final String LOGIC_SERVICE_PACKAGE = " @annotation(org.qifu.base.aspect.EnableAspectForLogicServiceMethod) || execution(* org.qifu.core.logic.*.*(..) ) || execution(* org.qifu.base.logic..*.*(..) ) || execution(* org.qifu.hillfog.logic..*.*(..) ) ";
 	
 	public static boolean isLogicService(String serviceId) {
 		if (StringUtils.defaultString(serviceId).indexOf(".logic.") > -1) {
