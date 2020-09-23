@@ -198,7 +198,7 @@
 		)
 	)
 	</if>
-	ORDER BY sp.PROG_ID, sp.NAME ASC
+	ORDER BY sp.NAME ASC
   </select> 
   
 </mapper>
