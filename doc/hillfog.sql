@@ -16,6 +16,98 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `hf_employee`
+--
+
+DROP TABLE IF EXISTS `hf_employee`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `hf_employee` (
+  `OID` char(36) NOT NULL,
+  `ACCOUNT` varchar(24) NOT NULL,
+  `EMP_ID` varchar(15) NOT NULL,
+  `NAME` varchar(25) NOT NULL,
+  `DESCRIPTION` varchar(500) NOT NULL DEFAULT '',
+  `CUSERID` varchar(24) NOT NULL,
+  `CDATE` datetime NOT NULL,
+  `UUSERID` varchar(24) DEFAULT NULL,
+  `UDATE` datetime DEFAULT NULL,
+  PRIMARY KEY (`OID`),
+  UNIQUE KEY `UK_1` (`ACCOUNT`),
+  FULLTEXT KEY `IDX_1` (`EMP_ID`,`NAME`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `hf_employee`
+--
+
+LOCK TABLES `hf_employee` WRITE;
+/*!40000 ALTER TABLE `hf_employee` DISABLE KEYS */;
+/*!40000 ALTER TABLE `hf_employee` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `hf_employee_org`
+--
+
+DROP TABLE IF EXISTS `hf_employee_org`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `hf_employee_org` (
+  `OID` char(36) NOT NULL,
+  `ACCOUNT` varchar(24) NOT NULL,
+  `ORG_ID` varchar(15) NOT NULL,
+  `CUSERID` varchar(24) NOT NULL,
+  `CDATE` datetime NOT NULL,
+  `UUSERID` varchar(24) DEFAULT NULL,
+  `UDATE` datetime DEFAULT NULL,
+  PRIMARY KEY (`OID`),
+  UNIQUE KEY `UK_1` (`ACCOUNT`,`ORG_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `hf_employee_org`
+--
+
+LOCK TABLES `hf_employee_org` WRITE;
+/*!40000 ALTER TABLE `hf_employee_org` DISABLE KEYS */;
+/*!40000 ALTER TABLE `hf_employee_org` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `hf_org_dept`
+--
+
+DROP TABLE IF EXISTS `hf_org_dept`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `hf_org_dept` (
+  `OID` char(36) NOT NULL,
+  `ORG_ID` varchar(15) NOT NULL,
+  `NAME` varchar(25) NOT NULL,
+  `DESCRIPTION` varchar(500) NOT NULL DEFAULT '',
+  `CUSERID` varchar(24) NOT NULL,
+  `CDATE` datetime NOT NULL,
+  `UUSERID` varchar(24) DEFAULT NULL,
+  `UDATE` datetime DEFAULT NULL,
+  PRIMARY KEY (`OID`),
+  UNIQUE KEY `UK_1` (`ORG_ID`),
+  FULLTEXT KEY `IDX_1` (`NAME`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `hf_org_dept`
+--
+
+LOCK TABLES `hf_org_dept` WRITE;
+/*!40000 ALTER TABLE `hf_org_dept` DISABLE KEYS */;
+/*!40000 ALTER TABLE `hf_org_dept` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `tb_account`
 --
 
@@ -872,4 +964,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-09-22 16:41:08
+-- Dump completed on 2020-09-23 12:02:09
