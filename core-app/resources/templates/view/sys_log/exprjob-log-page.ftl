@@ -136,5 +136,9 @@ function deleteRecord(oid) {
 	bootboxConfirmTitle="Clear(delete) all log">
 </@qifu.button>
 
+<br/>
+<br/>
+<br/>
+
 </body>
 </html>

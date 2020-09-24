@@ -188,5 +188,9 @@ function deleteRecord(oid) {
 	clearFunction="clearQueryGridTable()">
 </@qifu.grid>
 
+<br/>
+<br/>
+<br/>
+
 </body>
 </html>

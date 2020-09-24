@@ -119,6 +119,10 @@ function deleteRecord(oid) {
 	id="CORE_PROG001D0001Q_grid"
 	queryFunction="queryGrid()"
 	clearFunction="clearQueryGridTable()" />
+
+<br/>
+<br/>
+<br/>
 	
 </body>
 </html>

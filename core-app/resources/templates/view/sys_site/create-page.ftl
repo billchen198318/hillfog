@@ -150,6 +150,10 @@ function clearSave() {
 		<@qifu.button id="btnClear" label="Clear" onclick="clearSave();" />
 	</div>
 </div>
+
+<br/>
+<br/>
+<br/>
 	
 </body>
 </html>

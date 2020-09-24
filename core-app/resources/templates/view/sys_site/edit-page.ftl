@@ -155,6 +155,10 @@ function clearUpdate() {
 		<@qifu.button id="btnClear" label="Clear" onclick="clearUpdate();" />
 	</div>
 </div>
-	
+
+<br/>
+<br/>
+<br/>
+		
 </body>
 </html>
