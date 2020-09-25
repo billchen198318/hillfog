@@ -2,6 +2,13 @@ package org.qifu.core.entity;
 
 import java.util.Date;
 
+import org.qifu.base.model.CreateDateField;
+import org.qifu.base.model.CreateUserField;
+import org.qifu.base.model.EntityPK;
+import org.qifu.base.model.EntityUK;
+import org.qifu.base.model.UpdateDateField;
+import org.qifu.base.model.UpdateUserField;
+
 public class HfEmployeeOrg implements java.io.Serializable {
 	private static final long serialVersionUID = -9107156808761869136L;
 	
@@ -13,6 +20,7 @@ public class HfEmployeeOrg implements java.io.Serializable {
     private String uuserid;
     private Date udate;
     
+    @EntityPK(name = "oid", autoUUID = true)
     public String getOid() {
         return oid;
     }
@@ -21,6 +29,7 @@ public class HfEmployeeOrg implements java.io.Serializable {
         this.oid = oid;
     }
     
+    @EntityUK(name = "account")
     public String getAccount() {
         return account;
     }
@@ -37,6 +46,7 @@ public class HfEmployeeOrg implements java.io.Serializable {
         this.orgId = orgId;
     }
     
+    @CreateUserField(name = "cuserid")
     public String getCuserid() {
         return cuserid;
     }
@@ -45,6 +55,7 @@ public class HfEmployeeOrg implements java.io.Serializable {
         this.cuserid = cuserid;
     }
     
+    @CreateDateField(name = "cdate")
     public Date getCdate() {
         return cdate;
     }
@@ -53,6 +64,7 @@ public class HfEmployeeOrg implements java.io.Serializable {
         this.cdate = cdate;
     }
     
+    @UpdateUserField(name = "uuserid")
     public String getUuserid() {
         return uuserid;
     }
@@ -61,6 +73,7 @@ public class HfEmployeeOrg implements java.io.Serializable {
         this.uuserid = uuserid;
     }
     
+    @UpdateDateField(name = "udate")
     public Date getUdate() {
         return udate;
     }
