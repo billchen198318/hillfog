@@ -1,5 +1,5 @@
 <p style="margin-bottom: 20px"></p><!-- need with .app-title padding 10px -->
-<div class="app-title" style="background: linear-gradient(to top, #f8f9fa, #ffffff); position: fixed; width: 100vw; overflow: hidden; z-index: 99999;">
+<div id="${programId}_toolbar" class="app-title" style="background: linear-gradient(to top, #f8f9fa, #ffffff); position: fixed; width: 100vw; overflow: hidden;">
 	<div>
 		<h1>${programName}</h1>
 <#if description?? && description != "">
@@ -35,6 +35,11 @@
         </ul>
         		
 </div>        
+<script>
+setTimeout(function(){
+	$('#${programId}_toolbar').css('z-index', '99999');
+}, 3000);
+</script>
 
 <br>
 <br>
