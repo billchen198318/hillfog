@@ -9,7 +9,7 @@
     <javaModelGenerator targetPackage="org.qifu.core.entity" targetProject="myBatisGenerator" />
     <sqlMapGenerator targetPackage="org.qifu.core.mapper" targetProject="myBatisGenerator" />
     <javaClientGenerator targetPackage="org.qifu.core.mapper" targetProject="myBatisGenerator" type="XMLMAPPER" />
-    <table schema="" tableName="hf_org_dept">
+    <table schema="" tableName="hf_employee_org">
     </table>
   </context>
   
