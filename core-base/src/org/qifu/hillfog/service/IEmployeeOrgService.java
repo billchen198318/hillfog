@@ -22,7 +22,7 @@
 package org.qifu.hillfog.service;
 
 import org.qifu.base.service.IBaseService;
-import org.qifu.core.entity.HfEmployeeOrg;
+import org.qifu.hillfog.entity.HfEmployeeOrg;
 
 public interface IEmployeeOrgService<T, E> extends IBaseService<HfEmployeeOrg, String> {
 	

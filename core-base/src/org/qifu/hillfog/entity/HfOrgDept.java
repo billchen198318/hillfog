@@ -1,4 +1,4 @@
-package org.qifu.core.entity;
+package org.qifu.hillfog.entity;
 
 import java.util.Date;
 

@@ -19,11 +19,16 @@
  * contact: chen.xin.nien@gmail.com
  * 
  */
-package org.qifu.core.mapper;
+package org.qifu.hillfog.mapper;
+
+import java.util.List;
+import java.util.Map;
 
 import org.qifu.base.mapper.IBaseMapper;
-import org.qifu.core.entity.HfEmployeeOrg;
+import org.qifu.hillfog.entity.HfOrgDept;
 
-public interface HfEmployeeOrgMapper extends IBaseMapper<HfEmployeeOrg, String> {
+public interface HfOrgDeptMapper extends IBaseMapper<HfOrgDept, String> {
+	
+	public List<HfOrgDept> findListByAccount(Map<String, Object> paramMap);
 	
 }

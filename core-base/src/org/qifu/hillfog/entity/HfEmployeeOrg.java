@@ -1,4 +1,4 @@
-package org.qifu.core.entity;
+package org.qifu.hillfog.entity;
 
 import java.util.Date;
 
@@ -9,20 +9,18 @@ import org.qifu.base.model.EntityUK;
 import org.qifu.base.model.UpdateDateField;
 import org.qifu.base.model.UpdateUserField;
 
-public class HfEmployee implements java.io.Serializable {
-	private static final long serialVersionUID = 486336952630513992L;
+public class HfEmployeeOrg implements java.io.Serializable {
+	private static final long serialVersionUID = -9107156808761869136L;
 	
-	private String oid;
-	private String account;
-	private String empId;
-	private String name;
-	private String description;
-	private String cuserid;
-	private Date cdate;
-	private String uuserid;
-	private Date udate;
-	
-	@EntityPK(name = "oid", autoUUID = true)
+    private String oid;
+    private String account;
+    private String orgId;
+    private String cuserid;
+    private Date cdate;
+    private String uuserid;
+    private Date udate;
+    
+    @EntityPK(name = "oid", autoUUID = true)
     public String getOid() {
         return oid;
     }
@@ -40,28 +38,12 @@ public class HfEmployee implements java.io.Serializable {
         this.account = account;
     }
     
-    public String getEmpId() {
-        return empId;
+    public String getOrgId() {
+        return orgId;
     }
     
-    public void setEmpId(String empId) {
-        this.empId = empId;
-    }
-    
-    public String getName() {
-        return name;
-    }
-    
-    public void setName(String name) {
-        this.name = name;
-    }
-    
-    public String getDescription() {
-        return description;
-    }
-    
-    public void setDescription(String description) {
-        this.description = description;
+    public void setOrgId(String orgId) {
+        this.orgId = orgId;
     }
     
     @CreateUserField(name = "cuserid")

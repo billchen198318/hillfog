@@ -21,20 +21,18 @@
  */
 package org.qifu.hillfog.logic;
 
+import java.util.List;
+
 import org.qifu.base.exception.ServiceException;
 import org.qifu.base.model.DefaultResult;
-import org.qifu.hillfog.entity.HfOrgDept;
+import org.qifu.hillfog.entity.HfEmployee;
 
-public interface IOrganizationLogicService {
+public interface IEmployeeLogicService {
 	
-	/**
-	 * 刪除 HF_ORG_DEPT
-	 * 
-	 * @param orgDept
-	 * @return
-	 * @throws ServiceException
-	 * @throws Exception
-	 */
-	public DefaultResult<Boolean> delete(HfOrgDept orgDept) throws ServiceException, Exception;
+	public DefaultResult<HfEmployee> create(HfEmployee employee, String password, List<String> orgInputAutocompleteList) throws ServiceException, Exception;
+	
+	public DefaultResult<HfEmployee> update(HfEmployee employee, String password, List<String> orgInputAutocompleteList) throws ServiceException, Exception;
+	
+	public DefaultResult<Boolean> delete(HfEmployee employee) throws ServiceException, Exception;
 	
 }

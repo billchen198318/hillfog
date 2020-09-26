@@ -39,7 +39,7 @@ import org.qifu.base.model.PleaseSelect;
 import org.qifu.base.model.QueryControllerJsonResultObj;
 import org.qifu.base.model.QueryResult;
 import org.qifu.base.model.SearchValue;
-import org.qifu.core.entity.HfOrgDept;
+import org.qifu.hillfog.entity.HfOrgDept;
 import org.qifu.hillfog.logic.IOrganizationLogicService;
 import org.qifu.hillfog.service.IOrgDeptService;
 import org.qifu.util.SimpleUtils;
@@ -155,6 +155,7 @@ public class OrganizationController extends BaseControllerSupport implements IPa
 		.testField("orgId", ( !SimpleUtils.checkBeTrueOf_azAZ09(super.defaultString(orgDept.getOrgId()).replaceAll("-", "").replaceAll("_", "")) ), "Id only normal character!")
 		.testField("name", orgDept, "@org.apache.commons.lang3.StringUtils@isBlank(name)", "Name is blank!")
 		.throwMessage();		
+		orgDept.setName( orgDept.getName().replaceAll("/", "") );
 	}	
 	
 	private void save(DefaultControllerJsonResultObj<HfOrgDept> result, HfOrgDept orgDept) throws AuthorityException, ControllerException, ServiceException, Exception {

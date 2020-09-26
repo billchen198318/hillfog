@@ -21,9 +21,16 @@
  */
 package org.qifu.hillfog.service;
 
+import java.util.List;
+
+import org.qifu.base.exception.ServiceException;
 import org.qifu.base.service.IBaseService;
-import org.qifu.core.entity.HfOrgDept;
+import org.qifu.hillfog.entity.HfOrgDept;
 
 public interface IOrgDeptService<T, E> extends IBaseService<HfOrgDept, String> {
+	
+	public List<String> findInputAutocomplete() throws ServiceException, Exception;
+	
+	public List<String> findInputAutocompleteByAccount(String account) throws ServiceException, Exception;
 	
 }

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="org.qifu.core.mapper.HfOrgDeptMapper">
+<mapper namespace="org.qifu.hillfog.mapper.HfOrgDeptMapper">
 
-  <resultMap id="BaseResultMap" type="org.qifu.core.entity.HfOrgDept">
+  <resultMap id="BaseResultMap" type="org.qifu.hillfog.entity.HfOrgDept">
     <id column="OID" jdbcType="CHAR" property="oid" />
     <result column="ORG_ID" jdbcType="VARCHAR" property="orgId" />
     <result column="NAME" jdbcType="VARCHAR" property="name" />
@@ -15,13 +15,13 @@
   
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select *
-    from <include refid="org.qifu.core.mapper.DB1Config.schema"/>hf_org_dept
+    from <include refid="org.qifu.hillfog.mapper.DB1Config.schema"/>hf_org_dept
     where OID = #{oid,jdbcType=CHAR}
   </select>  
   
   <select id="selectListByParams" parameterType="java.util.HashMap" resultMap="BaseResultMap">
     select *
-    from <include refid="org.qifu.core.mapper.DB1Config.schema"/>hf_org_dept
+    from <include refid="org.qifu.hillfog.mapper.DB1Config.schema"/>hf_org_dept
     WHERE 1=1
 	<if test="orgId != null and orgId != '' ">
 		AND ORG_ID = #{orgId,jdbcType=VARCHAR}
@@ -38,10 +38,10 @@
   </select>    
   
   <select id="findPage" parameterType="java.util.HashMap" resultMap="BaseResultMap">
-  	<include refid="org.qifu.core.mapper.DB1Config.sql1"/>
+  	<include refid="org.qifu.hillfog.mapper.DB1Config.sql1"/>
   	
     select *
-    from <include refid="org.qifu.core.mapper.DB1Config.schema"/>hf_org_dept
+    from <include refid="org.qifu.hillfog.mapper.DB1Config.schema"/>hf_org_dept
     WHERE 1=1
 	<if test="orgId != null and orgId != '' ">
 		AND ORG_ID = #{orgId,jdbcType=VARCHAR}
@@ -53,11 +53,11 @@
 		AND NAME like #{nameLike,jdbcType=VARCHAR}
 	</if>			
 		
-	<include refid="org.qifu.core.mapper.DB1Config.sql2"/>
+	<include refid="org.qifu.hillfog.mapper.DB1Config.sql2"/>
   </select>  
   
   <select id="count" parameterType="java.util.HashMap" resultType="java.lang.Long">
-    select count(*) from <include refid="org.qifu.core.mapper.DB1Config.schema"/>hf_org_dept
+    select count(*) from <include refid="org.qifu.hillfog.mapper.DB1Config.schema"/>hf_org_dept
     WHERE 1=1
 	<if test="orgId != null and orgId != '' ">
 		AND ORG_ID = #{orgId,jdbcType=VARCHAR}
@@ -70,8 +70,8 @@
 	</if>				
   </select>  
   
-  <insert id="insert" parameterType="org.qifu.core.entity.HfOrgDept"> 
-    insert into <include refid="org.qifu.core.mapper.DB1Config.schema"/>hf_org_dept
+  <insert id="insert" parameterType="org.qifu.hillfog.entity.HfOrgDept"> 
+    insert into <include refid="org.qifu.hillfog.mapper.DB1Config.schema"/>hf_org_dept
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="oid != null">
         OID,
@@ -126,8 +126,8 @@
     </trim>
   </insert>  
   
-  <update id="update" parameterType="org.qifu.core.entity.HfOrgDept">
-    update <include refid="org.qifu.core.mapper.DB1Config.schema"/>hf_org_dept
+  <update id="update" parameterType="org.qifu.hillfog.entity.HfOrgDept">
+    update <include refid="org.qifu.hillfog.mapper.DB1Config.schema"/>hf_org_dept
     <set>
       <if test="orgId != null">
         ORG_ID = #{orgId,jdbcType=VARCHAR},
@@ -156,9 +156,19 @@
     where OID = #{oid,jdbcType=CHAR}
   </update>  
   
-  <delete id="delete" parameterType="org.qifu.core.entity.HfOrgDept">
-    delete from <include refid="org.qifu.core.mapper.DB1Config.schema"/>hf_org_dept
+  <delete id="delete" parameterType="org.qifu.hillfog.entity.HfOrgDept">
+    delete from <include refid="org.qifu.hillfog.mapper.DB1Config.schema"/>hf_org_dept
     where OID = #{oid,jdbcType=CHAR}
   </delete>
+  
+  <select id="findListByAccount" parameterType="java.util.HashMap" resultMap="BaseResultMap">
+	SELECT M.* 
+	FROM 
+	<include refid="org.qifu.hillfog.mapper.DB1Config.schema"/>hf_org_dept M,
+	<include refid="org.qifu.hillfog.mapper.DB1Config.schema"/>hf_employee_org B
+	WHERE M.ORG_ID = B.ORG_ID
+	AND B.ACCOUNT =  #{account,jdbcType=VARCHAR}
+	ORDER BY M.ORG_ID ASC    
+  </select>    
   
 </mapper>

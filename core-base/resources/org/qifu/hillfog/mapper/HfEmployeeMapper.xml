@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="org.qifu.core.mapper.HfEmployeeMapper">
+<mapper namespace="org.qifu.hillfog.mapper.HfEmployeeMapper">
 
-  <resultMap id="BaseResultMap" type="org.qifu.core.entity.HfEmployee">
+  <resultMap id="BaseResultMap" type="org.qifu.hillfog.entity.HfEmployee">
     <id column="OID" jdbcType="CHAR" property="oid" />
     <result column="ACCOUNT" jdbcType="VARCHAR" property="account" />
     <result column="EMP_ID" jdbcType="VARCHAR" property="empId" />
@@ -16,20 +16,23 @@
   
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select *
-    from <include refid="org.qifu.core.mapper.DB1Config.schema"/>hf_employee
+    from <include refid="org.qifu.hillfog.mapper.DB1Config.schema"/>hf_employee
     where OID = #{oid,jdbcType=CHAR}
   </select>  
   
   <select id="selectListByParams" parameterType="java.util.HashMap" resultMap="BaseResultMap">
     select *
-    from <include refid="org.qifu.core.mapper.DB1Config.schema"/>hf_employee
+    from <include refid="org.qifu.hillfog.mapper.DB1Config.schema"/>hf_employee
     WHERE 1=1
 	<if test="account != null and account != '' ">
-		AND ORG_ID = #{orgId,jdbcType=VARCHAR}
+		AND ACCOUNT = #{orgId,jdbcType=VARCHAR}
 	</if>		
 	<if test="empId != null and empId != '' ">
-		AND ORG_ID = #{orgId,jdbcType=VARCHAR}
+		AND EMP_ID = #{orgId,jdbcType=VARCHAR}
 	</if>		
+	<if test="empIdLike != null and empIdLike != '' ">
+		AND EMP_ID like #{empIdLike,jdbcType=VARCHAR}
+	</if>			
 	<if test="name != null and name != '' ">
 		AND NAME = #{name,jdbcType=VARCHAR}
 	</if>
@@ -42,17 +45,20 @@
   </select>    
   
   <select id="findPage" parameterType="java.util.HashMap" resultMap="BaseResultMap">
-  	<include refid="org.qifu.core.mapper.DB1Config.sql1"/>
+  	<include refid="org.qifu.hillfog.mapper.DB1Config.sql1"/>
   	
     select *
-    from <include refid="org.qifu.core.mapper.DB1Config.schema"/>hf_employee
+    from <include refid="org.qifu.hillfog.mapper.DB1Config.schema"/>hf_employee
     WHERE 1=1
 	<if test="account != null and account != '' ">
-		AND ORG_ID = #{orgId,jdbcType=VARCHAR}
+		AND ACCOUNT = #{orgId,jdbcType=VARCHAR}
 	</if>		
 	<if test="empId != null and empId != '' ">
-		AND ORG_ID = #{orgId,jdbcType=VARCHAR}
+		AND EMP_ID = #{orgId,jdbcType=VARCHAR}
 	</if>		
+	<if test="empIdLike != null and empIdLike != '' ">
+		AND EMP_ID like #{empIdLike,jdbcType=VARCHAR}
+	</if>			
 	<if test="name != null and name != '' ">
 		AND NAME = #{name,jdbcType=VARCHAR}
 	</if>
@@ -60,28 +66,31 @@
 		AND NAME like #{nameLike,jdbcType=VARCHAR}
 	</if>			
 		
-	<include refid="org.qifu.core.mapper.DB1Config.sql2"/>
+	<include refid="org.qifu.hillfog.mapper.DB1Config.sql2"/>
   </select>  
   
   <select id="count" parameterType="java.util.HashMap" resultType="java.lang.Long">
-    select count(*) from <include refid="org.qifu.core.mapper.DB1Config.schema"/>hf_employee
+    select count(*) from <include refid="org.qifu.hillfog.mapper.DB1Config.schema"/>hf_employee
     WHERE 1=1
 	<if test="account != null and account != '' ">
-		AND ORG_ID = #{orgId,jdbcType=VARCHAR}
+		AND ACCOUNT = #{orgId,jdbcType=VARCHAR}
 	</if>		
 	<if test="empId != null and empId != '' ">
-		AND ORG_ID = #{orgId,jdbcType=VARCHAR}
+		AND EMP_ID = #{orgId,jdbcType=VARCHAR}
 	</if>		
+	<if test="empIdLike != null and empIdLike != '' ">
+		AND EMP_ID like #{empIdLike,jdbcType=VARCHAR}
+	</if>			
 	<if test="name != null and name != '' ">
 		AND NAME = #{name,jdbcType=VARCHAR}
 	</if>
 	<if test="nameLike != null and nameLike != '' ">
 		AND NAME like #{nameLike,jdbcType=VARCHAR}
-	</if>					
+	</if>						
   </select>  
   
-  <insert id="insert" parameterType="org.qifu.core.entity.HfEmployee"> 
-    insert into <include refid="org.qifu.core.mapper.DB1Config.schema"/>hf_employee
+  <insert id="insert" parameterType="org.qifu.hillfog.entity.HfEmployee"> 
+    insert into <include refid="org.qifu.hillfog.mapper.DB1Config.schema"/>hf_employee
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="oid != null">
         OID,
@@ -142,8 +151,8 @@
     </trim>
   </insert>  
   
-  <update id="update" parameterType="org.qifu.core.entity.HfEmployee">
-    update <include refid="org.qifu.core.mapper.DB1Config.schema"/>hf_employee
+  <update id="update" parameterType="org.qifu.hillfog.entity.HfEmployee">
+    update <include refid="org.qifu.hillfog.mapper.DB1Config.schema"/>hf_employee
     <set>
       <if test="account != null">
         ACCOUNT = #{account,jdbcType=VARCHAR},
@@ -175,8 +184,8 @@
     where OID = #{oid,jdbcType=CHAR}
   </update>  
   
-  <delete id="delete" parameterType="org.qifu.core.entity.HfEmployee">
-    delete from <include refid="org.qifu.core.mapper.DB1Config.schema"/>hf_employee
+  <delete id="delete" parameterType="org.qifu.hillfog.entity.HfEmployee">
+    delete from <include refid="org.qifu.hillfog.mapper.DB1Config.schema"/>hf_employee
     where OID = #{oid,jdbcType=CHAR}
   </delete>
   

@@ -19,10 +19,10 @@
  * contact: chen.xin.nien@gmail.com
  * 
  */
-package org.qifu.core.mapper;
+package org.qifu.hillfog.mapper;
 
 import org.qifu.base.mapper.IBaseMapper;
-import org.qifu.core.entity.HfEmployee;
+import org.qifu.hillfog.entity.HfEmployee;
 
 public interface HfEmployeeMapper extends IBaseMapper<HfEmployee, String> {
 	

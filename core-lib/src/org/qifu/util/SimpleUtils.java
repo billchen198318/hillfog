@@ -128,6 +128,7 @@ public class SimpleUtils {
 		boolean isNormal=true;
 		String str = StringUtils.defaultString(sourceValue).replaceAll("-", "");
 		str = StringUtils.defaultString(str).replaceAll("_", "");
+		str = StringUtils.defaultString(str).replaceAll("[.]", "");
 		if (str!=null && str.length()>0) {
 			int val=0;
 			char tmp[]=str.toCharArray();

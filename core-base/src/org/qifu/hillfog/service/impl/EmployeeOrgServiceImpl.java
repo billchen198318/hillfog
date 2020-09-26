@@ -23,8 +23,8 @@ package org.qifu.hillfog.service.impl;
 
 import org.qifu.base.mapper.IBaseMapper;
 import org.qifu.base.service.BaseService;
-import org.qifu.core.entity.HfEmployeeOrg;
-import org.qifu.core.mapper.HfEmployeeOrgMapper;
+import org.qifu.hillfog.entity.HfEmployeeOrg;
+import org.qifu.hillfog.mapper.HfEmployeeOrgMapper;
 import org.qifu.hillfog.service.IEmployeeOrgService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
