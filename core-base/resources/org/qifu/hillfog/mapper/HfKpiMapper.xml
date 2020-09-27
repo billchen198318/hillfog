@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.qifu.hillfog.mapper.HfKpiMapper">
+
+  <resultMap id="BaseResultMap" type="org.qifu.hillfog.entity.HfKpi">
+    <id column="OID" jdbcType="CHAR" property="oid" />
+    <result column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="NAME" jdbcType="VARCHAR" property="name" />
+    <result column="DESCRIPTION" jdbcType="VARCHAR" property="description" />
+    <result column="WEIGHT" jdbcType="DECIMAL" property="weight" />
+    <result column="UNIT" jdbcType="VARCHAR" property="unit" />
+    <result column="FOR_ID" jdbcType="VARCHAR" property="forId" />
+    <result column="MAX" jdbcType="DECIMAL" property="max" />
+    <result column="TARGET" jdbcType="DECIMAL" property="target" />
+    <result column="MIN" jdbcType="DECIMAL" property="min" />
+    <result column="MANAGEMENT" jdbcType="VARCHAR" property="management" />
+    <result column="COMPARE_TYPE" jdbcType="VARCHAR" property="compareType" />
+    <result column="CAL" jdbcType="VARCHAR" property="cal" />
+    <result column="DATA_TYPE" jdbcType="VARCHAR" property="dataType" />
+    <result column="QUASI_RANGE" jdbcType="INTEGER" property="quasiRange" />
+    <result column="CUSERID" jdbcType="VARCHAR" property="cuserid" />
+    <result column="CDATE" jdbcType="TIMESTAMP" property="cdate" />
+    <result column="UUSERID" jdbcType="VARCHAR" property="uuserid" />
+    <result column="UDATE" jdbcType="TIMESTAMP" property="udate" />
+  </resultMap>
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select *
+    from <include refid="org.qifu.hillfog.mapper.DB1Config.schema"/>hf_kpi
+    where OID = #{oid,jdbcType=CHAR}
+  </select>  
+  
+  <select id="selectListByParams" parameterType="java.util.HashMap" resultMap="BaseResultMap">
+    select *
+    from <include refid="org.qifu.hillfog.mapper.DB1Config.schema"/>hf_kpi
+    WHERE 1=1
+	<if test="id != null and id != '' ">
+		AND ID = #{id,jdbcType=VARCHAR}
+	</if>			
+	<if test="name != null and name != '' ">
+		AND NAME = #{name,jdbcType=VARCHAR}
+	</if>
+	<if test="nameLike != null and nameLike != '' ">
+		AND NAME like #{nameLike,jdbcType=VARCHAR}
+	</if>			
+	<if test="orderBy != null and orderBy != '' and sortType != null and sortType != '' ">
+		ORDER BY  ${orderBy} ${sortType}
+	</if>	
+  </select>    
+  
+  <select id="findPage" parameterType="java.util.HashMap" resultMap="BaseResultMap">
+  	<include refid="org.qifu.hillfog.mapper.DB1Config.sql1"/>
+  	
+    select *
+    from <include refid="org.qifu.hillfog.mapper.DB1Config.schema"/>hf_kpi
+    WHERE 1=1
+	<if test="id != null and id != '' ">
+		AND ID = #{id,jdbcType=VARCHAR}
+	</if>			
+	<if test="name != null and name != '' ">
+		AND NAME = #{name,jdbcType=VARCHAR}
+	</if>
+	<if test="nameLike != null and nameLike != '' ">
+		AND NAME like #{nameLike,jdbcType=VARCHAR}
+	</if>				
+		
+	<include refid="org.qifu.hillfog.mapper.DB1Config.sql2"/>
+  </select>  
+  
+  <select id="count" parameterType="java.util.HashMap" resultType="java.lang.Long">
+    select count(*) from <include refid="org.qifu.hillfog.mapper.DB1Config.schema"/>hf_kpi
+    WHERE 1=1
+	<if test="id != null and id != '' ">
+		AND ID = #{id,jdbcType=VARCHAR}
+	</if>			
+	<if test="name != null and name != '' ">
+		AND NAME = #{name,jdbcType=VARCHAR}
+	</if>
+	<if test="nameLike != null and nameLike != '' ">
+		AND NAME like #{nameLike,jdbcType=VARCHAR}
+	</if>					
+  </select>  
+  
+  <insert id="insert" parameterType="org.qifu.hillfog.entity.HfKpi"> 
+    insert into <include refid="org.qifu.hillfog.mapper.DB1Config.schema"/>hf_kpi
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="oid != null">
+        OID,
+      </if>
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="name != null">
+        NAME,
+      </if>
+      <if test="description != null">
+        DESCRIPTION,
+      </if>
+      <if test="weight != null">
+        WEIGHT,
+      </if>
+      <if test="unit != null">
+        UNIT,
+      </if>
+      <if test="forId != null">
+        FOR_ID,
+      </if>
+      <if test="max != null">
+        MAX,
+      </if>
+      <if test="target != null">
+        TARGET,
+      </if>
+      <if test="min != null">
+        MIN,
+      </if>
+      <if test="management != null">
+        MANAGEMENT,
+      </if>
+      <if test="compareType != null">
+        COMPARE_TYPE,
+      </if>
+      <if test="cal != null">
+        CAL,
+      </if>
+      <if test="dataType != null">
+        DATA_TYPE,
+      </if>
+      <if test="quasiRange != null">
+        QUASI_RANGE,
+      </if>
+      <if test="cuserid != null">
+        CUSERID,
+      </if>
+      <if test="cdate != null">
+        CDATE,
+      </if>
+      <if test="uuserid != null">
+        UUSERID,
+      </if>
+      <if test="udate != null">
+        UDATE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="oid != null">
+        #{oid,jdbcType=CHAR},
+      </if>
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="weight != null">
+        #{weight,jdbcType=DECIMAL},
+      </if>
+      <if test="unit != null">
+        #{unit,jdbcType=VARCHAR},
+      </if>
+      <if test="forId != null">
+        #{forId,jdbcType=VARCHAR},
+      </if>
+      <if test="max != null">
+        #{max,jdbcType=DECIMAL},
+      </if>
+      <if test="target != null">
+        #{target,jdbcType=DECIMAL},
+      </if>
+      <if test="min != null">
+        #{min,jdbcType=DECIMAL},
+      </if>
+      <if test="management != null">
+        #{management,jdbcType=VARCHAR},
+      </if>
+      <if test="compareType != null">
+        #{compareType,jdbcType=VARCHAR},
+      </if>
+      <if test="cal != null">
+        #{cal,jdbcType=VARCHAR},
+      </if>
+      <if test="dataType != null">
+        #{dataType,jdbcType=VARCHAR},
+      </if>
+      <if test="quasiRange != null">
+        #{quasiRange,jdbcType=INTEGER},
+      </if>
+      <if test="cuserid != null">
+        #{cuserid,jdbcType=VARCHAR},
+      </if>
+      <if test="cdate != null">
+        #{cdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="uuserid != null">
+        #{uuserid,jdbcType=VARCHAR},
+      </if>
+      <if test="udate != null">
+        #{udate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>  
+  
+  <update id="update" parameterType="org.qifu.hillfog.entity.HfKpi">
+    update <include refid="org.qifu.hillfog.mapper.DB1Config.schema"/>hf_kpi
+    <set>
+      <if test="id != null">
+        ID = #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        NAME = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+        DESCRIPTION = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="weight != null">
+        WEIGHT = #{weight,jdbcType=DECIMAL},
+      </if>
+      <if test="unit != null">
+        UNIT = #{unit,jdbcType=VARCHAR},
+      </if>
+      <if test="forId != null">
+        FOR_ID = #{forId,jdbcType=VARCHAR},
+      </if>
+      <if test="max != null">
+        MAX = #{max,jdbcType=DECIMAL},
+      </if>
+      <if test="target != null">
+        TARGET = #{target,jdbcType=DECIMAL},
+      </if>
+      <if test="min != null">
+        MIN = #{min,jdbcType=DECIMAL},
+      </if>
+      <if test="management != null">
+        MANAGEMENT = #{management,jdbcType=VARCHAR},
+      </if>
+      <if test="compareType != null">
+        COMPARE_TYPE = #{compareType,jdbcType=VARCHAR},
+      </if>
+      <if test="cal != null">
+        CAL = #{cal,jdbcType=VARCHAR},
+      </if>
+      <if test="dataType != null">
+        DATA_TYPE = #{dataType,jdbcType=VARCHAR},
+      </if>
+      <if test="quasiRange != null">
+        QUASI_RANGE = #{quasiRange,jdbcType=INTEGER},
+      </if>
+      <!--  
+      <if test="cuserid != null">
+        CUSERID = #{cuserid,jdbcType=VARCHAR},
+      </if>
+      <if test="cdate != null">
+        CDATE = #{cdate,jdbcType=TIMESTAMP},
+      </if>
+      -->
+      <if test="uuserid != null">
+        UUSERID = #{uuserid,jdbcType=VARCHAR},
+      </if>
+      <if test="udate != null">
+        UDATE = #{udate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where OID = #{oid,jdbcType=CHAR}
+  </update>  
+  
+  <delete id="delete" parameterType="org.qifu.hillfog.entity.HfKpi">
+    delete from <include refid="org.qifu.hillfog.mapper.DB1Config.schema"/>hf_kpi
+    where OID = #{oid,jdbcType=CHAR}
+  </delete>
+  
+</mapper>
