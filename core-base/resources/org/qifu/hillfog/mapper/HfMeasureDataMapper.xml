@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.qifu.hillfog.mapper.HfMeasureDataMapper">
+
+  <resultMap id="BaseResultMap" type="org.qifu.hillfog.entity.HfMeasureData">
+    <id column="OID" jdbcType="CHAR" property="oid" />
+    <result column="KPI_ID" jdbcType="VARCHAR" property="kpiId" />
+    <result column="DATE" jdbcType="VARCHAR" property="date" />
+    <result column="TARGET" jdbcType="DECIMAL" property="target" />
+    <result column="ACTUAL" jdbcType="DECIMAL" property="actual" />
+    <result column="FREQUENCY" jdbcType="VARCHAR" property="frequency" />
+    <result column="ORG_ID" jdbcType="VARCHAR" property="orgId" />
+    <result column="EMP_ID" jdbcType="VARCHAR" property="empId" />
+    <result column="CUSERID" jdbcType="VARCHAR" property="cuserid" />
+    <result column="CDATE" jdbcType="TIMESTAMP" property="cdate" />
+    <result column="UUSERID" jdbcType="VARCHAR" property="uuserid" />
+    <result column="UDATE" jdbcType="TIMESTAMP" property="udate" />
+  </resultMap>
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select *
+    from <include refid="org.qifu.hillfog.mapper.DB1Config.schema"/>hf_measure_data
+    where OID = #{oid,jdbcType=CHAR}
+  </select>  
+  
+  <select id="selectListByParams" parameterType="java.util.HashMap" resultMap="BaseResultMap">
+    select *
+    from <include refid="org.qifu.hillfog.mapper.DB1Config.schema"/>hf_measure_data
+    WHERE 1=1
+	<if test="kpiId != null and kpiId != '' ">
+		AND KPI_ID = #{kpiId,jdbcType=VARCHAR}
+	</if>			
+	<if test="date != null and date != '' ">
+		AND DATE = #{date,jdbcType=VARCHAR}
+	</if>	
+	<if test="dateLike != null and dateLike != '' ">
+		AND DATE LIKE #{dateLike,jdbcType=VARCHAR}
+	</if>		
+	<if test="frequency != null and frequency != '' ">
+		AND FREQUENCY = #{frequency,jdbcType=VARCHAR}
+	</if>	
+	<if test="orgId != null and orgId != '' ">
+		AND ORG_ID = #{orgId,jdbcType=VARCHAR}
+	</if>
+	<if test="empId != null and empId != '' ">
+		AND EMP_ID = #{empId,jdbcType=VARCHAR}
+	</if>					
+	<if test="orderBy != null and orderBy != '' and sortType != null and sortType != '' ">
+		ORDER BY  ${orderBy} ${sortType}
+	</if>	
+  </select>    
+  
+  <select id="findPage" parameterType="java.util.HashMap" resultMap="BaseResultMap">
+  	<include refid="org.qifu.hillfog.mapper.DB1Config.sql1"/>
+  	
+    select *
+    from <include refid="org.qifu.hillfog.mapper.DB1Config.schema"/>hf_measure_data
+    WHERE 1=1
+	<if test="kpiId != null and kpiId != '' ">
+		AND KPI_ID = #{kpiId,jdbcType=VARCHAR}
+	</if>			
+	<if test="date != null and date != '' ">
+		AND DATE = #{date,jdbcType=VARCHAR}
+	</if>	
+	<if test="dateLike != null and dateLike != '' ">
+		AND DATE LIKE #{dateLike,jdbcType=VARCHAR}
+	</if>		
+	<if test="frequency != null and frequency != '' ">
+		AND FREQUENCY = #{frequency,jdbcType=VARCHAR}
+	</if>	
+	<if test="orgId != null and orgId != '' ">
+		AND ORG_ID = #{orgId,jdbcType=VARCHAR}
+	</if>
+	<if test="empId != null and empId != '' ">
+		AND EMP_ID = #{empId,jdbcType=VARCHAR}
+	</if>				
+		
+	<include refid="org.qifu.hillfog.mapper.DB1Config.sql2"/>
+  </select>  
+  
+  <select id="count" parameterType="java.util.HashMap" resultType="java.lang.Long">
+    select count(*) from <include refid="org.qifu.hillfog.mapper.DB1Config.schema"/>hf_measure_data
+    WHERE 1=1
+	<if test="kpiId != null and kpiId != '' ">
+		AND KPI_ID = #{kpiId,jdbcType=VARCHAR}
+	</if>			
+	<if test="date != null and date != '' ">
+		AND DATE = #{date,jdbcType=VARCHAR}
+	</if>	
+	<if test="dateLike != null and dateLike != '' ">
+		AND DATE LIKE #{dateLike,jdbcType=VARCHAR}
+	</if>		
+	<if test="frequency != null and frequency != '' ">
+		AND FREQUENCY = #{frequency,jdbcType=VARCHAR}
+	</if>	
+	<if test="orgId != null and orgId != '' ">
+		AND ORG_ID = #{orgId,jdbcType=VARCHAR}
+	</if>
+	<if test="empId != null and empId != '' ">
+		AND EMP_ID = #{empId,jdbcType=VARCHAR}
+	</if>						
+  </select>  
+  
+  <insert id="insert" parameterType="org.qifu.hillfog.entity.HfMeasureData"> 
+    insert into <include refid="org.qifu.hillfog.mapper.DB1Config.schema"/>hf_measure_data
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="oid != null">
+        OID,
+      </if>
+      <if test="kpiId != null">
+        KPI_ID,
+      </if>
+      <if test="date != null">
+        DATE,
+      </if>
+      <if test="target != null">
+        TARGET,
+      </if>
+      <if test="actual != null">
+        ACTUAL,
+      </if>
+      <if test="frequency != null">
+        FREQUENCY,
+      </if>
+      <if test="orgId != null">
+        ORG_ID,
+      </if>
+      <if test="empId != null">
+        EMP_ID,
+      </if>
+      <if test="cuserid != null">
+        CUSERID,
+      </if>
+      <if test="cdate != null">
+        CDATE,
+      </if>
+      <if test="uuserid != null">
+        UUSERID,
+      </if>
+      <if test="udate != null">
+        UDATE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="oid != null">
+        #{oid,jdbcType=CHAR},
+      </if>
+      <if test="kpiId != null">
+        #{kpiId,jdbcType=VARCHAR},
+      </if>
+      <if test="date != null">
+        #{date,jdbcType=VARCHAR},
+      </if>
+      <if test="target != null">
+        #{target,jdbcType=DECIMAL},
+      </if>
+      <if test="actual != null">
+        #{actual,jdbcType=DECIMAL},
+      </if>
+      <if test="frequency != null">
+        #{frequency,jdbcType=VARCHAR},
+      </if>
+      <if test="orgId != null">
+        #{orgId,jdbcType=VARCHAR},
+      </if>
+      <if test="empId != null">
+        #{empId,jdbcType=VARCHAR},
+      </if>
+      <if test="cuserid != null">
+        #{cuserid,jdbcType=VARCHAR},
+      </if>
+      <if test="cdate != null">
+        #{cdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="uuserid != null">
+        #{uuserid,jdbcType=VARCHAR},
+      </if>
+      <if test="udate != null">
+        #{udate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>  
+  
+  <update id="update" parameterType="org.qifu.hillfog.entity.HfMeasureData">
+    update <include refid="org.qifu.hillfog.mapper.DB1Config.schema"/>hf_measure_data
+    <set>
+      <if test="kpiId != null">
+        KPI_ID = #{kpiId,jdbcType=VARCHAR},
+      </if>
+      <if test="date != null">
+        DATE = #{date,jdbcType=VARCHAR},
+      </if>
+      <if test="target != null">
+        TARGET = #{target,jdbcType=DECIMAL},
+      </if>
+      <if test="actual != null">
+        ACTUAL = #{actual,jdbcType=DECIMAL},
+      </if>
+      <if test="frequency != null">
+        FREQUENCY = #{frequency,jdbcType=VARCHAR},
+      </if>
+      <if test="orgId != null">
+        ORG_ID = #{orgId,jdbcType=VARCHAR},
+      </if>
+      <if test="empId != null">
+        EMP_ID = #{empId,jdbcType=VARCHAR},
+      </if>
+      <!--  
+      <if test="cuserid != null">
+        CUSERID = #{cuserid,jdbcType=VARCHAR},
+      </if>
+      <if test="cdate != null">
+        CDATE = #{cdate,jdbcType=TIMESTAMP},
+      </if>
+      -->
+      <if test="uuserid != null">
+        UUSERID = #{uuserid,jdbcType=VARCHAR},
+      </if>
+      <if test="udate != null">
+        UDATE = #{udate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where OID = #{oid,jdbcType=CHAR}
+  </update>  
+  
+  <delete id="delete" parameterType="org.qifu.hillfog.entity.HfMeasureData">
+    delete from <include refid="org.qifu.hillfog.mapper.DB1Config.schema"/>hf_measure_data
+    where OID = #{oid,jdbcType=CHAR}
+  </delete>
+  
+</mapper>

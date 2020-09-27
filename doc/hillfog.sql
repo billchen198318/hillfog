@@ -266,7 +266,8 @@ CREATE TABLE `hf_measure_data` (
   `UUSERID` varchar(24) DEFAULT NULL,
   `UDATE` datetime DEFAULT NULL,
   PRIMARY KEY (`OID`),
-  UNIQUE KEY `UK_1` (`KPI_ID`,`DATE`)
+  UNIQUE KEY `UK_1` (`KPI_ID`,`DATE`),
+  KEY `IDX_1` (`FREQUENCY`,`ORG_ID`,`EMP_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1167,4 +1168,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-09-27 12:57:00
+-- Dump completed on 2020-09-27 15:29:21
