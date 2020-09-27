@@ -21,9 +21,11 @@
  */
 package org.qifu.hillfog.mapper;
 
+import org.apache.ibatis.annotations.Mapper;
 import org.qifu.base.mapper.IBaseMapper;
 import org.qifu.hillfog.entity.HfKpi;
 
+@Mapper
 public interface HfKpiMapper extends IBaseMapper<HfKpi, String> {
 	
 }

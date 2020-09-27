@@ -21,9 +21,11 @@
  */
 package org.qifu.core.mapper;
 
+import org.apache.ibatis.annotations.Mapper;
 import org.qifu.base.mapper.IBaseMapper;
 import org.qifu.core.entity.TbSysCode;
 
+@Mapper
 public interface TbSysCodeMapper extends IBaseMapper<TbSysCode, String> {
 	
 }

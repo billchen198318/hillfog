@@ -21,9 +21,11 @@
  */
 package org.qifu.core.mapper;
 
+import org.apache.ibatis.annotations.Mapper;
 import org.qifu.base.mapper.IBaseMapper;
 import org.qifu.core.entity.TbSysBeanHelpExprMap;
 
+@Mapper
 public interface TbSysBeanHelpExprMapMapper extends IBaseMapper<TbSysBeanHelpExprMap, String> {
 	
 }

@@ -23,9 +23,11 @@ package org.qifu.core.mapper;
 
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Mapper;
 import org.qifu.base.mapper.IBaseMapper;
 import org.qifu.core.entity.TbSysEventLog;
 
+@Mapper
 public interface TbSysEventLogMapper extends IBaseMapper<TbSysEventLog, String> {
 	
 	public Boolean deleteAll(Map<String, Object> paramMap);

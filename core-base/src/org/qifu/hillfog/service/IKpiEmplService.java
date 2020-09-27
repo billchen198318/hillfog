@@ -19,13 +19,11 @@
  * contact: chen.xin.nien@gmail.com
  * 
  */
-package org.qifu.core.mapper;
+package org.qifu.hillfog.service;
 
-import org.apache.ibatis.annotations.Mapper;
-import org.qifu.base.mapper.IBaseMapper;
-import org.qifu.core.entity.TbSysExprJob;
+import org.qifu.base.service.IBaseService;
+import org.qifu.hillfog.entity.HfKpiEmpl;
 
-@Mapper
-public interface TbSysExprJobMapper extends IBaseMapper<TbSysExprJob, String> {
+public interface IKpiEmplService<T, E> extends IBaseService<HfKpiEmpl, String> {
 	
 }

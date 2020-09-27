@@ -24,9 +24,11 @@ package org.qifu.core.mapper;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Mapper;
 import org.qifu.base.mapper.IBaseMapper;
 import org.qifu.core.entity.TbSysJreport;
 
+@Mapper
 public interface TbSysJreportMapper extends IBaseMapper<TbSysJreport, String> {
 	
 	/**

@@ -21,9 +21,11 @@
  */
 package org.qifu.hillfog.mapper;
 
+import org.apache.ibatis.annotations.Mapper;
 import org.qifu.base.mapper.IBaseMapper;
 import org.qifu.hillfog.entity.HfEmployee;
 
+@Mapper
 public interface HfEmployeeMapper extends IBaseMapper<HfEmployee, String> {
 	
 }

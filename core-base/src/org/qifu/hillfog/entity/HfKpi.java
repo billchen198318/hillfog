@@ -3,6 +3,13 @@ package org.qifu.hillfog.entity;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import org.qifu.base.model.CreateDateField;
+import org.qifu.base.model.CreateUserField;
+import org.qifu.base.model.EntityPK;
+import org.qifu.base.model.EntityUK;
+import org.qifu.base.model.UpdateDateField;
+import org.qifu.base.model.UpdateUserField;
+
 public class HfKpi implements java.io.Serializable {
 	private static final long serialVersionUID = -5876998216153568487L;
 	
@@ -26,6 +33,7 @@ public class HfKpi implements java.io.Serializable {
     private String uuserid;
     private Date udate;
     
+    @EntityPK(name = "oid", autoUUID = true)
     public String getOid() {
         return oid;
     }
@@ -34,6 +42,7 @@ public class HfKpi implements java.io.Serializable {
         this.oid = oid;
     }
     
+    @EntityUK(name = "id")
     public String getId() {
         return id;
     }
@@ -146,6 +155,7 @@ public class HfKpi implements java.io.Serializable {
         this.quasiRange = quasiRange;
     }
     
+    @CreateUserField(name = "cuserid")
     public String getCuserid() {
         return cuserid;
     }
@@ -154,6 +164,7 @@ public class HfKpi implements java.io.Serializable {
         this.cuserid = cuserid;
     }
     
+    @CreateDateField(name = "cdate")
     public Date getCdate() {
         return cdate;
     }
@@ -162,6 +173,7 @@ public class HfKpi implements java.io.Serializable {
         this.cdate = cdate;
     }
     
+    @UpdateUserField(name = "uuserid")
     public String getUuserid() {
         return uuserid;
     }
@@ -170,6 +182,7 @@ public class HfKpi implements java.io.Serializable {
         this.uuserid = uuserid;
     }
     
+    @UpdateDateField(name = "udate")
     public Date getUdate() {
         return udate;
     }
