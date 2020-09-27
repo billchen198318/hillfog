@@ -16,6 +16,40 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `hf_aggregation_method`
+--
+
+DROP TABLE IF EXISTS `hf_aggregation_method`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `hf_aggregation_method` (
+  `OID` char(36) NOT NULL,
+  `AGGR_ID` varchar(14) NOT NULL,
+  `NAME` varchar(100) NOT NULL,
+  `TYPE` varchar(10) NOT NULL,
+  `EXPRESSION1` varchar(4000) NOT NULL,
+  `EXPRESSION2` varchar(4000) NOT NULL,
+  `DESCRIPTION` varchar(500) DEFAULT NULL,
+  `CUSERID` varchar(24) NOT NULL,
+  `CDATE` datetime NOT NULL,
+  `UUSERID` varchar(24) DEFAULT NULL,
+  `UDATE` datetime DEFAULT NULL,
+  PRIMARY KEY (`OID`),
+  UNIQUE KEY `UK_1` (`AGGR_ID`),
+  FULLTEXT KEY `IDX_1` (`NAME`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `hf_aggregation_method`
+--
+
+LOCK TABLES `hf_aggregation_method` WRITE;
+/*!40000 ALTER TABLE `hf_aggregation_method` DISABLE KEYS */;
+/*!40000 ALTER TABLE `hf_aggregation_method` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `hf_employee`
 --
 
@@ -74,6 +108,175 @@ CREATE TABLE `hf_employee_org` (
 LOCK TABLES `hf_employee_org` WRITE;
 /*!40000 ALTER TABLE `hf_employee_org` DISABLE KEYS */;
 /*!40000 ALTER TABLE `hf_employee_org` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `hf_formula`
+--
+
+DROP TABLE IF EXISTS `hf_formula`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `hf_formula` (
+  `OID` char(36) NOT NULL,
+  `FOR_ID` varchar(14) NOT NULL,
+  `NAME` varchar(100) NOT NULL,
+  `TYPE` varchar(10) NOT NULL,
+  `RETURN_MODE` varchar(1) NOT NULL DEFAULT 'D',
+  `RETURN_VAR` varchar(50) NOT NULL DEFAULT '',
+  `EXPRESSION` varchar(500) NOT NULL,
+  `DESCRIPTION` varchar(500) DEFAULT NULL,
+  `CUSERID` varchar(24) NOT NULL,
+  `CDATE` datetime NOT NULL,
+  `UUSERID` varchar(24) DEFAULT NULL,
+  `UDATE` datetime DEFAULT NULL,
+  PRIMARY KEY (`OID`),
+  UNIQUE KEY `UK_1` (`FOR_ID`),
+  FULLTEXT KEY `IDX_1` (`NAME`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `hf_formula`
+--
+
+LOCK TABLES `hf_formula` WRITE;
+/*!40000 ALTER TABLE `hf_formula` DISABLE KEYS */;
+/*!40000 ALTER TABLE `hf_formula` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `hf_kpi`
+--
+
+DROP TABLE IF EXISTS `hf_kpi`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `hf_kpi` (
+  `OID` char(36) NOT NULL,
+  `ID` varchar(14) NOT NULL,
+  `NAME` varchar(100) NOT NULL,
+  `DESCRIPTION` varchar(500) DEFAULT NULL,
+  `WEIGHT` decimal(5,2) NOT NULL DEFAULT 0.00,
+  `UNIT` varchar(20) NOT NULL,
+  `FOR_ID` varchar(14) NOT NULL,
+  `MAX` decimal(12,2) NOT NULL DEFAULT 0.00,
+  `TARGET` decimal(12,2) NOT NULL DEFAULT 0.00,
+  `MIN` decimal(12,2) NOT NULL DEFAULT 0.00,
+  `MANAGEMENT` varchar(1) NOT NULL DEFAULT '1',
+  `COMPARE_TYPE` varchar(1) NOT NULL DEFAULT '1',
+  `CAL` varchar(14) NOT NULL,
+  `DATA_TYPE` varchar(1) NOT NULL,
+  `QUASI_RANGE` int(3) NOT NULL DEFAULT 0,
+  `CUSERID` varchar(24) NOT NULL,
+  `CDATE` datetime NOT NULL,
+  `UUSERID` varchar(24) DEFAULT NULL,
+  `UDATE` datetime DEFAULT NULL,
+  PRIMARY KEY (`OID`),
+  UNIQUE KEY `UK_1` (`ID`),
+  KEY `IDX_1` (`NAME`,`FOR_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `hf_kpi`
+--
+
+LOCK TABLES `hf_kpi` WRITE;
+/*!40000 ALTER TABLE `hf_kpi` DISABLE KEYS */;
+/*!40000 ALTER TABLE `hf_kpi` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `hf_kpi_empl`
+--
+
+DROP TABLE IF EXISTS `hf_kpi_empl`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `hf_kpi_empl` (
+  `OID` char(36) NOT NULL,
+  `KPI_ID` varchar(14) NOT NULL,
+  `ACCOUNT` varchar(24) NOT NULL,
+  `CUSERID` varchar(24) NOT NULL,
+  `CDATE` datetime NOT NULL,
+  `UUSERID` varchar(24) DEFAULT NULL,
+  `UDATE` datetime DEFAULT NULL,
+  PRIMARY KEY (`OID`),
+  UNIQUE KEY `UK_1` (`KPI_ID`,`ACCOUNT`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `hf_kpi_empl`
+--
+
+LOCK TABLES `hf_kpi_empl` WRITE;
+/*!40000 ALTER TABLE `hf_kpi_empl` DISABLE KEYS */;
+/*!40000 ALTER TABLE `hf_kpi_empl` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `hf_kpi_orga`
+--
+
+DROP TABLE IF EXISTS `hf_kpi_orga`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `hf_kpi_orga` (
+  `OID` char(36) NOT NULL,
+  `KPI_ID` varchar(14) NOT NULL,
+  `ORG_ID` varchar(15) NOT NULL,
+  `CUSERID` varchar(24) NOT NULL,
+  `CDATE` datetime NOT NULL,
+  `UUSERID` varchar(24) DEFAULT NULL,
+  `UDATE` datetime DEFAULT NULL,
+  PRIMARY KEY (`OID`),
+  UNIQUE KEY `UK_1` (`KPI_ID`,`ORG_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `hf_kpi_orga`
+--
+
+LOCK TABLES `hf_kpi_orga` WRITE;
+/*!40000 ALTER TABLE `hf_kpi_orga` DISABLE KEYS */;
+/*!40000 ALTER TABLE `hf_kpi_orga` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `hf_measure_data`
+--
+
+DROP TABLE IF EXISTS `hf_measure_data`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `hf_measure_data` (
+  `OID` char(36) NOT NULL,
+  `KPI_ID` varchar(14) NOT NULL,
+  `DATE` varchar(8) NOT NULL,
+  `TARGET` decimal(12,2) NOT NULL DEFAULT 0.00,
+  `ACTUAL` decimal(12,2) NOT NULL DEFAULT 0.00,
+  `FREQUENCY` varchar(1) NOT NULL,
+  `ORG_ID` varchar(10) NOT NULL DEFAULT '*',
+  `EMP_ID` varchar(10) NOT NULL DEFAULT '*',
+  `CUSERID` varchar(24) NOT NULL,
+  `CDATE` datetime NOT NULL,
+  `UUSERID` varchar(24) DEFAULT NULL,
+  `UDATE` datetime DEFAULT NULL,
+  PRIMARY KEY (`OID`),
+  UNIQUE KEY `UK_1` (`KPI_ID`,`DATE`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `hf_measure_data`
+--
+
+LOCK TABLES `hf_measure_data` WRITE;
+/*!40000 ALTER TABLE `hf_measure_data` DISABLE KEYS */;
+/*!40000 ALTER TABLE `hf_measure_data` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -964,4 +1167,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-09-26 15:31:32
+-- Dump completed on 2020-09-27 12:57:00
