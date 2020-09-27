@@ -63,6 +63,8 @@ import org.joda.time.Days;
 import org.joda.time.Months;
 import org.joda.time.Years;
 
+import com.fasterxml.uuid.Generators;
+
 public class SimpleUtils {
 	public static final int IS_YEAR=1;
 	public static final int IS_MONTH=2;
@@ -411,17 +413,11 @@ public class SimpleUtils {
 	}
 	
 	public static String getUUIDStr() {
-		//return UUID.randomUUID().toString();
-		
-		// 2018-03-29 rem
-		//return com.datastax.driver.core.utils.UUIDs.timeBased().toString();
-		
-		// 2018-03-29 change return getRandomUUIDStr() -> UUIDs.random
-		return getRandomUUIDStr();
+		return Generators.timeBasedGenerator().generate().toString();
 	}
 	
 	public static String getRandomUUIDStr() {
-		return com.datastax.driver.core.utils.UUIDs.random().toString();
+		return Generators.randomBasedGenerator().generate().toString();
 	}	
 	
 	public static byte[] toMD5(final String sourceValue) {

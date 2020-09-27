@@ -13,7 +13,7 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <java.version>11</java.version>
-    <workspaceDir>/home/git7/qifu/</workspaceDir>
+    <workspaceDir>${project.basedir}/../</workspaceDir>
   </properties>
   
   <parent>
@@ -197,11 +197,11 @@
 		</dependency>	
 		
 		<dependency>
-		    <groupId>com.datastax.cassandra</groupId>
-		    <artifactId>cassandra-driver-core</artifactId>
-		    <version>3.8.0</version>
-		</dependency>	
-
+		    <groupId>com.fasterxml.uuid</groupId>
+		    <artifactId>java-uuid-generator</artifactId>
+		    <version>4.0.1</version>
+		</dependency>
+		
 		<dependency>
 		    <groupId>commons-net</groupId>
 		    <artifactId>commons-net</artifactId>
