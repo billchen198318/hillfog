@@ -22,6 +22,7 @@
 package org.qifu.hillfog.logic.impl;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,6 +39,8 @@ import org.qifu.base.model.ServiceMethodType;
 import org.qifu.base.model.YesNo;
 import org.qifu.base.service.BaseLogicService;
 import org.qifu.core.entity.TbAccount;
+import org.qifu.core.entity.TbRole;
+import org.qifu.core.logic.IRoleLogicService;
 import org.qifu.core.service.IAccountService;
 import org.qifu.hillfog.entity.HfEmployee;
 import org.qifu.hillfog.entity.HfEmployeeOrg;
@@ -75,6 +78,9 @@ public class EmployeeLogicServiceImpl extends BaseLogicService implements IEmplo
     @Autowired
     PasswordEncoder passwordEncoder;
 	
+    @Autowired
+    IRoleLogicService roleLogicService;
+    
 	@ServiceMethodAuthority(type = ServiceMethodType.INSERT)
 	@Transactional(
 			propagation=Propagation.REQUIRED, 
@@ -102,6 +108,10 @@ public class EmployeeLogicServiceImpl extends BaseLogicService implements IEmplo
 		}
 		employee = result.getValue();
 		this.createEmployeeOrganization(employee, orgInputAutocompleteList);
+		TbRole roleEntity = this.roleLogicService.getDefaultUserRoleEntity();
+		List<String> roles = new ArrayList<String>();
+		roles.add(roleEntity.getOid());
+		this.roleLogicService.updateUserRole(account.getOid(), roles);
 		return result;
 	}
 	

@@ -176,7 +176,7 @@ public class EmployeeController extends BaseControllerSupport implements IPageNa
 		return result;
 	}	
 	
-	private void checkFields(DefaultControllerJsonResultObj<HfEmployee> result, HfEmployee employee, String password1, String password2, boolean createMode) throws ControllerException, Exception {
+	private void checkFields(DefaultControllerJsonResultObj<HfEmployee> result, HfEmployee employee, String password1, String password2, String orgInputAutocompleteJsonStr, boolean createMode) throws ControllerException, Exception {
 		CheckControllerFieldHandler<HfEmployee> checkHandler = this.getCheckControllerFieldHandler(result)
 		.testField("account", employee, "@org.apache.commons.lang3.StringUtils@isBlank(account)", "Account is blank!")
 		.testField("account", ( PleaseSelect.noSelect(employee.getAccount()) ), "Please change account value!") // ORG_ID 不能用  "all" 這個下拉值
@@ -184,7 +184,8 @@ public class EmployeeController extends BaseControllerSupport implements IPageNa
 		.testField("empId", employee, "@org.apache.commons.lang3.StringUtils@isBlank(empId)", "Id is blank!")
 		.testField("empId", ( PleaseSelect.noSelect(employee.getEmpId()) ), "Please change Id value!") // ORG_ID 不能用  "all" 這個下拉值
 		.testField("empId", ( !SimpleUtils.checkBeTrueOf_azAZ09Id(super.defaultString(employee.getEmpId())) ), "Id only normal character!")
-		.testField("name", employee, "@org.apache.commons.lang3.StringUtils@isBlank(name)", "Name is blank!");
+		.testField("name", employee, "@org.apache.commons.lang3.StringUtils@isBlank(name)", "Name is blank!")
+		.testField("employeeOrganization", StringUtils.isBlank(orgInputAutocompleteJsonStr), "Please add organization!");
 		checkHandler.throwMessage();
 		if (createMode) {
 			checkHandler.testField("password1", StringUtils.isBlank(password1), "Please input password!").throwMessage();
@@ -194,15 +195,23 @@ public class EmployeeController extends BaseControllerSupport implements IPageNa
 		if (!createMode && !StringUtils.isBlank(password1) && !StringUtils.isBlank(password2)) {
 			this.checkFieldsForPassword(checkHandler, password1, password2);
 		}
+		Map<String, List<Map<String, Object>>> jsonData = (Map<String, List<Map<String, Object>>>) new ObjectMapper().readValue( orgInputAutocompleteJsonStr, LinkedHashMap.class );
+		List orgInputAutocompleteList = jsonData.get("items");
+		if (null == orgInputAutocompleteList || orgInputAutocompleteList.size() < 1) {
+			checkHandler.throwMessage("employeeOrganization", "Please add organization!");
+		}
 	}
 	
 	private void checkFieldsForPassword(CheckControllerFieldHandler<HfEmployee> checkHandler, String password1, String password2) throws ControllerException, Exception {
 		checkHandler.testField("password1", !password1.equals(password2), "Incorrect password!");
 		checkHandler.testField("password1", !SimpleUtils.checkBeTrueOf_azAZ09(4, 15, password1), "Incorrect password!");
+		checkHandler.throwMessage();
 	}
 	
-	private void save(DefaultControllerJsonResultObj<HfEmployee> result, HfEmployee employee, String password1, String password2, List<String> orgInputAutocompleteList) throws AuthorityException, ControllerException, ServiceException, Exception {
-		this.checkFields(result, employee, password1, password2, true);
+	private void save(DefaultControllerJsonResultObj<HfEmployee> result, HfEmployee employee, String password1, String password2, String orgInputAutocompleteJsonStr) throws AuthorityException, ControllerException, ServiceException, Exception {
+		this.checkFields(result, employee, password1, password2, orgInputAutocompleteJsonStr, true);
+		Map<String, List<Map<String, Object>>> jsonData = (Map<String, List<Map<String, Object>>>) new ObjectMapper().readValue( orgInputAutocompleteJsonStr, LinkedHashMap.class );
+		List orgInputAutocompleteList = jsonData.get("items");
 		DefaultResult<HfEmployee> iResult = this.employeeLogicService.create(employee, password1, orgInputAutocompleteList);
 		if (iResult.getValue() != null) {
 			result.setValue( iResult.getValue() );
@@ -219,14 +228,12 @@ public class EmployeeController extends BaseControllerSupport implements IPageNa
 			return result;
 		}
 		try {
-			String employeeOrganization = request.getParameter("employeeOrganization");
-			Map<String, List<Map<String, Object>>> jsonData = (Map<String, List<Map<String, Object>>>) new ObjectMapper().readValue( employeeOrganization, LinkedHashMap.class );	
 			this.save(
 					result, 
 					employee, 
 					request.getParameter("password1"), 
 					request.getParameter("password2"), 
-					(List)jsonData.get("items"));
+					request.getParameter("employeeOrganization"));
 		} catch (AuthorityException | ServiceException | ControllerException e) {
 			this.baseExceptionResult(result, e);	
 		} catch (Exception e) {
@@ -235,8 +242,10 @@ public class EmployeeController extends BaseControllerSupport implements IPageNa
 		return result;		
 	}	
 	
-	private void update(DefaultControllerJsonResultObj<HfEmployee> result, HfEmployee employee, String password1, String password2, List<String> orgInputAutocompleteList) throws AuthorityException, ControllerException, ServiceException, Exception {
-		this.checkFields(result, employee, password1, password2, false);
+	private void update(DefaultControllerJsonResultObj<HfEmployee> result, HfEmployee employee, String password1, String password2, String orgInputAutocompleteJsonStr) throws AuthorityException, ControllerException, ServiceException, Exception {
+		this.checkFields(result, employee, password1, password2, orgInputAutocompleteJsonStr, false);
+		Map<String, List<Map<String, Object>>> jsonData = (Map<String, List<Map<String, Object>>>) new ObjectMapper().readValue( orgInputAutocompleteJsonStr, LinkedHashMap.class );
+		List orgInputAutocompleteList = jsonData.get("items");		
 		DefaultResult<HfEmployee> uResult = this.employeeLogicService.update(employee, password1, orgInputAutocompleteList);
 		if ( uResult.getValue() != null ) {
 			result.setValue( uResult.getValue() );
@@ -252,15 +261,13 @@ public class EmployeeController extends BaseControllerSupport implements IPageNa
 		if (!this.isAuthorizeAndLoginFromControllerJsonResult(result)) {
 			return result;
 		}
-		try {
-			String employeeOrganization = request.getParameter("employeeOrganization");
-			Map<String, List<Map<String, Object>>> jsonData = (Map<String, List<Map<String, Object>>>) new ObjectMapper().readValue( employeeOrganization, LinkedHashMap.class );				
+		try {			
 			this.update(
 					result, 
 					employee, 
 					request.getParameter("password1"), 
 					request.getParameter("password2"), 
-					(List)jsonData.get("items"));
+					request.getParameter("employeeOrganization"));
 		} catch (AuthorityException | ServiceException | ControllerException e) {
 			this.baseExceptionResult(result, e);
 		} catch (Exception e) {

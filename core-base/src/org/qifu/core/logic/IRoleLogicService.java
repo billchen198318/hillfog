@@ -152,4 +152,13 @@ public interface IRoleLogicService {
 	 */
 	public String getDefaultUserRole() throws ServiceException, Exception;
 	
+	/**
+	 * 使用者設的role(角色), 它設定在 tb_sys_code中
+	 * 
+	 * @return
+	 * @throws ServiceException
+	 * @throws Exception
+	 */
+	public TbRole getDefaultUserRoleEntity() throws ServiceException, Exception;
+	
 }

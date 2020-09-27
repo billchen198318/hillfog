@@ -510,11 +510,7 @@ public class RoleLogicServiceImpl extends BaseLogicService implements IRoleLogic
 		TbSysCode sysCode = new TbSysCode();
 		sysCode.setType(DEFAULT_ROLE_CODE_TYPE);
 		sysCode.setCode(DEFAULT_ROLE_CODE);
-		DefaultResult<TbSysCode> result = this.sysCodeService.selectByUniqueKey(sysCode);
-		if (result.getValue()==null) {
-			throw new ServiceException(result.getMessage());
-		}
-		sysCode = result.getValue();
+		sysCode = this.sysCodeService.selectByUniqueKey(sysCode).getValueEmptyThrowMessage();
 		role = sysCode.getParam1();
 		if (super.isBlank(role)) {
 			throw new ServiceException(BaseSystemMessage.dataErrors());
@@ -526,5 +522,26 @@ public class RoleLogicServiceImpl extends BaseLogicService implements IRoleLogic
 		}
 		return role;
 	}	
+	
+	/**
+	 * 使用者設的role(角色), 它設定在 tb_sys_code中
+	 * 
+	 * @return
+	 * @throws ServiceException
+	 * @throws Exception
+	 */	
+	public TbRole getDefaultUserRoleEntity() throws ServiceException, Exception {
+		TbSysCode sysCode = new TbSysCode();
+		sysCode.setType(DEFAULT_ROLE_CODE_TYPE);
+		sysCode.setCode(DEFAULT_ROLE_CODE);
+		sysCode = this.sysCodeService.selectByUniqueKey(sysCode).getValueEmptyThrowMessage();
+		if (super.isBlank(sysCode.getParam1())) {
+			throw new ServiceException(BaseSystemMessage.dataErrors());
+		}
+		TbRole role = new TbRole();
+		role.setRole( sysCode.getParam1() );
+		role = this.roleService.selectByUniqueKey(role).getValueEmptyThrowMessage();
+		return role;
+	}
 	
 }

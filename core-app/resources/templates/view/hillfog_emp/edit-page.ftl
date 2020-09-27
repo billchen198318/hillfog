@@ -82,18 +82,20 @@ $( document ).ready(function() {
 });
 
 var msgFields = new Object();
-msgFields['empId'] 			= 'empId';
-msgFields['account'] 		= 'account';
-msgFields['password1'] 		= 'password1';
-msgFields['password2'] 		= 'password2';
-msgFields['name'] 			= 'name';
+msgFields['empId'] 					= 'empId';
+msgFields['account'] 				= 'account';
+msgFields['password1'] 				= 'password1';
+msgFields['password2'] 				= 'password2';
+msgFields['name'] 					= 'name';
+msgFields['employeeOrganization']	= 'employeeOrganization';
 
 var formGroups = new Object();
-formGroups['empId'] 		= 'form-group1';
-formGroups['account'] 		= 'form-group1';
-formGroups['password1'] 	= 'form-group1';
-formGroups['password2'] 	= 'form-group1';
-formGroups['name'] 			= 'form-group1';
+formGroups['empId'] 				= 'form-group1';
+formGroups['account'] 				= 'form-group1';
+formGroups['password1'] 			= 'form-group1';
+formGroups['password2'] 			= 'form-group1';
+formGroups['name'] 					= 'form-group1';
+formGroups['employeeOrganization']	= 'form-group1';
 
 function updateSuccess(data) {
 	clearWarningMessageField(formGroups, msgFields);
@@ -172,7 +174,7 @@ function removeArrayByPos(arr, pos) {
 <@qifu.toolBar 
 	id="HF_PROG001D0002E_toolbar" 
 	refreshEnable="Y"
-	refreshJsMethod="window.location=parent.getProgUrlForOid('HF_PROG001D0002E', '${orgDept.oid}');" 
+	refreshJsMethod="window.location=parent.getProgUrlForOid('HF_PROG001D0002E', '${employee.oid}');" 
 	createNewEnable="N"
 	createNewJsMethod=""
 	saveEnabel="Y" 
@@ -193,7 +195,7 @@ function removeArrayByPos(arr, pos) {
 	</div>
 	<div class="row">
 		<div class="col-xs-6 col-md-6 col-lg-6">
-			<@qifu.textbox name="account" value="employee.account" id="account" label="Account" requiredFlag="Y" maxlength="24" placeholder="Enter account" />
+			<@qifu.textbox name="account" value="employee.account" id="account" label="Account" requiredFlag="Y" maxlength="24" placeholder="Enter account" readonly="Y" />
 		</div>
 	</div>	
 	<div class="row">
@@ -219,10 +221,10 @@ function removeArrayByPos(arr, pos) {
 		<div class="col-xs-6 col-md-6 col-lg-6">
 			<@qifu.textbox name="employeeOrganization" value="" id="employeeOrganization" label="Organization" requiredFlag="Y" maxlength="100" placeholder="Enter organization" />
 			<button type="button" class="btn btn-info" id="btnAddOrganization" title="add organization" onclick="addOrganization();">ADD</button>
-		</div>
-		<div class="col">
-			<span id="selOrgDeptShowLabel">&nbsp;</span>
-		</div>				
+			<div>
+				<span id="selOrgDeptShowLabel">&nbsp;</span>
+			</div>					
+		</div>		
 	</div>		
 	<div class="row">
 		<div class="col-xs-6 col-md-6 col-lg-6">

@@ -38,6 +38,7 @@ public class HfEmployeeOrg implements java.io.Serializable {
         this.account = account;
     }
     
+    @EntityUK(name = "orgId")
     public String getOrgId() {
         return orgId;
     }
