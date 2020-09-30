@@ -17,10 +17,13 @@ import org.qifu.util.*;
 import org.qifu.core.util.*;
 import org.qifu.core.entity.*;
 import org.qifu.core.mapper.*;
+import org.qifu.hillfog.entity.*;
+import org.qifu.hillfog.mapper.*;
 
 try {
 	TbAccountMapper accountMapper = AppContext.context.getBean(TbAccountMapper.class);
 	TbUserRoleMapper userRoleMapper = AppContext.context.getBean(TbUserRoleMapper.class);
+	HfEmployeeMapper employeeMapper = AppContext.context.getBean(HfEmployeeMapper.class);
 	
 	Map<String, Object> accParamMap = new HashMap<String, Object>();
 	accParamMap.put("account", user.username);
@@ -47,6 +50,16 @@ try {
 	userRoleMapper.insert(userRoleObj);
 	
 	user.setOid(accObj.getOid());
+	
+	HfEmployee employee = new HfEmployee();
+	employee.setOid(SimpleUtils.getUUIDStr());
+	employee.setAccount(accObj.getAccount());
+	employee.setEmpId(SimpleUtils.createRandomString(10));
+	employee.setName(accObj.getAccount());
+	employee.setDescription(accObj.getAccount() + " , create by LDAP login!");
+	employee.setCuserid(Constants.SYSTEM_BACKGROUND_USER);
+	employee.setCdate(new Date());
+	employeeMapper.insert(employee);
 	
 	System.out.println("create account data by LDAP login : " + accObj.getAccount());
 	
