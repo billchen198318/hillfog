@@ -46,7 +46,6 @@ import org.qifu.base.model.SearchValue;
 import org.qifu.hillfog.entity.HfFormula;
 import org.qifu.hillfog.entity.HfKpi;
 import org.qifu.hillfog.entity.HfMeasureData;
-import org.qifu.hillfog.entity.HfOrgDept;
 import org.qifu.hillfog.logic.IFormulaLogicService;
 import org.qifu.hillfog.model.FormulaMode;
 import org.qifu.hillfog.service.IFormulaService;
