@@ -39,6 +39,8 @@
 
 <script type="text/javascript">
 
+var javaEditor = null;
+
 $( document ).ready(function() {
 	
 	$("#returnMode").change(function(){
