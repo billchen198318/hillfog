@@ -135,7 +135,6 @@ public class FormulaUtils {
 		expr = StringUtils.replace(expr, FormulaVariable.PAGE_MEASURE_DATA_ACTUAL, FormulaVariable.PARAM_MEASURE_DATA_ACTUAL);
 		expr = StringUtils.replace(expr, FormulaVariable.PAGE_KPI_MAX, FormulaVariable.PARAM_KPI_MAX);
 		expr = StringUtils.replace(expr, FormulaVariable.PAGE_KPI_MIN, FormulaVariable.PARAM_KPI_MIN);
-		expr = StringUtils.replace(expr, FormulaVariable.PAGE_KPI_OBJECT, FormulaVariable.PARAM_KPI_OBJECT);
 		expr = StringUtils.replace(expr, FormulaVariable.PAGE_KPI_TARGET, FormulaVariable.PARAM_KPI_TARGET);
 		expr = StringUtils.replace(expr, FormulaVariable.PAGE_KPI_WEIGHT, FormulaVariable.PARAM_KPI_WEIGHT);
 		return expr;		

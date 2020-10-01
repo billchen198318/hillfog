@@ -38,7 +38,6 @@ public class FormulaVariable {
 	/**
 	 * KPI Entity物件
 	 */
-	public static final String PAGE_KPI_OBJECT = "$O{kpi}";
 	public static final String PARAM_KPI_OBJECT = "$kpi";
 	
 	/**
