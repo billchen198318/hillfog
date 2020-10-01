@@ -43,6 +43,12 @@
 	<if test="nameLike != null and nameLike != '' ">
 		AND NAME like #{nameLike,jdbcType=VARCHAR}
 	</if>			
+	<if test="forId != null and forId != '' ">
+		AND FOR_ID = #{forId,jdbcType=VARCHAR}
+	</if>	
+	<if test="cal != null and cal != '' ">
+		AND CAL = #{cal,jdbcType=VARCHAR}
+	</if>			
 	<if test="orderBy != null and orderBy != '' and sortType != null and sortType != '' ">
 		ORDER BY  ${orderBy} ${sortType}
 	</if>	
@@ -63,7 +69,13 @@
 	<if test="nameLike != null and nameLike != '' ">
 		AND NAME like #{nameLike,jdbcType=VARCHAR}
 	</if>				
-		
+	<if test="forId != null and forId != '' ">
+		AND FOR_ID = #{forId,jdbcType=VARCHAR}
+	</if>	
+	<if test="cal != null and cal != '' ">
+		AND CAL = #{cal,jdbcType=VARCHAR}
+	</if>
+			
 	<include refid="org.qifu.hillfog.mapper.DB1Config.sql2"/>
   </select>  
   
@@ -78,6 +90,12 @@
 	</if>
 	<if test="nameLike != null and nameLike != '' ">
 		AND NAME like #{nameLike,jdbcType=VARCHAR}
+	</if>	
+	<if test="forId != null and forId != '' ">
+		AND FOR_ID = #{forId,jdbcType=VARCHAR}
+	</if>	
+	<if test="cal != null and cal != '' ">
+		AND CAL = #{cal,jdbcType=VARCHAR}
 	</if>					
   </select>  
   

@@ -30,14 +30,14 @@ function getQueryGridFormatter(value) {
 function getQueryGridHeader() {
 	return [
 		{ name: "#", 			field: "oid", 	formatter: getQueryGridFormatter },
-		{ name: "Id", 			field: "orgId"			},
+		{ name: "Id", 			field: "forId"			},
 		{ name: "Name",			field: "name"			},
 		{ name: "Description",	field: "description"	}
 	];
 }
 
 function queryClear() {
-	$("#orgId").val('');
+	$("#forId").val('');
 	$("#nameLike").val('');
 	
 	clearQueryGridTable();
@@ -45,7 +45,7 @@ function queryClear() {
 }  
 
 function editPage(oid) {
-	parent.addTab('HF_PROG001D0001E', parent.getProgUrlForOid('HF_PROG001D0001E', oid) );
+	parent.addTab('HF_PROG001D0003E', parent.getProgUrlForOid('HF_PROG001D0003E', oid) );
 }
 
 function deleteRecord(oid) {
@@ -56,7 +56,7 @@ function deleteRecord(oid) {
 					return;
 				}
 				xhrSendParameter(
-						'./hfOrgDeptDeleteJson', 
+						'./hfFormulaDeleteJson', 
 						{ 'oid' : oid }, 
 						function(data) {
 							if ( _qifu_success_flag != data.success ) {
@@ -83,24 +83,24 @@ function deleteRecord(oid) {
 <body>
 
 <@qifu.toolBar 
-	id="HF_PROG001D0001Q_toolbar" 
+	id="HF_PROG001D0003Q_toolbar" 
 	refreshEnable="Y"
-	refreshJsMethod="window.location=parent.getProgUrl('HF_PROG001D0001Q');" 
+	refreshJsMethod="window.location=parent.getProgUrl('HF_PROG001D0003Q');" 
 	createNewEnable="Y"
-	createNewJsMethod="parent.addTab('HF_PROG001D0001A', null);"
+	createNewJsMethod="parent.addTab('HF_PROG001D0003A', null);"
 	saveEnabel="N" 
 	saveJsMethod="" 	
 	cancelEnable="Y" 
-	cancelJsMethod="parent.closeTab('HF_PROG001D0001Q');"
+	cancelJsMethod="parent.closeTab('HF_PROG001D0003Q');"
 	programName="${programName}"
 	programId="${programId}"
-	description="Management organization / department item." />		
+	description="Management formula item." />		
 <#import "../common-f-head.ftl" as cfh />
 <@cfh.commonFormHeadContent /> 
       
       <div class="row">
         <div class="col-xs-6 col-md-6 col-lg-6">
-        	<@qifu.textbox name="orgId" value="" id="orgId" label="Id" placeholder="Enter Id" maxlength="50" />
+        	<@qifu.textbox name="forId" value="" id="forId" label="Id" placeholder="Enter Id" maxlength="14" />
         </div>
         <div class="col-xs-6 col-md-6 col-lg-6">
         	<@qifu.textbox name="nameLike" value="" id="nameLike" label="Name" placeholder="Enter name" maxlength="100" />
@@ -118,14 +118,14 @@ function deleteRecord(oid) {
 <@qifu.grid gridFieldStructure="getQueryGridHeader()" 
 	xhrParameter="
 	{
-		'parameter[orgId]'		: $('#orgId').val(),
+		'parameter[forId]'		: $('#forId').val(),
 		'parameter[nameLike]'	: $('#nameLike').val(),
 		'select'				: getQueryGridSelect(),
 		'showRow'				: getQueryGridShowRow()
 	}
 	"
-	xhrUrl="./hfOrgDeptQueryGridJson" 
-	id="HF_PROG001D0001Q_grid"
+	xhrUrl="./hfFormulaQueryGridJson" 
+	id="HF_PROG001D0003Q_grid"
 	queryFunction="queryGrid()"
 	clearFunction="clearQueryGridTable()" />
 

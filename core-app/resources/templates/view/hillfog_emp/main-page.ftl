@@ -130,9 +130,7 @@ function deleteRecord(oid) {
 		'parameter[empId]'		: $('#empId').val(),
 		'parameter[nameLike]'	: $('#nameLike').val(),
 		'select'				: getQueryGridSelect(),
-		'showRow'				: getQueryGridShowRow(),
-		'sortType'				: $('#sortType').val(),
-		'orderBy'				: $('#orderBy').val()
+		'showRow'				: getQueryGridShowRow()
 	}
 	"
 	xhrUrl="./hfEmployeeQueryGridJson" 
