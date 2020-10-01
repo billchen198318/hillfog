@@ -85,7 +85,7 @@ function updateSuccess(data) {
 
 function clearUpdate() {
 	clearWarningMessageField(formGroups, msgFields);
-	window.location=parent.getProgUrlForOid('HF_PROG001D0004E', '${orgDept.oid}');
+	window.location=parent.getProgUrlForOid('HF_PROG001D0004E', '${aggrMethod.oid}');
 }
 
 </script>
