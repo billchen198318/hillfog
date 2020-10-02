@@ -659,4 +659,8 @@ public class SimpleUtils {
 		return dateFormat_yyyyMMdd_HHmmss.format(date);
 	}
 	
+	public static <T extends Comparable<T>> boolean isBetween(T value, T start, T end) {
+	    return value.compareTo(start) >= 0 && value.compareTo(end) <= 0;
+	}
+	
 }
