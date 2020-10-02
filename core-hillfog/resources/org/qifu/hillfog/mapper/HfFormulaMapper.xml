@@ -201,4 +201,14 @@
     where OID = #{oid,jdbcType=CHAR}
   </delete>
   
+  <!-- 提供給下拉選單資料用 -->
+  <select id="findForSelectItem" parameterType="java.util.HashMap" resultMap="BaseResultMap">
+    select 
+    	OID, 
+    	FOR_ID, 
+    	NAME
+    from <include refid="org.qifu.hillfog.mapper.DB1Config.schema"/>hf_formula
+    ORDER BY FOR_ID ASC
+  </select>     
+  
 </mapper>

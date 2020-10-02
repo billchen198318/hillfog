@@ -21,9 +21,14 @@
  */
 package org.qifu.hillfog.service;
 
+import java.util.List;
+
+import org.qifu.base.exception.ServiceException;
 import org.qifu.base.service.IBaseService;
 import org.qifu.hillfog.entity.HfEmployee;
 
 public interface IEmployeeService<T, E> extends IBaseService<HfEmployee, String> {
+	
+	public List<String> findInputAutocomplete() throws ServiceException, Exception;
 	
 }

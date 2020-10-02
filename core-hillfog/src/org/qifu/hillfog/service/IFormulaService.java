@@ -21,9 +21,14 @@
  */
 package org.qifu.hillfog.service;
 
+import java.util.Map;
+
+import org.qifu.base.exception.ServiceException;
 import org.qifu.base.service.IBaseService;
 import org.qifu.hillfog.entity.HfFormula;
 
 public interface IFormulaService<T, E> extends IBaseService<HfFormula, String> {
+	
+	public Map<String, String> findMap(boolean pleaseSelect) throws ServiceException, Exception;
 	
 }

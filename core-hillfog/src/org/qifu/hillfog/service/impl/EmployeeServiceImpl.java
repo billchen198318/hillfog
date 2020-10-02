@@ -21,7 +21,13 @@
  */
 package org.qifu.hillfog.service.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.commons.lang3.StringUtils;
+import org.qifu.base.exception.ServiceException;
 import org.qifu.base.mapper.IBaseMapper;
+import org.qifu.base.model.SortType;
 import org.qifu.base.service.BaseService;
 import org.qifu.hillfog.entity.HfEmployee;
 import org.qifu.hillfog.mapper.HfEmployeeMapper;
@@ -44,5 +50,29 @@ public class EmployeeServiceImpl extends BaseService<HfEmployee, String> impleme
 	protected IBaseMapper<HfEmployee, String> getBaseMapper() {
 		return this.employeeMapper;
 	}
+
+	@Override
+	public List<String> findInputAutocomplete() throws ServiceException, Exception {
+		List<String> dataList = new ArrayList<String>();
+		List<HfEmployee> empList = this.selectList("EMP_ID", SortType.ASC).getValue();
+		if (null == empList) {
+			return dataList;
+		}
+		for (HfEmployee employee : empList) {
+			dataList.add( this.getPagefieldValue(employee) );
+		}
+		return dataList;
+	}
+	
+	private String getPagefieldValue(HfEmployee employee) {
+		return employee.getAccount() + " / " + employee.getEmpId() + " / " + this.replaceAllContent(employee.getName());
+	}	
+	
+	private String replaceAllContent(String srcStr) {
+		return StringUtils.defaultString(srcStr).trim()
+				.replaceAll("/", "").replaceAll(",", "").replaceAll("\"", "")
+				.replaceAll("\\[", "").replaceAll("\\]", "").replaceAll("<", "")
+				.replaceAll(">", "").replaceAll(";", "").replaceAll("'", "");
+	}	
 	
 }

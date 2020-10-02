@@ -29,9 +29,9 @@ import org.qifu.hillfog.entity.HfKpi;
 
 public interface IKpiLogicService {
 	
-	public DefaultResult<HfKpi> create(HfKpi kpi, List<String> orgInputAutocompleteList, List<String> empInputAutocompleteList) throws ServiceException, Exception;
+	public DefaultResult<HfKpi> create(HfKpi kpi, String forOid, String aggrOid, List<String> orgInputAutocompleteList, List<String> empInputAutocompleteList) throws ServiceException, Exception;
 	
-	public DefaultResult<HfKpi> update(HfKpi kpi, List<String> orgInputAutocompleteList, List<String> empInputAutocompleteList) throws ServiceException, Exception;
+	public DefaultResult<HfKpi> update(HfKpi kpi, String forOid, String aggrOid, List<String> orgInputAutocompleteList, List<String> empInputAutocompleteList) throws ServiceException, Exception;
 	
 	public DefaultResult<Boolean> delete(HfKpi kpi) throws ServiceException, Exception;
 	

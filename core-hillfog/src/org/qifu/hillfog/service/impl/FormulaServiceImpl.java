@@ -21,7 +21,12 @@
  */
 package org.qifu.hillfog.service.impl;
 
+import java.util.List;
+import java.util.Map;
+
+import org.qifu.base.exception.ServiceException;
 import org.qifu.base.mapper.IBaseMapper;
+import org.qifu.base.model.PleaseSelect;
 import org.qifu.base.service.BaseService;
 import org.qifu.hillfog.entity.HfFormula;
 import org.qifu.hillfog.mapper.HfFormulaMapper;
@@ -43,6 +48,17 @@ public class FormulaServiceImpl extends BaseService<HfFormula, String> implement
 	@Override
 	protected IBaseMapper<HfFormula, String> getBaseMapper() {
 		return this.formulaMapper;
+	}
+
+	@Override
+	public Map<String, String> findMap(boolean pleaseSelect) throws ServiceException, Exception {
+		Map<String, String> dataMap = PleaseSelect.pageSelectMap(pleaseSelect);
+		List<HfFormula> listData = this.formulaMapper.findForSelectItem();
+		for (int i = 0; listData != null && i < listData.size(); i++) {
+			HfFormula f = listData.get(i);
+			dataMap.put(f.getOid(), f.getForId() + " - " + f.getName());
+		}
+		return dataMap;
 	}
 	
 }

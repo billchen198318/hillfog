@@ -21,11 +21,15 @@
  */
 package org.qifu.hillfog.mapper;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Mapper;
 import org.qifu.base.mapper.IBaseMapper;
 import org.qifu.hillfog.entity.HfFormula;
 
 @Mapper
 public interface HfFormulaMapper extends IBaseMapper<HfFormula, String> {
+	
+	public List<HfFormula> findForSelectItem();
 	
 }

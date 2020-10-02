@@ -21,11 +21,15 @@
  */
 package org.qifu.hillfog.mapper;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Mapper;
 import org.qifu.base.mapper.IBaseMapper;
 import org.qifu.hillfog.entity.HfAggregationMethod;
 
 @Mapper
 public interface HfAggregationMethodMapper extends IBaseMapper<HfAggregationMethod, String> {
+	
+	public List<HfAggregationMethod> findForSelectItem();
 	
 }

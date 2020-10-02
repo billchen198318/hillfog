@@ -21,7 +21,12 @@
  */
 package org.qifu.hillfog.service.impl;
 
+import java.util.List;
+import java.util.Map;
+
+import org.qifu.base.exception.ServiceException;
 import org.qifu.base.mapper.IBaseMapper;
+import org.qifu.base.model.PleaseSelect;
 import org.qifu.base.service.BaseService;
 import org.qifu.hillfog.entity.HfAggregationMethod;
 import org.qifu.hillfog.mapper.HfAggregationMethodMapper;
@@ -43,6 +48,17 @@ public class AggregationMethodServiceImpl extends BaseService<HfAggregationMetho
 	@Override
 	protected IBaseMapper<HfAggregationMethod, String> getBaseMapper() {
 		return this.aggregationMethodMapper;
+	}
+
+	@Override
+	public Map<String, String> findMap(boolean pleaseSelect) throws ServiceException, Exception {
+		Map<String, String> dataMap = PleaseSelect.pageSelectMap(pleaseSelect);
+		List<HfAggregationMethod> listData = this.aggregationMethodMapper.findForSelectItem();
+		for (int i = 0; listData != null && i < listData.size(); i++) {
+			HfAggregationMethod aggrMethod = listData.get(i);
+			dataMap.put(aggrMethod.getOid(), aggrMethod.getAggrId() + " - " + aggrMethod.getName());
+		}
+		return dataMap;
 	}
 	
 }

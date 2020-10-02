@@ -35,9 +35,18 @@ import org.qifu.base.model.PageOf;
 import org.qifu.base.model.QueryControllerJsonResultObj;
 import org.qifu.base.model.QueryResult;
 import org.qifu.base.model.SearchValue;
+import org.qifu.hillfog.entity.HfAggregationMethod;
+import org.qifu.hillfog.entity.HfEmployee;
+import org.qifu.hillfog.entity.HfFormula;
 import org.qifu.hillfog.entity.HfKpi;
+import org.qifu.hillfog.entity.HfOrgDept;
 import org.qifu.hillfog.logic.IKpiLogicService;
+import org.qifu.hillfog.model.KpiBasicCode;
+import org.qifu.hillfog.service.IAggregationMethodService;
+import org.qifu.hillfog.service.IEmployeeService;
+import org.qifu.hillfog.service.IFormulaService;
 import org.qifu.hillfog.service.IKpiService;
+import org.qifu.hillfog.service.IOrgDeptService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -55,6 +64,18 @@ public class KpiBaseController extends BaseControllerSupport implements IPageNam
 	@Autowired
 	IKpiLogicService kpiLogicService;
 	
+	@Autowired
+	IEmployeeService<HfEmployee, String> employeeService;
+	
+	@Autowired
+	IOrgDeptService<HfOrgDept, String> orgDeptService;
+	
+	@Autowired
+	IFormulaService<HfFormula, String> formulaService;	
+	
+	@Autowired
+	IAggregationMethodService<HfAggregationMethod, String> aggregationMethodService;	
+	
 	@Override
 	public String viewPageNamespace() {
 		return "hillfog_kpib";
@@ -62,7 +83,14 @@ public class KpiBaseController extends BaseControllerSupport implements IPageNam
 	
 	private void init(String type, ModelMap mm) throws AuthorityException, ControllerException, ServiceException, Exception {
 		if ("createPage".equals(type) || "editPage".equals(type)) {
-			
+			mm.put("compareTypeMap", KpiBasicCode.getCompareTypeMap(true));
+			mm.put("dataTypeMap", KpiBasicCode.getDataTypeMap(true));
+			mm.put("managementMap", KpiBasicCode.getManagementMap(true));
+			mm.put("quasiRangeMap", KpiBasicCode.getQuasiRangeMap());
+			mm.put("orgInputAutocomplete", this.orgDeptService.findInputAutocomplete());
+			mm.put("empInputAutocomplete", this.employeeService.findInputAutocomplete());
+			mm.put("formulaMap", this.formulaService.findMap(true));
+			mm.put("aggrMethodMap", this.aggregationMethodService.findMap(true));
 		}
 	}
 	

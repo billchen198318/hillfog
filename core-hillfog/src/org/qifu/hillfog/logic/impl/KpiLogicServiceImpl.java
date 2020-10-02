@@ -81,21 +81,14 @@ public class KpiLogicServiceImpl extends BaseLogicService implements IKpiLogicSe
 			readOnly=false,
 			rollbackFor={RuntimeException.class, IOException.class, Exception.class} )  	
 	@Override
-	public DefaultResult<HfKpi> create(HfKpi kpi, List<String> orgInputAutocompleteList, List<String> empInputAutocompleteList) throws ServiceException, Exception {
-		if (null == kpi || this.isBlank(kpi.getAggrId()) || this.isBlank(kpi.getForId()) || this.isBlank(kpi.getId())) {
+	public DefaultResult<HfKpi> create(HfKpi kpi, String forOid, String aggrOid, List<String> orgInputAutocompleteList, List<String> empInputAutocompleteList) throws ServiceException, Exception {
+		if (null == kpi || this.isBlank(kpi.getAggrId()) || this.isBlank(forOid) || this.isBlank(aggrOid)) {
 			throw new ServiceException( BaseSystemMessage.parameterBlank() );
 		}
-		Map<String, Object> paramMap = new HashMap<String, Object>();
-		paramMap.put("aggrId", kpi.getAggrId());
-		if (this.aggregationMethodService.count(paramMap) < 1) {
-			throw new ServiceException( BaseSystemMessage.dataErrors() );
-		}
-		paramMap.clear();
-		paramMap.put("forId", kpi.getForId());
-		if (this.formulaService.count(paramMap) < 1) {
-			throw new ServiceException( BaseSystemMessage.dataErrors() );
-		}
-		paramMap.clear();
+		HfFormula formula = this.formulaService.selectByPrimaryKey(forOid).getValueEmptyThrowMessage();
+		HfAggregationMethod aggrMethod = this.aggregationMethodService.selectByPrimaryKey(aggrOid).getValueEmptyThrowMessage();
+		kpi.setForId(formula.getForId());
+		kpi.setAggrId(aggrMethod.getAggrId());
 		this.setStringValueMaxLength(kpi, "description", MAX_LENGTH);
 		DefaultResult<HfKpi> result = this.kpiService.insert(kpi);
 		kpi = result.getValue();
@@ -110,22 +103,18 @@ public class KpiLogicServiceImpl extends BaseLogicService implements IKpiLogicSe
 			readOnly=false,
 			rollbackFor={RuntimeException.class, IOException.class, Exception.class} )  	
 	@Override
-	public DefaultResult<HfKpi> update(HfKpi kpi, List<String> orgInputAutocompleteList, List<String> empInputAutocompleteList) throws ServiceException, Exception {
-		if (null == kpi || this.isBlank(kpi.getAggrId()) || this.isBlank(kpi.getForId()) || this.isBlank(kpi.getId())) {
+	public DefaultResult<HfKpi> update(HfKpi kpi, String forOid, String aggrOid, List<String> orgInputAutocompleteList, List<String> empInputAutocompleteList) throws ServiceException, Exception {
+		if (null == kpi || this.isBlank(kpi.getAggrId()) || this.isBlank(forOid) || this.isBlank(aggrOid)) {
 			throw new ServiceException( BaseSystemMessage.parameterBlank() );
 		}
+		if (this.isBlank(kpi.getOid())) {
+			throw new ServiceException( BaseSystemMessage.parameterIncorrect() );
+		}
 		HfKpi oldKpi = this.kpiService.selectByEntityPrimaryKey(kpi).getValueEmptyThrowMessage();
-		Map<String, Object> paramMap = new HashMap<String, Object>();
-		paramMap.put("aggrId", kpi.getAggrId());
-		if (this.aggregationMethodService.count(paramMap) < 1) {
-			throw new ServiceException( BaseSystemMessage.dataErrors() );
-		}
-		paramMap.clear();
-		paramMap.put("forId", kpi.getForId());
-		if (this.formulaService.count(paramMap) < 1) {
-			throw new ServiceException( BaseSystemMessage.dataErrors() );
-		}
-		paramMap.clear();
+		HfFormula formula = this.formulaService.selectByPrimaryKey(forOid).getValueEmptyThrowMessage();
+		HfAggregationMethod aggrMethod = this.aggregationMethodService.selectByPrimaryKey(aggrOid).getValueEmptyThrowMessage();
+		kpi.setForId(formula.getForId());
+		kpi.setAggrId(aggrMethod.getAggrId());
 		kpi.setId( oldKpi.getId() );
 		this.setStringValueMaxLength(kpi, "description", MAX_LENGTH);
 		DefaultResult<HfKpi> result = this.kpiService.update(kpi);
