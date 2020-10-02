@@ -1,0 +1,16 @@
+{
+	"management" : {
+		"1"	:	"Bigger is better",
+		"2"	:	"Smaller is better",
+		"3"	:	"Quasi is better"
+	},
+	"compareType" : {
+		"1"	:	"Target",
+		"2"	:	"Minimum"
+	},
+	"dataType" : {
+		"1"	:	"Department",
+		"2"	:	"Personal",
+		"3"	:	"Both"
+	}
+}
