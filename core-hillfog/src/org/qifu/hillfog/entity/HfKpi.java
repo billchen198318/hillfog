@@ -25,7 +25,7 @@ public class HfKpi implements java.io.Serializable {
     private BigDecimal min;
     private String management;
     private String compareType;
-    private String cal;
+    private String aggrId;
     private String dataType;
     private Integer quasiRange;
     private String cuserid;
@@ -131,15 +131,15 @@ public class HfKpi implements java.io.Serializable {
         this.compareType = compareType;
     }
     
-    public String getCal() {
-        return cal;
-    }
-    
-    public void setCal(String cal) {
-        this.cal = cal;
-    }
-    
-    public String getDataType() {
+    public String getAggrId() {
+		return aggrId;
+	}
+
+	public void setAggrId(String aggrId) {
+		this.aggrId = aggrId;
+	}
+	
+	public String getDataType() {
         return dataType;
     }
     

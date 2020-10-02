@@ -15,7 +15,7 @@
     <result column="MIN" jdbcType="DECIMAL" property="min" />
     <result column="MANAGEMENT" jdbcType="VARCHAR" property="management" />
     <result column="COMPARE_TYPE" jdbcType="VARCHAR" property="compareType" />
-    <result column="CAL" jdbcType="VARCHAR" property="cal" />
+    <result column="AGGR_ID" jdbcType="VARCHAR" property="aggrId" />
     <result column="DATA_TYPE" jdbcType="VARCHAR" property="dataType" />
     <result column="QUASI_RANGE" jdbcType="INTEGER" property="quasiRange" />
     <result column="CUSERID" jdbcType="VARCHAR" property="cuserid" />
@@ -46,8 +46,8 @@
 	<if test="forId != null and forId != '' ">
 		AND FOR_ID = #{forId,jdbcType=VARCHAR}
 	</if>	
-	<if test="cal != null and cal != '' ">
-		AND CAL = #{cal,jdbcType=VARCHAR}
+	<if test="aggrId != null and aggrId != '' ">
+		AND AGGR_ID = #{aggrId,jdbcType=VARCHAR}
 	</if>			
 	<if test="orderBy != null and orderBy != '' and sortType != null and sortType != '' ">
 		ORDER BY  ${orderBy} ${sortType}
@@ -72,8 +72,8 @@
 	<if test="forId != null and forId != '' ">
 		AND FOR_ID = #{forId,jdbcType=VARCHAR}
 	</if>	
-	<if test="cal != null and cal != '' ">
-		AND CAL = #{cal,jdbcType=VARCHAR}
+	<if test="aggrId != null and aggrId != '' ">
+		AND AGGR_ID = #{aggrId,jdbcType=VARCHAR}
 	</if>
 			
 	<include refid="org.qifu.hillfog.mapper.DB1Config.sql2"/>
@@ -94,8 +94,8 @@
 	<if test="forId != null and forId != '' ">
 		AND FOR_ID = #{forId,jdbcType=VARCHAR}
 	</if>	
-	<if test="cal != null and cal != '' ">
-		AND CAL = #{cal,jdbcType=VARCHAR}
+	<if test="aggrId != null and aggrId != '' ">
+		AND AGGR_ID = #{aggrId,jdbcType=VARCHAR}
 	</if>					
   </select>  
   
@@ -138,8 +138,8 @@
       <if test="compareType != null">
         COMPARE_TYPE,
       </if>
-      <if test="cal != null">
-        CAL,
+      <if test="aggrId != null">
+        AGGR_ID,
       </if>
       <if test="dataType != null">
         DATA_TYPE,
@@ -197,8 +197,8 @@
       <if test="compareType != null">
         #{compareType,jdbcType=VARCHAR},
       </if>
-      <if test="cal != null">
-        #{cal,jdbcType=VARCHAR},
+      <if test="aggrId != null">
+        #{aggrId,jdbcType=VARCHAR},
       </if>
       <if test="dataType != null">
         #{dataType,jdbcType=VARCHAR},
@@ -257,8 +257,8 @@
       <if test="compareType != null">
         COMPARE_TYPE = #{compareType,jdbcType=VARCHAR},
       </if>
-      <if test="cal != null">
-        CAL = #{cal,jdbcType=VARCHAR},
+      <if test="aggrId != null">
+        AGGR_ID = #{aggrId,jdbcType=VARCHAR},
       </if>
       <if test="dataType != null">
         DATA_TYPE = #{dataType,jdbcType=VARCHAR},
