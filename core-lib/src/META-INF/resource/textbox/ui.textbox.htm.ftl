@@ -1,3 +1,3 @@
 <#if label?? && label != ""> <label for="${id}"> ${label}<#if requiredFlag == "Y" >&nbsp;<font color="RED">*</font></#if></label> </#if>
-<input class="${cssClass}" type="text" value="${value}" id="${id}" name="${name}" placeholder="${placeholder}" <#if readonly == "Y" > readonly="readonly" </#if> <#if maxlength != "" > maxlength="${maxlength}" </#if> >
+<input class="${cssClass}" type="${type}" value="${value}" id="${id}" name="${name}" placeholder="${placeholder}" <#if readonly == "Y" > readonly="readonly" </#if> <#if maxlength != "" > maxlength="${maxlength}" </#if> >
 <div class="form-control-feedback" id="${id}-feedback"></div>

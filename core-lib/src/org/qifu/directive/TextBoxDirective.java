@@ -48,6 +48,7 @@ public class TextBoxDirective implements TemplateDirectiveModel {
 	private String maxlength = "";
 	private String escapeHtml = YesNo.YES;
 	private String escapeJavaScript = YesNo.NO;	
+	private String type = "text";
 
 	private TextBox handler() {
 		TextBox textBox = new TextBox();
@@ -63,6 +64,7 @@ public class TextBoxDirective implements TemplateDirectiveModel {
 		textBox.setMaxlength(this.maxlength);
 		textBox.setEscapeHtml(this.escapeHtml);
 		textBox.setEscapeJavaScript(this.escapeJavaScript);
+		textBox.setType(this.type);
 		return textBox;
 	}
 	

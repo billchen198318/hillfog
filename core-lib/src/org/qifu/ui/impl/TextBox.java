@@ -44,6 +44,7 @@ public class TextBox implements UIComponent {
 	private String maxlength = "";
 	private String escapeHtml = "";
 	private String escapeJavaScript = "";
+	private String type = "";
 	private StringBuilder htmlOut=new StringBuilder();	
 	
 	private Map<String, Object> getParameters(String type) {
@@ -56,6 +57,7 @@ public class TextBox implements UIComponent {
 		paramMap.put("cssClass", this.cssClass);
 		paramMap.put("requiredFlag", this.requiredFlag);
 		paramMap.put("maxlength", this.maxlength);
+		paramMap.put("type", this.type);
 		UIComponentValueUtils.setValue(this.servletRequestAttributes, paramMap, "value", this.value, ( YesNo.YES.equals(escapeHtml) ? true : false ), ( YesNo.YES.equals(escapeJavaScript) ? true : false ), SCOPE_REQUEST);
 		return paramMap;
 	}
@@ -174,6 +176,14 @@ public class TextBox implements UIComponent {
 
 	public void setEscapeJavaScript(String escapeJavaScript) {
 		this.escapeJavaScript = escapeJavaScript;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 
 }
