@@ -65,5 +65,33 @@ public class MeasureDataServiceImpl extends BaseService<HfMeasureData, String> i
 		paramMap.put("kpiId", kpiId);
 		this.measureDataMapper.deleteByKpiId(paramMap);
 	}
+
+	@Transactional(
+			propagation=Propagation.REQUIRED, 
+			readOnly=false,
+			rollbackFor={RuntimeException.class, IOException.class, Exception.class} )		
+	@Override
+	public void deleteByOrgId(String orgId) throws ServiceException, Exception {
+		if (StringUtils.isBlank(orgId)) {
+			throw new ServiceException( BaseSystemMessage.parameterBlank() );
+		}
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("orgId", orgId);		
+		this.measureDataMapper.deleteByOrgId(paramMap);
+	}
+
+	@Transactional(
+			propagation=Propagation.REQUIRED, 
+			readOnly=false,
+			rollbackFor={RuntimeException.class, IOException.class, Exception.class} )		
+	@Override
+	public void deleteByAccount(String account) throws ServiceException, Exception {
+		if (StringUtils.isBlank(account)) {
+			throw new ServiceException( BaseSystemMessage.parameterBlank() );
+		}
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("account", account);	
+		this.measureDataMapper.deleteByAccount(paramMap);
+	}
 	
 }

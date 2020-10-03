@@ -233,4 +233,14 @@
     where KPI_ID = #{kpiId,jdbcType=CHAR}
   </delete>  
   
+  <delete id="deleteByOrgId" parameterType="java.util.HashMap">
+    delete from <include refid="org.qifu.hillfog.mapper.DB1Config.schema"/>hf_measure_data
+    where ORG_ID = #{orgId,jdbcType=CHAR}
+  </delete>    
+  
+  <delete id="deleteByAccount" parameterType="java.util.HashMap">
+    delete from <include refid="org.qifu.hillfog.mapper.DB1Config.schema"/>hf_measure_data
+    where ACCOUNT = #{account,jdbcType=CHAR}
+  </delete>    
+  
 </mapper>

@@ -29,4 +29,8 @@ public interface IMeasureDataService<T, E> extends IBaseService<HfMeasureData, S
 	
 	public void deleteByKpiId(String kpiId) throws ServiceException, Exception;
 	
+	public void deleteByOrgId(String orgId) throws ServiceException, Exception;
+	
+	public void deleteByAccount(String account) throws ServiceException, Exception;
+	
 }

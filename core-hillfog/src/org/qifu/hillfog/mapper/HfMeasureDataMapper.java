@@ -32,4 +32,8 @@ public interface HfMeasureDataMapper extends IBaseMapper<HfMeasureData, String> 
 	
 	public Boolean deleteByKpiId(Map<String, Object> paramMap);
 	
+	public Boolean deleteByOrgId(Map<String, Object> paramMap);
+	
+	public Boolean deleteByAccount(Map<String, Object> paramMap);
+	
 }
