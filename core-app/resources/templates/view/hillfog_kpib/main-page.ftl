@@ -34,7 +34,7 @@ function getQueryGridHeader() {
 		{ name: "Name",			field: "name"			},
 		{ name: "Unit",			field: "unit"			},
 		{ name: "Weight",		field: "weight"			},
-		{ name: "Management",	field: "management"		},
+		{ name: "Management",	field: "managementName"	},
 		{ name: "Description",	field: "description"	}
 	];
 }

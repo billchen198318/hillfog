@@ -9,6 +9,7 @@ import org.qifu.base.model.EntityPK;
 import org.qifu.base.model.EntityUK;
 import org.qifu.base.model.UpdateDateField;
 import org.qifu.base.model.UpdateUserField;
+import org.qifu.hillfog.model.KpiBasicCode;
 
 public class HfKpi implements java.io.Serializable {
 	private static final long serialVersionUID = -5876998216153568487L;
@@ -32,6 +33,15 @@ public class HfKpi implements java.io.Serializable {
     private Date cdate;
     private String uuserid;
     private Date udate;
+    
+    // =======================================================================
+    
+    /* query grid show */
+    public String getManagementName() {
+    	return KpiBasicCode.getManagementMap(false).get(this.management);
+    }
+    
+    // =======================================================================
     
     @EntityPK(name = "oid", autoUUID = true)
     public String getOid() {

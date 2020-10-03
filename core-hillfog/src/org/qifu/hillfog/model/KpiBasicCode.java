@@ -126,18 +126,27 @@ public class KpiBasicCode {
 	}
 	
 	public static Map<String, String> getManagementMap(boolean pleaseSelect) {
+		if (!pleaseSelect) {
+			return managementMap;
+		}
 		Map<String, String> dataMap = PleaseSelect.pageSelectMap(pleaseSelect);
 		dataMap.putAll(managementMap);
 		return dataMap;
 	}	
 	
 	public static Map<String, String> getCompareTypeMap(boolean pleaseSelect) {
+		if (!pleaseSelect) {
+			return compareTypeMap;
+		}
 		Map<String, String> dataMap = PleaseSelect.pageSelectMap(pleaseSelect);
 		dataMap.putAll(compareTypeMap);
 		return dataMap;
 	}		
 	
 	public static Map<String, String> getDataTypeMap(boolean pleaseSelect) {
+		if (!pleaseSelect) {
+			return dataTypeMap;
+		}
 		Map<String, String> dataMap = PleaseSelect.pageSelectMap(pleaseSelect);
 		dataMap.putAll(dataTypeMap);
 		return dataMap;

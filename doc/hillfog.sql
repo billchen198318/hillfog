@@ -78,6 +78,7 @@ CREATE TABLE `hf_employee` (
 
 LOCK TABLES `hf_employee` WRITE;
 /*!40000 ALTER TABLE `hf_employee` DISABLE KEYS */;
+INSERT INTO `hf_employee` VALUES ('0','admin','EMP001','Administrator','','sys','2020-10-03 09:43:37',NULL,NULL),('35e73cc7-0519-11eb-b8a3-b35804e4e844','bill','EMP004','Bill chen','','admin','2020-10-03 01:39:00',NULL,NULL),('4e5d23ab-0519-11eb-b8a3-0762c594204e','frank','EMP002','Frank wang','','admin','2020-10-03 01:39:41',NULL,NULL),('640607df-0519-11eb-b8a3-5fb4ab04d7ee','cindy','EMP003','Cindy liu','','admin','2020-10-03 01:40:17',NULL,NULL);
 /*!40000 ALTER TABLE `hf_employee` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -107,6 +108,7 @@ CREATE TABLE `hf_employee_org` (
 
 LOCK TABLES `hf_employee_org` WRITE;
 /*!40000 ALTER TABLE `hf_employee_org` DISABLE KEYS */;
+INSERT INTO `hf_employee_org` VALUES ('35f28768-0519-11eb-b8a3-8bfef45aea64','bill','IT','admin','2020-10-03 01:39:00',NULL,NULL),('4e5ed15c-0519-11eb-b8a3-c5dbe5d18783','frank','FIN','admin','2020-10-03 01:39:41',NULL,NULL),('64074060-0519-11eb-b8a3-3d80b8b9c3e1','cindy','GA','admin','2020-10-03 01:40:17',NULL,NULL);
 /*!40000 ALTER TABLE `hf_employee_org` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -308,6 +310,7 @@ CREATE TABLE `hf_org_dept` (
 
 LOCK TABLES `hf_org_dept` WRITE;
 /*!40000 ALTER TABLE `hf_org_dept` DISABLE KEYS */;
+INSERT INTO `hf_org_dept` VALUES ('036ae3f5-0519-11eb-b8a3-f12f3fa151f4','SD','Sales','','admin','2020-10-03 01:37:35',NULL,NULL),('7b7dadff-0518-11eb-b8a3-ef60293112ad','IT','Information technology','','admin','2020-10-03 01:33:47',NULL,NULL),('84a212a0-0518-11eb-b8a3-c738e5f57b42','FIN','Finance','','admin','2020-10-03 01:34:02',NULL,NULL),('93a41551-0518-11eb-b8a3-07ddefe26180','HR','Human resources','','admin','2020-10-03 01:34:27',NULL,NULL),('b9bd8052-0518-11eb-b8a3-b7023b66d33c','AC','Accounting','','admin','2020-10-03 01:35:31',NULL,NULL),('d1b97c43-0518-11eb-b8a3-6d8338deef0c','CEO','CEO office','','admin','2020-10-03 01:36:12',NULL,NULL),('e95cd0e4-0518-11eb-b8a3-a732cf32f327','GA','General affairs','','admin','2020-10-03 01:36:51',NULL,NULL);
 /*!40000 ALTER TABLE `hf_org_dept` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -338,7 +341,7 @@ CREATE TABLE `tb_account` (
 
 LOCK TABLES `tb_account` WRITE;
 /*!40000 ALTER TABLE `tb_account` DISABLE KEYS */;
-INSERT INTO `tb_account` VALUES ('0','admin','$2y$12$Q4x02Q0WKHWXAQ.NoGCs8ObX4sac890xeRnaNUxNnz/VEiHWazIp.','Y','admin','2012-11-11 10:56:23','admin','2014-04-19 11:32:04'),('15822da5-25dc-490c-bdfb-be75f5ff4843','tester','$2y$12$Q4x02Q0WKHWXAQ.NoGCs8ObX4sac890xeRnaNUxNnz/VEiHWazIp.','Y','admin','2015-04-23 11:26:53','admin','2015-08-29 17:54:08'),('52cb274e-388d-419f-a81e-67ca599bfb63','steven','$2y$12$Q4x02Q0WKHWXAQ.NoGCs8ObX4sac890xeRnaNUxNnz/VEiHWazIp.','Y','admin','2015-09-11 10:33:53',NULL,NULL),('9c239d19-3646-41db-b394-d34c5bf34671','tiffany','$2y$12$Q4x02Q0WKHWXAQ.NoGCs8ObX4sac890xeRnaNUxNnz/VEiHWazIp.','Y','admin','2015-09-11 10:15:29',NULL,NULL);
+INSERT INTO `tb_account` VALUES ('0','admin','$2y$12$Q4x02Q0WKHWXAQ.NoGCs8ObX4sac890xeRnaNUxNnz/VEiHWazIp.','Y','admin','2012-11-11 10:56:23','admin','2014-04-19 11:32:04'),('35e519e6-0519-11eb-b8a3-c3b14d895892','bill','$2a$10$hoLMhZm3flf.0NT7uRpJXOLgt.etn3qQGoMiGyJ/FK.y9IfMGRdWm','Y','admin','2020-10-03 01:39:00',NULL,NULL),('4e55828a-0519-11eb-b8a3-95bcbb641f0b','frank','$2a$10$76MsPuFnP78HKk87YSw3deOUioOUFjfN1xy2GIcKJcImNNq6gyOEi','Y','admin','2020-10-03 01:39:41',NULL,NULL),('6404813e-0519-11eb-b8a3-795385a5d550','cindy','$2a$10$FQzsBlP8rAcyB8J2BbtygOHlmLf2VTKDp11do3uiwe4FrWSXzz85O','Y','admin','2020-10-03 01:40:17',NULL,NULL);
 /*!40000 ALTER TABLE `tb_account` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1155,7 +1158,7 @@ CREATE TABLE `tb_user_role` (
 
 LOCK TABLES `tb_user_role` WRITE;
 /*!40000 ALTER TABLE `tb_user_role` DISABLE KEYS */;
-INSERT INTO `tb_user_role` VALUES ('1c62cf70-ca6b-4243-8aa9-49b555024c45','COMMON01','steven','','admin','2017-05-10 14:19:58',NULL,NULL),('9243c7de-43b1-46ef-ac4b-2620697f319e','admin','admin','Administrator','admin','2014-09-23 00:00:00',NULL,NULL),('bd7bf78c-d84b-4524-8273-273f883d30b5','COMMON01','tester','','admin','2017-05-10 11:01:50',NULL,NULL),('da0c0462-4bf7-417b-99da-fc2e378a5ccc','COMMON01','tiffany','','admin','2017-05-10 11:01:43',NULL,NULL);
+INSERT INTO `tb_user_role` VALUES ('1c62cf70-ca6b-4243-8aa9-49b555024c45','COMMON01','steven','','admin','2017-05-10 14:19:58',NULL,NULL),('36054c19-0519-11eb-b8a3-a57f733ab5b5','COMMON01','bill','','admin','2020-10-03 01:39:00',NULL,NULL),('4e6253cd-0519-11eb-b8a3-97213ada0f8c','COMMON01','frank','','admin','2020-10-03 01:39:41',NULL,NULL),('640b10f1-0519-11eb-b8a3-bd311f0b2cb2','COMMON01','cindy','','admin','2020-10-03 01:40:17',NULL,NULL),('9243c7de-43b1-46ef-ac4b-2620697f319e','admin','admin','Administrator','admin','2014-09-23 00:00:00',NULL,NULL),('bd7bf78c-d84b-4524-8273-273f883d30b5','COMMON01','tester','','admin','2017-05-10 11:01:50',NULL,NULL),('da0c0462-4bf7-417b-99da-fc2e378a5ccc','COMMON01','tiffany','','admin','2017-05-10 11:01:43',NULL,NULL);
 /*!40000 ALTER TABLE `tb_user_role` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -1168,4 +1171,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-10-02 17:46:15
+-- Dump completed on 2020-10-03  9:46:19

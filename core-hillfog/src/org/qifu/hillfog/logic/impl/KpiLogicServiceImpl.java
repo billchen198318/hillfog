@@ -42,6 +42,7 @@ import org.qifu.hillfog.entity.HfKpi;
 import org.qifu.hillfog.entity.HfKpiEmpl;
 import org.qifu.hillfog.entity.HfKpiOrga;
 import org.qifu.hillfog.logic.IKpiLogicService;
+import org.qifu.hillfog.model.KpiBasicCode;
 import org.qifu.hillfog.service.IAggregationMethodService;
 import org.qifu.hillfog.service.IFormulaService;
 import org.qifu.hillfog.service.IKpiEmplService;
@@ -82,9 +83,19 @@ public class KpiLogicServiceImpl extends BaseLogicService implements IKpiLogicSe
 			rollbackFor={RuntimeException.class, IOException.class, Exception.class} )  	
 	@Override
 	public DefaultResult<HfKpi> create(HfKpi kpi, String forOid, String aggrOid, List<String> orgInputAutocompleteList, List<String> empInputAutocompleteList) throws ServiceException, Exception {
-		if (null == kpi || this.isBlank(kpi.getAggrId()) || this.isBlank(forOid) || this.isBlank(aggrOid)) {
+		if (null == kpi || this.isBlank(forOid) || this.isBlank(aggrOid)) {
 			throw new ServiceException( BaseSystemMessage.parameterBlank() );
 		}
+		if (KpiBasicCode.DATA_TYPE_BOTH.equals(kpi.getDataType()) || KpiBasicCode.DATA_TYPE_DEPARTMENT.equals(kpi.getDataType())) {
+			if (null == orgInputAutocompleteList || orgInputAutocompleteList.size() < 1) {
+				throw new ServiceException( BaseSystemMessage.parameterBlank() );
+			}
+		}
+		if (KpiBasicCode.DATA_TYPE_BOTH.equals(kpi.getDataType()) || KpiBasicCode.DATA_TYPE_PERSONAL.equals(kpi.getDataType())) {
+			if (null == empInputAutocompleteList || empInputAutocompleteList.size() < 1) {
+				throw new ServiceException( BaseSystemMessage.parameterBlank() ); 
+			}
+		}		
 		HfFormula formula = this.formulaService.selectByPrimaryKey(forOid).getValueEmptyThrowMessage();
 		HfAggregationMethod aggrMethod = this.aggregationMethodService.selectByPrimaryKey(aggrOid).getValueEmptyThrowMessage();
 		kpi.setForId(formula.getForId());
@@ -104,12 +115,22 @@ public class KpiLogicServiceImpl extends BaseLogicService implements IKpiLogicSe
 			rollbackFor={RuntimeException.class, IOException.class, Exception.class} )  	
 	@Override
 	public DefaultResult<HfKpi> update(HfKpi kpi, String forOid, String aggrOid, List<String> orgInputAutocompleteList, List<String> empInputAutocompleteList) throws ServiceException, Exception {
-		if (null == kpi || this.isBlank(kpi.getAggrId()) || this.isBlank(forOid) || this.isBlank(aggrOid)) {
+		if (null == kpi || this.isBlank(forOid) || this.isBlank(aggrOid)) {
 			throw new ServiceException( BaseSystemMessage.parameterBlank() );
 		}
 		if (this.isBlank(kpi.getOid())) {
 			throw new ServiceException( BaseSystemMessage.parameterIncorrect() );
 		}
+		if (KpiBasicCode.DATA_TYPE_BOTH.equals(kpi.getDataType()) || KpiBasicCode.DATA_TYPE_DEPARTMENT.equals(kpi.getDataType())) {
+			if (null == orgInputAutocompleteList || orgInputAutocompleteList.size() < 1) {
+				throw new ServiceException( BaseSystemMessage.parameterBlank() );
+			}
+		}
+		if (KpiBasicCode.DATA_TYPE_BOTH.equals(kpi.getDataType()) || KpiBasicCode.DATA_TYPE_PERSONAL.equals(kpi.getDataType())) {
+			if (null == empInputAutocompleteList || empInputAutocompleteList.size() < 1) {
+				throw new ServiceException( BaseSystemMessage.parameterBlank() ); 
+			}
+		}		
 		HfKpi oldKpi = this.kpiService.selectByEntityPrimaryKey(kpi).getValueEmptyThrowMessage();
 		HfFormula formula = this.formulaService.selectByPrimaryKey(forOid).getValueEmptyThrowMessage();
 		HfAggregationMethod aggrMethod = this.aggregationMethodService.selectByPrimaryKey(aggrOid).getValueEmptyThrowMessage();

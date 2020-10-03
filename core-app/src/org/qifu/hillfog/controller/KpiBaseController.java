@@ -21,17 +21,24 @@
  */
 package org.qifu.hillfog.controller;
 
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang3.StringUtils;
 import org.qifu.base.controller.BaseControllerSupport;
 import org.qifu.base.controller.IPageNamespaceProvide;
 import org.qifu.base.exception.AuthorityException;
 import org.qifu.base.exception.ControllerException;
 import org.qifu.base.exception.ServiceException;
+import org.qifu.base.model.CheckControllerFieldHandler;
 import org.qifu.base.model.ControllerMethodAuthority;
+import org.qifu.base.model.DefaultControllerJsonResultObj;
+import org.qifu.base.model.DefaultResult;
 import org.qifu.base.model.PageOf;
+import org.qifu.base.model.PleaseSelect;
 import org.qifu.base.model.QueryControllerJsonResultObj;
 import org.qifu.base.model.QueryResult;
 import org.qifu.base.model.SearchValue;
@@ -47,6 +54,7 @@ import org.qifu.hillfog.service.IEmployeeService;
 import org.qifu.hillfog.service.IFormulaService;
 import org.qifu.hillfog.service.IKpiService;
 import org.qifu.hillfog.service.IOrgDeptService;
+import org.qifu.util.SimpleUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -54,6 +62,8 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Controller
 public class KpiBaseController extends BaseControllerSupport implements IPageNamespaceProvide {
@@ -81,14 +91,28 @@ public class KpiBaseController extends BaseControllerSupport implements IPageNam
 		return "hillfog_kpib";
 	}
 	
+	private String pageAutocompleteContent(List<String> orgList) {
+		if (null == orgList || orgList.size() < 1) {
+			return "";
+		}
+		StringBuilder orgListJsStr = new StringBuilder();
+		for (int i = 0; null != orgList && i < orgList.size(); i++) {
+			orgListJsStr.append( "'" + orgList.get(i) + "'" );
+			if ((i+1) < orgList.size()) {
+				orgListJsStr.append(",");
+			}
+		}
+		return orgListJsStr.toString();
+	}	
+	
 	private void init(String type, ModelMap mm) throws AuthorityException, ControllerException, ServiceException, Exception {
 		if ("createPage".equals(type) || "editPage".equals(type)) {
 			mm.put("compareTypeMap", KpiBasicCode.getCompareTypeMap(true));
 			mm.put("dataTypeMap", KpiBasicCode.getDataTypeMap(true));
 			mm.put("managementMap", KpiBasicCode.getManagementMap(true));
 			mm.put("quasiRangeMap", KpiBasicCode.getQuasiRangeMap());
-			mm.put("orgInputAutocomplete", this.orgDeptService.findInputAutocomplete());
-			mm.put("empInputAutocomplete", this.employeeService.findInputAutocomplete());
+			mm.put("orgInputAutocomplete", pageAutocompleteContent(this.orgDeptService.findInputAutocomplete()));
+			mm.put("empInputAutocomplete", pageAutocompleteContent(this.employeeService.findInputAutocomplete()));
 			mm.put("formulaMap", this.formulaService.findMap(true));
 			mm.put("aggrMethodMap", this.aggregationMethodService.findMap(true));
 		}
@@ -170,5 +194,78 @@ public class KpiBaseController extends BaseControllerSupport implements IPageNam
 		}
 		return result;
 	}
+	
+	private void checkFields(DefaultControllerJsonResultObj<HfKpi> result, HfKpi kpi, String forOid, String aggrOid, String selKpiDept, String selKpiEmp) throws ControllerException, Exception {
+		CheckControllerFieldHandler<HfKpi> checkHandler = this.getCheckControllerFieldHandler(result)
+		.testField("id", kpi, "@org.apache.commons.lang3.StringUtils@isBlank(id)", "Id is blank!")
+		.testField("id", ( PleaseSelect.noSelect(kpi.getId()) ), "Please change Id value!") // ID 不能用  "all" 這個下拉值
+		.testField("id", ( !SimpleUtils.checkBeTrueOf_azAZ09Id(super.defaultString(kpi.getId())) ), "Id only normal character!")
+		.testField("forOid", PleaseSelect.noSelect(forOid), "Please select formula!")
+		.testField("aggrOid", PleaseSelect.noSelect(aggrOid), "Please select aggregation method!")
+		.testField("name", kpi, "@org.apache.commons.lang3.StringUtils@isBlank(name)", "Name is blank!")
+		.testField("weight", kpi, "!@org.apache.commons.lang3.math.NumberUtils@isCreatable( java.lang.String@valueOf(weight) )", "weight only key-in numbers!")
+		.testField("max", kpi, "!@org.apache.commons.lang3.math.NumberUtils@isCreatable( java.lang.String@valueOf(max) )", "Maximum only key-in numbers!")
+		.testField("target", kpi, "!@org.apache.commons.lang3.math.NumberUtils@isCreatable( java.lang.String@valueOf(target) )", "Target only key-in numbers!")
+		.testField("min", kpi, "!@org.apache.commons.lang3.math.NumberUtils@isCreatable( java.lang.String@valueOf(min) )", "Minimum only key-in numbers!")
+		.testField("unit", kpi, "@org.apache.commons.lang3.StringUtils@isBlank(unit)", "Unit is blank!")
+		.testField("management", PleaseSelect.noSelect(kpi.getManagement()), "Please select management!")
+		.testField("compareType", PleaseSelect.noSelect(kpi.getCompareType()), "Please select compare type!")
+		.testField("quasiRange", kpi, "!@org.apache.commons.lang3.math.NumberUtils@isCreatable( java.lang.String@valueOf(quasiRange) )", "Quasi range only key-in numbers!")
+		.testField("dataType", PleaseSelect.noSelect(kpi.getDataType()), "Please select data type!");
+		checkHandler.throwMessage();
+		if (KpiBasicCode.DATA_TYPE_BOTH.equals(kpi.getDataType()) || KpiBasicCode.DATA_TYPE_DEPARTMENT.equals(kpi.getDataType())) {
+			checkHandler.testField("kpiOrga", StringUtils.isBlank(selKpiDept), "Please add organization!").throwMessage();
+			Map<String, List<Map<String, Object>>> jsonData = (Map<String, List<Map<String, Object>>>) new ObjectMapper().readValue( selKpiDept, LinkedHashMap.class );
+			List orgInputAutocompleteList = jsonData.get("items");
+			if (null == orgInputAutocompleteList || orgInputAutocompleteList.size() < 1) {
+				checkHandler.throwMessage("kpiOrga", "Please add organization!");
+			}			
+		}
+		if (KpiBasicCode.DATA_TYPE_BOTH.equals(kpi.getDataType()) || KpiBasicCode.DATA_TYPE_PERSONAL.equals(kpi.getDataType())) {
+			checkHandler.testField("kpiEmpl", StringUtils.isBlank(selKpiDept), "Please add employee!").throwMessage();
+			Map<String, List<Map<String, Object>>> jsonData = (Map<String, List<Map<String, Object>>>) new ObjectMapper().readValue( selKpiEmp, LinkedHashMap.class );
+			List orgInputAutocompleteList = jsonData.get("items");
+			if (null == orgInputAutocompleteList || orgInputAutocompleteList.size() < 1) {
+				checkHandler.throwMessage("kpiEmpl", "Please add employee!");
+			}			
+		}
+	}
+	
+	private void save(DefaultControllerJsonResultObj<HfKpi> result, HfKpi kpi, String forOid, String aggrOid, String selKpiDept, String selKpiEmp) throws AuthorityException, ControllerException, ServiceException, Exception {
+		this.checkFields(result, kpi, forOid, aggrOid, selKpiDept, selKpiEmp);
+		Map<String, List<Map<String, Object>>> jsonData1 = (Map<String, List<Map<String, Object>>>) new ObjectMapper().readValue( selKpiDept, LinkedHashMap.class );
+		List orgInputAutocompleteList = jsonData1.get("items");
+		Map<String, List<Map<String, Object>>> jsonData2 = (Map<String, List<Map<String, Object>>>) new ObjectMapper().readValue( selKpiEmp, LinkedHashMap.class );
+		List empInputAutocompleteList = jsonData2.get("items");
+		DefaultResult<HfKpi> iResult = this.kpiLogicService.create(kpi, forOid, aggrOid, orgInputAutocompleteList, empInputAutocompleteList);
+		if (iResult.getValue() != null) {
+			result.setValue( iResult.getValue() );
+			result.setSuccess( YES );
+		}
+		result.setMessage( iResult.getMessage() );		
+	}
+	
+	@ControllerMethodAuthority(check = true, programId = "HF_PROG001D0002A")
+	@RequestMapping(value = "/hfKpiBaseSaveJson", produces = MediaType.APPLICATION_JSON_VALUE)		
+	public @ResponseBody DefaultControllerJsonResultObj<HfKpi> doSave(HttpServletRequest request, HfKpi kpi) {
+		DefaultControllerJsonResultObj<HfKpi> result = this.getDefaultJsonResult(this.currentMethodAuthority());
+		if (!this.isAuthorizeAndLoginFromControllerJsonResult(result)) {
+			return result;
+		}
+		try {
+			this.save(
+					result, 
+					kpi, 
+					request.getParameter("forOid"), 
+					request.getParameter("aggrOid"), 
+					request.getParameter("selKpiDept"), 
+					request.getParameter("selKpiEmp"));
+		} catch (AuthorityException | ServiceException | ControllerException e) {
+			this.baseExceptionResult(result, e);	
+		} catch (Exception e) {
+			this.exceptionResult(result, e);
+		}
+		return result;		
+	}		
 	
 }

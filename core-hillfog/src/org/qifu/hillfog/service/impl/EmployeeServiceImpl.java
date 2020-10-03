@@ -65,7 +65,7 @@ public class EmployeeServiceImpl extends BaseService<HfEmployee, String> impleme
 	}
 	
 	private String getPagefieldValue(HfEmployee employee) {
-		return employee.getAccount() + " / " + employee.getEmpId() + " / " + this.replaceAllContent(employee.getName());
+		return employee.getEmpId() + " / " + employee.getAccount() + " / " + this.replaceAllContent(employee.getName());
 	}	
 	
 	private String replaceAllContent(String srcStr) {
