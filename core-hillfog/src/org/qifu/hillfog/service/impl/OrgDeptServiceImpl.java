@@ -30,6 +30,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.qifu.base.exception.ServiceException;
 import org.qifu.base.mapper.IBaseMapper;
 import org.qifu.base.message.BaseSystemMessage;
+import org.qifu.base.model.DefaultResult;
 import org.qifu.base.model.SortType;
 import org.qifu.base.service.BaseService;
 import org.qifu.hillfog.entity.HfOrgDept;
@@ -91,6 +92,52 @@ public class OrgDeptServiceImpl extends BaseService<HfOrgDept, String> implement
 				.replaceAll("/", "").replaceAll(",", "").replaceAll("\"", "")
 				.replaceAll("\\[", "").replaceAll("\\]", "").replaceAll("<", "")
 				.replaceAll(">", "").replaceAll(";", "").replaceAll("'", "");
+	}
+
+	/**
+	 * KPI的負責部門
+	 * 
+	 * @param kpiId
+	 * @return
+	 * @throws ServiceException
+	 * @throws Exception
+	 */	
+	@Override
+	public DefaultResult<List<HfOrgDept>> findKpiDepartment(String kpiId) throws ServiceException, Exception {
+		if (StringUtils.isBlank(kpiId)) {
+			throw new ServiceException( BaseSystemMessage.parameterBlank() );
+		}
+		DefaultResult<List<HfOrgDept>> result = new DefaultResult<List<HfOrgDept>>();
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("kpiId", kpiId);
+		List<HfOrgDept> dataList = this.orgDeptMapper.findKpiDepartment(paramMap);
+		if (dataList != null && dataList.size() > 0) {
+			result.setValue(dataList);
+		} else {
+			result.setMessage( BaseSystemMessage.searchNoData() );
+		}
+		return result;
+	}
+
+	/**
+	 * KPI的負責部門
+	 * 
+	 * @param kpiId
+	 * @return
+	 * @throws ServiceException
+	 * @throws Exception
+	 */	
+	@Override
+	public List<String> findInputAutocompleteByKpiId(String kpiId) throws ServiceException, Exception {
+		DefaultResult<List<HfOrgDept>> result = this.findKpiDepartment(kpiId);
+		List<String> dataList = new ArrayList<String>();
+		if (result.getValue() == null || result.getValue().size() < 1) {
+			return dataList;
+		}		
+		for (HfOrgDept orgDept : result.getValue()) {
+			dataList.add( this.getPagefieldValue(orgDept) );
+		}
+		return dataList;
 	}	
 	
 }

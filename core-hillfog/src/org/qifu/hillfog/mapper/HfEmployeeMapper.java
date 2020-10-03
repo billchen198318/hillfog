@@ -21,11 +21,22 @@
  */
 package org.qifu.hillfog.mapper;
 
+import java.util.List;
+import java.util.Map;
+
 import org.apache.ibatis.annotations.Mapper;
 import org.qifu.base.mapper.IBaseMapper;
 import org.qifu.hillfog.entity.HfEmployee;
 
 @Mapper
 public interface HfEmployeeMapper extends IBaseMapper<HfEmployee, String> {
+	
+	/**
+	 * KPI的負責人
+	 * 
+	 * @param paramMap
+	 * @return
+	 */
+	public List<HfEmployee> findKpiOwner(Map<String, Object> paramMap);
 	
 }

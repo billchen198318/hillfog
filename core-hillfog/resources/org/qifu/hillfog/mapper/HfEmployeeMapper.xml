@@ -189,4 +189,15 @@
     where OID = #{oid,jdbcType=CHAR}
   </delete>
   
+  <!-- KPI的負責人 -->
+  <select id="findKpiOwner" parameterType="java.util.HashMap" resultMap="BaseResultMap">
+	SELECT M.*
+	FROM 
+	<include refid="org.qifu.hillfog.mapper.DB1Config.schema"/>hf_employee M, 
+	<include refid="org.qifu.hillfog.mapper.DB1Config.schema"/>hf_kpi_empl B
+	WHERE M.ACCOUNT = B.ACCOUNT
+	AND B.KPI_ID = #{kpiId,jdbcType=VARCHAR}
+	ORDER BY M.EMP_ID ASC    
+  </select>
+  
 </mapper>

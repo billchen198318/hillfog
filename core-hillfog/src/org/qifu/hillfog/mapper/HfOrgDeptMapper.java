@@ -33,4 +33,12 @@ public interface HfOrgDeptMapper extends IBaseMapper<HfOrgDept, String> {
 	
 	public List<HfOrgDept> findListByAccount(Map<String, Object> paramMap);
 	
+	/**
+	 * KPI的負責部門
+	 * 
+	 * @param paramMap
+	 * @return
+	 */
+	public List<HfOrgDept> findKpiDepartment(Map<String, Object> paramMap);
+	
 }

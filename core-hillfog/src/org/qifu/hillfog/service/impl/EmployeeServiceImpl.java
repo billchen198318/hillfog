@@ -22,11 +22,15 @@
 package org.qifu.hillfog.service.impl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 import org.qifu.base.exception.ServiceException;
 import org.qifu.base.mapper.IBaseMapper;
+import org.qifu.base.message.BaseSystemMessage;
+import org.qifu.base.model.DefaultResult;
 import org.qifu.base.model.SortType;
 import org.qifu.base.service.BaseService;
 import org.qifu.hillfog.entity.HfEmployee;
@@ -73,6 +77,52 @@ public class EmployeeServiceImpl extends BaseService<HfEmployee, String> impleme
 				.replaceAll("/", "").replaceAll(",", "").replaceAll("\"", "")
 				.replaceAll("\\[", "").replaceAll("\\]", "").replaceAll("<", "")
 				.replaceAll(">", "").replaceAll(";", "").replaceAll("'", "");
+	}
+
+	/**
+	 * KPI的負責人
+	 * 
+	 * @param kpiId
+	 * @return
+	 * @throws ServiceException
+	 * @throws Exception
+	 */	
+	@Override
+	public DefaultResult<List<HfEmployee>> findKpiOwner(String kpiId) throws ServiceException, Exception {
+		if (StringUtils.isBlank(kpiId)) {
+			throw new ServiceException( BaseSystemMessage.parameterBlank() );
+		}
+		DefaultResult<List<HfEmployee>> result = new DefaultResult<List<HfEmployee>>();
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("kpiId", kpiId);
+		List<HfEmployee> dataList = this.employeeMapper.findKpiOwner(paramMap);
+		if (dataList != null && dataList.size() > 0) {
+			result.setValue(dataList);
+		} else {
+			result.setMessage( BaseSystemMessage.searchNoData() );
+		}
+		return result;
+	}
+
+	/**
+	 * KPI的負責人
+	 * 
+	 * @param kpiId
+	 * @return
+	 * @throws ServiceException
+	 * @throws Exception
+	 */	
+	@Override
+	public List<String> findInputAutocompleteByKpiId(String kpiId) throws ServiceException, Exception {
+		DefaultResult<List<HfEmployee>> result = this.findKpiOwner(kpiId);
+		List<String> dataList = new ArrayList<String>();
+		if (result.getValue() == null || result.getValue().size() < 1) {
+			return dataList;
+		}
+		for (HfEmployee employee : result.getValue()) {
+			dataList.add( this.getPagefieldValue(employee) );
+		}		
+		return dataList;
 	}	
 	
 }

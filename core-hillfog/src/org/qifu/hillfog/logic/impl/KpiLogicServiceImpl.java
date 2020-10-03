@@ -201,7 +201,7 @@ public class KpiLogicServiceImpl extends BaseLogicService implements IKpiLogicSe
 			return;
 		}
 		for (String str : empInputAutocompleteList) {
-			String account = StringUtils.deleteWhitespace(str.split("/")[0]);
+			String account = StringUtils.deleteWhitespace(str.split("/")[1]);
 			if (this.isBlank(account)) {
 				continue;
 			}

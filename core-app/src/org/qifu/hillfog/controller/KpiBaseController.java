@@ -121,6 +121,16 @@ public class KpiBaseController extends BaseControllerSupport implements IPageNam
 	private void fetch(ModelMap mm, String oid) throws AuthorityException, ControllerException, ServiceException, Exception {
 		HfKpi kpi = this.kpiService.selectByPrimaryKey(oid).getValueEmptyThrowMessage();
 		mm.put("kpi", kpi);
+		HfFormula formula = new HfFormula();
+		formula.setForId( kpi.getForId() );
+		formula = this.formulaService.selectByUniqueKey(formula).getValueEmptyThrowMessage();
+		mm.put("formula", formula);
+		HfAggregationMethod aggrMethod = new HfAggregationMethod();
+		aggrMethod.setAggrId( kpi.getAggrId() );
+		aggrMethod = this.aggregationMethodService.selectByUniqueKey(aggrMethod).getValueEmptyThrowMessage();
+		mm.put("aggrMethod", aggrMethod);
+		mm.put("selOrgInputAutocomplete", pageAutocompleteContent(this.orgDeptService.findInputAutocompleteByKpiId(kpi.getId())));
+		mm.put("selEmpInputAutocomplete", pageAutocompleteContent(this.employeeService.findInputAutocompleteByKpiId(kpi.getId())));
 	}
 	
 	@ControllerMethodAuthority(check = true, programId = "HF_PROG001D0005Q")
@@ -245,7 +255,7 @@ public class KpiBaseController extends BaseControllerSupport implements IPageNam
 		result.setMessage( iResult.getMessage() );		
 	}
 	
-	@ControllerMethodAuthority(check = true, programId = "HF_PROG001D0002A")
+	@ControllerMethodAuthority(check = true, programId = "HF_PROG001D0005A")
 	@RequestMapping(value = "/hfKpiBaseSaveJson", produces = MediaType.APPLICATION_JSON_VALUE)		
 	public @ResponseBody DefaultControllerJsonResultObj<HfKpi> doSave(HttpServletRequest request, HfKpi kpi) {
 		DefaultControllerJsonResultObj<HfKpi> result = this.getDefaultJsonResult(this.currentMethodAuthority());
@@ -267,5 +277,67 @@ public class KpiBaseController extends BaseControllerSupport implements IPageNam
 		}
 		return result;		
 	}		
+	
+	private void update(DefaultControllerJsonResultObj<HfKpi> result, HfKpi kpi, String forOid, String aggrOid, String selKpiDept, String selKpiEmp) throws AuthorityException, ControllerException, ServiceException, Exception {
+		this.checkFields(result, kpi, forOid, aggrOid, selKpiDept, selKpiEmp);
+		Map<String, List<Map<String, Object>>> jsonData1 = (Map<String, List<Map<String, Object>>>) new ObjectMapper().readValue( selKpiDept, LinkedHashMap.class );
+		List orgInputAutocompleteList = jsonData1.get("items");
+		Map<String, List<Map<String, Object>>> jsonData2 = (Map<String, List<Map<String, Object>>>) new ObjectMapper().readValue( selKpiEmp, LinkedHashMap.class );
+		List empInputAutocompleteList = jsonData2.get("items");
+		DefaultResult<HfKpi> uResult = this.kpiLogicService.update(kpi, forOid, aggrOid, orgInputAutocompleteList, empInputAutocompleteList);
+		if (uResult.getValue() != null) {
+			result.setValue( uResult.getValue() );
+			result.setSuccess( YES );
+		}
+		result.setMessage( uResult.getMessage() );		
+	}	
+	
+	@ControllerMethodAuthority(check = true, programId = "HF_PROG001D0005E")
+	@RequestMapping(value = "/hfKpiBaseUpdateJson", produces = MediaType.APPLICATION_JSON_VALUE)		
+	public @ResponseBody DefaultControllerJsonResultObj<HfKpi> doUpdate(HttpServletRequest request, HfKpi kpi) {
+		DefaultControllerJsonResultObj<HfKpi> result = this.getDefaultJsonResult(this.currentMethodAuthority());
+		if (!this.isAuthorizeAndLoginFromControllerJsonResult(result)) {
+			return result;
+		}
+		try {
+			this.update(
+					result, 
+					kpi, 
+					request.getParameter("forOid"), 
+					request.getParameter("aggrOid"), 
+					request.getParameter("selKpiDept"), 
+					request.getParameter("selKpiEmp"));
+		} catch (AuthorityException | ServiceException | ControllerException e) {
+			this.baseExceptionResult(result, e);	
+		} catch (Exception e) {
+			this.exceptionResult(result, e);
+		}
+		return result;		
+	}			
+	
+	private void delete(DefaultControllerJsonResultObj<Boolean> result, HfKpi kpi) throws AuthorityException, ControllerException, ServiceException, Exception {
+		DefaultResult<Boolean> dResult = this.kpiLogicService.delete(kpi);
+		if (dResult.getValue() != null) {
+			result.setSuccess( YES );
+		}
+		result.setMessage( dResult.getMessage() );
+	}	
+	
+	@ControllerMethodAuthority(check = true, programId = "HF_PROG001D0005D")
+	@RequestMapping(value = "/hfKpiBaseDeleteJson", produces = MediaType.APPLICATION_JSON_VALUE)			
+	public @ResponseBody DefaultControllerJsonResultObj<Boolean> doDelete(HfKpi kpi) {
+		DefaultControllerJsonResultObj<Boolean> result = this.getDefaultJsonResult(this.currentMethodAuthority());
+		if (!this.isAuthorizeAndLoginFromControllerJsonResult(result)) {
+			return result;
+		}
+		try {
+			this.delete(result, kpi);
+		} catch (AuthorityException | ServiceException | ControllerException e) {
+			this.baseExceptionResult(result, e);
+		} catch (Exception e) {
+			this.exceptionResult(result, e);
+		}
+		return result;
+	}
 	
 }

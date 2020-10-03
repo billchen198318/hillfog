@@ -24,6 +24,7 @@ package org.qifu.hillfog.service;
 import java.util.List;
 
 import org.qifu.base.exception.ServiceException;
+import org.qifu.base.model.DefaultResult;
 import org.qifu.base.service.IBaseService;
 import org.qifu.hillfog.entity.HfOrgDept;
 
@@ -32,5 +33,25 @@ public interface IOrgDeptService<T, E> extends IBaseService<HfOrgDept, String> {
 	public List<String> findInputAutocomplete() throws ServiceException, Exception;
 	
 	public List<String> findInputAutocompleteByAccount(String account) throws ServiceException, Exception;
+	
+	/**
+	 * KPI的負責部門
+	 * 
+	 * @param kpiId
+	 * @return
+	 * @throws ServiceException
+	 * @throws Exception
+	 */
+	public DefaultResult<List<HfOrgDept>> findKpiDepartment(String kpiId) throws ServiceException, Exception;
+	
+	/**
+	 * KPI的負責部門
+	 * 
+	 * @param kpiId
+	 * @return
+	 * @throws ServiceException
+	 * @throws Exception
+	 */
+	public List<String> findInputAutocompleteByKpiId(String kpiId) throws ServiceException, Exception;
 	
 }
