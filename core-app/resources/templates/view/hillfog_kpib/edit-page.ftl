@@ -96,9 +96,13 @@ $( document ).ready(function() {
 	
 	$("#kpiOrga").autocomplete({
 		source: orgDeptList
+	}).focus(function() {
+		$(this).autocomplete("search", " ");
 	});
 	$("#kpiEmpl").autocomplete({
 		source: empList
+	}).focus(function() {
+		$(this).autocomplete("search", " ");
 	});	
 	
 	paintOrganization();

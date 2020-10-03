@@ -75,6 +75,8 @@ $( document ).ready(function() {
 	
 	$("#employeeOrganization").autocomplete({
 		source: orgDeptList
+	}).focus(function() {
+		$(this).autocomplete("search", " ");
 	});
 	
 });
