@@ -35,7 +35,7 @@ import org.qifu.util.SimpleUtils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class MeasureDataFrequency {
+public class MeasureDataCode {
 	
 	private static final String _CONFIG = "org/qifu/hillfog/model/MeasureDataFrequency.json";
 	
@@ -45,7 +45,7 @@ public class MeasureDataFrequency {
 	
 	static {
 		try {
-			InputStream is = MeasureDataFrequency.class.getClassLoader().getResource( _CONFIG ).openStream();
+			InputStream is = MeasureDataCode.class.getClassLoader().getResource( _CONFIG ).openStream();
 			_srcDatas = IOUtils.toString(is, Constants.BASE_ENCODING);
 			is.close();
 			is = null;
@@ -69,6 +69,26 @@ public class MeasureDataFrequency {
 		}
 		return datas;
 	}		
+	
+	/**
+	 * 不區分員工的衡量資料
+	 */
+	public final static String MEASURE_DATA_EMPLOYEE_FULL = "*";
+	
+	/**
+	 * 不區分部門的衡量資料
+	 */
+	public final static String MEASURE_DATA_ORGANIZATION_FULL = "*";
+	
+	/**
+	 * 衡量數據(TARGET)輸入欄位的開頭
+	 */
+	public final static String MEASURE_DATA_TARGET_ID = "MEASURE_DATA_TARGET:";
+	
+	/**
+	 * 衡量數據(ACTUAL)輸入欄位的開頭
+	 */
+	public final static String MEASURE_DATA_ACTUAL_ID = "MEASURE_DATA_ACTUAL:";	
 	
 	/**
 	 * 日
