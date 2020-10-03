@@ -21,11 +21,15 @@
  */
 package org.qifu.hillfog.mapper;
 
+import java.util.Map;
+
 import org.apache.ibatis.annotations.Mapper;
 import org.qifu.base.mapper.IBaseMapper;
 import org.qifu.hillfog.entity.HfMeasureData;
 
 @Mapper
 public interface HfMeasureDataMapper extends IBaseMapper<HfMeasureData, String> {
+	
+	public Boolean deleteByKpiId(Map<String, Object> paramMap);
 	
 }

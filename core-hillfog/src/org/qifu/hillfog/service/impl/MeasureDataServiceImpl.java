@@ -21,7 +21,14 @@
  */
 package org.qifu.hillfog.service.impl;
 
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.apache.commons.lang3.StringUtils;
+import org.qifu.base.exception.ServiceException;
 import org.qifu.base.mapper.IBaseMapper;
+import org.qifu.base.message.BaseSystemMessage;
 import org.qifu.base.service.BaseService;
 import org.qifu.hillfog.entity.HfMeasureData;
 import org.qifu.hillfog.mapper.HfMeasureDataMapper;
@@ -43,6 +50,20 @@ public class MeasureDataServiceImpl extends BaseService<HfMeasureData, String> i
 	@Override
 	protected IBaseMapper<HfMeasureData, String> getBaseMapper() {
 		return this.measureDataMapper;
+	}
+
+	@Transactional(
+			propagation=Propagation.REQUIRED, 
+			readOnly=false,
+			rollbackFor={RuntimeException.class, IOException.class, Exception.class} )			
+	@Override
+	public void deleteByKpiId(String kpiId) throws ServiceException, Exception {
+		if (StringUtils.isBlank(kpiId)) {
+			throw new ServiceException( BaseSystemMessage.parameterBlank() );
+		}
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("kpiId", kpiId);
+		this.measureDataMapper.deleteByKpiId(paramMap);
 	}
 	
 }

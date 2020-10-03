@@ -20,7 +20,7 @@ public class HfMeasureData implements java.io.Serializable {
     private BigDecimal actual;
     private String frequency;
     private String orgId;
-    private String empId;
+    private String account;
     private String cuserid;
     private Date cdate;
     private String uuserid;
@@ -85,15 +85,15 @@ public class HfMeasureData implements java.io.Serializable {
         this.orgId = orgId;
     }
     
-    public String getEmpId() {
-        return empId;
-    }
-    
-    public void setEmpId(String empId) {
-        this.empId = empId;
-    }
-    
-    @CreateUserField(name = "cuserid")
+    public String getAccount() {
+		return account;
+	}
+
+	public void setAccount(String account) {
+		this.account = account;
+	}
+
+	@CreateUserField(name = "cuserid")
     public String getCuserid() {
         return cuserid;
     }

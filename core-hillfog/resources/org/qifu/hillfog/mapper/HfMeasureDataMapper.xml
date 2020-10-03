@@ -10,7 +10,7 @@
     <result column="ACTUAL" jdbcType="DECIMAL" property="actual" />
     <result column="FREQUENCY" jdbcType="VARCHAR" property="frequency" />
     <result column="ORG_ID" jdbcType="VARCHAR" property="orgId" />
-    <result column="EMP_ID" jdbcType="VARCHAR" property="empId" />
+    <result column="ACCOUNT" jdbcType="VARCHAR" property="account" />
     <result column="CUSERID" jdbcType="VARCHAR" property="cuserid" />
     <result column="CDATE" jdbcType="TIMESTAMP" property="cdate" />
     <result column="UUSERID" jdbcType="VARCHAR" property="uuserid" />
@@ -42,8 +42,8 @@
 	<if test="orgId != null and orgId != '' ">
 		AND ORG_ID = #{orgId,jdbcType=VARCHAR}
 	</if>
-	<if test="empId != null and empId != '' ">
-		AND EMP_ID = #{empId,jdbcType=VARCHAR}
+	<if test="account != null and account != '' ">
+		AND ACCOUNT = #{account,jdbcType=VARCHAR}
 	</if>					
 	<if test="orderBy != null and orderBy != '' and sortType != null and sortType != '' ">
 		ORDER BY  ${orderBy} ${sortType}
@@ -71,8 +71,8 @@
 	<if test="orgId != null and orgId != '' ">
 		AND ORG_ID = #{orgId,jdbcType=VARCHAR}
 	</if>
-	<if test="empId != null and empId != '' ">
-		AND EMP_ID = #{empId,jdbcType=VARCHAR}
+	<if test="account != null and account != '' ">
+		AND ACCOUNT = #{account,jdbcType=VARCHAR}
 	</if>				
 		
 	<include refid="org.qifu.hillfog.mapper.DB1Config.sql2"/>
@@ -96,8 +96,8 @@
 	<if test="orgId != null and orgId != '' ">
 		AND ORG_ID = #{orgId,jdbcType=VARCHAR}
 	</if>
-	<if test="empId != null and empId != '' ">
-		AND EMP_ID = #{empId,jdbcType=VARCHAR}
+	<if test="account != null and account != '' ">
+		AND ACCOUNT = #{account,jdbcType=VARCHAR}
 	</if>						
   </select>  
   
@@ -125,8 +125,8 @@
       <if test="orgId != null">
         ORG_ID,
       </if>
-      <if test="empId != null">
-        EMP_ID,
+      <if test="account != null">
+        ACCOUNT,
       </if>
       <if test="cuserid != null">
         CUSERID,
@@ -163,8 +163,8 @@
       <if test="orgId != null">
         #{orgId,jdbcType=VARCHAR},
       </if>
-      <if test="empId != null">
-        #{empId,jdbcType=VARCHAR},
+      <if test="account != null">
+        #{account,jdbcType=VARCHAR},
       </if>
       <if test="cuserid != null">
         #{cuserid,jdbcType=VARCHAR},
@@ -202,8 +202,8 @@
       <if test="orgId != null">
         ORG_ID = #{orgId,jdbcType=VARCHAR},
       </if>
-      <if test="empId != null">
-        EMP_ID = #{empId,jdbcType=VARCHAR},
+      <if test="account != null">
+        ACCOUNT = #{account,jdbcType=VARCHAR},
       </if>
       <!--  
       <if test="cuserid != null">
@@ -227,5 +227,10 @@
     delete from <include refid="org.qifu.hillfog.mapper.DB1Config.schema"/>hf_measure_data
     where OID = #{oid,jdbcType=CHAR}
   </delete>
+  
+  <delete id="deleteByKpiId" parameterType="java.util.HashMap">
+    delete from <include refid="org.qifu.hillfog.mapper.DB1Config.schema"/>hf_measure_data
+    where KPI_ID = #{kpiId,jdbcType=CHAR}
+  </delete>  
   
 </mapper>

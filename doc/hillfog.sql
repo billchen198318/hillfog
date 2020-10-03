@@ -262,14 +262,14 @@ CREATE TABLE `hf_measure_data` (
   `ACTUAL` decimal(12,2) NOT NULL DEFAULT 0.00,
   `FREQUENCY` varchar(1) NOT NULL,
   `ORG_ID` varchar(10) NOT NULL DEFAULT '*',
-  `EMP_ID` varchar(10) NOT NULL DEFAULT '*',
+  `ACCOUNT` varchar(24) NOT NULL DEFAULT '*',
   `CUSERID` varchar(24) NOT NULL,
   `CDATE` datetime NOT NULL,
   `UUSERID` varchar(24) DEFAULT NULL,
   `UDATE` datetime DEFAULT NULL,
   PRIMARY KEY (`OID`),
   UNIQUE KEY `UK_1` (`KPI_ID`,`DATE`),
-  KEY `IDX_1` (`FREQUENCY`,`ORG_ID`,`EMP_ID`)
+  KEY `IDX_1` (`FREQUENCY`,`ORG_ID`,`ACCOUNT`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1171,4 +1171,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-10-03  9:46:19
+-- Dump completed on 2020-10-03 19:31:15

@@ -21,9 +21,12 @@
  */
 package org.qifu.hillfog.service;
 
+import org.qifu.base.exception.ServiceException;
 import org.qifu.base.service.IBaseService;
 import org.qifu.hillfog.entity.HfMeasureData;
 
 public interface IMeasureDataService<T, E> extends IBaseService<HfMeasureData, String> {
+	
+	public void deleteByKpiId(String kpiId) throws ServiceException, Exception;
 	
 }
