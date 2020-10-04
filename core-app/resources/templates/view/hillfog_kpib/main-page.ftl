@@ -24,6 +24,8 @@ function getQueryGridFormatter(value) {
 	var str = '';
 	str += '<img alt="edit" title="Edit" src="./images/edit.png" onclick="editPage(\'' + value + '\');"/>';
 	str += '&nbsp;&nbsp;';		
+	str += '<img alt="measure-data" title="Measure-data" src="./images/view.png" onclick="measureDataPage(\'' + value + '\');"/>';
+	str += '&nbsp;&nbsp;';		
 	str += '<img alt="delete" title="Delete" src="./images/delete.png" onclick="deleteRecord(\'' + value + '\');"/>';
 	return str;
 }
@@ -49,6 +51,10 @@ function queryClear() {
 
 function editPage(oid) {
 	parent.addTab('HF_PROG001D0005E', parent.getProgUrlForOid('HF_PROG001D0005E', oid) );
+}
+
+function measureDataPage(oid) {
+	parent.addTab('HF_PROG001D0005M', parent.getProgUrlForOid('HF_PROG001D0005M', oid) );
 }
 
 function deleteRecord(oid) {

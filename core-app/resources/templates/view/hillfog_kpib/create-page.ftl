@@ -97,12 +97,16 @@ $( document ).ready(function() {
 	$("#kpiOrga").autocomplete({
 		source: orgDeptList
 	}).focus(function() {
-		$(this).autocomplete("search", " ");
+		if ($(this).val() == ' ' || $(this).val() =='') {
+			$(this).autocomplete("search", " ");
+		}
 	});
 	$("#kpiEmpl").autocomplete({
 		source: empList
 	}).focus(function() {
-		$(this).autocomplete("search", " ");
+		if ($(this).val() == ' ' || $(this).val() =='') {
+			$(this).autocomplete("search", " ");
+		}
 	});	
 	
 });
@@ -170,6 +174,8 @@ function clearSave() {
 	$("#dataType").val( _qifu_please_select_id );
 	$("#description").val('');
 	$("#management").trigger('change');
+	$("#kpiOrga").val('');
+	$("#kpiEmpl").val('');
 	selDeptList = [];
 	selEmpList = [];
 	paintOrganization();
