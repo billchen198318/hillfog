@@ -70,6 +70,7 @@
 
 var orgDeptList = [ ${orgInputAutocomplete} ];
 var empList = [ ${empInputAutocomplete} ];
+var dateStatus = "0";
 
 $( document ).ready(function() {
 	
@@ -139,6 +140,16 @@ function clearUpdate() {
 	paintContent( _qifu_please_select_id );
 }
 
+function prevCalendar() {
+	dateStatus = "-1";
+	paintContent();
+}
+
+function nextCalendar() {
+	dateStatus = "1";
+	paintContent();
+}
+
 function paintContent() {
 	var freq = $("#frequency").val();
 	var kpiEmpl = $("#kpiEmpl").val();
@@ -153,6 +164,31 @@ function paintContent() {
 	$("#btnClear").removeAttr('disabled');
 	$("#content").html('&nbsp;');
 	
+	xhrSendParameter(
+			'./hfMeasureDataBodyJson', 
+			{
+				'kpiOid'		:	'${kpi.oid}',
+				'date'			:	$("#date").val(),
+				'frequency'		:	$("#frequency").val(),
+				'kpiEmpl'		:	$("#kpiEmpl").val(),
+				'kpiOrga'		:	$("#kpiOrga").val(),
+				'dateStatus'	:	dateStatus
+			}, 
+			function(data) {
+				dateStatus = "0";
+				if ( _qifu_success_flag != data.success ) {
+					parent.toastrWarning( data.message );
+				}
+				if ( _qifu_success_flag == data.success ) {
+					$("#content").html( data.value.content );
+					$("#date").val( data.value.date );
+				}
+			}, 
+			function() {
+				dateStatus = "0";
+			},
+			_qifu_defaultSelfPleaseWaitShow
+	);
 	
 }
 
@@ -168,8 +204,8 @@ function paintContent() {
 	refreshJsMethod="window.location=parent.getProgUrlForOid('HF_PROG001D0005M', '${kpi.oid}');" 
 	createNewEnable="N"
 	createNewJsMethod=""
-	saveEnabel="Y" 
-	saveJsMethod="btnUpdate();" 	
+	saveEnabel="N" 
+	saveJsMethod="" 	
 	cancelEnable="Y" 
 	cancelJsMethod="parent.closeTab('HF_PROG001D0005M');"
 	programName="${programName}"
@@ -177,7 +213,9 @@ function paintContent() {
 	description="Modify KPI measure data." />	
 <#import "../common-f-head.ftl" as cfh />
 <@cfh.commonFormHeadContent /> 
-      
+    
+    <input type="hidden" name="date" id="date" value="${systemDate}">
+    
 	<div class="row">
 		<div class="col p-2 bg-secondary rounded">
 			<span class="badge badge-info"><h6>${kpi.id}&nbsp;-&nbsp;${kpi.name}</h6></span>
@@ -202,8 +240,14 @@ function paintContent() {
 		</div>
 	</div>
 
-	<span id="content"></span>
-
+	<form id="measureDataForm" name="measureDataForm" action=".">
+		
+		<br>
+		
+		<span id="content"></span>
+		
+	</form>
+	
 <p style="margin-bottom: 10px"></p>
       
 <div class="row">
@@ -212,7 +256,6 @@ function paintContent() {
 			xhrUrl="./hfMeasureDataUpdateJson"
 			xhrParameter="
 			{
-				'kpiOid'	:	'${kpi.oid}'
 			}
 			"
 			onclick="btnUpdate();"
