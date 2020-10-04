@@ -206,6 +206,7 @@ public class KpiLogicServiceImpl extends BaseLogicService implements IKpiLogicSe
 		if (null == empInputAutocompleteList || empInputAutocompleteList.size() < 1) {
 			return;
 		}
+		int size = 0;
 		for (String str : empInputAutocompleteList) {
 			String tmp[] = str.split("/");
 			if (tmp == null || tmp.length != 3) {
@@ -219,6 +220,10 @@ public class KpiLogicServiceImpl extends BaseLogicService implements IKpiLogicSe
 			kpiEmpl.setAccount(account);
 			kpiEmpl.setKpiId(kpi.getId());
 			this.kpiEmplService.insert(kpiEmpl);
+			size++;
+		}
+		if (KpiBasicCode.DATA_TYPE_BOTH.equals(kpi.getDataType()) || KpiBasicCode.DATA_TYPE_PERSONAL.equals(kpi.getDataType()) && size < 1) {
+			throw new ServiceException( BaseSystemMessage.dataErrors() );
 		}
 	}
 	
@@ -229,6 +234,7 @@ public class KpiLogicServiceImpl extends BaseLogicService implements IKpiLogicSe
 		if (null == orgInputAutocompleteList || orgInputAutocompleteList.size() < 1) {
 			return;
 		}		
+		int size = 0;
 		for (String str : orgInputAutocompleteList) {
 			String orgId = StringUtils.deleteWhitespace(str.split("/")[0]);
 			if (this.isBlank(orgId)) {
@@ -238,6 +244,10 @@ public class KpiLogicServiceImpl extends BaseLogicService implements IKpiLogicSe
 			kpiOrga.setOrgId(orgId);
 			kpiOrga.setKpiId(kpi.getId());
 			this.kpiOrgaService.insert(kpiOrga);
+			size++;
+		}
+		if (KpiBasicCode.DATA_TYPE_BOTH.equals(kpi.getDataType()) || KpiBasicCode.DATA_TYPE_DEPARTMENT.equals(kpi.getDataType()) && size < 1) {
+			throw new ServiceException( BaseSystemMessage.dataErrors() );
 		}
 	}
 	
