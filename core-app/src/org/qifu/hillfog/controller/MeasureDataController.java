@@ -163,7 +163,8 @@ public class MeasureDataController extends BaseControllerSupport implements IPag
 		String kpiEmpl = StringUtils.defaultString(request.getParameter("kpiEmpl"));
 		String orgId = "";
 		String account = "";
-		if (!StringUtils.isBlank(dateStatus) && SimpleUtils.isDate(dateStr) && !PleaseSelect.noSelect(frequency)) {
+		if (!StringUtils.isBlank(dateStatus) && SimpleUtils.isDate(dateStr) && !PleaseSelect.noSelect(frequency)
+				&& ("1".equals(dateStatus) || "-1".equals(dateStatus)) ) {
 			DateTime dateTime = new DateTime(dateStr);
 			if ("1".equals(dateStatus)) { // date +1
 				if (MeasureDataCode.FREQUENCY_DAY.equals(frequency) || MeasureDataCode.FREQUENCY_WEEK.equals(frequency) ) { // 上一個月
