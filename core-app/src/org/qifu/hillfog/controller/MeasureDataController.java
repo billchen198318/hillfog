@@ -168,16 +168,16 @@ public class MeasureDataController extends BaseControllerSupport implements IPag
 			DateTime dateTime = new DateTime(dateStr);
 			if ("1".equals(dateStatus)) { // date +1
 				if (MeasureDataCode.FREQUENCY_DAY.equals(frequency) || MeasureDataCode.FREQUENCY_WEEK.equals(frequency) ) { // 上一個月
-					dateTime = dateTime.plusMonths(-1);
+					dateTime = dateTime.plusMonths(+1);
 				} else { // 上一個年
-					dateTime = dateTime.plusYears(-1);
+					dateTime = dateTime.plusYears(+1);
 				}	
 			}
 			if ("-1".equals(dateStatus)) { // date -1
 				if (MeasureDataCode.FREQUENCY_DAY.equals(frequency) || MeasureDataCode.FREQUENCY_WEEK.equals(frequency) ) { // 下一個月
-					dateTime = dateTime.plusMonths(1);
+					dateTime = dateTime.plusMonths(-1);
 				} else { // 下一個年
-					dateTime = dateTime.plusYears(1);
+					dateTime = dateTime.plusYears(-1);
 				}
 			}
 			dateStr = dateTime.toString("yyyy-MM-dd");
@@ -196,7 +196,7 @@ public class MeasureDataController extends BaseControllerSupport implements IPag
 		}
 		String content = this.renderBody(
 				request.getParameter("kpiOid"), 
-				request.getParameter("date"), 
+				dateStr, 
 				frequency, 
 				dataFor, 
 				orgId, 
