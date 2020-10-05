@@ -192,6 +192,7 @@ public class MeasureDataController extends BaseControllerSupport implements IPag
 				orgId, 
 				account);
 		inputBody.setContent(content);
+		inputBody.setDate(date);
 		if (!StringUtils.isBlank(content)) {
 			result.setSuccess(YES);
 		}		
