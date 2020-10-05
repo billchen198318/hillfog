@@ -29,6 +29,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
+import org.joda.time.DateTime;
 import org.qifu.base.controller.BaseControllerSupport;
 import org.qifu.base.controller.IPageNamespaceProvide;
 import org.qifu.base.exception.AuthorityException;
@@ -155,22 +156,30 @@ public class MeasureDataController extends BaseControllerSupport implements IPag
 		MeasureDataInputBody inputBody = new MeasureDataInputBody();
 		result.setValue( inputBody );
 		String dateStatus = StringUtils.defaultString(request.getParameter("dateStatus"));
-		String date = StringUtils.defaultString(request.getParameter("date"));
+		String dateStr = StringUtils.defaultString(request.getParameter("date"));
 		String frequency = StringUtils.defaultString(request.getParameter("frequency"));
 		String dataFor = KpiBasicCode.DATA_TYPE_BOTH;
 		String kpiOrga = StringUtils.defaultString(request.getParameter("kpiOrga"));
 		String kpiEmpl = StringUtils.defaultString(request.getParameter("kpiEmpl"));
 		String orgId = "";
 		String account = "";
-		if (!StringUtils.isBlank(dateStatus) && SimpleUtils.isDate(date) && !PleaseSelect.noSelect(frequency)) {
+		if (!StringUtils.isBlank(dateStatus) && SimpleUtils.isDate(dateStr) && !PleaseSelect.noSelect(frequency)) {
+			DateTime dateTime = new DateTime(dateStr);
 			if ("1".equals(dateStatus)) { // date +1
-				//reset value date
-				//inputBody.setDate(date);
+				if (MeasureDataCode.FREQUENCY_DAY.equals(frequency) || MeasureDataCode.FREQUENCY_WEEK.equals(frequency) ) { // 上一個月
+					dateTime = dateTime.plusMonths(-1);
+				} else { // 上一個年
+					dateTime = dateTime.plusYears(-1);
+				}	
 			}
 			if ("-1".equals(dateStatus)) { // date -1
-				//reset value date
-				//inputBody.setDate(date);
+				if (MeasureDataCode.FREQUENCY_DAY.equals(frequency) || MeasureDataCode.FREQUENCY_WEEK.equals(frequency) ) { // 下一個月
+					dateTime = dateTime.plusMonths(1);
+				} else { // 下一個年
+					dateTime = dateTime.plusYears(1);
+				}
 			}
+			dateStr = dateTime.toString("yyyy-MM-dd");
 		}		
 		if (!StringUtils.isBlank(kpiOrga)) {
 			orgId = StringUtils.deleteWhitespace( kpiOrga.split("/")[0] );
@@ -192,7 +201,7 @@ public class MeasureDataController extends BaseControllerSupport implements IPag
 				orgId, 
 				account);
 		inputBody.setContent(content);
-		inputBody.setDate(date);
+		inputBody.setDate(dateStr);
 		if (!StringUtils.isBlank(content)) {
 			result.setSuccess(YES);
 		}		
