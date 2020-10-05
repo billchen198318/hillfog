@@ -4,14 +4,14 @@
 <input type="hidden" name="account" id="account" value="${account}" />
 <input type="hidden" name="orgId" id="orgId" value="${orgId}" />
 <input type="hidden" name="queryCalendar" id="queryCalendar" value="Y" />
-<table width="100%" border="0" cellspacing="1" cellpadding="1" bgcolor="#E9E9E9" style="border:1px #E9E9E9 solid; border-radius: 5px;">		
+<table class="table table-bordered">
 	<tr>
 		<td colspan="4" bgcolor="#F6F6F6" align="center">
-			<img src="./images/go-previous.png" alt="prev" border="0" onclick="prevCalendar();" title="click to query The previous period" />
+			<img src="./images/go-previous.png" class="btn btn-light btn-sm" alt="prev" border="0" onclick="prevCalendar();" title="click to query The previous period" />
 			&nbsp;
 			<b><font color="#333333" size="+3">${yyyy}/${mm}</font></b>
 			&nbsp;
-			<img src="./images/go-next.png" alt="next" border="0" onclick="nextCalendar();" title="click to query Next period" />
+			<img src="./images/go-next.png" class="btn btn-light btn-sm" alt="next" border="0" onclick="nextCalendar();" title="click to query Next period" />
 		</td>
 	</tr>	
 	<tr>
@@ -33,40 +33,11 @@
 				</#if>
 			</#list>				
 			
-			<table border="0" width="85px">
-				<tr>
-					<td width="15px" align="center">
-						T:
-					</td>
-					<td width="70px" align="center">
-						<input name="MEASURE_DATA_TARGET:${yyyyMM}01" 
-							type="text"
-						    data-dojo-type="dijit/form/NumberTextBox"
-						    value="${targetValue}"
-						    data-dojo-props="constraints:{pattern: '#.##',min:-9999999.00,max:9999999.00, locale: 'en-us'},
-						    invalidMessage:'Please enter a numeric value.',
-						    rangeMessage:'Invalid value.'" 
-						    style="width: 70px;"
-						    maxlength="10" />							
-					</td>														
-				</tr>
-				<tr>
-					<td width="15px" align="center">
-						A:	
-					</td>
-					<td width="70px" align="center">
-						<input name="MEASURE_DATA_ACTUAL:${yyyyMM}01" 
-							type="text"
-						    data-dojo-type="dijit/form/NumberTextBox"
-						    value="${actualValue}"
-						    data-dojo-props="constraints:{pattern: '#.##',min:-9999999.00,max:9999999.00, locale: 'en-us'},
-						    invalidMessage:'Please enter a numeric value.',
-						    rangeMessage:'Invalid value.'" 
-						    style="width: 70px;"
-						    maxlength="10" />								
-					</td>														
-				</tr>						
-			</table> 			
+			<br/>
+		    <input type="text" class="form-control" name="MEASURE_DATA_TARGET:${yyyyMM}01" id="MEASURE_DATA_TARGET:${yyyyMM}01" value="${targetValue}" maxlength="12" placeholder="Enter target"></input>
+			<br/>
+			<input type="text" class="form-control" name="MEASURE_DATA_ACTUAL:${yyyyMM}01" id="MEASURE_DATA_ACTUAL:${yyyyMM}01" value="${actualValue}" maxlength="12" placeholder="Enter actual"></input>
+			<br/>	
 			   	
 		</td>	
 		<td bgcolor="#FFFFFF" align="center">
@@ -79,42 +50,13 @@
 					<#assign actualValue = masure.actual >					
 				</#if>
 			</#list>
-											
-			<table border="0" width="85px">
-				<tr>
-					<td width="15px" align="center">
-						T:
-					</td>
-					<td width="70px" align="center">
-						<input name="MEASURE_DATA_TARGET:${yyyyMM}08" 
-							type="text"
-						    data-dojo-type="dijit/form/NumberTextBox"
-						    value="${targetValue}"
-						    data-dojo-props="constraints:{pattern: '#.##',min:-9999999.00,max:9999999.00, locale: 'en-us'},
-						    invalidMessage:'Please enter a numeric value.',
-						    rangeMessage:'Invalid value.'" 
-						    style="width: 70px;"
-						    maxlength="10" />							
-					</td>														
-				</tr>
-				<tr>
-					<td width="15px" align="center">
-						A:	
-					</td>
-					<td width="70px" align="center">
-						<input name="MEASURE_DATA_ACTUAL:${yyyyMM}08" 
-							type="text"
-						    data-dojo-type="dijit/form/NumberTextBox"
-						    value="${actualValue}"
-						    data-dojo-props="constraints:{pattern: '#.##',min:-9999999.00,max:9999999.00, locale: 'en-us'},
-						    invalidMessage:'Please enter a numeric value.',
-						    rangeMessage:'Invalid value.'" 
-						    style="width: 70px;"
-						    maxlength="10" />								
-					</td>														
-				</tr>						
-			</table> 
-				
+
+			<br/>
+		    <input type="text" class="form-control" name="MEASURE_DATA_TARGET:${yyyyMM}08" id="MEASURE_DATA_TARGET:${yyyyMM}08" value="${targetValue}" maxlength="12" placeholder="Enter target"></input>
+			<br/>
+			<input type="text" class="form-control" name="MEASURE_DATA_ACTUAL:${yyyyMM}08" id="MEASURE_DATA_ACTUAL:${yyyyMM}08" value="${actualValue}" maxlength="12" placeholder="Enter actual"></input>
+			<br/>	
+			
 		</td>	
 		<td bgcolor="#FFFFFF" align="center">
 				
@@ -126,41 +68,12 @@
 					<#assign actualValue = masure.actual >					
 				</#if>
 			</#list>
-											
-			<table border="0" width="85px">
-				<tr>
-					<td width="15px" align="center">
-						T:
-					</td>
-					<td width="70px" align="center">
-						<input name="MEASURE_DATA_TARGET:${yyyyMM}15" 
-							type="text"
-						    data-dojo-type="dijit/form/NumberTextBox"
-						    value="${targetValue}"
-						    data-dojo-props="constraints:{pattern: '#.##',min:-9999999.00,max:9999999.00, locale: 'en-us'},
-						    invalidMessage:'Please enter a numeric value.',
-						    rangeMessage:'Invalid value.'" 
-						    style="width: 70px;"
-						    maxlength="10" />							
-					</td>														
-				</tr>
-				<tr>
-					<td width="15px" align="center">
-						A:	
-					</td>
-					<td width="70px" align="center">
-						<input name="MEASURE_DATA_ACTUAL:${yyyyMM}15" 
-							type="text"
-						    data-dojo-type="dijit/form/NumberTextBox"
-						    value="${actualValue}"
-						    data-dojo-props="constraints:{pattern: '#.##',min:-9999999.00,max:9999999.00, locale: 'en-us'},
-						    invalidMessage:'Please enter a numeric value.',
-						    rangeMessage:'Invalid value.'" 
-						    style="width: 70px;"
-						    maxlength="10" />								
-					</td>														
-				</tr>						
-			</table> 
+			
+			<br/>
+		    <input type="text" class="form-control" name="MEASURE_DATA_TARGET:${yyyyMM}15" id="MEASURE_DATA_TARGET:${yyyyMM}15" value="${targetValue}" maxlength="12" placeholder="Enter target"></input>
+			<br/>
+			<input type="text" class="form-control" name="MEASURE_DATA_ACTUAL:${yyyyMM}15" id="MEASURE_DATA_ACTUAL:${yyyyMM}15" value="${actualValue}" maxlength="12" placeholder="Enter actual"></input>
+			<br/>	
 			    		
 		</td>	
 		<td bgcolor="#FFFFFF" align="center">
@@ -173,46 +86,14 @@
 					<#assign actualValue = masure.actual >					
 				</#if>
 			</#list>
-											
-			<table border="0" width="85px">
-				<tr>
-					<td width="15px" align="center">
-						T:
-					</td>
-					<td width="70px" align="center">
-						<input name="MEASURE_DATA_TARGET:${yyyyMM}22" 
-							type="text"
-						    data-dojo-type="dijit/form/NumberTextBox"
-						    value="${targetValue}"
-						    data-dojo-props="constraints:{pattern: '#.##',min:-9999999.00,max:9999999.00, locale: 'en-us'},
-						    invalidMessage:'Please enter a numeric value.',
-						    rangeMessage:'Invalid value.'" 
-						    style="width: 70px;"
-						    maxlength="10" />							
-					</td>														
-				</tr>
-				<tr>
-					<td width="15px" align="center">
-						A:	
-					</td>
-					<td width="70px" align="center">
-						<input name="MEASURE_DATA_ACTUAL:${yyyyMM}22" 
-							type="text"
-						    data-dojo-type="dijit/form/NumberTextBox"
-						    value="${actualValue}"
-						    data-dojo-props="constraints:{pattern: '#.##',min:-9999999.00,max:9999999.00, locale: 'en-us'},
-						    invalidMessage:'Please enter a numeric value.',
-						    rangeMessage:'Invalid value.'" 
-						    style="width: 70px;"
-						    maxlength="10" />								
-					</td>														
-				</tr>						
-			</table> 	
-			    	
+
+			<br/>
+		    <input type="text" class="form-control" name="MEASURE_DATA_TARGET:${yyyyMM}22" id="MEASURE_DATA_TARGET:${yyyyMM}22" value="${targetValue}" maxlength="12" placeholder="Enter target"></input>
+			<br/>
+			<input type="text" class="form-control" name="MEASURE_DATA_ACTUAL:${yyyyMM}22" id="MEASURE_DATA_ACTUAL:${yyyyMM}22" value="${actualValue}" maxlength="12" placeholder="Enter actual"></input>
+			<br/>	
+			
 		</td>							
 	</tr>		
-	
-	<tr>
-		<td bgcolor="#E9E9E9" colspan="4"><b><font color="#333333">T (${targetValueName}) , A (${actualValueName})</font></b></td>
-	</tr>		
+		
 </table>	
