@@ -22,7 +22,6 @@
 package org.qifu.hillfog.controller;
 
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,6 +38,7 @@ import org.qifu.base.exception.ServiceException;
 import org.qifu.base.message.BaseSystemMessage;
 import org.qifu.base.model.ControllerMethodAuthority;
 import org.qifu.base.model.DefaultControllerJsonResultObj;
+import org.qifu.base.model.DefaultResult;
 import org.qifu.base.model.PleaseSelect;
 import org.qifu.core.util.TemplateUtils;
 import org.qifu.hillfog.entity.HfAggregationMethod;
@@ -47,6 +47,7 @@ import org.qifu.hillfog.entity.HfFormula;
 import org.qifu.hillfog.entity.HfKpi;
 import org.qifu.hillfog.entity.HfMeasureData;
 import org.qifu.hillfog.entity.HfOrgDept;
+import org.qifu.hillfog.logic.IMeasureDataLogicService;
 import org.qifu.hillfog.model.KpiBasicCode;
 import org.qifu.hillfog.model.MeasureDataCode;
 import org.qifu.hillfog.service.IAggregationMethodService;
@@ -94,6 +95,9 @@ public class MeasureDataController extends BaseControllerSupport implements IPag
 	
 	@Autowired
 	IOrgDeptService<HfOrgDept, String> orgDeptService;	
+	
+	@Autowired
+	IMeasureDataLogicService measureDataLogicService;
 	
 	@Override
 	public String viewPageNamespace() {
@@ -237,13 +241,16 @@ public class MeasureDataController extends BaseControllerSupport implements IPag
 				fieldDataList.add(miMap);
 			}
 		}
-		// kpiOid
-		/*
-		 * dataFor
-		 * frequency
-		 * account
-		 * orgId
-		 */
+		DefaultResult<Boolean> uResult = this.measureDataLogicService.createOrUpdate(
+				request.getParameter("kpiOid"), 
+				request.getParameter("frequency"), 
+				request.getParameter("date"),
+				request.getParameter("dataFor"), 
+				request.getParameter("account"),
+				request.getParameter("orgId"));
+		if (uResult.getValue() != null && uResult.getValue()) {
+			uResult.setSuccess(YES);
+		}
 	}
 	
 	@ControllerMethodAuthority(check = true, programId = "HF_PROG001D0005M")
@@ -300,13 +307,7 @@ public class MeasureDataController extends BaseControllerSupport implements IPag
 		parameter.put("dataFor", dataFor);
 		parameter.put("kpi", kpi);
 		parameter.put("orgId", MeasureDataCode.MEASURE_DATA_ORGANIZATION_FULL);
-		parameter.put("empId", MeasureDataCode.MEASURE_DATA_EMPLOYEE_FULL);			
-//		if (KpiBasicCode.DATA_TYPE_BOTH.equals(dataFor) || KpiBasicCode.DATA_TYPE_DEPARTMENT.equals(dataFor)) {
-//			parameter.put("orgId", orgId);
-//		}
-//		if (KpiBasicCode.DATA_TYPE_BOTH.equals(dataFor) || KpiBasicCode.DATA_TYPE_PERSONAL.equals(dataFor)) {
-//			parameter.put("account", account);
-//		}		
+		parameter.put("empId", MeasureDataCode.MEASURE_DATA_EMPLOYEE_FULL);
 		parameter.put("orgId", orgId);
 		parameter.put("account", account);
 		parameter.put("masureDatas", findMeasureData(kpi, date, frequency, dataFor, (String)parameter.get("orgId"), (String)parameter.get("account")) );

@@ -214,8 +214,6 @@ function paintContent() {
 <#import "../common-f-head.ftl" as cfh />
 <@cfh.commonFormHeadContent /> 
     
-    <input type="hidden" name="date" id="date" value="${systemDate}">
-    
 	<div class="row">
 		<div class="col p-2 bg-secondary rounded">
 			<span class="badge badge-info"><h6>${kpi.id}&nbsp;-&nbsp;${kpi.name}</h6></span>
@@ -243,6 +241,7 @@ function paintContent() {
 	<form id="measureDataForm" name="measureDataForm" action=".">
 		
 		<input type="hidden" name="kpiOid" id="kpiOid" value="${kpi.oid}">
+		<input type="hidden" name="date" id="date" value="${systemDate}">
 		
 		<br>
 		
