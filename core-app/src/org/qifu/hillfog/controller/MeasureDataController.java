@@ -22,6 +22,7 @@
 package org.qifu.hillfog.controller;
 
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -225,23 +226,35 @@ public class MeasureDataController extends BaseControllerSupport implements IPag
 		return result;		
 	}		
 	
+	private void update(DefaultControllerJsonResultObj<Boolean> result, HttpServletRequest request) throws AuthorityException, ControllerException, ServiceException, Exception {
+		List<Map<String, String>> fieldDataList = new ArrayList<Map<String, String>>();
+		while (request.getParameterNames().hasMoreElements()) {
+			String paramName = request.getParameterNames().nextElement();
+			if (paramName.startsWith(MeasureDataCode.MEASURE_DATA_TARGET_ID)) {
+				Map<String, String> miMap = new HashMap<String, String>();
+				miMap.put(MeasureDataCode.MEASURE_DATA_TARGET_ID, StringUtils.defaultString(request.getParameter(MeasureDataCode.MEASURE_DATA_TARGET_ID)).trim());
+				miMap.put(MeasureDataCode.MEASURE_DATA_ACTUAL_ID, StringUtils.defaultString(request.getParameter(MeasureDataCode.MEASURE_DATA_ACTUAL_ID)).trim());
+				fieldDataList.add(miMap);
+			}
+		}
+		// kpiOid
+		/*
+		 * dataFor
+		 * frequency
+		 * account
+		 * orgId
+		 */
+	}
+	
 	@ControllerMethodAuthority(check = true, programId = "HF_PROG001D0005M")
 	@RequestMapping(value = "/hfMeasureDataUpdateJson", produces = MediaType.APPLICATION_JSON_VALUE)		
-	public @ResponseBody DefaultControllerJsonResultObj<Boolean> doUpdate(HttpServletRequest request, HfKpi kpi) {
+	public @ResponseBody DefaultControllerJsonResultObj<Boolean> doUpdate(HttpServletRequest request) {
 		DefaultControllerJsonResultObj<Boolean> result = this.getDefaultJsonResult(this.currentMethodAuthority());
 		if (!this.isAuthorizeAndLoginFromControllerJsonResult(result)) {
 			return result;
 		}
 		try {
-			/*
-			this.update(
-					result, 
-					kpi, 
-					request.getParameter("forOid"), 
-					request.getParameter("aggrOid"), 
-					request.getParameter("selKpiDept"), 
-					request.getParameter("selKpiEmp"));
-			*/
+			this.update(result, request);
 		} catch (AuthorityException | ServiceException | ControllerException e) {
 			this.baseExceptionResult(result, e);	
 		} catch (Exception e) {
@@ -263,20 +276,6 @@ public class MeasureDataController extends BaseControllerSupport implements IPag
 	private HfKpi findKpi(String oid) throws ServiceException, Exception {
 		return this.kpiService.selectByPrimaryKey(oid).getValueEmptyThrowMessage();
 	}	
-	
-	private HfEmployee findEmployee(String account) throws ServiceException, Exception {
-		HfEmployee employee = new HfEmployee();
-		employee.setAccount(account);
-		employee = this.employeeService.selectByUniqueKey(employee).getValueEmptyThrowMessage();
-		return employee;
-	}
-	
-	private HfOrgDept findOrganization(String orgId) throws ServiceException, Exception {
-		HfOrgDept orgDept = new HfOrgDept();
-		orgDept.setOrgId(orgId);
-		orgDept = this.orgDeptService.selectByUniqueKey(orgDept).getValueEmptyThrowMessage();
-		return orgDept;
-	}
 	
 	private List<HfMeasureData> findMeasureData(HfKpi kpi, String date, String frequency, String dataFor, String orgId, String account) throws ServiceException, Exception {
 		List<HfMeasureData> searchList = null;

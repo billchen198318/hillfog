@@ -242,6 +242,8 @@ function paintContent() {
 
 	<form id="measureDataForm" name="measureDataForm" action=".">
 		
+		<input type="hidden" name="kpiOid" id="kpiOid" value="${kpi.oid}">
+		
 		<br>
 		
 		<span id="content"></span>
@@ -254,10 +256,7 @@ function paintContent() {
 	<div class="col-xs-6 col-md-6 col-lg-6">
 		<@qifu.button id="btnUpdate" label="Save"
 			xhrUrl="./hfMeasureDataUpdateJson"
-			xhrParameter="
-			{
-			}
-			"
+			formId="measureDataForm"
 			onclick="btnUpdate();"
 			loadFunction="updateSuccess(data);"
 			errorFunction="clearUpdate();" />
