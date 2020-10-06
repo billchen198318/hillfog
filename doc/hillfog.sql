@@ -46,6 +46,7 @@ CREATE TABLE `hf_aggregation_method` (
 
 LOCK TABLES `hf_aggregation_method` WRITE;
 /*!40000 ALTER TABLE `hf_aggregation_method` DISABLE KEYS */;
+INSERT INTO `hf_aggregation_method` VALUES ('07675b9f-07d3-11eb-a5e8-a7944d4e6612','MAX_001','Max','GROOVY','import org.qifu.hillfog.util.*;\n\nscore = AggregationMethod.build().max(kpi);\n','import org.qifu.hillfog.util.*;\n\nAggregationMethod.build().maxDateRange(kpi);\n','get max score!','admin','2020-10-06 12:54:10',NULL,NULL),('1f2dbe0b-07d2-11eb-a5e8-31faaa9ef6bf','AVG_001','Average','GROOVY','import org.qifu.hillfog.util.*;\n\nscore = AggregationMethod.build().average(kpi);\n','import org.qifu.hillfog.util.*;\n\nAggregationMethod.build().averageDateRange(kpi);\n','for Average!','admin','2020-10-06 12:47:41',NULL,NULL),('337a2a10-07d3-11eb-a5e8-6ba5d1ef74bc','MIN_001','Min','GROOVY','import org.qifu.hillfog.util.*;\n\nscore = AggregationMethod.build().min(kpi);\n','import org.qifu.hillfog.util.*;\n\nAggregationMethod.build().minDateRange(kpi);\n','get min score!','admin','2020-10-06 12:55:24',NULL,NULL),('5595cffc-07d2-11eb-a5e8-9156c2b89371','AVG_002','Avg Dist (average distinct)','GROOVY','import org.qifu.hillfog.util.*;\n\nscore = AggregationMethod.build().averageDistinct(kpi);\n','import org.qifu.hillfog.util.*;\n\nAggregationMethod.build().averageDistinctDateRange(kpi);\n','For example, the average of (10, 10, 20) is 40/3, but the distinct average of (10, 10, 20) is 30/3.','admin','2020-10-06 12:49:12','admin','2020-10-06 12:52:02'),('5d65d2c1-07d3-11eb-a5e8-03b3da263274','SUM_001','Sum','GROOVY','import org.qifu.hillfog.util.*;\n\nscore = AggregationMethod.build().sum(kpi);\n','import org.qifu.hillfog.util.*;\n\nAggregationMethod.build().sumDateRange(kpi);\n','for Sum!','admin','2020-10-06 12:56:35',NULL,NULL),('84a98cf2-07d3-11eb-a5e8-a78a4a0f6d92','SUM_002','Sum Dist (sum distinct)','GROOVY','import org.qifu.hillfog.util.*;\n\nscore = AggregationMethod.build().sumDistinct(kpi);\n','import org.qifu.hillfog.util.*;\n\nAggregationMethod.build().sumDistinctDateRange(kpi);\n','For example, the sum of (10,10) is 20, but the distinct sum of (10,10) is 10.','admin','2020-10-06 12:57:41',NULL,NULL),('868fce8d-07d2-11eb-a5e8-938551191f7a','CNT_001','Count','GROOVY','import org.qifu.hillfog.util.*;\n\nscore = AggregationMethod.build().count(kpi);\n','import org.qifu.hillfog.util.*;\n\nAggregationMethod.build().countDateRange(kpi);\n','returns the count records of measure data. \nDoes not require the calculation formula.','admin','2020-10-06 12:50:34','admin','2020-10-06 12:52:15'),('b22b4a1e-07d2-11eb-a5e8-85cf340d68c6','CNT_002','Count Dist (count distinct)','GROOVY','import org.qifu.hillfog.util.*;\n\nscore = AggregationMethod.build().countDistinct(kpi);\n','import org.qifu.hillfog.util.*;\n\nAggregationMethod.build().countDistinctDateRange(kpi);\n','For example, the count of (1, 1, 2, 3) is 4, but the distinct count of (1, 1, 2, 3) is 3.','admin','2020-10-06 12:51:47','admin','2020-10-06 12:52:49');
 /*!40000 ALTER TABLE `hf_aggregation_method` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -126,7 +127,7 @@ CREATE TABLE `hf_formula` (
   `TYPE` varchar(10) NOT NULL,
   `RETURN_MODE` varchar(1) NOT NULL DEFAULT 'D',
   `RETURN_VAR` varchar(50) NOT NULL DEFAULT '',
-  `EXPRESSION` varchar(500) NOT NULL,
+  `EXPRESSION` varchar(4000) NOT NULL,
   `DESCRIPTION` varchar(500) DEFAULT NULL,
   `CUSERID` varchar(24) NOT NULL,
   `CDATE` datetime NOT NULL,
@@ -144,6 +145,7 @@ CREATE TABLE `hf_formula` (
 
 LOCK TABLES `hf_formula` WRITE;
 /*!40000 ALTER TABLE `hf_formula` DISABLE KEYS */;
+INSERT INTO `hf_formula` VALUES ('6349c44a-07d1-11eb-a5e8-ef9de1a822a0','F001','percent of target','GROOVY','C','ans','import org.apache.commons.lang3.math.*;\nimport java.lang.*;\n\nif ($P{actual} > 0 && $P{target} > 0 ) {\n    ans = $P{actual} ÷ $P{target} × 100;\n    return ans;\n}\nif (\n    ($P{actual} <= 0 && $P{target} < 0 && $P{actual} >= $P{target})\n    ||\n    ($P{actual} <= 0 && $P{target} < 0 && $P{actual} < $P{target})\n    ||\n    ($P{actual} > 0 && $P{target} < 0 )\n) {\n    ans = (((($P{target} - $P{actual}) ÷ $P{target}) × 100) + 100);\n    return ans;\n}\nif ($P{actual} < 0 && $P{target} > 0 ) {\n    ans = (((($P{actual} - $P{target}) ÷ $P{target}) × 100) + 100);\n    return ans;\n}\nif ($P{actual} == 0 && $P{target} > 0 ) {\n    ans = BigDecimal.ZERO;\n    return ans;\n}\nif ($P{actual} >= 0 && $P{target} == 0 ) {\n    ans = (($P{actual} × 100) + 100);\n    return ans;\n}\nif ($P{actual} < 0 && $P{target} == 0 ) {\n    ans = (($P{actual} × 100) + 100);\n    return ans;\n}\nans = BigDecimal.ZERO;\nreturn ans;','','admin','2020-10-06 12:42:26',NULL,NULL);
 /*!40000 ALTER TABLE `hf_formula` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1171,4 +1173,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-10-03 21:36:10
+-- Dump completed on 2020-10-06 20:58:48
