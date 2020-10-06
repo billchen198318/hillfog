@@ -22,6 +22,7 @@
 package org.qifu.hillfog.controller;
 
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,6 +31,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
+import org.qifu.base.Constants;
 import org.qifu.base.controller.BaseControllerSupport;
 import org.qifu.base.controller.IPageNamespaceProvide;
 import org.qifu.base.exception.AuthorityException;
@@ -63,6 +65,7 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -232,12 +235,15 @@ public class MeasureDataController extends BaseControllerSupport implements IPag
 	
 	private void update(DefaultControllerJsonResultObj<Boolean> result, HttpServletRequest request) throws AuthorityException, ControllerException, ServiceException, Exception {
 		List<Map<String, String>> fieldDataList = new ArrayList<Map<String, String>>();
-		while (request.getParameterNames().hasMoreElements()) {
-			String paramName = request.getParameterNames().nextElement();
+		Enumeration<String> reqParam = request.getParameterNames();
+		while (reqParam.hasMoreElements()) {
+			String paramName = reqParam.nextElement();
 			if (paramName.startsWith(MeasureDataCode.MEASURE_DATA_TARGET_ID)) {
+				String dateStr = paramName.split(Constants.INPUT_NAME_DELIMITER)[1];
+				String actualParamName = MeasureDataCode.MEASURE_DATA_ACTUAL_ID + dateStr;
 				Map<String, String> miMap = new HashMap<String, String>();
-				miMap.put(MeasureDataCode.MEASURE_DATA_TARGET_ID, StringUtils.defaultString(request.getParameter(MeasureDataCode.MEASURE_DATA_TARGET_ID)).trim());
-				miMap.put(MeasureDataCode.MEASURE_DATA_ACTUAL_ID, StringUtils.defaultString(request.getParameter(MeasureDataCode.MEASURE_DATA_ACTUAL_ID)).trim());
+				miMap.put(paramName, StringUtils.defaultString(request.getParameter(paramName)).trim());
+				miMap.put(actualParamName, StringUtils.defaultString(request.getParameter(actualParamName)).trim());
 				fieldDataList.add(miMap);
 			}
 		}
@@ -255,7 +261,7 @@ public class MeasureDataController extends BaseControllerSupport implements IPag
 	}
 	
 	@ControllerMethodAuthority(check = true, programId = "HF_PROG001D0005M")
-	@RequestMapping(value = "/hfMeasureDataUpdateJson", produces = MediaType.APPLICATION_JSON_VALUE)		
+	@RequestMapping(value = "/hfMeasureDataUpdateJson", method = RequestMethod.POST)	
 	public @ResponseBody DefaultControllerJsonResultObj<Boolean> doUpdate(HttpServletRequest request) {
 		DefaultControllerJsonResultObj<Boolean> result = this.getDefaultJsonResult(this.currentMethodAuthority());
 		if (!this.isAuthorizeAndLoginFromControllerJsonResult(result)) {

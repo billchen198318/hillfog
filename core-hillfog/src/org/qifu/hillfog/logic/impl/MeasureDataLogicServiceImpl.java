@@ -101,11 +101,11 @@ public class MeasureDataLogicServiceImpl extends BaseLogicService implements IMe
 					String fieldDate = entry.getKey().split(Constants.INPUT_NAME_DELIMITER)[1];
 					String actual = fieldMap.get(MeasureDataCode.MEASURE_DATA_ACTUAL_ID + fieldDate);
 					String target = fieldMap.get(MeasureDataCode.MEASURE_DATA_TARGET_ID + fieldDate);
-					this.deleteMeasureData(kpi, frequency, date, account, orgId);
+					this.deleteMeasureData(kpi, frequency, fieldDate, account, orgId);
 					if (!(NumberUtils.isCreatable(actual) && NumberUtils.isCreatable(target))) {
 						continue;
 					}
-					this.createMeasureData(kpi, frequency, date, account, orgId, new BigDecimal(target), new BigDecimal(actual));
+					this.createMeasureData(kpi, frequency, fieldDate, account, orgId, new BigDecimal(target), new BigDecimal(actual));
 				}
 			}
 		}

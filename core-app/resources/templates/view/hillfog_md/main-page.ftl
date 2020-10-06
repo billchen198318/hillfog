@@ -136,6 +136,16 @@ $( document ).ready(function() {
 	
 });
 
+function updateSuccess(data) {
+	if ( _qifu_success_flag != data.success ) {
+		parent.toastrWarning( data.message );
+		paintContent();
+		return;
+	}
+	parent.toastrInfo( data.message );
+	paintContent();
+}
+
 function clearUpdate() {
 	paintContent( _qifu_please_select_id );
 }
