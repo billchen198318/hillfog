@@ -259,6 +259,7 @@ function paintContent() {
 			onclick="btnUpdate();"
 			loadFunction="updateSuccess(data);"
 			errorFunction="clearUpdate();" />
+		&nbsp;	
 		<@qifu.button id="btnClear" label="Clear" onclick="clearUpdate();" />
 	</div>
 </div>

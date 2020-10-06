@@ -55,7 +55,7 @@ function ${onclick}() {
 	<#if xhrSendNoPleaseWait == "Y" >
 	xhrSendFormNoPleaseWait(
 	</#if>
-	<#if xhrSendForm != "Y" >
+	<#if xhrSendNoPleaseWait != "Y" >
 	xhrSendForm(
 	</#if>
 		'${xhrUrl}',
