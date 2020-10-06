@@ -87,9 +87,7 @@ $( document ).ready(function() {
 			$("#kpiOrga").trigger('change');
 		}
 	}).focus(function() {
-		if ($(this).val() == ' ' || $(this).val() =='') {
-			$(this).autocomplete("search", " ");
-		}
+		$(this).autocomplete("search", " ");
 	});
 	$("#kpiEmpl").autocomplete({
 		source: empList,
@@ -98,9 +96,7 @@ $( document ).ready(function() {
 			$("#kpiEmpl").trigger('change');
 		}
 	}).focus(function() {
-		if ($(this).val() == ' ' || $(this).val() =='') {
-			$(this).autocomplete("search", " ");
-		}
+		$(this).autocomplete("search", " ");
 	});		
 	
 	$("#kpiOrga").change(function(){
