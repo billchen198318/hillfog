@@ -156,6 +156,13 @@ public class KpiBasicCode {
 		return quasiRangeMap;
 	}
 	
+	public static boolean isDataFor(String dataFor) {
+		if (DATA_TYPE_DEPARTMENT.equals(dataFor) || DATA_TYPE_PERSONAL.equals(dataFor) || DATA_TYPE_BOTH.equals(dataFor)) {
+			return true;
+		}
+		return false;
+	}
+	
 	// -------------------------------------------------------------------------------------------
 	
 	/**

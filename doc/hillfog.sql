@@ -268,7 +268,7 @@ CREATE TABLE `hf_measure_data` (
   `UUSERID` varchar(24) DEFAULT NULL,
   `UDATE` datetime DEFAULT NULL,
   PRIMARY KEY (`OID`),
-  UNIQUE KEY `UK_1` (`KPI_ID`,`DATE`),
+  UNIQUE KEY `UK_1` (`KPI_ID`,`DATE`,`FREQUENCY`,`ORG_ID`,`ACCOUNT`) USING BTREE,
   KEY `IDX_1` (`FREQUENCY`,`ORG_ID`,`ACCOUNT`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;

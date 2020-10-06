@@ -247,7 +247,8 @@ public class MeasureDataController extends BaseControllerSupport implements IPag
 				request.getParameter("date"),
 				request.getParameter("dataFor"), 
 				request.getParameter("account"),
-				request.getParameter("orgId"));
+				request.getParameter("orgId"),
+				fieldDataList);
 		if (uResult.getValue() != null && uResult.getValue()) {
 			uResult.setSuccess(YES);
 		}

@@ -21,11 +21,14 @@
  */
 package org.qifu.hillfog.logic;
 
+import java.util.List;
+import java.util.Map;
+
 import org.qifu.base.exception.ServiceException;
 import org.qifu.base.model.DefaultResult;
 
 public interface IMeasureDataLogicService {
 	
-	public DefaultResult<Boolean> createOrUpdate(String kpiOid, String frequency, String date, String dataFor, String account, String orgId) throws ServiceException, Exception;
+	public DefaultResult<Boolean> createOrUpdate(String kpiOid, String frequency, String date, String dataFor, String account, String orgId, List<Map<String, String>> fieldDataList) throws ServiceException, Exception;
 	
 }

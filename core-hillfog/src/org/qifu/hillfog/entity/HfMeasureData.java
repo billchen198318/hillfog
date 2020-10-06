@@ -69,6 +69,7 @@ public class HfMeasureData implements java.io.Serializable {
         this.actual = actual;
     }
     
+    @EntityUK(name = "frequency")
     public String getFrequency() {
         return frequency;
     }
@@ -77,6 +78,7 @@ public class HfMeasureData implements java.io.Serializable {
         this.frequency = frequency;
     }
     
+    @EntityUK(name = "orgId")
     public String getOrgId() {
         return orgId;
     }
@@ -85,6 +87,7 @@ public class HfMeasureData implements java.io.Serializable {
         this.orgId = orgId;
     }
     
+    @EntityUK(name = "account")
     public String getAccount() {
 		return account;
 	}
