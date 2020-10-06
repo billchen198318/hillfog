@@ -143,11 +143,15 @@ function updateSuccess(data) {
 		return;
 	}
 	parent.toastrInfo( data.message );
-	paintContent();
+	//paintContent();
 }
 
 function clearUpdate() {
-	paintContent( _qifu_please_select_id );
+	dateStatus = "0";
+	$("#frequency").val( _qifu_please_select_id );
+	$("#kpiEmpl").val( '' );
+	$("#kpiOrga").val( '' );
+	paintContent();
 }
 
 function prevCalendar() {
