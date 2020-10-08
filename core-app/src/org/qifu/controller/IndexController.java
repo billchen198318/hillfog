@@ -52,7 +52,7 @@ public class IndexController extends BaseControllerSupport {
 		return viewName;
 	}	
 	
-	@RequestMapping({"/", "/index"})
+	@RequestMapping({"/index"}) // "/", "/index"
 	public String index(ModelMap mm, HttpServletRequest request) {
 		String viewName = this.viewPage( "index" );
 		this.getDefaultModelMap(mm);
