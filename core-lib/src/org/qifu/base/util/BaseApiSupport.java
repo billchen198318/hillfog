@@ -116,7 +116,7 @@ public class BaseApiSupport extends YesNo {
 	}	
 	
 	protected <T> void noSuccessResult(DefaultResult<T> result, Exception e) {
-		this.noSuccessResult(result, ( e != null ? e.getMessage().toString() : BaseSystemMessage.objectNull() ));		
-	}	
+		this.noSuccessResult(result, ( (e != null && e.getMessage() !=null) ? e.getMessage().toString() : BaseSystemMessage.objectNull() ));		
+	}
 	
 }
