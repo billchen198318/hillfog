@@ -66,12 +66,6 @@ public class BaseApiSupport extends YesNo {
 		return result;
 	}
 	
-	protected <T> QueryResult<T> initQueryResult() {
-		QueryResult<T> result = new QueryResult<T>();
-		this.initResult(result);
-		return result;
-	}	
-	
 	protected <T> void initResult(QueryResult<T> result) {
 		if (result == null) {
 			return;
