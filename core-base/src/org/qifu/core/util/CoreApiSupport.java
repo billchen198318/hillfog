@@ -109,7 +109,7 @@ public class CoreApiSupport extends BaseApiSupport {
 	}
 	*/
 
-	public <T> void fillEventResult2ResponseResult(DefaultResult<T> queryResult, DefaultResult<T> responseResult) {
+	public <T> void fillEventResult2ResponseResult(QueryResult<T> queryResult, QueryResult<T> responseResult) {
 		if (queryResult == null || responseResult == null) {
 			return;
 		}
@@ -128,9 +128,33 @@ public class CoreApiSupport extends BaseApiSupport {
 		}
 	}
 	
+	public <T> void fillEventResult2ResponseResult(DefaultResult<T> queryResult, QueryResult<T> responseResult) {
+		if (queryResult == null || responseResult == null) {
+			return;
+		}
+		// FIXME: 要改 UserLocalUtils 為 Apache-shiro 或別的登入session管理元件
+		if (UserLocalUtils.getUserInfo() != null) {
+			responseResult.setIsAuth(YES);
+		}
+		if (StringUtils.isBlank(responseResult.getMessage())) {
+			if (!StringUtils.isBlank(queryResult.getMessage())) {
+				responseResult.setMessage( queryResult.getMessage() );
+			}
+		}
+		if ( queryResult.getValue() != null ) {
+			responseResult.setValue( queryResult.getValue() );
+			this.successResult(responseResult);
+		}
+	}	
+	
 	public <T> void fillEventResult2ResponseResultForPage(QueryResult<T> queryResult, QueryResult<T> responseResult, PageOf pageOf) {
 		this.fillEventResult2ResponseResult(queryResult, responseResult);
 		responseResult.setPageOf( pageOf );
 	}		
 
+	public <T> void fillEventResult2ResponseResultForPage(DefaultResult<T> queryResult, QueryResult<T> responseResult, PageOf pageOf) {
+		this.fillEventResult2ResponseResult(queryResult, responseResult);
+		responseResult.setPageOf( pageOf );
+	}	
+	
 }

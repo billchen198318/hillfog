@@ -22,7 +22,6 @@
 package org.qifu.base.util;
 
 import org.qifu.base.message.BaseSystemMessage;
-import org.qifu.base.model.DefaultResult;
 import org.qifu.base.model.QueryParamBuilder;
 import org.qifu.base.model.QueryResult;
 import org.qifu.base.model.SearchBody;
@@ -61,8 +60,8 @@ public class BaseApiSupport extends YesNo {
 	}
 	*/
 	
-	protected <T> DefaultResult<T> initResult() {
-		DefaultResult<T> result = new DefaultResult<T>();
+	protected <T> QueryResult<T> initResult() {
+		QueryResult<T> result = new QueryResult<T>();
 		this.initResult(result);
 		return result;
 	}
@@ -73,7 +72,7 @@ public class BaseApiSupport extends YesNo {
 		return result;
 	}	
 	
-	protected <T> void initResult(DefaultResult<T> result) {
+	protected <T> void initResult(QueryResult<T> result) {
 		if (result == null) {
 			return;
 		}
@@ -85,14 +84,14 @@ public class BaseApiSupport extends YesNo {
 		result.setSuccess(NO);
 	}
 	
-	protected <T> void successResult(DefaultResult<T> result) {
+	protected <T> void successResult(QueryResult<T> result) {
 		if (result == null) {
 			return;
 		}
 		result.setSuccess(YES);
 	}
 	
-	protected <T> void successResult(DefaultResult<T> result, T value) {
+	protected <T> void successResult(QueryResult<T> result, T value) {
 		if (result == null) {
 			return;
 		}
@@ -100,14 +99,14 @@ public class BaseApiSupport extends YesNo {
 		result.setValue(value);
 	}
 	
-	protected <T> void noSuccessResult(DefaultResult<T> result) {
+	protected <T> void noSuccessResult(QueryResult<T> result) {
 		if (result == null) {
 			return;
 		}
 		result.setSuccess(NO);
 	}
 	
-	protected <T> void noSuccessResult(DefaultResult<T> result, String message) {
+	protected <T> void noSuccessResult(QueryResult<T> result, String message) {
 		if (result == null) {
 			return;
 		}
@@ -115,8 +114,8 @@ public class BaseApiSupport extends YesNo {
 		result.setMessage(message);
 	}	
 	
-	protected <T> void noSuccessResult(DefaultResult<T> result, Exception e) {
+	protected <T> void noSuccessResult(QueryResult<T> result, Exception e) {
 		this.noSuccessResult(result, ( (e != null && e.getMessage() !=null) ? e.getMessage().toString() : BaseSystemMessage.objectNull() ));		
-	}
+	}	
 	
 }

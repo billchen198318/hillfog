@@ -21,11 +21,50 @@
  */
 package org.qifu.base.model;
 
-public class QueryResult<T> extends DefaultResult<T> {
-	
+public class QueryResult<T> implements java.io.Serializable {
 	private static final long serialVersionUID = 6153648506077402779L;
 	
 	private PageOf pageOf;
+	
+	private String isAuth = YesNo.NO;
+	
+	private String success = YesNo.NO;
+	
+	private String message = "";
+	
+	private T value;
+
+	public String getIsAuth() {
+		return isAuth;
+	}
+
+	public void setIsAuth(String isAuth) {
+		this.isAuth = isAuth;
+	}
+
+	public String getSuccess() {
+		return success;
+	}
+
+	public void setSuccess(String success) {
+		this.success = success;
+	}
+
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
+	}
+
+	public T getValue() {
+		return value;
+	}
+
+	public void setValue(T value) {
+		this.value = value;
+	}	
 
 	public PageOf getPageOf() {
 		return pageOf;
