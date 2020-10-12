@@ -100,7 +100,7 @@ public class PageOf implements java.io.Serializable {
 			orderBy = "";
 		}
 		orderBy = orderBy.replaceAll(" ", "").replaceAll("\r", "").replaceAll("\t", "")
-				.replaceAll("\n", "").replaceAll(";", "").replaceAll("\"", "")
+				.replaceAll("\n", "").replaceAll(";", "")//.replaceAll("\"", "")
 				.replaceAll("'", "").replaceAll("-", "");
 		return orderBy;
 	}
