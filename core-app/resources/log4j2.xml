@@ -23,12 +23,10 @@
     <Loggers>
     
     	<!-- 3rdparty Loggers -->  
-    	<!--  
     	<logger name="org.springframework.core" level="info"></logger>  
     	<logger name="org.springframework.beans" level="info"></logger>  
     	<logger name="org.springframework.context" level="info"></logger>  
     	<logger name="org.springframework.web" level="info"></logger>      
-    	-->   
     	
     	<!-- [trace] or [debug] for developer mode , [info] for product mode -->
         <Logger name="org.qifu" level="trace" additivity="false">
