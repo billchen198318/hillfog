@@ -21,6 +21,7 @@
  */
 package org.qifu.hillfog.util;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -90,7 +91,7 @@ public class FormulaUtils {
 		return results;
 	}
 	
-	public static Object parse(HfFormula formula, HfKpi kpi, HfMeasureData data) throws Exception {
+	public static BigDecimal parse(HfKpi kpi, HfFormula formula, HfMeasureData data) throws Exception {
 		if (formula == null || StringUtils.isBlank(formula.getType()) || StringUtils.isBlank(formula.getExpression()) ) {
 			throw new java.lang.IllegalArgumentException("formula data cannot blank!");
 		}
@@ -102,7 +103,7 @@ public class FormulaUtils {
 		} else {
 			resultObj = results.get(DEFAULT_RETURN_MODE_VAR);
 		}
-		return resultObj;
+		return (BigDecimal) resultObj;
 	}
 	
 	private static String handlerExpression(String type, String returnMode, String expression) throws Exception {

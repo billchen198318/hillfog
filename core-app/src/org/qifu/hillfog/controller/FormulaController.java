@@ -213,7 +213,7 @@ public class FormulaController extends BaseControllerSupport implements IPageNam
 		measureData.setActual( new BigDecimal(testMeasureActual) );
 		measureData.setTarget( new BigDecimal(testMeasureTarget) );
 		
-		Object retValue = FormulaUtils.parse(formula, kpi, measureData);
+		Object retValue = FormulaUtils.parse(kpi, formula, measureData);
 		if (null != retValue) {
 			result.setMessage( "Calculation success: " + retValue );
 			result.setValue(retValue);
