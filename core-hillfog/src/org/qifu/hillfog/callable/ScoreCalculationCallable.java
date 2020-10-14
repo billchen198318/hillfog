@@ -33,13 +33,13 @@ import org.joda.time.Months;
 import org.joda.time.Years;
 import org.qifu.hillfog.entity.HfKpi;
 import org.qifu.hillfog.model.MeasureDataCode;
-import org.qifu.hillfog.model.ScoreCalculationData;
 import org.qifu.hillfog.model.ScoreColor;
 import org.qifu.hillfog.util.AggregationMethod;
 import org.qifu.hillfog.util.AggregationMethodUtils;
 import org.qifu.hillfog.util.FormulaUtils;
 import org.qifu.hillfog.util.ScoreColorUtils;
 import org.qifu.hillfog.vo.DateRangeScore;
+import org.qifu.hillfog.vo.ScoreCalculationData;
 import org.qifu.util.SimpleUtils;
 
 public class ScoreCalculationCallable implements Callable<ScoreCalculationData> {

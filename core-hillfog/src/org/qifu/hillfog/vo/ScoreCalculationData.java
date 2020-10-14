@@ -19,7 +19,7 @@
  * contact: chen.xin.nien@gmail.com
  * 
  */
-package org.qifu.hillfog.model;
+package org.qifu.hillfog.vo;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -27,7 +27,6 @@ import java.util.List;
 import org.qifu.hillfog.entity.HfFormula;
 import org.qifu.hillfog.entity.HfKpi;
 import org.qifu.hillfog.entity.HfMeasureData;
-import org.qifu.hillfog.vo.DateRangeScore;
 
 public class ScoreCalculationData implements java.io.Serializable {
 	private static final long serialVersionUID = 4895615892970938138L;
