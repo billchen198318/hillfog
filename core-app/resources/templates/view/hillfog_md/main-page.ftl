@@ -150,6 +150,14 @@ function clearUpdate() {
 	paintContent();
 }
 
+function btnUpdateTBclick() {
+	if ($("#btnUpdate").is(':disabled')) {
+		parent.toastrWarning( 'Please select Frequency and Organization or Employee!' );
+		return;
+	}
+	btnUpdate();
+}
+
 function prevCalendar() {
 	dateStatus = "-1";
 	paintContent();
@@ -214,8 +222,8 @@ function paintContent() {
 	refreshJsMethod="window.location=parent.getProgUrlForOid('HF_PROG001D0005M', '${kpi.oid}');" 
 	createNewEnable="N"
 	createNewJsMethod=""
-	saveEnabel="N" 
-	saveJsMethod="" 	
+	saveEnabel="Y" 
+	saveJsMethod="btnUpdateTBclick();" 	
 	cancelEnable="Y" 
 	cancelJsMethod="parent.closeTab('HF_PROG001D0005M');"
 	programName="${programName}"

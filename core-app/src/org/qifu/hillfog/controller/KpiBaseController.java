@@ -220,7 +220,7 @@ public class KpiBaseController extends BaseControllerSupport implements IPageNam
 		.testField("unit", kpi, "@org.apache.commons.lang3.StringUtils@isBlank(unit)", "Unit is blank!")
 		.testField("management", PleaseSelect.noSelect(kpi.getManagement()), "Please select management!")
 		.testField("compareType", PleaseSelect.noSelect(kpi.getCompareType()), "Please select compare type!")
-		.testField("quasiRange", kpi, "!@org.apache.commons.lang3.math.NumberUtils@isCreatable( java.lang.String@valueOf(quasiRange) )", "Quasi range only key-in numbers!")
+		.testField("quasiRange", kpi, "quasiRange == null", "Quasi range only key-in numbers!")
 		.testField("dataType", PleaseSelect.noSelect(kpi.getDataType()), "Please select data type!");
 		checkHandler.throwMessage();
 		if (KpiBasicCode.DATA_TYPE_BOTH.equals(kpi.getDataType()) || KpiBasicCode.DATA_TYPE_DEPARTMENT.equals(kpi.getDataType())) {
