@@ -1,0 +1,147 @@
+/* 
+ * Copyright 2012-2016 bambooCORE, greenstep of copyright Chen Xin Nien
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * 
+ * -----------------------------------------------------------------------
+ * 
+ * author: 	Chen Xin Nien
+ * contact: chen.xin.nien@gmail.com
+ * 
+ */
+package org.qifu.hillfog.model;
+
+import java.math.BigDecimal;
+import java.util.List;
+
+import org.qifu.hillfog.entity.HfFormula;
+import org.qifu.hillfog.entity.HfKpi;
+import org.qifu.hillfog.entity.HfMeasureData;
+import org.qifu.hillfog.vo.DateRangeScore;
+
+public class ScoreCalculationData implements java.io.Serializable {
+	private static final long serialVersionUID = 4895615892970938138L;
+	private boolean defaultMode = true;
+	private HfKpi kpi;
+	private HfFormula formula; // 之後由ScoreCalculationCallable填入
+	private List<HfMeasureData> measureDatas; // 之後由ScoreCalculationCallable填入
+	private String frequency;
+	private String date1;
+	private String date2;
+	private BigDecimal score; // 之後由ScoreCalculationCallable填入
+	private List<DateRangeScore> dataRangeScores; // 之後由ScoreCalculationCallable填入
+	private String fontColor; // 之後由ScoreCalculationCallable填入
+	private String bgColor; // 之後由ScoreCalculationCallable填入
+	
+	public ScoreCalculationData() {
+		super();
+	}
+
+	public ScoreCalculationData(boolean defaultMode, HfKpi kpi, String frequency, String date1, String date2) {
+		super();
+		this.defaultMode = defaultMode;
+		this.kpi = kpi;
+		this.frequency = frequency;
+		this.date1 = date1;
+		this.date2 = date2;
+	}
+
+	public boolean isDefaultMode() {
+		return defaultMode;
+	}
+	
+	public void setDefaultMode(boolean defaultMode) {
+		this.defaultMode = defaultMode;
+	}
+	
+	public HfKpi getKpi() {
+		return kpi;
+	}
+	
+	public void setKpi(HfKpi kpi) {
+		this.kpi = kpi;
+	}
+	
+	public HfFormula getFormula() {
+		return formula;
+	}
+	
+	public void setFormula(HfFormula formula) {
+		this.formula = formula;
+	}
+	
+	public List<HfMeasureData> getMeasureDatas() {
+		return measureDatas;
+	}
+	
+	public void setMeasureDatas(List<HfMeasureData> measureDatas) {
+		this.measureDatas = measureDatas;
+	}
+	
+	public String getFrequency() {
+		return frequency;
+	}
+	
+	public void setFrequency(String frequency) {
+		this.frequency = frequency;
+	}
+	
+	public String getDate1() {
+		return date1;
+	}
+	
+	public void setDate1(String date1) {
+		this.date1 = date1;
+	}
+	
+	public String getDate2() {
+		return date2;
+	}
+	
+	public void setDate2(String date2) {
+		this.date2 = date2;
+	}
+
+	public BigDecimal getScore() {
+		return score;
+	}
+
+	public void setScore(BigDecimal score) {
+		this.score = score;
+	}
+
+	public List<DateRangeScore> getDataRangeScores() {
+		return dataRangeScores;
+	}
+
+	public void setDataRangeScores(List<DateRangeScore> dataRangeScores) {
+		this.dataRangeScores = dataRangeScores;
+	}
+
+	public String getFontColor() {
+		return fontColor;
+	}
+
+	public void setFontColor(String fontColor) {
+		this.fontColor = fontColor;
+	}
+
+	public String getBgColor() {
+		return bgColor;
+	}
+
+	public void setBgColor(String bgColor) {
+		this.bgColor = bgColor;
+	}
+	
+}
