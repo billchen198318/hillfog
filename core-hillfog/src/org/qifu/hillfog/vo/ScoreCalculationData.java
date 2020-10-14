@@ -27,6 +27,7 @@ import java.util.List;
 import org.qifu.hillfog.entity.HfFormula;
 import org.qifu.hillfog.entity.HfKpi;
 import org.qifu.hillfog.entity.HfMeasureData;
+import org.qifu.hillfog.model.MeasureDataCode;
 
 public class ScoreCalculationData implements java.io.Serializable {
 	private static final long serialVersionUID = 4895615892970938138L;
@@ -41,20 +42,24 @@ public class ScoreCalculationData implements java.io.Serializable {
 	private List<DateRangeScore> dataRangeScores; // 之後由ScoreCalculationCallable填入
 	private String fontColor; // 之後由ScoreCalculationCallable填入
 	private String bgColor; // 之後由ScoreCalculationCallable填入
+	private String measureDataAccount = MeasureDataCode.MEASURE_DATA_EMPLOYEE_FULL;
+	private String measureDataOrgId = MeasureDataCode.MEASURE_DATA_ORGANIZATION_FULL;
 	
 	public ScoreCalculationData() {
 		super();
 	}
-
-	public ScoreCalculationData(boolean defaultMode, HfKpi kpi, String frequency, String date1, String date2) {
+	
+	public ScoreCalculationData(boolean defaultMode, HfKpi kpi, String frequency, String date1, String date2, String measureDataAccount, String measureDataOrgId) {
 		super();
 		this.defaultMode = defaultMode;
 		this.kpi = kpi;
 		this.frequency = frequency;
 		this.date1 = date1;
 		this.date2 = date2;
+		this.measureDataAccount = measureDataAccount;
+		this.measureDataOrgId = measureDataOrgId;
 	}
-
+	
 	public boolean isDefaultMode() {
 		return defaultMode;
 	}
@@ -141,6 +146,22 @@ public class ScoreCalculationData implements java.io.Serializable {
 
 	public void setBgColor(String bgColor) {
 		this.bgColor = bgColor;
+	}
+
+	public String getMeasureDataAccount() {
+		return measureDataAccount;
+	}
+
+	public void setMeasureDataAccount(String measureDataAccount) {
+		this.measureDataAccount = measureDataAccount;
+	}
+
+	public String getMeasureDataOrgId() {
+		return measureDataOrgId;
+	}
+
+	public void setMeasureDataOrgId(String measureDataOrgId) {
+		this.measureDataOrgId = measureDataOrgId;
 	}
 	
 }

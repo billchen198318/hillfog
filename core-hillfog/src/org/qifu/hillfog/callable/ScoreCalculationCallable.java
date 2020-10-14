@@ -37,6 +37,7 @@ import org.qifu.hillfog.model.ScoreColor;
 import org.qifu.hillfog.util.AggregationMethod;
 import org.qifu.hillfog.util.AggregationMethodUtils;
 import org.qifu.hillfog.util.FormulaUtils;
+import org.qifu.hillfog.util.QueryMeasureDataUtils;
 import org.qifu.hillfog.util.ScoreColorUtils;
 import org.qifu.hillfog.vo.DateRangeScore;
 import org.qifu.hillfog.vo.ScoreCalculationData;
@@ -56,7 +57,7 @@ public class ScoreCalculationCallable implements Callable<ScoreCalculationData> 
 			this.data.setFormula( FormulaUtils.getFormulaById(this.data.getKpi().getForId()) );
 		}
 		if (this.data.getMeasureDatas() == null) {
-			// FIXME : 填入 data 的 hf_measure_data 資料
+			this.data.setMeasureDatas( QueryMeasureDataUtils.queryForScoreCalculationData(this.data) );
 		}
 		if ( this.data.isDefaultMode() ) { // KPI分數
 			BigDecimal score = AggregationMethodUtils.processDefaultMode(this.data.getKpi(), this.data.getFormula(), this.data.getMeasureDatas(), this.data.getFrequency());

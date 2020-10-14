@@ -44,6 +44,9 @@
 	</if>
 	<if test="account != null and account != '' ">
 		AND ACCOUNT = #{account,jdbcType=VARCHAR}
+	</if>		
+	<if test="startDate != null and startDate != '' and endDate != null and endDate != '' ">
+		AND DATE <![CDATA[ >= ]]> #{startDate,jdbcType=VARCHAR} AND DATE <![CDATA[ <= ]]> #{endDate,jdbcType=VARCHAR}
 	</if>					
 	<if test="orderBy != null and orderBy != '' and sortType != null and sortType != '' ">
 		ORDER BY  ${orderBy} ${sortType}
@@ -74,7 +77,10 @@
 	<if test="account != null and account != '' ">
 		AND ACCOUNT = #{account,jdbcType=VARCHAR}
 	</if>				
-		
+	<if test="startDate != null and startDate != '' and endDate != null and endDate != '' ">
+		AND DATE <![CDATA[ >= ]]> #{startDate,jdbcType=VARCHAR} AND DATE <![CDATA[ <= ]]> #{endDate,jdbcType=VARCHAR}
+	</if>
+			
 	<include refid="org.qifu.hillfog.mapper.DB1Config.sql2"/>
   </select>  
   
@@ -99,6 +105,9 @@
 	<if test="account != null and account != '' ">
 		AND ACCOUNT = #{account,jdbcType=VARCHAR}
 	</if>						
+	<if test="startDate != null and startDate != '' and endDate != null and endDate != '' ">
+		AND DATE <![CDATA[ >= ]]> #{startDate,jdbcType=VARCHAR} AND DATE <![CDATA[ <= ]]> #{endDate,jdbcType=VARCHAR}
+	</if>	
   </select>  
   
   <insert id="insert" parameterType="org.qifu.hillfog.entity.HfMeasureData"> 
