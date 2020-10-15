@@ -494,4 +494,18 @@ public abstract class BaseControllerSupport {
 		return user.getUsername();
 	}
 	
+	protected String pageAutocompleteContent(List<String> strList) {
+		if (null == strList || strList.size() < 1) {
+			return "";
+		}
+		StringBuilder orgListJsStr = new StringBuilder();
+		for (int i = 0; null != strList && i < strList.size(); i++) {
+			orgListJsStr.append( "'" + strList.get(i) + "'" );
+			if ((i+1) < strList.size()) {
+				orgListJsStr.append(",");
+			}
+		}
+		return orgListJsStr.toString();
+	}
+	
 }

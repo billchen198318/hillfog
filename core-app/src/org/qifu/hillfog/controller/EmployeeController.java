@@ -75,20 +75,6 @@ public class EmployeeController extends BaseControllerSupport implements IPageNa
 		return "hillfog_emp";
 	}
 	
-	private String pageAutocompleteContent(List<String> orgList) {
-		if (null == orgList || orgList.size() < 1) {
-			return "";
-		}
-		StringBuilder orgListJsStr = new StringBuilder();
-		for (int i = 0; null != orgList && i < orgList.size(); i++) {
-			orgListJsStr.append( "'" + orgList.get(i) + "'" );
-			if ((i+1) < orgList.size()) {
-				orgListJsStr.append(",");
-			}
-		}
-		return orgListJsStr.toString();
-	}
-	
 	private void init(String type, ModelMap mm) throws AuthorityException, ControllerException, ServiceException, Exception {
 		if ("createPage".equals(type) || "editPage".equals(type)) {
 			mm.put("orgInputAutocomplete", this.pageAutocompleteContent(this.orgDeptService.findInputAutocomplete()));

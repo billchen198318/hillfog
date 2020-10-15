@@ -107,20 +107,6 @@ public class MeasureDataController extends BaseControllerSupport implements IPag
 		return "hillfog_md";
 	}
 	
-	private String pageAutocompleteContent(List<String> orgList) {
-		if (null == orgList || orgList.size() < 1) {
-			return "";
-		}
-		StringBuilder orgListJsStr = new StringBuilder();
-		for (int i = 0; null != orgList && i < orgList.size(); i++) {
-			orgListJsStr.append( "'" + orgList.get(i) + "'" );
-			if ((i+1) < orgList.size()) {
-				orgListJsStr.append(",");
-			}
-		}
-		return orgListJsStr.toString();
-	}	
-	
 	private void init(String type, ModelMap mm) throws AuthorityException, ControllerException, ServiceException, Exception {
 		mm.put("frequencyMap", MeasureDataCode.getFrequencyMap(true));
 		HfKpi kpi = (HfKpi) mm.get("kpi");

@@ -182,32 +182,6 @@ function paintContent() {
 	$("#btnClear").removeAttr('disabled');
 	$("#content").html('&nbsp;');
 	
-	xhrSendParameter(
-			'./hfMeasureDataBodyJson', 
-			{
-				'kpiOid'		:	'${kpi.oid}',
-				'date'			:	$("#date").val(),
-				'frequency'		:	$("#frequency").val(),
-				'kpiEmpl'		:	$("#kpiEmpl").val(),
-				'kpiOrga'		:	$("#kpiOrga").val(),
-				'dateStatus'	:	dateStatus
-			}, 
-			function(data) {
-				dateStatus = "0";
-				if ( _qifu_success_flag != data.success ) {
-					parent.toastrWarning( data.message );
-				}
-				if ( _qifu_success_flag == data.success ) {
-					$("#content").html( data.value.content );
-					$("#date").val( data.value.date );
-				}
-			}, 
-			function() {
-				dateStatus = "0";
-			},
-			_qifu_defaultSelfPleaseWaitShow
-	);
-	
 }
 
 </script>
@@ -217,70 +191,53 @@ function paintContent() {
 <body>
 
 <@qifu.toolBar 
-	id="HF_PROG001D0005M_toolbar" 
+	id="HF_PROG002D0001Q_toolbar" 
 	refreshEnable="Y"
-	refreshJsMethod="window.location=parent.getProgUrlForOid('HF_PROG001D0005M', '${kpi.oid}');" 
+	refreshJsMethod="window.location=parent.getProgUrlForOid('HF_PROG002D0001Q');" 
 	createNewEnable="N"
 	createNewJsMethod=""
-	saveEnabel="Y" 
-	saveJsMethod="btnUpdateTBclick();" 	
+	saveEnabel="N" 
+	saveJsMethod="" 	
 	cancelEnable="Y" 
-	cancelJsMethod="parent.closeTab('HF_PROG001D0005M');"
+	cancelJsMethod="parent.closeTab('HF_PROG002D0001Q');"
 	programName="${programName}"
 	programId="${programId}"
-	description="Modify KPI measure data." />	
+	description="Query KPI report & chart." />	
 <#import "../common-f-head.ftl" as cfh />
 <@cfh.commonFormHeadContent /> 
     
 	<div class="row">
 		<div class="col p-2 bg-secondary rounded">
-			<span class="badge badge-info"><h6>${kpi.id}&nbsp;-&nbsp;${kpi.name}</h6></span>
-			<span class="badge badge-danger">
-				<h6>${kpi.managementName}</h6>
-			</span>			
-			<span class="badge badge-warning"><h6>Target:&nbsp;${kpi.target}&nbsp;，Maximum:&nbsp;${kpi.max}&nbsp;，Minimum:&nbsp;${kpi.min}</h6></span>
-			<span class="badge badge-dark"><h6>Weight:&nbsp;${kpi.weight}&nbsp;，Unit:&nbsp;${kpi.unit}</h6></span>
-			<span class="badge badge-dark"><h6>Formula:&nbsp;${formula.forId}-${formula.name}</h6></span>
-			<span class="badge badge-dark"><h6>Aggregation:&nbsp;${aggrMethod.aggrId}-${aggrMethod.name}</h6></span>
-			
-			<div class="text-white">
-				<@qifu.select dataSource="frequencyMap" name="frequency" id="frequency" value="" label="Frequency" requiredFlag="Y"></@qifu.select>
-			</div>
-			<div class="text-white">
-				<@qifu.textbox name="kpiOrga" value="" id="kpiOrga" label="Organization" requiredFlag="Y" maxlength="100" placeholder="Enter organization" />
-			</div>
-			<div class="text-white">
-				<@qifu.textbox name="kpiEmpl" value="" id="kpiEmpl" label="Employee" requiredFlag="Y" maxlength="100" placeholder="Enter employee" />
-			</div>
-			
+			<div class="row">
+				<div class="col-xs-6 col-md-6 col-lg-6 text-white">
+					<@qifu.select dataSource="frequencyMap" name="frequency" id="frequency" value="" label="Frequency" requiredFlag="Y"></@qifu.select>
+				</div>
+				<div class="col-xs-6 col-md-6 col-lg-6 text-white">
+					KPI-list
+				</div>
+			</div>	
+			<div class="row">
+				<div class="col-xs-6 col-md-6 col-lg-6 text-white">
+					<@qifu.textbox type="date" name="date1" value="" id="date1" label="Start" requiredFlag="Y" maxlength="10" placeholder="Enter start date" />
+				</div>
+				<div class="col-xs-6 col-md-6 col-lg-6 text-white">
+					<@qifu.textbox type="date" name="date2" value="" id="date2" label="End" requiredFlag="Y" maxlength="10" placeholder="Enter end date" />
+				</div>		
+			</div>						
+			<div class="row">
+				<div class="col-xs-6 col-md-6 col-lg-6 text-white">
+					<@qifu.textbox name="kpiOrga" value="" id="kpiOrga" label="Organization" requiredFlag="Y" maxlength="100" placeholder="Enter organization" />
+				</div>
+				<div class="col-xs-6 col-md-6 col-lg-6 text-white">
+					<@qifu.textbox name="kpiEmpl" value="" id="kpiEmpl" label="Employee" requiredFlag="Y" maxlength="100" placeholder="Enter employee" />
+				</div>		
+			</div>				
 		</div>
 	</div>
-
-	<form id="measureDataForm" name="measureDataForm" action=".">
-		
-		<input type="hidden" name="kpiOid" id="kpiOid" value="${kpi.oid}">
-		<input type="hidden" name="date" id="date" value="${systemDate}">
-		
-		<br>
-		
-		<span id="content"></span>
-		
-	</form>
+	
+	<span id="content"></span>
 	
 <p style="margin-bottom: 10px"></p>
-      
-<div class="row">
-	<div class="col-xs-6 col-md-6 col-lg-6">
-		<@qifu.button id="btnUpdate" label="Save"
-			xhrUrl="./hfMeasureDataUpdateJson"
-			formId="measureDataForm"
-			onclick="btnUpdate();"
-			loadFunction="updateSuccess(data);"
-			errorFunction="clearUpdate();" />
-		&nbsp;	
-		<@qifu.button id="btnClear" label="Clear" onclick="clearUpdate();" />
-	</div>
-</div>
 
 <br/>
 <br/>

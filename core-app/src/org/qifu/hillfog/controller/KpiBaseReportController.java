@@ -30,7 +30,15 @@ import org.qifu.base.exception.ControllerException;
 import org.qifu.base.exception.ServiceException;
 import org.qifu.base.model.ControllerMethodAuthority;
 import org.qifu.base.model.DefaultControllerJsonResultObj;
+import org.qifu.hillfog.entity.HfEmployee;
+import org.qifu.hillfog.entity.HfKpi;
+import org.qifu.hillfog.entity.HfOrgDept;
+import org.qifu.hillfog.model.MeasureDataCode;
+import org.qifu.hillfog.service.IEmployeeService;
+import org.qifu.hillfog.service.IKpiService;
+import org.qifu.hillfog.service.IOrgDeptService;
 import org.qifu.hillfog.vo.ScoreCalculationData;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -40,13 +48,24 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class KpiBaseReportController extends BaseControllerSupport implements IPageNamespaceProvide {
 
+	@Autowired
+	IKpiService<HfKpi, String> kpiService;
+	
+	@Autowired
+	IEmployeeService<HfEmployee, String> employeeService;
+	
+	@Autowired
+	IOrgDeptService<HfOrgDept, String> orgDeptService;
+	
 	@Override
 	public String viewPageNamespace() {
 		return "hillfog_kbr";
 	}
 	
 	private void init(String type, ModelMap mm) throws AuthorityException, ControllerException, ServiceException, Exception {
-		
+		mm.put("frequencyMap", MeasureDataCode.getFrequencyMap(true));
+		mm.put("orgInputAutocomplete", pageAutocompleteContent(this.orgDeptService.findInputAutocomplete()));
+		mm.put("empInputAutocomplete", pageAutocompleteContent(this.employeeService.findInputAutocomplete()));		
 	}
 	
 	@ControllerMethodAuthority(check = true, programId = "HF_PROG002D0001Q")
