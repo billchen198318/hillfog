@@ -212,7 +212,11 @@ public class SystemExpressionJobUtils {
 		if (jobObjList == null || jobObjList.size() < 1) {
 			return;
 		}
-		ExecutorService exprJobPool = Executors.newFixedThreadPool( SimpleUtils.getAvailableProcessors(jobObjList.size()) );
+		int ftps = SimpleUtils.getAvailableProcessors(jobObjList.size());
+		if (ftps > 8) {
+			ftps = 8;
+		}
+		ExecutorService exprJobPool = Executors.newFixedThreadPool( ftps );
 		for (ExpressionJobObj jobObj : jobObjList) {
 			jobObj = exprJobPool.submit( new ExpressionJobExecuteCallable(jobObj) ).get();
 		}

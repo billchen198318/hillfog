@@ -95,8 +95,16 @@ public class KpiScore {
 		return this;
 	}
 	
+	private int getAvailableProcessors() {
+		int ftps = SimpleUtils.getAvailableProcessors(this.scoreDatas.size());
+		if (ftps > 8) {
+			ftps = 8;
+		}
+		return ftps;
+	}
+	
 	public KpiScore process() {	
-		ExecutorService kpiCalculationPool = Executors.newFixedThreadPool( SimpleUtils.getAvailableProcessors(this.scoreDatas.size()) );
+		ExecutorService kpiCalculationPool = Executors.newFixedThreadPool( this.getAvailableProcessors() );
 		for (ScoreCalculationData data : this.scoreDatas) {
 			data.setProcessDateRange( YesNo.YES );
 			try {
@@ -112,7 +120,7 @@ public class KpiScore {
 	}
 	
 	public KpiScore processDateRange() {
-		ExecutorService kpiCalculationPool = Executors.newFixedThreadPool( SimpleUtils.getAvailableProcessors(this.scoreDatas.size()) );
+		ExecutorService kpiCalculationPool = Executors.newFixedThreadPool( this.getAvailableProcessors() );
 		for (ScoreCalculationData data : this.scoreDatas) {
 			data.setProcessDateRange( YesNo.NO );
 			try {
