@@ -24,6 +24,7 @@ package org.qifu.hillfog.vo;
 import java.math.BigDecimal;
 import java.util.List;
 
+import org.qifu.base.model.YesNo;
 import org.qifu.hillfog.entity.HfFormula;
 import org.qifu.hillfog.entity.HfKpi;
 import org.qifu.hillfog.entity.HfMeasureData;
@@ -31,7 +32,7 @@ import org.qifu.hillfog.model.MeasureDataCode;
 
 public class ScoreCalculationData implements java.io.Serializable {
 	private static final long serialVersionUID = 4895615892970938138L;
-	private boolean defaultMode = true;
+	private String processDateRange = YesNo.NO;
 	private HfKpi kpi;
 	private HfFormula formula; // 之後由ScoreCalculationCallable填入
 	private List<HfMeasureData> measureDatas; // 之後由ScoreCalculationCallable填入
@@ -49,9 +50,8 @@ public class ScoreCalculationData implements java.io.Serializable {
 		super();
 	}
 	
-	public ScoreCalculationData(boolean defaultMode, HfKpi kpi, String frequency, String date1, String date2, String measureDataAccount, String measureDataOrgId) {
+	public ScoreCalculationData(HfKpi kpi, String frequency, String date1, String date2, String measureDataAccount, String measureDataOrgId) {
 		super();
-		this.defaultMode = defaultMode;
 		this.kpi = kpi;
 		this.frequency = frequency;
 		this.date1 = date1;
@@ -60,12 +60,12 @@ public class ScoreCalculationData implements java.io.Serializable {
 		this.measureDataOrgId = measureDataOrgId;
 	}
 	
-	public boolean isDefaultMode() {
-		return defaultMode;
+	public String getProcessDateRange() {
+		return processDateRange;
 	}
 	
-	public void setDefaultMode(boolean defaultMode) {
-		this.defaultMode = defaultMode;
+	public void setProcessDateRange(String processDateRange) {
+		this.processDateRange = processDateRange;
 	}
 	
 	public HfKpi getKpi() {

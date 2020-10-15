@@ -31,6 +31,7 @@ import org.apache.commons.lang3.time.DateUtils;
 import org.joda.time.DateTime;
 import org.joda.time.Months;
 import org.joda.time.Years;
+import org.qifu.base.model.YesNo;
 import org.qifu.hillfog.entity.HfKpi;
 import org.qifu.hillfog.model.MeasureDataCode;
 import org.qifu.hillfog.model.ScoreColor;
@@ -56,10 +57,10 @@ public class ScoreCalculationCallable implements Callable<ScoreCalculationData> 
 		if (this.data.getFormula() == null) {
 			this.data.setFormula( FormulaUtils.getFormulaById(this.data.getKpi().getForId()) );
 		}
-		if (this.data.getMeasureDatas() == null) {
+		if (this.data.getMeasureDatas() == null || this.data.getMeasureDatas().size() < 1) {
 			this.data.setMeasureDatas( QueryMeasureDataUtils.queryForScoreCalculationData(this.data) );
 		}
-		if ( this.data.isDefaultMode() ) { // KPI分數
+		if ( !YesNo.YES.equals(this.data.getProcessDateRange()) ) { // KPI分數
 			BigDecimal score = AggregationMethodUtils.processDefaultMode(this.data.getKpi(), this.data.getFormula(), this.data.getMeasureDatas(), this.data.getFrequency());
 			this.data.setScore(score);
 			ScoreColor sc = ScoreColorUtils.get(score);

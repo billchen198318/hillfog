@@ -45,7 +45,7 @@ public class AggregationMethod {
 		
 	}
 	
-	public static AggregationMethod build() throws InstantiationException, IllegalAccessException {
+	public static AggregationMethod build() {
 		try {
 			return AggregationMethod.class.getConstructor().newInstance();
 		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
