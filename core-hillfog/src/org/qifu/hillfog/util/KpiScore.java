@@ -103,10 +103,10 @@ public class KpiScore {
 		return ftps;
 	}
 	
-	public KpiScore process() {	
+	private void process(String processDateRangeFlag) {	
 		ExecutorService kpiCalculationPool = Executors.newFixedThreadPool( this.getAvailableProcessors() );
 		for (ScoreCalculationData data : this.scoreDatas) {
-			data.setProcessDateRange( YesNo.YES );
+			data.setProcessDateRange( processDateRangeFlag );
 			try {
 				data = kpiCalculationPool.submit( new ScoreCalculationCallable(data) ).get();
 			} catch (InterruptedException e) {
@@ -116,23 +116,16 @@ public class KpiScore {
 			}				
 		}
 		kpiCalculationPool.shutdown();
+	}
+	
+	public KpiScore processDefault() {
+		this.process( YesNo.NO );
 		return this;
 	}
 	
 	public KpiScore processDateRange() {
-		ExecutorService kpiCalculationPool = Executors.newFixedThreadPool( this.getAvailableProcessors() );
-		for (ScoreCalculationData data : this.scoreDatas) {
-			data.setProcessDateRange( YesNo.NO );
-			try {
-				data = kpiCalculationPool.submit( new ScoreCalculationCallable(data) ).get();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			} catch (ExecutionException e) {
-				e.printStackTrace();
-			}				
-		}
-		kpiCalculationPool.shutdown();
-		return this;		
+		this.process( YesNo.YES );
+		return this;
 	}
 	
 	public List<ScoreCalculationData> value() {
