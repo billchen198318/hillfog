@@ -213,15 +213,15 @@ function paintContent() {
 					<@qifu.select dataSource="frequencyMap" name="frequency" id="frequency" value="" label="Frequency" requiredFlag="Y"></@qifu.select>
 				</div>
 				<div class="col-xs-6 col-md-6 col-lg-6 text-white">
-					KPI-list
+					<@qifu.select dataSource="kpiMap" name="kpiOid" id="kpiOid" value="" label="KPI"></@qifu.select>
 				</div>
 			</div>	
 			<div class="row">
 				<div class="col-xs-6 col-md-6 col-lg-6 text-white">
-					<@qifu.textbox type="date" name="date1" value="" id="date1" label="Start" requiredFlag="Y" maxlength="10" placeholder="Enter start date" />
+					<@qifu.textbox type="date" name="date1" value="date1" id="date1" label="Start" requiredFlag="Y" maxlength="10" placeholder="Enter start date" />
 				</div>
 				<div class="col-xs-6 col-md-6 col-lg-6 text-white">
-					<@qifu.textbox type="date" name="date2" value="" id="date2" label="End" requiredFlag="Y" maxlength="10" placeholder="Enter end date" />
+					<@qifu.textbox type="date" name="date2" value="date2" id="date2" label="End" requiredFlag="Y" maxlength="10" placeholder="Enter end date" />
 				</div>		
 			</div>						
 			<div class="row">

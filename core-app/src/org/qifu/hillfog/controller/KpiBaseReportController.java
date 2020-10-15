@@ -65,7 +65,10 @@ public class KpiBaseReportController extends BaseControllerSupport implements IP
 	private void init(String type, ModelMap mm) throws AuthorityException, ControllerException, ServiceException, Exception {
 		mm.put("frequencyMap", MeasureDataCode.getFrequencyMap(true));
 		mm.put("orgInputAutocomplete", pageAutocompleteContent(this.orgDeptService.findInputAutocomplete()));
-		mm.put("empInputAutocomplete", pageAutocompleteContent(this.employeeService.findInputAutocomplete()));		
+		mm.put("empInputAutocomplete", pageAutocompleteContent(this.employeeService.findInputAutocomplete()));	
+		mm.put("kpiMap", this.kpiService.findMap(true));
+		mm.put("date1", this.getNowDate2());
+		mm.put("date2", this.getNowDate2());
 	}
 	
 	@ControllerMethodAuthority(check = true, programId = "HF_PROG002D0001Q")

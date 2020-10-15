@@ -21,7 +21,13 @@
  */
 package org.qifu.hillfog.service.impl;
 
+import java.util.List;
+import java.util.Map;
+
+import org.qifu.base.exception.ServiceException;
 import org.qifu.base.mapper.IBaseMapper;
+import org.qifu.base.model.PleaseSelect;
+import org.qifu.base.model.SortType;
 import org.qifu.base.service.BaseService;
 import org.qifu.hillfog.entity.HfKpi;
 import org.qifu.hillfog.mapper.HfKpiMapper;
@@ -43,6 +49,19 @@ public class KpiServiceImpl extends BaseService<HfKpi, String> implements IKpiSe
 	@Override
 	protected IBaseMapper<HfKpi, String> getBaseMapper() {
 		return this.kpiMapper;
+	}
+
+	@Override
+	public Map<String, String> findMap(boolean pleaseSelect) throws ServiceException, Exception {
+		Map<String, String> dataMap = PleaseSelect.pageSelectMap(pleaseSelect);
+		List<HfKpi> kpis = this.selectList("ID", SortType.ASC).getValue();
+		if (null == kpis) {
+			return dataMap;
+		}
+		for (HfKpi kpi : kpis) {
+			dataMap.put(kpi.getOid(), kpi.getId() + " - " + kpi.getName());
+		}
+		return dataMap;
 	}
 	
 }
