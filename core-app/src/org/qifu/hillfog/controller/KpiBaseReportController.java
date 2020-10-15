@@ -21,15 +21,22 @@
  */
 package org.qifu.hillfog.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang3.StringUtils;
 import org.qifu.base.controller.BaseControllerSupport;
 import org.qifu.base.controller.IPageNamespaceProvide;
 import org.qifu.base.exception.AuthorityException;
 import org.qifu.base.exception.ControllerException;
 import org.qifu.base.exception.ServiceException;
+import org.qifu.base.message.BaseSystemMessage;
 import org.qifu.base.model.ControllerMethodAuthority;
 import org.qifu.base.model.DefaultControllerJsonResultObj;
+import org.qifu.base.model.PleaseSelect;
+import org.qifu.base.model.SortType;
 import org.qifu.hillfog.entity.HfEmployee;
 import org.qifu.hillfog.entity.HfKpi;
 import org.qifu.hillfog.entity.HfOrgDept;
@@ -37,7 +44,9 @@ import org.qifu.hillfog.model.MeasureDataCode;
 import org.qifu.hillfog.service.IEmployeeService;
 import org.qifu.hillfog.service.IKpiService;
 import org.qifu.hillfog.service.IOrgDeptService;
+import org.qifu.hillfog.util.KpiScore;
 import org.qifu.hillfog.vo.ScoreCalculationData;
+import org.qifu.util.SimpleUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -88,15 +97,72 @@ public class KpiBaseReportController extends BaseControllerSupport implements IP
 		return viewName;
 	}	
 	
+	private void checkFields(DefaultControllerJsonResultObj<List<ScoreCalculationData>> result, HttpServletRequest request) throws ControllerException, Exception {
+		this.getCheckControllerFieldHandler(result)
+		.testField("date1", ( !SimpleUtils.isDate(request.getParameter("date1")) ), "Please input start date!")
+		.testField("date2", ( !SimpleUtils.isDate(request.getParameter("date2")) ), "Please input end date!")
+		.testField("frequency", PleaseSelect.noSelect(request.getParameter("frequency")), "Please select frequency!")
+		.testField("kpiEmpl", request, "@org.apache.commons.lang3.StringUtils@isBlank(kpiEmpl) && @org.apache.commons.lang3.StringUtils@isBlank(kpiOrga)", "Please input Organization or Employee!")
+		.testField("kpiOrga", request, "@org.apache.commons.lang3.StringUtils@isBlank(kpiEmpl) && @org.apache.commons.lang3.StringUtils@isBlank(kpiOrga)", "Please input Organization or Employee!")		
+		.throwMessage();
+	}
+	
+	private void queryContent(DefaultControllerJsonResultObj<List<ScoreCalculationData>> result, HttpServletRequest request) throws ControllerException, Exception {
+		this.checkFields(result, request);
+		List<HfKpi> kpis = null;
+		String kpiOid = request.getParameter("kpiOid");
+		if (PleaseSelect.noSelect(kpiOid)) {
+			kpis = this.kpiService.selectList("ID", SortType.ASC).getValue();
+		} else {
+			HfKpi kpi = this.kpiService.selectByPrimaryKey(kpiOid).getValueEmptyThrowMessage();
+			kpis = new ArrayList<HfKpi>();
+			kpis.add(kpi);
+		}
+		if (null == kpis || kpis.size() < 1) {
+			throw new ControllerException( BaseSystemMessage.dataErrors() );
+		}
+		String accountId = MeasureDataCode.MEASURE_DATA_EMPLOYEE_FULL;
+		String orgId = MeasureDataCode.MEASURE_DATA_ORGANIZATION_FULL;
+		if (!StringUtils.isBlank(request.getParameter("kpiEmpl"))) {
+			accountId = request.getParameter("kpiEmpl");
+			String tmp[] = accountId.split("/");
+			if (tmp == null || tmp.length != 3) {
+				throw new ServiceException( BaseSystemMessage.searchNoData() );
+			}
+			accountId = StringUtils.deleteWhitespace(tmp[1]);
+			if (StringUtils.isBlank(accountId)) {
+				throw new ServiceException( BaseSystemMessage.searchNoData() );
+			}
+		}
+		if (!StringUtils.isBlank(request.getParameter("kpiOrga"))) {
+			orgId = request.getParameter("kpiOrga");
+			orgId = StringUtils.deleteWhitespace(orgId.split("/")[0]);
+		}
+		List<ScoreCalculationData> scores = KpiScore.build().add(
+				kpis, 
+				request.getParameter("frequency"), 
+				request.getParameter("date1"), 
+				request.getParameter("date2"), 
+				accountId, 
+				orgId).processDefault().processDateRange().reduce().value();
+		if (scores != null && scores.size() > 0) {
+			result.setValue(scores);
+			result.setSuccess(YES);
+			result.setMessage( "success!" );
+		} else {
+			result.setMessage( BaseSystemMessage.dataErrors() );
+		}
+	}
+	
 	@ControllerMethodAuthority(check = true, programId = "HF_PROG002D0001Q")
 	@RequestMapping(value = "/hfKpiReportContentDataJson", produces = MediaType.APPLICATION_JSON_VALUE)		
-	public @ResponseBody DefaultControllerJsonResultObj<ScoreCalculationData> doQueryContent(HttpServletRequest request) {
-		DefaultControllerJsonResultObj<ScoreCalculationData> result = this.getDefaultJsonResult(this.currentMethodAuthority());
+	public @ResponseBody DefaultControllerJsonResultObj<List<ScoreCalculationData>> doQueryContent(HttpServletRequest request) {
+		DefaultControllerJsonResultObj<List<ScoreCalculationData>> result = this.getDefaultJsonResult(this.currentMethodAuthority());
 		if (!this.isAuthorizeAndLoginFromControllerJsonResult(result)) {
 			return result;
 		}
 		try {
-			// do kpi cal score query
+			this.queryContent(result, request);
 		} catch (AuthorityException | ServiceException | ControllerException e) {
 			this.baseExceptionResult(result, e);	
 		} catch (Exception e) {

@@ -75,7 +75,7 @@ var dateStatus = "0";
 $( document ).ready(function() {
 	
 	$("#frequency").change(function(){
-		paintContent();
+		changeQueryButtonStatus();
 	});
 	$("#frequency").val('3'); // default month
 	$("#frequency").trigger('change');
@@ -112,7 +112,7 @@ $( document ).ready(function() {
 		} else {
 			$("#kpiOrga").val('');
 		}
-		paintContent();
+		changeQueryButtonStatus();
 	});
 	$("#kpiEmpl").change(function(){
 		var inputEmployee = $(this).val();
@@ -127,61 +127,74 @@ $( document ).ready(function() {
 		} else {
 			$("#kpiEmpl").val('');
 		}
-		paintContent();
+		changeQueryButtonStatus();
 	});
 	
 });
 
-function updateSuccess(data) {
-	if ( _qifu_success_flag != data.success ) {
-		parent.toastrWarning( data.message );
-		paintContent();
-		return;
-	}
-	parent.toastrInfo( data.message );
-	//paintContent();
-}
-
-function clearUpdate() {
-	dateStatus = "0";
-	$("#frequency").val( _qifu_please_select_id );
-	$("#kpiEmpl").val( '' );
-	$("#kpiOrga").val( '' );
-	paintContent();
-}
-
-function btnUpdateTBclick() {
-	if ($("#btnUpdate").is(':disabled')) {
-		parent.toastrWarning( 'Please select Frequency and Organization or Employee!' );
-		return;
-	}
-	btnUpdate();
-}
-
-function prevCalendar() {
-	dateStatus = "-1";
-	paintContent();
-}
-
-function nextCalendar() {
-	dateStatus = "1";
-	paintContent();
-}
-
-function paintContent() {
+function changeQueryButtonStatus() {
 	var freq = $("#frequency").val();
 	var kpiEmpl = $("#kpiEmpl").val();
 	var kpiOrga = $("#kpiOrga").val();
 	if ( _qifu_please_select_id == freq || ('' == kpiEmpl && '' == kpiOrga) ) {
 		$("#content").html('<br><span class="badge badge-warning"><h6>Please select Frequency and Organization or Employee!</h6></span><br>');
-		$("#btnUpdate").attr('disabled', 'disabled');
+		$("#btnQuery").attr('disabled', 'disabled');
 		$("#btnClear").attr('disabled', 'disabled');
 		return;
 	}
-	$("#btnUpdate").removeAttr('disabled');
+	$("#btnQuery").removeAttr('disabled');
 	$("#btnClear").removeAttr('disabled');
 	$("#content").html('&nbsp;');
-	
+}
+
+function queryReport() {
+	if ($("#btnQuery").is(':disabled')) {
+		parent.toastrWarning( 'Please select Frequency and Organization or Employee!' );
+		return;
+	}
+	var date1 = $("#date1").val();
+	var date2 = $("#date2").val();
+	if ('' == date1 || '' == date2) {
+		parent.toastrWarning( 'Please input start & end date!' );
+		return;		
+	}
+	xhrSendParameter(
+			'./hfKpiReportContentDataJson', 
+			{
+				'kpiOid'		:	$("#kpiOid").val(),
+				'date1'			:	$("#date1").val(),
+				'date2'			:	$("#date2").val(),
+				'frequency'		:	$("#frequency").val(),
+				'kpiEmpl'		:	$("#kpiEmpl").val(),
+				'kpiOrga'		:	$("#kpiOrga").val()
+			}, 
+			function(data) {
+				parent.toastrWarning( data.message );
+				if ( _qifu_success_flag != data.success ) {
+					$("#content").html('<br><span class="badge badge-warning"><h6>' + data.message + '</h6></span><br>');
+					return;
+				}
+				if ( _qifu_success_flag == data.success ) {
+					console.log( data.value );
+				}
+			}, 
+			function() {
+				$("#content").html('<br><span class="badge badge-warning"><h6>no result!</h6></span><br>');
+			},
+			_qifu_defaultSelfPleaseWaitShow
+	);	
+}
+
+function queryClear() {
+	$("#content").html('<br><span class="badge badge-warning"><h6>Please select Frequency and Organization or Employee!</h6></span><br>');
+	$("#btnQuery").attr('disabled', 'disabled');
+	$("#btnClear").attr('disabled', 'disabled');
+	$("#kpiEmpl").val('');
+	$("#kpiOrga").val('');
+	$("#date1").val('');
+	$("#date2").val('');
+	$("#kpiOid").val( _qifu_please_select_id );
+	$("#frequency").val('3');
 }
 
 </script>
@@ -231,6 +244,15 @@ function paintContent() {
 				<div class="col-xs-6 col-md-6 col-lg-6 text-white">
 					<@qifu.textbox name="kpiEmpl" value="" id="kpiEmpl" label="Employee" requiredFlag="Y" maxlength="100" placeholder="Enter employee" />
 				</div>		
+			</div>	
+			<div class="row">
+				<div class="col-xs-6 col-md-6 col-lg-6 text-white">
+					
+					<p style="margin-bottom: 10px"></p>
+				
+					<button type="button" class="btn btn-info" id="btnQuery" onclick="queryReport();">Query</button>
+					<button type="button" class="btn btn-info" id="btnClear" onclick="queryClear();">Clear</button>				
+				</div>
 			</div>				
 		</div>
 	</div>

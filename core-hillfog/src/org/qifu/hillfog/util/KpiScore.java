@@ -128,6 +128,17 @@ public class KpiScore {
 		return this;
 	}
 	
+	public KpiScore reduce() {
+		for (ScoreCalculationData data : this.scoreDatas) {
+			if (data.getFormula() == null) {
+				continue;
+			}
+			data.getFormula().setExpression("");
+			data.getFormula().setDescription("");
+		}
+		return this;
+	}
+	
 	public List<ScoreCalculationData> value() {
 		return this.scoreDatas;
 	}
