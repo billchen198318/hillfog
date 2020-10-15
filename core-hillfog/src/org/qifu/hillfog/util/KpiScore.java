@@ -113,7 +113,7 @@ public class KpiScore {
 				e.printStackTrace();
 			} catch (ExecutionException e) {
 				e.printStackTrace();
-			}				
+			}
 		}
 		kpiCalculationPool.shutdown();
 	}
