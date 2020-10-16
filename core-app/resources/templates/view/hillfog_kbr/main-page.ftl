@@ -285,6 +285,7 @@ function queryClear() {
 					<p style="margin-bottom: 10px"></p>
 				
 					<button type="button" class="btn btn-success" id="btnQuery" onclick="queryReport();">Query</button>
+					&nbsp;
 					<button type="button" class="btn btn-success" id="btnClear" onclick="queryClear();">Clear</button>				
 				</div>
 			</div>				
@@ -299,6 +300,7 @@ function queryClear() {
 <br/>
 <br/>
 
+<script src="${qifu_basePath}echarts/echarts.min.js"></script>
 <script type="text/javascript" src="${qifu_basePath}js/hillfog/HF_PROG002D0001Q.js?ver=${qifu_jsVerBuild}"></script>
 
 </body>
