@@ -102,6 +102,7 @@ public class AggregationMethodUtils {
 		parameter.put(VAR_DATE_RANGE_SCORES, dateRangeScores);
 		parameter.put(VAR_MEASURE_DATAS, measureDatas);
 		parameter.put(VAR_FORMULA, formula);
+		parameter.put(VAR_SCORE, null);
 		return parameter;
 	}
 	

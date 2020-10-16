@@ -28,6 +28,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import org.apache.commons.lang3.StringUtils;
 import org.qifu.base.message.BaseSystemMessage;
 import org.qifu.base.model.YesNo;
 import org.qifu.hillfog.callable.ScoreCalculationCallable;
@@ -145,5 +146,14 @@ public class KpiScore {
 	public List<ScoreCalculationData> value() {
 		return this.scoreDatas;
 	}
+	
+	public List<ScoreCalculationData> valueThrowMessage() throws Exception {
+		for (ScoreCalculationData scd : this.scoreDatas) {
+			if (!StringUtils.isBlank(scd.getErrorMessage())) {
+				throw new Exception( scd.getErrorMessage() );
+			}
+		}
+		return this.scoreDatas;
+	}	
 	
 }

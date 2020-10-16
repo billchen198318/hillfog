@@ -175,7 +175,7 @@ function queryReport() {
 					return;
 				}
 				if ( _qifu_success_flag == data.success ) {
-					parent.toastrWarning( data.message );
+					parent.toastrInfo( data.message );
 					console.log( data.value );
 				}
 			}, 

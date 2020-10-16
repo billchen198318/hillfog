@@ -102,8 +102,8 @@ public class KpiBaseReportController extends BaseControllerSupport implements IP
 		.testField("date1", ( !SimpleUtils.isDate(request.getParameter("date1")) ), "Please input start date!")
 		.testField("date2", ( !SimpleUtils.isDate(request.getParameter("date2")) ), "Please input end date!")
 		.testField("frequency", PleaseSelect.noSelect(request.getParameter("frequency")), "Please select frequency!")
-		.testField("kpiEmpl", request, "@org.apache.commons.lang3.StringUtils@isBlank(kpiEmpl) && @org.apache.commons.lang3.StringUtils@isBlank(kpiOrga)", "Please input Organization or Employee!")
-		.testField("kpiOrga", request, "@org.apache.commons.lang3.StringUtils@isBlank(kpiEmpl) && @org.apache.commons.lang3.StringUtils@isBlank(kpiOrga)", "Please input Organization or Employee!")		
+		.testField("kpiEmpl", ( StringUtils.isBlank(request.getParameter("kpiEmpl")) && StringUtils.isBlank(request.getParameter("kpiOrga")) ), "Please input Organization or Employee!")
+		.testField("kpiOrga", ( StringUtils.isBlank(request.getParameter("kpiEmpl")) && StringUtils.isBlank(request.getParameter("kpiOrga")) ), "Please input Organization or Employee!")		
 		.throwMessage();
 	}
 	
@@ -144,16 +144,11 @@ public class KpiBaseReportController extends BaseControllerSupport implements IP
 				request.getParameter("date1"), 
 				request.getParameter("date2"), 
 				accountId, 
-				orgId).processDefault().processDateRange().reduce().value();
+				orgId).processDefault().processDateRange().reduce().valueThrowMessage();
 		if (scores != null && scores.size() > 0) {
 			result.setValue(scores);
-			for (ScoreCalculationData scd : scores) {
-				if (!StringUtils.isBlank(scd.getErrorMessage())) {
-					throw new ControllerException( scd.getErrorMessage() );
-				}
-				result.setSuccess(YES);
-				result.setMessage( "success!" );				
-			}
+			result.setSuccess(YES);
+			result.setMessage( "success!" );
 		} else {
 			result.setMessage( BaseSystemMessage.dataErrors() );
 		}
