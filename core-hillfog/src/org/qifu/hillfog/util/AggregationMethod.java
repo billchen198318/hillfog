@@ -133,6 +133,7 @@ public class AggregationMethod {
 					if (value == null) {
 						continue;
 					}
+					dateScore.getSourceMeasureDatas().add(measureData);
 					score = score.add( value );
 					size = size.add( BigDecimal.ONE );					
 				} catch (Exception e) {
@@ -142,11 +143,7 @@ public class AggregationMethod {
 			if ( score.floatValue() != 0.0f && size.longValue() > 0 ) {
 				score = score.divide(size);
 			}
-			ScoreColor sc = ScoreColorUtils.get(score);
-			dateScore.setScore(score);
-			dateScore.setFontColor( sc.getFontColor() );
-			dateScore.setBgColor( sc.getBackgroundColor() );
-			//dateScore.setImgIcon( BscReportSupportUtils.getHtmlIcon(kpi, score) );
+			this.fillDateRangeScore(dateScore, score);
 		}
 		return dateRangeScores;
 	}
@@ -191,6 +188,7 @@ public class AggregationMethod {
 					if (value == null) {
 						continue;
 					}
+					dateScore.getSourceMeasureDatas().add(measureData);
 			      	if ( !scores.contains(value) ) {
 						scores.add( value );
 						score = score.add( value );
@@ -203,11 +201,7 @@ public class AggregationMethod {
 			if ( score.floatValue() != 0.0f && size.longValue() > 0 ) {
 				score = score.divide(size);
 			}
-			ScoreColor sc = ScoreColorUtils.get(score);
-			dateScore.setScore(score);
-			dateScore.setFontColor( sc.getFontColor() );
-			dateScore.setBgColor( sc.getBackgroundColor() );
-			//dateScore.setImgIcon( BscReportSupportUtils.getHtmlIcon(kpi, score) );
+			this.fillDateRangeScore(dateScore, score);
 		}
 		return dateRangeScores;
 	}
@@ -228,14 +222,11 @@ public class AggregationMethod {
 				if (!this.isDateRange(date, frequency, measureData)) {
 					continue;
 				}
+				dateScore.getSourceMeasureDatas().add(measureData);
 				size = size.add( BigDecimal.ONE );
 			}
 		    score = score.add(size);
-		    ScoreColor sc = ScoreColorUtils.get(score);
-			dateScore.setScore(score);
-			dateScore.setFontColor( sc.getFontColor() );
-			dateScore.setBgColor( sc.getBackgroundColor() );
-			//dateScore.setImgIcon( BscReportSupportUtils.getHtmlIcon(kpi, score) );
+		    this.fillDateRangeScore(dateScore, score);
 		}
 		return dateRangeScores;
 	}
@@ -272,6 +263,7 @@ public class AggregationMethod {
 					if (value == null) {
 						continue;
 					}
+					dateScore.getSourceMeasureDatas().add(measureData);
 		      		if ( !scores.contains(value) ) {
 						scores.add( value );
 					}
@@ -280,11 +272,7 @@ public class AggregationMethod {
 				}		
 			}
 		    score = new BigDecimal( scores.size() );
-		    ScoreColor sc = ScoreColorUtils.get(score);
-			dateScore.setScore(score);
-			dateScore.setFontColor( sc.getFontColor() );
-			dateScore.setBgColor( sc.getBackgroundColor() );
-			//dateScore.setImgIcon( BscReportSupportUtils.getHtmlIcon(kpi, score) );
+		    this.fillDateRangeScore(dateScore, score);
 		}		
 		return dateRangeScores;
 	}
@@ -327,6 +315,7 @@ public class AggregationMethod {
 					if (value == null) {
 						continue;
 					}
+					dateScore.getSourceMeasureDatas().add(measureData);
 					if ( size.longValue() < 1 ) {
 						score = value;
 					} else { // Max
@@ -339,11 +328,7 @@ public class AggregationMethod {
 					e.printStackTrace();
 				}
 			}
-			ScoreColor sc = ScoreColorUtils.get(score);
-			dateScore.setScore(score);
-			dateScore.setFontColor( sc.getFontColor() );
-			dateScore.setBgColor( sc.getBackgroundColor() );
-			//dateScore.setImgIcon( BscReportSupportUtils.getHtmlIcon(kpi, score) );
+			this.fillDateRangeScore(dateScore, score);
 		}	
 		return dateRangeScores;
 	}	
@@ -386,6 +371,7 @@ public class AggregationMethod {
 					if (value == null) {
 						continue;
 					}
+					dateScore.getSourceMeasureDatas().add(measureData);
 					if ( size.longValue() < 1 ) {
 						score = value;
 					} else { // Min
@@ -398,11 +384,7 @@ public class AggregationMethod {
 					e.printStackTrace();
 				}
 			}
-			ScoreColor sc = ScoreColorUtils.get(score);
-			dateScore.setScore(score);
-			dateScore.setFontColor( sc.getFontColor() );
-			dateScore.setBgColor( sc.getBackgroundColor() );
-			//dateScore.setImgIcon( BscReportSupportUtils.getHtmlIcon(kpi, score) );
+			this.fillDateRangeScore(dateScore, score);
 		}	
 		return dateRangeScores;
 	}	
@@ -436,16 +418,13 @@ public class AggregationMethod {
 					if (value == null) {
 						continue;
 					}
+					dateScore.getSourceMeasureDatas().add(measureData);
 					score = score.add( value );
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
-			ScoreColor sc = ScoreColorUtils.get(score);
-			dateScore.setScore(score);
-			dateScore.setFontColor( sc.getFontColor() );
-			dateScore.setBgColor( sc.getBackgroundColor() );
-			//dateScore.setImgIcon( BscReportSupportUtils.getHtmlIcon(kpi, score) );
+			this.fillDateRangeScore(dateScore, score);
 		}
 		return dateRangeScores;
 	}	
@@ -484,6 +463,7 @@ public class AggregationMethod {
 					if (value == null) {
 						continue;
 					}
+					dateScore.getSourceMeasureDatas().add(measureData);
 					if ( !scores.contains(value) ) {
 						scores.add( value );
 						score = score.add(value);
@@ -492,13 +472,17 @@ public class AggregationMethod {
 					e.printStackTrace();
 				}
 			}
-			ScoreColor sc = ScoreColorUtils.get(score);
-			dateScore.setScore(score);
-			dateScore.setFontColor( sc.getFontColor() );
-			dateScore.setBgColor( sc.getBackgroundColor() );
-			//dateScore.setImgIcon( BscReportSupportUtils.getHtmlIcon(kpi, score) );
+			this.fillDateRangeScore(dateScore, score);
 		}
 		return dateRangeScores;
 	}	
+	
+	private void fillDateRangeScore(DateRangeScore dateScore, BigDecimal score) {
+		ScoreColor sc = ScoreColorUtils.get(score);
+		dateScore.setScore(score);
+		dateScore.setFontColor( sc.getFontColor() );
+		dateScore.setBgColor( sc.getBackgroundColor() );
+		//dateScore.setImgIcon( BscReportSupportUtils.getHtmlIcon(kpi, score) );
+	}
 	
 }

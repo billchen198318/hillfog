@@ -22,6 +22,10 @@
 package org.qifu.hillfog.vo;
 
 import java.math.BigDecimal;
+import java.util.LinkedList;
+import java.util.List;
+
+import org.qifu.hillfog.entity.HfMeasureData;
 
 public class DateRangeScore implements java.io.Serializable {
 	private static final long serialVersionUID = 8715540156477843268L;
@@ -33,6 +37,7 @@ public class DateRangeScore implements java.io.Serializable {
 	private String fontColor;
 	private String bgColor;
 	private String imgIcon;
+	private List<HfMeasureData> sourceMeasureDatas = new LinkedList<HfMeasureData>();
 	
 	public String getDate() {
 		return date;
@@ -88,6 +93,14 @@ public class DateRangeScore implements java.io.Serializable {
 	
 	public void setImgIcon(String imgIcon) {
 		this.imgIcon = imgIcon;
+	}
+
+	public List<HfMeasureData> getSourceMeasureDatas() {
+		return sourceMeasureDatas;
+	}
+
+	public void setSourceMeasureDatas(List<HfMeasureData> sourceMeasureDatas) {
+		this.sourceMeasureDatas = sourceMeasureDatas;
 	}
 	
 }

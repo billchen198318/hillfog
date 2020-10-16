@@ -33,6 +33,8 @@ import org.qifu.base.message.BaseSystemMessage;
 import org.qifu.base.model.YesNo;
 import org.qifu.hillfog.callable.ScoreCalculationCallable;
 import org.qifu.hillfog.entity.HfKpi;
+import org.qifu.hillfog.entity.HfMeasureData;
+import org.qifu.hillfog.vo.DateRangeScore;
 import org.qifu.hillfog.vo.ScoreCalculationData;
 import org.qifu.util.SimpleUtils;
 
@@ -134,11 +136,34 @@ public class KpiScore {
 	
 	public KpiScore reduce() {
 		for (ScoreCalculationData data : this.scoreDatas) {
-			if (data.getFormula() == null) {
-				continue;
+			if (data.getFormula() != null) {
+				data.getFormula().setExpression("");
+				data.getFormula().setDescription("");
+				data.getFormula().setCdate(null);
+				data.getFormula().setCuserid("");
+				data.getFormula().setUdate(null);
+				data.getFormula().setUuserid("");
 			}
-			data.getFormula().setExpression("");
-			data.getFormula().setDescription("");
+			if (data.getKpi() != null) {
+				data.getKpi().setCdate(null);
+				data.getKpi().setCuserid("");
+				data.getKpi().setUdate(null);
+				data.getKpi().setUuserid("");
+			}
+			for (HfMeasureData md : data.getMeasureDatas()) {
+				md.setCdate(null);
+				md.setCuserid("");
+				md.setUdate(null);
+				md.setUuserid("");
+			}
+			for (DateRangeScore drs : data.getDataRangeScores()) {
+				for (HfMeasureData md : drs.getSourceMeasureDatas()) {
+					md.setCdate(null);
+					md.setCuserid("");
+					md.setUdate(null);
+					md.setUuserid("");
+				}
+			}
 		}
 		return this;
 	}

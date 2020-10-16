@@ -31,8 +31,10 @@ import org.qifu.base.exception.ServiceException;
 import org.qifu.base.message.BaseSystemMessage;
 import org.qifu.base.model.SortType;
 import org.qifu.hillfog.entity.HfMeasureData;
+import org.qifu.hillfog.model.MeasureDataCode;
 import org.qifu.hillfog.service.IMeasureDataService;
 import org.qifu.hillfog.vo.ScoreCalculationData;
+import org.qifu.util.SimpleUtils;
 
 public class QueryMeasureDataUtils {
 	
@@ -43,8 +45,23 @@ public class QueryMeasureDataUtils {
 	}
 	
 	public static List<HfMeasureData> queryForScoreCalculationData(ScoreCalculationData data) throws ServiceException, Exception {
+		String startDate = StringUtils.defaultString(data.getDate1()).trim().replaceAll("/", "").replaceAll("-", "");
+		String endDate = StringUtils.defaultString(data.getDate2()).trim().replaceAll("/", "").replaceAll("-", "");
+		if (startDate.length() != 8 || endDate.length() != 8 || !SimpleUtils.isDate(startDate) || !SimpleUtils.isDate(endDate)) {
+			throw new ServiceException( BaseSystemMessage.dataErrors() );
+		}
+		if ( MeasureDataCode.FREQUENCY_WEEK.equals(data.getFrequency()) || MeasureDataCode.FREQUENCY_MONTH.equals(data.getFrequency()) ) {
+			Map<String, String> paramMap = MeasureDataCode.getWeekOrMonthStartEnd(data.getFrequency(), startDate, endDate);
+			startDate = paramMap.get("startDate");
+			endDate = paramMap.get("endDate");
+		}
+		if ( MeasureDataCode.FREQUENCY_QUARTER.equals(data.getFrequency()) || MeasureDataCode.FREQUENCY_HALF_OF_YEAR.equals(data.getFrequency()) 
+				|| MeasureDataCode.FREQUENCY_YEAR.equals(data.getFrequency()) ) {
+			startDate = startDate.substring(0, 4) + "0101";
+			endDate = endDate.substring(0, 4) + "12" + SimpleUtils.getMaxDayOfMonth(Integer.parseInt(endDate.substring(0, 4)), 12);			
+		}
 		return queryForScoreCalculationData(
-				data.getKpi().getId(), data.getFrequency(), data.getDate1(), data.getDate2(), data.getMeasureDataOrgId(), data.getMeasureDataAccount());
+				data.getKpi().getId(), data.getFrequency(), startDate, endDate, data.getMeasureDataOrgId(), data.getMeasureDataAccount());
 	}
 	
 	public static List<HfMeasureData> queryForScoreCalculationData(String kpiId, String frequency, String startDate, String endDate, String orgId, String account) throws ServiceException, Exception {
