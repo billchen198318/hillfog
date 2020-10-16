@@ -23,6 +23,7 @@ package org.qifu.hillfog.util;
 
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -114,7 +115,7 @@ public class AggregationMethod {
 			}		
 		}
 		if ( score.floatValue() != 0.0f && size.longValue() > 0 ) {
-			score = score.divide(size);
+			score = score.divide(size, 2, RoundingMode.HALF_UP);
 		}
 		return score;
 	}
@@ -141,7 +142,7 @@ public class AggregationMethod {
 				}				
 			}
 			if ( score.floatValue() != 0.0f && size.longValue() > 0 ) {
-				score = score.divide(size);
+				score = score.divide(size, 2, RoundingMode.HALF_UP);
 			}
 			this.fillDateRangeScore(dateScore, score);
 		}
@@ -168,7 +169,7 @@ public class AggregationMethod {
 			}
 		}
 		if ( score.floatValue() != 0.0f && size.longValue() > 0 ) {
-			score = score.divide(size);
+			score = score.divide(size, 2, RoundingMode.HALF_UP);
 		}		
 		return score;
 	}
@@ -199,7 +200,7 @@ public class AggregationMethod {
 				}
 			}
 			if ( score.floatValue() != 0.0f && size.longValue() > 0 ) {
-				score = score.divide(size);
+				score = score.divide(size, 2, RoundingMode.HALF_UP);
 			}
 			this.fillDateRangeScore(dateScore, score);
 		}
