@@ -147,8 +147,13 @@ public class KpiBaseReportController extends BaseControllerSupport implements IP
 				orgId).processDefault().processDateRange().reduce().value();
 		if (scores != null && scores.size() > 0) {
 			result.setValue(scores);
-			result.setSuccess(YES);
-			result.setMessage( "success!" );
+			for (ScoreCalculationData scd : scores) {
+				if (!StringUtils.isBlank(scd.getErrorMessage())) {
+					throw new ControllerException( scd.getErrorMessage() );
+				}
+				result.setSuccess(YES);
+				result.setMessage( "success!" );				
+			}
 		} else {
 			result.setMessage( BaseSystemMessage.dataErrors() );
 		}

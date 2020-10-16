@@ -169,12 +169,13 @@ function queryReport() {
 				'kpiOrga'		:	$("#kpiOrga").val()
 			}, 
 			function(data) {
-				parent.toastrWarning( data.message );
 				if ( _qifu_success_flag != data.success ) {
+					parent.toastrWarning( data.message );
 					$("#content").html('<br><span class="badge badge-warning"><h6>' + data.message + '</h6></span><br>');
 					return;
 				}
 				if ( _qifu_success_flag == data.success ) {
+					parent.toastrWarning( data.message );
 					console.log( data.value );
 				}
 			}, 
@@ -250,8 +251,8 @@ function queryClear() {
 					
 					<p style="margin-bottom: 10px"></p>
 				
-					<button type="button" class="btn btn-info" id="btnQuery" onclick="queryReport();">Query</button>
-					<button type="button" class="btn btn-info" id="btnClear" onclick="queryClear();">Clear</button>				
+					<button type="button" class="btn btn-success" id="btnQuery" onclick="queryReport();">Query</button>
+					<button type="button" class="btn btn-success" id="btnClear" onclick="queryClear();">Clear</button>				
 				</div>
 			</div>				
 		</div>

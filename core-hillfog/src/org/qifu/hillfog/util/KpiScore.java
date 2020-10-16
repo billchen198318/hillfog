@@ -28,6 +28,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import org.qifu.base.message.BaseSystemMessage;
 import org.qifu.base.model.YesNo;
 import org.qifu.hillfog.callable.ScoreCalculationCallable;
 import org.qifu.hillfog.entity.HfKpi;
@@ -111,8 +112,10 @@ public class KpiScore {
 				data = kpiCalculationPool.submit( new ScoreCalculationCallable(data) ).get();
 			} catch (InterruptedException e) {
 				e.printStackTrace();
+				data.setErrorMessage( (e == null || e.getMessage() == null) ? BaseSystemMessage.objectNull() : e.getMessage() );
 			} catch (ExecutionException e) {
 				e.printStackTrace();
+				data.setErrorMessage( (e == null || e.getMessage() == null) ? BaseSystemMessage.objectNull() : e.getMessage() );
 			}
 		}
 		kpiCalculationPool.shutdown();
