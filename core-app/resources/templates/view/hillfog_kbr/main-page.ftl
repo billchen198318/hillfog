@@ -130,6 +130,39 @@ $( document ).ready(function() {
 		changeQueryButtonStatus();
 	});
 	
+	$("#kpiOid").change(function(){
+		orgDeptList.splice(0);
+		empList.splice(0);
+		$("#kpiEmpl").val('');
+		$("#kpiOrga").val('');
+		$("#kpiEmpl").trigger('change');
+		xhrSendParameter(
+				'./hfCommonKpiInputAutocompleteJson', 
+				{
+					'oid'	:	$("#kpiOid").val()
+				}, 
+				function(data) {
+					if ( _qifu_success_flag != data.success ) {
+						parent.toastrWarning( data.message );
+						return;
+					}
+					if ( _qifu_success_flag == data.success ) {
+						parent.toastrInfo( data.message );
+						for (var d in data.value.org) {
+							orgDeptList.push( data.value.org[d] );
+						}
+						for (var d in data.value.emp) {
+							empList.push( data.value.emp[d] );
+						}
+					}
+				}, 
+				function() {
+					
+				},
+				_qifu_defaultSelfPleaseWaitShow
+		);		
+	});
+	
 });
 
 function changeQueryButtonStatus() {
