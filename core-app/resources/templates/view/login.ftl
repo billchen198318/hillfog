@@ -7,7 +7,7 @@
     <link rel="stylesheet" type="text/css" href="/css/main.css">
     <!-- Font-icon css-->
     <link rel="stylesheet" type="text/css" href="/font-awesome/css/font-awesome.min.css">
-    <title>Login - qifu3</title>
+    <title>Login - hillfog</title>
   </head>
   <body>
     <section class="material-half-bg">
@@ -16,7 +16,7 @@
     <section class="login-content">
 
       <div class="logo">
-        <h1>QiFu-3</h1>
+        <h1>hillfog</h1>
       </div>
       <div class="login-box">
         <form class="login-form" method="post" action="/login">
