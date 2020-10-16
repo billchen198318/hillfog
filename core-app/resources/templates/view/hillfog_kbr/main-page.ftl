@@ -176,7 +176,7 @@ function queryReport() {
 				}
 				if ( _qifu_success_flag == data.success ) {
 					parent.toastrInfo( data.message );
-					console.log( data.value );
+					showContent( data.value );
 				}
 			}, 
 			function() {
@@ -196,6 +196,11 @@ function queryClear() {
 	$("#date2").val('');
 	$("#kpiOid").val( _qifu_please_select_id );
 	$("#frequency").val('3');
+}
+
+function showContent(data) {
+	console.log(data);
+	
 }
 
 </script>
@@ -257,10 +262,10 @@ function queryClear() {
 			</div>				
 		</div>
 	</div>
+
+<br/>
 	
 	<span id="content"></span>
-	
-<p style="margin-bottom: 10px"></p>
 
 <br/>
 <br/>
