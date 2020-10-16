@@ -231,11 +231,6 @@ function queryClear() {
 	$("#frequency").val('3');
 }
 
-function showContent(data) {
-	console.log(data);
-	
-}
-
 </script>
 
 </head>
@@ -303,6 +298,8 @@ function showContent(data) {
 <br/>
 <br/>
 <br/>
+
+<script type="text/javascript" src="${qifu_basePath}js/hillfog/HF_PROG002D0001Q.js?ver=${qifu_jsVerBuild}"></script>
 
 </body>
 </html>
