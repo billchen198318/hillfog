@@ -21,18 +21,28 @@
  */
 package org.qifu.hillfog.util;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.math.NumberUtils;
+import org.qifu.base.Constants;
 import org.qifu.hillfog.entity.HfFormula;
 import org.qifu.hillfog.entity.HfKpi;
 import org.qifu.hillfog.entity.HfMeasureData;
 import org.qifu.hillfog.model.MeasureDataCode;
 import org.qifu.hillfog.model.ScoreColor;
 import org.qifu.hillfog.vo.DateRangeScore;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class AggregationMethod {
 	public static final String QUARTER_1 = "Q1";
@@ -41,6 +51,52 @@ public class AggregationMethod {
 	public static final String QUARTER_4 = "Q4";
 	public static final String HALF_YEAR_FIRST = "first";
 	public static final String HALF_YEAR_LAST = "last";
+	
+	private static final String _CONFIG = "org/qifu/hillfog/util/AggregationMethod.json";
+	
+	private static Map<String, Object> srcMap = null;
+	
+	private static String _srcDatas = " { } ";
+	
+	static {
+		try {
+			InputStream is = AggregationMethod.class.getClassLoader().getResource( _CONFIG ).openStream();
+			_srcDatas = IOUtils.toString(is, Constants.BASE_ENCODING);
+			is.close();
+			is = null;
+			srcMap = loadDatas();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			if (null==srcMap) {
+				srcMap = new HashMap<String, Object>();
+			}
+		}
+	}	
+	
+	@SuppressWarnings("unchecked")
+	private static Map<String, Object> loadDatas() {
+		Map<String, Object> datas = null;
+		try {
+			datas = (Map<String, Object>)new ObjectMapper().readValue( _srcDatas, LinkedHashMap.class );
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return datas;
+	}
+	
+	private static int getDivideScale() {
+		if (null == srcMap) {
+			loadDatas();
+		}
+		if (NumberUtils.isCreatable((String)srcMap.get("divideScale"))) {
+			int divideScale = NumberUtils.toInt((String)srcMap.get("divideScale"));
+			if (divideScale >= 1 && divideScale <= 3) {
+				return divideScale;
+			}
+		}
+		return 2;
+	}
 	
 	public AggregationMethod() {
 		
@@ -115,7 +171,7 @@ public class AggregationMethod {
 			}		
 		}
 		if ( score.floatValue() != 0.0f && size.longValue() > 0 ) {
-			score = score.divide(size, 2, RoundingMode.HALF_UP);
+			score = score.divide(size, getDivideScale(), RoundingMode.HALF_UP);
 		}
 		return score;
 	}
@@ -142,7 +198,7 @@ public class AggregationMethod {
 				}				
 			}
 			if ( score.floatValue() != 0.0f && size.longValue() > 0 ) {
-				score = score.divide(size, 2, RoundingMode.HALF_UP);
+				score = score.divide(size, getDivideScale(), RoundingMode.HALF_UP);
 			}
 			this.fillDateRangeScore(dateScore, score);
 		}
@@ -169,7 +225,7 @@ public class AggregationMethod {
 			}
 		}
 		if ( score.floatValue() != 0.0f && size.longValue() > 0 ) {
-			score = score.divide(size, 2, RoundingMode.HALF_UP);
+			score = score.divide(size, getDivideScale(), RoundingMode.HALF_UP);
 		}		
 		return score;
 	}
@@ -200,7 +256,7 @@ public class AggregationMethod {
 				}
 			}
 			if ( score.floatValue() != 0.0f && size.longValue() > 0 ) {
-				score = score.divide(size, 2, RoundingMode.HALF_UP);
+				score = score.divide(size, getDivideScale(), RoundingMode.HALF_UP);
 			}
 			this.fillDateRangeScore(dateScore, score);
 		}
