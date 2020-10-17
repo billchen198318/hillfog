@@ -234,25 +234,31 @@ function paintContent() {
     
 	<div class="row">
 		<div class="col p-2 bg-secondary rounded">
-			<span class="badge badge-info"><h6>${kpi.id}&nbsp;-&nbsp;${kpi.name}</h6></span>
-			<span class="badge badge-danger">
-				<h6>${kpi.managementName}</h6>
-			</span>			
-			<span class="badge badge-warning"><h6>Target:&nbsp;${kpi.target}&nbsp;，Maximum:&nbsp;${kpi.max}&nbsp;，Minimum:&nbsp;${kpi.min}</h6></span>
-			<span class="badge badge-dark"><h6>Weight:&nbsp;${kpi.weight}&nbsp;，Unit:&nbsp;${kpi.unit}</h6></span>
-			<span class="badge badge-dark"><h6>Formula:&nbsp;${formula.forId}-${formula.name}</h6></span>
-			<span class="badge badge-dark"><h6>Aggregation:&nbsp;${aggrMethod.aggrId}-${aggrMethod.name}</h6></span>
-			
-			<div class="text-white">
-				<@qifu.select dataSource="frequencyMap" name="frequency" id="frequency" value="" label="Frequency" requiredFlag="Y"></@qifu.select>
+			<div class="row">
+				<div class="col-xs-12 col-md-12 col-lg-12 text-white">
+					<span class="badge badge-info"><h6>${kpi.id}&nbsp;-&nbsp;${kpi.name}</h6></span>
+					<span class="badge badge-danger">
+						<h6>${kpi.managementName}</h6>
+					</span>			
+					<span class="badge badge-warning"><h6>Target:&nbsp;${kpi.target}&nbsp;，Maximum:&nbsp;${kpi.max}&nbsp;，Minimum:&nbsp;${kpi.min}</h6></span>
+					<span class="badge badge-dark"><h6>Weight:&nbsp;${kpi.weight}&nbsp;，Unit:&nbsp;${kpi.unit}</h6></span>
+					<span class="badge badge-dark"><h6>Formula:&nbsp;${formula.forId}-${formula.name}</h6></span>
+					<span class="badge badge-dark"><h6>Aggregation:&nbsp;${aggrMethod.aggrId}-${aggrMethod.name}</h6></span>
+				</div>
 			</div>
-			<div class="text-white">
-				<@qifu.textbox name="kpiOrga" value="" id="kpiOrga" label="Organization" requiredFlag="Y" maxlength="100" placeholder="Enter organization" />
+			<div class="row">
+				<div class="col-xs-12 col-md-12 col-lg-12 text-white">
+					<@qifu.select dataSource="frequencyMap" name="frequency" id="frequency" value="" label="Frequency" requiredFlag="Y"></@qifu.select>
+				</div>
 			</div>
-			<div class="text-white">
-				<@qifu.textbox name="kpiEmpl" value="" id="kpiEmpl" label="Employee" requiredFlag="Y" maxlength="100" placeholder="Enter employee" />
+			<div class="row">
+				<div class="col-xs-6 col-md-6 col-lg-6 text-white">
+					<@qifu.textbox name="kpiOrga" value="" id="kpiOrga" label="Organization" requiredFlag="Y" maxlength="100" placeholder="Enter organization" />
+				</div>
+				<div class="col-xs-6 col-md-6 col-lg-6 text-white">
+					<@qifu.textbox name="kpiEmpl" value="" id="kpiEmpl" label="Employee" requiredFlag="Y" maxlength="100" placeholder="Enter employee" />
+				</div>			
 			</div>
-			
 		</div>
 	</div>
 

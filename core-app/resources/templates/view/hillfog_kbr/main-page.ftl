@@ -254,7 +254,7 @@ function queryClear() {
 <@cfh.commonFormHeadContent /> 
     
 	<div class="row">
-		<div class="col p-2 bg-secondary rounded">
+		<div class="col p-2"> <!-- bg-secondary rounded -->
 			<div class="row">
 				<div class="col-xs-6 col-md-6 col-lg-6 text-white">
 					<@qifu.select dataSource="frequencyMap" name="frequency" id="frequency" value="" label="Frequency" requiredFlag="Y"></@qifu.select>
