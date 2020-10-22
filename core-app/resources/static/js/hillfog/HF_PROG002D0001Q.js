@@ -1,3 +1,4 @@
+var _gaugeIdHeadStr = 'gauge_';
 function showContent(data) {
 	var str = '';
 	for (var d in data) {
@@ -13,13 +14,13 @@ function showContent(data) {
 function createContent(str, scoreData) {
 
 	str += '<div class="row mx-auto justify-content-center align-items-center flex-column ">';
-	str += '<div class="col-6" id="gauge_' + scoreData.kpi.id + '" style="width: 500px;height:450px;"></div>';
+	str += '<div class="col-6" id="' + _gaugeIdHeadStr + scoreData.kpi.id + '" style="width: 500px;height:450px;"></div>';
 	str += '</div>';
 	
 	return str;
 }
 function showCharts(scoreData) {
-	var myChart = echarts.init(document.getElementById('gauge_'+scoreData.kpi.id));
+	var myChart = echarts.init(document.getElementById( _gaugeIdHeadStr + scoreData.kpi.id ));
 	
 	option = {
 	    tooltip: {
