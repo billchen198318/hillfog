@@ -27,10 +27,15 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.qifu.base.Constants;
+import org.qifu.base.exception.ServiceException;
+import org.qifu.base.message.BaseSystemMessage;
 import org.qifu.base.model.PleaseSelect;
+import org.qifu.hillfog.vo.MeasureDataQueryParam;
 import org.qifu.util.SimpleUtils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -201,5 +206,26 @@ public class MeasureDataCode {
 		}
 		return dateMap;		
 	}	
+	
+	public static MeasureDataQueryParam queryParam(HttpServletRequest request) throws ServiceException, Exception {
+		String accountId = MEASURE_DATA_EMPLOYEE_FULL;
+		String orgId = MEASURE_DATA_ORGANIZATION_FULL;
+		if (!StringUtils.isBlank(request.getParameter("kpiEmpl"))) {
+			accountId = request.getParameter("kpiEmpl");
+			String tmp[] = accountId.split("/");
+			if (tmp == null || tmp.length != 3) {
+				throw new ServiceException( BaseSystemMessage.searchNoData() );
+			}
+			accountId = StringUtils.deleteWhitespace(tmp[1]);
+			if (StringUtils.isBlank(accountId)) {
+				throw new ServiceException( BaseSystemMessage.searchNoData() );
+			}
+		}
+		if (!StringUtils.isBlank(request.getParameter("kpiOrga"))) {
+			orgId = request.getParameter("kpiOrga");
+			orgId = StringUtils.deleteWhitespace(orgId.split("/")[0]);
+		}		
+		return new MeasureDataQueryParam(accountId, orgId);
+	}
 	
 }

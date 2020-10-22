@@ -45,6 +45,7 @@ import org.qifu.hillfog.service.IEmployeeService;
 import org.qifu.hillfog.service.IKpiService;
 import org.qifu.hillfog.service.IOrgDeptService;
 import org.qifu.hillfog.util.KpiScore;
+import org.qifu.hillfog.vo.MeasureDataQueryParam;
 import org.qifu.hillfog.vo.ScoreCalculationData;
 import org.qifu.util.SimpleUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -121,30 +122,14 @@ public class KpiBaseReportController extends BaseControllerSupport implements IP
 		if (null == kpis || kpis.size() < 1) {
 			throw new ControllerException( BaseSystemMessage.dataErrors() );
 		}
-		String accountId = MeasureDataCode.MEASURE_DATA_EMPLOYEE_FULL;
-		String orgId = MeasureDataCode.MEASURE_DATA_ORGANIZATION_FULL;
-		if (!StringUtils.isBlank(request.getParameter("kpiEmpl"))) {
-			accountId = request.getParameter("kpiEmpl");
-			String tmp[] = accountId.split("/");
-			if (tmp == null || tmp.length != 3) {
-				throw new ServiceException( BaseSystemMessage.searchNoData() );
-			}
-			accountId = StringUtils.deleteWhitespace(tmp[1]);
-			if (StringUtils.isBlank(accountId)) {
-				throw new ServiceException( BaseSystemMessage.searchNoData() );
-			}
-		}
-		if (!StringUtils.isBlank(request.getParameter("kpiOrga"))) {
-			orgId = request.getParameter("kpiOrga");
-			orgId = StringUtils.deleteWhitespace(orgId.split("/")[0]);
-		}
+		MeasureDataQueryParam queryParam = MeasureDataCode.queryParam(request);
 		List<ScoreCalculationData> scores = KpiScore.build().add(
 				kpis, 
 				request.getParameter("frequency"), 
 				request.getParameter("date1"), 
 				request.getParameter("date2"), 
-				accountId, 
-				orgId).processDefault().processDateRange().reduce().valueThrowMessage();
+				queryParam.getAccountId(), 
+				queryParam.getOrgId()).processDefault().processDateRange().reduce().valueThrowMessage();
 		if (scores != null && scores.size() > 0) {
 			result.setValue(scores);
 			result.setSuccess(YES);
