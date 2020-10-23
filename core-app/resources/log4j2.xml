@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Configuration status="WARN, INFO, DEBUG, TRACE" monitorInterval="30">
+<Configuration status="DEBUG">
     <Properties>
         <Property name="LOG_PATTERN">%d{yyyy-MM-dd'T'HH:mm:ss.SSSZ} [%X{userId}] %p %m%n</Property>
         <Property name="APP_LOG_ROOT">/tmp</Property>
