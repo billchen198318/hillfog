@@ -44,7 +44,7 @@ function createContent(scoreData) {
 	</tbody>
 	</table>
 	`;
-	//console.log( `${tableStart}${detailContent}${tableEnd}` );
+	
 	return `${tableStart}${detailContent}${tableEnd}`;
 }
 
