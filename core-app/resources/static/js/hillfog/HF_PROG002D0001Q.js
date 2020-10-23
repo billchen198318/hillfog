@@ -12,17 +12,43 @@ function showContent(data) {
 	}
 }
 function createContent(str, scoreData) {
-
+	var currGaugeIdHead = _gaugeIdHead + scoreData.kpi.id;
 	str += '<div class="row mx-auto justify-content-center align-items-center flex-column ">';
-	str += '<div class="col-6" id="' + _gaugeIdHead + scoreData.kpi.id + '" style="width: 500px;height:450px;"></div>';
+	str += '<div class="col-6" id="' + currGaugeIdHead + '" style="width: 500px;height:450px;"></div>';
 	str += '</div>';
+	
+	str += '<table class="table">';
+	str += '<thead class="thead-dark">';
+	str += '<tr>';
+	str += '<th scope="col">Date range score</th>';
+	str += '<th scope="col">Info</th>';
+	str += '</tr>';
+	str += '</thead>';
+	str += '<tbody>';
+	for (var n in scoreData.dataRangeScores) {
+		//console.log(scoreData.dataRangeScores[n]);
+		var currDateRangeGaugeIdHead = currGaugeIdHead + '_' + n;
+		str += '<tr>';
+		str += '<td><div class="col-6" id="' + currDateRangeGaugeIdHead + '" style="width: 400px;height:350px;"></div></td>';
+		str += '<td>&nbsp;</td>';
+		str += '</tr>';
+	}
+	str += '</tbody>';
+	str += '</table>';
 	
 	return str;
 }
 function showCharts(scoreData) {
-	var myChart = echarts.init(document.getElementById( _gaugeIdHead + scoreData.kpi.id ));
-	
-	option = {
+	var currGaugeIdHead = _gaugeIdHead + scoreData.kpi.id;
+	gaugeChart(currGaugeIdHead, scoreData.kpi.name, scoreData.score, 'The completion rate');
+	for (var n in scoreData.dataRangeScores) {
+		var currDateRangeGaugeIdHead = currGaugeIdHead + '_' + n;
+		gaugeChart(currDateRangeGaugeIdHead, scoreData.dataRangeScores[n].date, scoreData.dataRangeScores[n].score, 'The completion rate');
+	}
+}
+function gaugeChart(chartId, seriesName, dataValue, dataName) {
+	var myChart = echarts.init(document.getElementById( chartId ));
+	var option = {
 	    tooltip: {
 	        formatter: '{a} <br/>{b} : {c}%'
 	    },
@@ -47,17 +73,17 @@ function showCharts(scoreData) {
 				pointer:{show:true},
 				axisTick:{show:true},
 				splitLine:{show:false},        
-	            name: scoreData.kpi.name,
+	            name: seriesName,
 	            type: 'gauge',
 	            detail: {
 	            	offsetCenter:[5,-40],
 	            	formatter: '{value}%'
 	            },
-	            data: [{value: scoreData.score, name: 'The completion rate'}]
+	            data: [{value: dataValue, name: dataName}]
 	        }
 	    ]
 	};
 	
 	myChart.setOption(option, true);
-	    
 }
+
