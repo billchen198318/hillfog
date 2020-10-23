@@ -11,6 +11,7 @@ function showContent(data) {
 		showCharts(scoreData);
 	}
 }
+
 function createContent(str, scoreData) {
 	var currGaugeIdHead = _gaugeIdHead + scoreData.kpi.id;
 	str += '<div class="row mx-auto justify-content-center align-items-center flex-column ">';
@@ -38,6 +39,7 @@ function createContent(str, scoreData) {
 	
 	return str;
 }
+
 function showCharts(scoreData) {
 	var currGaugeIdHead = _gaugeIdHead + scoreData.kpi.id;
 	gaugeChart(currGaugeIdHead, scoreData.kpi.name, scoreData.score, 'The completion rate');
@@ -46,6 +48,7 @@ function showCharts(scoreData) {
 		gaugeChart(currDateRangeGaugeIdHead, scoreData.dataRangeScores[n].date, scoreData.dataRangeScores[n].score, 'The completion rate');
 	}
 }
+
 function gaugeChart(chartId, seriesName, dataValue, dataName) {
 	var myChart = echarts.init(document.getElementById( chartId ));
 	var option = {
