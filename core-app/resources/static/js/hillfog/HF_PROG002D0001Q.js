@@ -16,7 +16,9 @@ function createContent(scoreData) {
 	var currGaugeIdHead = _gaugeIdHead + scoreData.kpi.id;
 	var detailContent = '';
 	var tableStart = `
-	<div class="row mx-auto justify-content-center align-items-center flex-column ">
+	<div class="row mx-auto flex-column">
+		<span class="badge badge-info"><h2>${scoreData.kpi.id}&nbsp;-&nbsp;${scoreData.kpi.name}</h2></span>
+		<span class="badge badge-secondary"><h2>${scoreData.date1}&nbsp;~&nbsp;${scoreData.date2}</h2></span>
 		<div class="col-6" id="${currGaugeIdHead}" style="width: 500px;height:450px;"></div>
 	</div>
 	<table class="table">
