@@ -3,7 +3,7 @@ function showContent(data) {
 	var str = '';
 	for (var d in data) {
 		var scoreData = data[d];
-		str += createContent(str, scoreData);
+		str += createContent(scoreData);
 	}
 	$("#content").html(str);
 	for (var d in data) {
@@ -12,7 +12,8 @@ function showContent(data) {
 	}
 }
 
-function createContent(str, scoreData) {
+function createContent(scoreData) {
+	var str = '';
 	var currGaugeIdHead = _gaugeIdHead + scoreData.kpi.id;
 	str += '<div class="row mx-auto justify-content-center align-items-center flex-column ">';
 	str += '<div class="col-6" id="' + currGaugeIdHead + '" style="width: 500px;height:450px;"></div>';
