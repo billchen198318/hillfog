@@ -23,7 +23,6 @@ function createContent(scoreData) {
 		<thead class="thead-dark">
 			<tr>
 				<th scope="col">Date range score</th>
-				<th scope="col">Info</th>
 			</tr>
 		</thead>
 	<tbody>
@@ -31,10 +30,10 @@ function createContent(scoreData) {
 	
 	for (var n in scoreData.dataRangeScores) {
 		var currDateRangeGaugeIdHead = currGaugeIdHead + '_' + n;
+		var infoDetail = infoDetailContent(scoreData.dataRangeScores[n]);
 		detailContent += `
 		<tr>
-			<td><div class="col-6" id="${currDateRangeGaugeIdHead}" style="width: 400px;height:350px;"></div></td>
-			<td>&nbsp;</td>
+			<td>${infoDetail}<div class="col-6" id="${currDateRangeGaugeIdHead}" style="width: 400px;height:350px;"></div></td>
 		</tr>
 		`;
 	}
@@ -45,6 +44,14 @@ function createContent(scoreData) {
 	`;
 	//console.log( `${tableStart}${detailContent}${tableEnd}` );
 	return `${tableStart}${detailContent}${tableEnd}`;
+}
+
+function infoDetailContent(dataRangeScore) {
+	var str = `
+	<span class="badge badge-info"><h2>${dataRangeScore.date}</h2></span>
+	<span class="badge badge-secondary"><h2>Score:${dataRangeScore.score}</h2></span>
+	`;
+	return str;
 }
 
 function showCharts(scoreData) {
