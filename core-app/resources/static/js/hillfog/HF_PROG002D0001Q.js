@@ -13,32 +13,38 @@ function showContent(data) {
 }
 
 function createContent(scoreData) {
-	var str = '';
 	var currGaugeIdHead = _gaugeIdHead + scoreData.kpi.id;
-	str += '<div class="row mx-auto justify-content-center align-items-center flex-column ">';
-	str += '<div class="col-6" id="' + currGaugeIdHead + '" style="width: 500px;height:450px;"></div>';
-	str += '</div>';
+	var detailContent = '';
+	var tableStart = `
+	<div class="row mx-auto justify-content-center align-items-center flex-column ">
+		<div class="col-6" id="${currGaugeIdHead}" style="width: 500px;height:450px;"></div>
+	</div>
+	<table class="table">
+		<thead class="thead-dark">
+			<tr>
+				<th scope="col">Date range score</th>
+				<th scope="col">Info</th>
+			</tr>
+		</thead>
+	<tbody>
+	`;
 	
-	str += '<table class="table">';
-	str += '<thead class="thead-dark">';
-	str += '<tr>';
-	str += '<th scope="col">Date range score</th>';
-	str += '<th scope="col">Info</th>';
-	str += '</tr>';
-	str += '</thead>';
-	str += '<tbody>';
 	for (var n in scoreData.dataRangeScores) {
-		//console.log(scoreData.dataRangeScores[n]);
 		var currDateRangeGaugeIdHead = currGaugeIdHead + '_' + n;
-		str += '<tr>';
-		str += '<td><div class="col-6" id="' + currDateRangeGaugeIdHead + '" style="width: 400px;height:350px;"></div></td>';
-		str += '<td>&nbsp;</td>';
-		str += '</tr>';
+		detailContent += `
+		<tr>
+			<td><div class="col-6" id="${currDateRangeGaugeIdHead}" style="width: 400px;height:350px;"></div></td>
+			<td>&nbsp;</td>
+		</tr>
+		`;
 	}
-	str += '</tbody>';
-	str += '</table>';
 	
-	return str;
+	var tableEnd = `
+	</tbody>
+	</table>
+	`;
+	//console.log( `${tableStart}${detailContent}${tableEnd}` );
+	return `${tableStart}${detailContent}${tableEnd}`;
 }
 
 function showCharts(scoreData) {
