@@ -1,5 +1,6 @@
 # hillfog
-hillfog is an KPI, OKR, PDCA, BSC web platform. replace old version bambooBSC https://github.com/billchen198318/bamboobsc
+hillfog is an KPI, OKR, PDCA, BSC web platform. replace old version bambooBSC(https://github.com/billchen198318/bamboobsc)
+<br>
 current in developing, not yet completed.
 
 Item  | Status
