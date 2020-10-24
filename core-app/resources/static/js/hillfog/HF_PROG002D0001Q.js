@@ -74,7 +74,7 @@ function showCharts(scoreData) {
 	var currGaugeIdHead = _gaugeIdHead + scoreData.kpi.id;
 	var currLineIdHead = _lineIdHead + scoreData.kpi.id;
 	gaugeChart(currGaugeIdHead, scoreData.kpi.name, scoreData.score, 'The completion rate');
-	if ('7' == scoreData.frequency) {
+	if ('7' == scoreData.frequency || '6' == scoreData.frequency) { // Day & Week
 		dateRangeLineChartForDayFreq(currLineIdHead, scoreData);
 	} else {
 		dateRangeLineChart(currLineIdHead, scoreData);
