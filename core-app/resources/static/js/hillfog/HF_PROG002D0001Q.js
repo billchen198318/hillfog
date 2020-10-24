@@ -57,7 +57,7 @@ function lineChartContent(scoreData) {
 	}
 	var currLineIdHead = _lineIdHead + scoreData.kpi.id;
 	var str = `
-	<div class="col-6" id="${currLineIdHead}" style="width: 500px;height:450px;"></div>
+	<div class="col-6" id="${currLineIdHead}" style="width: 600px;height:450px;"></div>
 	`;
 	return str;
 }
@@ -74,7 +74,11 @@ function showCharts(scoreData) {
 	var currGaugeIdHead = _gaugeIdHead + scoreData.kpi.id;
 	var currLineIdHead = _lineIdHead + scoreData.kpi.id;
 	gaugeChart(currGaugeIdHead, scoreData.kpi.name, scoreData.score, 'The completion rate');
-	dateRangeLineChart(currLineIdHead, scoreData);
+	if ('7' == scoreData.frequency) {
+		dateRangeLineChartForDayFreq(currLineIdHead, scoreData);
+	} else {
+		dateRangeLineChart(currLineIdHead, scoreData);
+	}
 	for (var n in scoreData.dataRangeScores) {
 		var currDateRangeGaugeIdHead = currGaugeIdHead + '_' + n;
 		gaugeChart(currDateRangeGaugeIdHead, scoreData.dataRangeScores[n].date, scoreData.dataRangeScores[n].score, 'The completion rate');
@@ -122,25 +126,31 @@ function gaugeChart(chartId, seriesName, dataValue, dataName) {
 	myChart.setOption(option, true);
 }
 
+function dateRangeLineChartForDayFreq(chartId, scoreData) {
+	lineChart(chartId, scoreData, 'showKpiTarget');	
+}
+
 function dateRangeLineChart(chartId, scoreData) {
+	lineChart(chartId, scoreData, 'showMeasureTarget');
+}
+
+function lineChart(chartId, scoreData, type) {
 	if (scoreData.dataRangeScores.length <= 1) {
 		return;
 	}	
 	
 	var xAxisData = [];
 	var score = [];
-	var kpiTarget = [];
+	var target = [];
 	for (var n in scoreData.dataRangeScores) {
 		xAxisData.push(scoreData.dataRangeScores[n].date);
 		score.push(scoreData.dataRangeScores[n].score);
-		kpiTarget.push(scoreData.dataRangeScores[n].target);
+		if ('showKpiTarget' == type) {
+			target.push(scoreData.dataRangeScores[n].target);
+		} else {
+			target.push(scoreData.measureDatas[n].target);
+		}
 	}
-	
-	/*
-	console.log('xAxisData='+xAxisData);
-	console.log('kpiTarget='+kpiTarget);
-	console.log('score='+score);
-	*/
 	
 	var myChart = echarts.init(document.getElementById( chartId ));
 	
@@ -152,7 +162,7 @@ function dateRangeLineChart(chartId, scoreData) {
 	        trigger: 'axis'
 	    },
 	    legend: {
-	        data: ['KPI Target', 'Score']
+	        data: ['Target', 'Score']
 	    },
 	    grid: {
 	        left: '3%',
@@ -175,10 +185,10 @@ function dateRangeLineChart(chartId, scoreData) {
 	    },
 	    series: [
 	        {
-	            name: 'KPI Target',
+	            name: 'Target',
 	            type: 'line',
 	            stack: 'Target value',
-	            data: kpiTarget
+	            data: target
 	        },
 	        {
 	            name: 'Score',
@@ -192,3 +202,4 @@ function dateRangeLineChart(chartId, scoreData) {
 	myChart.setOption(option, true);
 	
 }
+
