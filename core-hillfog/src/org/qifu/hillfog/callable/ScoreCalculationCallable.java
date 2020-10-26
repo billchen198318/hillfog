@@ -60,6 +60,7 @@ public class ScoreCalculationCallable implements Callable<ScoreCalculationData> 
 		if (this.data.getMeasureDatas() == null || this.data.getMeasureDatas().size() < 1) {
 			this.data.setMeasureDatas( QueryMeasureDataUtils.queryForScoreCalculationData(this.data) );
 		}
+		this.data.setAggregationMethodName( AggregationMethodUtils.findAggregationMethodNameById( this.data.getKpi().getAggrId()) );
 		if ( !YesNo.YES.equals(this.data.getProcessDateRange()) ) { // KPI分數
 			BigDecimal score = AggregationMethodUtils.processDefaultMode(this.data.getKpi(), this.data.getFormula(), this.data.getMeasureDatas(), this.data.getFrequency());
 			this.data.setScore(score);

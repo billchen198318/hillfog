@@ -21,11 +21,15 @@
  */
 package org.qifu.hillfog.service.impl;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.qifu.base.exception.ServiceException;
 import org.qifu.base.mapper.IBaseMapper;
+import org.qifu.base.message.BaseSystemMessage;
+import org.qifu.base.model.DefaultResult;
 import org.qifu.base.model.PleaseSelect;
 import org.qifu.base.service.BaseService;
 import org.qifu.hillfog.entity.HfAggregationMethod;
@@ -59,6 +63,23 @@ public class AggregationMethodServiceImpl extends BaseService<HfAggregationMetho
 			dataMap.put(aggrMethod.getOid(), aggrMethod.getAggrId() + " - " + aggrMethod.getName());
 		}
 		return dataMap;
+	}
+
+	@Override
+	public DefaultResult<HfAggregationMethod> findForSimple(String aggrId) throws ServiceException, Exception {
+		if (StringUtils.isBlank(aggrId)) {
+			throw new ServiceException( BaseSystemMessage.parameterBlank() );
+		}
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("aggrId", aggrId);
+		List<HfAggregationMethod> aggrList = this.aggregationMethodMapper.selectForSimple();
+		DefaultResult<HfAggregationMethod> result = new DefaultResult<HfAggregationMethod>();
+		if (aggrList != null && aggrList.size() > 0) {
+			result.setValue(aggrList.get(0));
+		} else {
+			result.setMessage( BaseSystemMessage.searchNoData() );
+		}
+		return result;
 	}
 	
 }

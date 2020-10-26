@@ -45,6 +45,7 @@ public class ScoreCalculationData implements java.io.Serializable {
 	private String bgColor; // 之後由ScoreCalculationCallable填入
 	private String measureDataAccount = MeasureDataCode.MEASURE_DATA_EMPLOYEE_FULL;
 	private String measureDataOrgId = MeasureDataCode.MEASURE_DATA_ORGANIZATION_FULL;
+	private String aggregationMethodName = "";
 	private String errorMessage = "";
 	
 	public ScoreCalculationData() {
@@ -163,6 +164,14 @@ public class ScoreCalculationData implements java.io.Serializable {
 
 	public void setMeasureDataOrgId(String measureDataOrgId) {
 		this.measureDataOrgId = measureDataOrgId;
+	}
+	
+	public String getAggregationMethodName() {
+		return aggregationMethodName;
+	}
+
+	public void setAggregationMethodName(String aggregationMethodName) {
+		this.aggregationMethodName = aggregationMethodName;
 	}
 
 	public String getErrorMessage() {

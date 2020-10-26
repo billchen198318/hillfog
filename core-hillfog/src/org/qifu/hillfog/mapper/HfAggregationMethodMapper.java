@@ -32,4 +32,6 @@ public interface HfAggregationMethodMapper extends IBaseMapper<HfAggregationMeth
 	
 	public List<HfAggregationMethod> findForSelectItem();
 	
+	public List<HfAggregationMethod> selectForSimple();
+	
 }

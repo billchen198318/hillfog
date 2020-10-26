@@ -78,7 +78,7 @@ public class AggregationMethodUtils {
 		aggrMethodThreadLocal.remove();
 	}
 	
-	private static HfAggregationMethod findAggregationMethodById(String id) throws ServiceException, Exception {
+	public static HfAggregationMethod findAggregationMethodById(String id) throws ServiceException, Exception {
 		Map<String, HfAggregationMethod> datas = aggrMethodThreadLocal.get();
 		if (datas!=null) {
 			if ( datas.get(id) != null ) {
@@ -94,6 +94,13 @@ public class AggregationMethodUtils {
 		aggrMethodThreadLocal.get().put(id, aggr);
 		return aggr;
 	}		
+	
+	public static String findAggregationMethodNameById(String id) throws ServiceException, Exception {
+		if (aggrMethodThreadLocal.get() != null && aggrMethodThreadLocal.get().get(id) != null) {
+			return aggrMethodThreadLocal.get().get(id).getName();
+		}
+		return aggregationMethodService.findForSimple(id).getValueEmptyThrowMessage().getName();
+	}
 	
 	private static Map<String, Object> getParameter(HfKpi kpi, HfFormula formula, List<HfMeasureData> measureDatas, String frequency, List<DateRangeScore> dateRangeScores) {
 		Map<String, Object> parameter = new HashMap<String, Object>();

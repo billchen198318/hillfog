@@ -201,5 +201,17 @@
     WHERE 1=1
 	ORDER BY AGGR_ID ASC
   </select> 
+  
+  <select id="selectForSimple" parameterType="java.util.HashMap" resultMap="BaseResultMap">
+  	select *
+    from <include refid="org.qifu.hillfog.mapper.DB1Config.schema"/>hf_aggregation_method
+    where 1=1
+	<if test="oid != null and oid != '' ">
+		AND OID = #{oid,jdbcType=CHAR}
+	</if>    
+	<if test="aggrId != null and aggrId != '' ">
+		AND AGGR_ID = #{aggrId,jdbcType=VARCHAR}
+	</if>	  
+  </select>   
     
 </mapper>

@@ -18,6 +18,24 @@ function createContent(scoreData) {
 	var detailContent = '';
 	var lineContent = lineChartContent(scoreData);
 	var tableStart = `
+	
+	<div class="row">
+		<div class="col p-2 bg-secondary rounded">
+			<div class="row">
+				<div class="col-xs-12 col-md-12 col-lg-12 text-white">
+					<div class="col-xs-12 col-md-12 col-lg-12 text-white">
+						<span class="badge badge-info"><h6>${scoreData.kpi.id}&nbsp;-&nbsp;${scoreData.kpi.name}</h6></span>
+						<span class="badge badge-danger"><h6>${scoreData.kpi.managementName}</h6></span>			
+						<span class="badge badge-warning"><h6>Target:&nbsp;${scoreData.kpi.target}&nbsp;，Maximum:&nbsp;${scoreData.kpi.max}&nbsp;，Minimum:&nbsp;${scoreData.kpi.min}</h6></span>
+						<span class="badge badge-dark"><h6>Weight:&nbsp;${scoreData.kpi.weight}&nbsp;，Unit:&nbsp;${scoreData.kpi.unit}</h6></span>
+						<span class="badge badge-dark"><h6>Formula:&nbsp;${scoreData.formula.forId}-${scoreData.formula.name}</h6></span>
+						<span class="badge badge-dark"><h6>Aggregation:&nbsp;${scoreData.kpi.aggrId}-${scoreData.aggregationMethodName}</h6></span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
 	<div class="row mx-auto flex-column">
 		<span class="badge badge-info"><h2>${scoreData.kpi.id}&nbsp;-&nbsp;${scoreData.kpi.name}</h2></span>
 		<span class="badge badge-secondary"><h2>${scoreData.date1}&nbsp;~&nbsp;${scoreData.date2}</h2></span>
@@ -31,6 +49,7 @@ function createContent(scoreData) {
 			</tr>
 		</thead>
 	<tbody>
+	
 	`;
 	
 	for (var n in scoreData.dataRangeScores) {
