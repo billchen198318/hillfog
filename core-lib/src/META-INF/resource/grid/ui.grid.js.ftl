@@ -217,6 +217,7 @@ function ${queryFunction}() {
 function changeDataTablePaginate(pageNum) {
 	$("#select").val( ''+pageNum );
 	//${queryFunction}();
+	$("html, body").animate({ scrollTop: 0 }, 500);
 	changeQueryGridPageOfSelect();
 }
 
