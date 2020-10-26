@@ -74,11 +74,7 @@ function showCharts(scoreData) {
 	var currGaugeIdHead = _gaugeIdHead + scoreData.kpi.id;
 	var currLineIdHead = _lineIdHead + scoreData.kpi.id;
 	gaugeChart(currGaugeIdHead, scoreData.kpi.name, scoreData.score, 'The completion rate');
-	if ('7' == scoreData.frequency || '6' == scoreData.frequency) { // Day & Week
-		dateRangeLineChartForDayFreq(currLineIdHead, scoreData);
-	} else {
-		dateRangeLineChart(currLineIdHead, scoreData);
-	}
+	lineChart(currLineIdHead, scoreData);
 	for (var n in scoreData.dataRangeScores) {
 		var currDateRangeGaugeIdHead = currGaugeIdHead + '_' + n;
 		gaugeChart(currDateRangeGaugeIdHead, scoreData.dataRangeScores[n].date, scoreData.dataRangeScores[n].score, 'The completion rate');
@@ -126,15 +122,7 @@ function gaugeChart(chartId, seriesName, dataValue, dataName) {
 	myChart.setOption(option, true);
 }
 
-function dateRangeLineChartForDayFreq(chartId, scoreData) {
-	lineChart(chartId, scoreData, 'showKpiTarget');	
-}
-
-function dateRangeLineChart(chartId, scoreData) {
-	lineChart(chartId, scoreData, 'showMeasureTarget');
-}
-
-function lineChart(chartId, scoreData, type) {
+function lineChart(chartId, scoreData) {
 	if (scoreData.dataRangeScores.length <= 1) {
 		return;
 	}	
@@ -142,13 +130,14 @@ function lineChart(chartId, scoreData, type) {
 	var xAxisData = [];
 	var score = [];
 	var target = [];
+	
 	for (var n in scoreData.dataRangeScores) {
 		xAxisData.push(scoreData.dataRangeScores[n].date);
 		score.push(scoreData.dataRangeScores[n].score);
-		if ('showKpiTarget' == type) {
-			target.push(scoreData.dataRangeScores[n].target);
-		} else {
+		if (n < scoreData.measureDatas.length) {
 			target.push(scoreData.measureDatas[n].target);
+		} else {
+			target.push(scoreData.dataRangeScores[n].target);
 		}
 	}
 	
