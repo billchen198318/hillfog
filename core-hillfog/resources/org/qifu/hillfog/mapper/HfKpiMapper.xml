@@ -34,22 +34,22 @@
     select *
     from <include refid="org.qifu.hillfog.mapper.DB1Config.schema"/>hf_kpi
     WHERE 1=1
-	<if test="id != null and id != '' ">
+	<if test="id != null and id != ''.toString() ">
 		AND ID = #{id,jdbcType=VARCHAR}
 	</if>			
-	<if test="name != null and name != '' ">
+	<if test="name != null and name != ''.toString() ">
 		AND NAME = #{name,jdbcType=VARCHAR}
 	</if>
-	<if test="nameLike != null and nameLike != '' ">
+	<if test="nameLike != null and nameLike != ''.toString() ">
 		AND NAME like #{nameLike,jdbcType=VARCHAR}
 	</if>			
-	<if test="forId != null and forId != '' ">
+	<if test="forId != null and forId != ''.toString() ">
 		AND FOR_ID = #{forId,jdbcType=VARCHAR}
 	</if>	
-	<if test="aggrId != null and aggrId != '' ">
+	<if test="aggrId != null and aggrId != ''.toString() ">
 		AND AGGR_ID = #{aggrId,jdbcType=VARCHAR}
 	</if>			
-	<if test="orderBy != null and orderBy != '' and sortType != null and sortType != '' ">
+	<if test="orderBy != null and orderBy != ''.toString() and sortType != null and sortType != ''.toString() ">
 		ORDER BY  ${orderBy} ${sortType}
 	</if>	
   </select>    
@@ -60,19 +60,19 @@
     select *
     from <include refid="org.qifu.hillfog.mapper.DB1Config.schema"/>hf_kpi
     WHERE 1=1
-	<if test="id != null and id != '' ">
+	<if test="id != null and id != ''.toString() ">
 		AND ID = #{id,jdbcType=VARCHAR}
 	</if>			
-	<if test="name != null and name != '' ">
+	<if test="name != null and name != ''.toString() ">
 		AND NAME = #{name,jdbcType=VARCHAR}
 	</if>
-	<if test="nameLike != null and nameLike != '' ">
+	<if test="nameLike != null and nameLike != ''.toString() ">
 		AND NAME like #{nameLike,jdbcType=VARCHAR}
 	</if>				
-	<if test="forId != null and forId != '' ">
+	<if test="forId != null and forId != ''.toString() ">
 		AND FOR_ID = #{forId,jdbcType=VARCHAR}
 	</if>	
-	<if test="aggrId != null and aggrId != '' ">
+	<if test="aggrId != null and aggrId != ''.toString() ">
 		AND AGGR_ID = #{aggrId,jdbcType=VARCHAR}
 	</if>
 			
@@ -82,19 +82,19 @@
   <select id="count" parameterType="java.util.HashMap" resultType="java.lang.Long">
     select count(*) from <include refid="org.qifu.hillfog.mapper.DB1Config.schema"/>hf_kpi
     WHERE 1=1
-	<if test="id != null and id != '' ">
+	<if test="id != null and id != ''.toString() ">
 		AND ID = #{id,jdbcType=VARCHAR}
 	</if>			
-	<if test="name != null and name != '' ">
+	<if test="name != null and name != ''.toString() ">
 		AND NAME = #{name,jdbcType=VARCHAR}
 	</if>
-	<if test="nameLike != null and nameLike != '' ">
+	<if test="nameLike != null and nameLike != ''.toString() ">
 		AND NAME like #{nameLike,jdbcType=VARCHAR}
 	</if>	
-	<if test="forId != null and forId != '' ">
+	<if test="forId != null and forId != ''.toString() ">
 		AND FOR_ID = #{forId,jdbcType=VARCHAR}
 	</if>	
-	<if test="aggrId != null and aggrId != '' ">
+	<if test="aggrId != null and aggrId != ''.toString() ">
 		AND AGGR_ID = #{aggrId,jdbcType=VARCHAR}
 	</if>					
   </select>  

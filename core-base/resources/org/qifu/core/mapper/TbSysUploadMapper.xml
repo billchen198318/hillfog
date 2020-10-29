@@ -42,22 +42,22 @@
     select *
     from <include refid="org.qifu.core.mapper.DB1Config.schema"/>tb_sys_upload
     WHERE 1=1
-	<if test="oid != null and oid != '' ">
+	<if test="oid != null and oid != ''.toString() ">
 		AND OID = #{oid,jdbcType=CHAR}
 	</if>        
-	<if test="system != null and system != '' ">
+	<if test="system != null and system != ''.toString() ">
 		AND SYSTEM = #{system,jdbcType=VARCHAR}
 	</if>
-	<if test="subDir != null and subDir != '' ">
+	<if test="subDir != null and subDir != ''.toString() ">
 		AND SUB_DIR = #{subDir,jdbcType=VARCHAR}
 	</if>	
-	<if test="type != null and type != '' ">
+	<if test="type != null and type != ''.toString() ">
 		AND TYPE = #{type,jdbcType=VARCHAR}
 	</if>			
-	<if test="isFile != null and isFile != '' ">
+	<if test="isFile != null and isFile != ''.toString() ">
 		AND IS_FILE = #{isFile,jdbcType=VARCHAR}
 	</if>		
-	<if test="orderBy != null and orderBy != '' and sortType != null and sortType != '' ">
+	<if test="orderBy != null and orderBy != ''.toString() and sortType != null and sortType != ''.toString() ">
 		ORDER BY  ${orderBy} ${sortType}
 	</if>	
   </select>    
@@ -68,19 +68,19 @@
     select *
     from <include refid="org.qifu.core.mapper.DB1Config.schema"/>tb_sys_upload
     WHERE 1=1
-	<if test="oid != null and oid != '' ">
+	<if test="oid != null and oid != ''.toString() ">
 		AND OID = #{oid,jdbcType=CHAR}
 	</if>        
-	<if test="system != null and system != '' ">
+	<if test="system != null and system != ''.toString() ">
 		AND SYSTEM = #{system,jdbcType=VARCHAR}
 	</if>
-	<if test="subDir != null and subDir != '' ">
+	<if test="subDir != null and subDir != ''.toString() ">
 		AND SUB_DIR = #{subDir,jdbcType=VARCHAR}
 	</if>	
-	<if test="type != null and type != '' ">
+	<if test="type != null and type != ''.toString() ">
 		AND TYPE = #{type,jdbcType=VARCHAR}
 	</if>		
-	<if test="isFile != null and isFile != '' ">
+	<if test="isFile != null and isFile != ''.toString() ">
 		AND IS_FILE = #{isFile,jdbcType=VARCHAR}
 	</if>		
 			
@@ -90,19 +90,19 @@
   <select id="count" parameterType="java.util.HashMap" resultType="java.lang.Long">
     select count(*) from <include refid="org.qifu.core.mapper.DB1Config.schema"/>tb_sys_upload
     WHERE 1=1
-	<if test="oid != null and oid != '' ">
+	<if test="oid != null and oid != ''.toString() ">
 		AND OID = #{oid,jdbcType=CHAR}
 	</if>    
-	<if test="system != null and system != '' ">
+	<if test="system != null and system != ''.toString() ">
 		AND SYSTEM = #{system,jdbcType=VARCHAR}
 	</if>
-	<if test="subDir != null and subDir != '' ">
+	<if test="subDir != null and subDir != ''.toString() ">
 		AND SUB_DIR = #{subDir,jdbcType=VARCHAR}
 	</if>	
-	<if test="type != null and type != '' ">
+	<if test="type != null and type != ''.toString() ">
 		AND TYPE = #{type,jdbcType=VARCHAR}
 	</if>		
-	<if test="isFile != null and isFile != '' ">
+	<if test="isFile != null and isFile != ''.toString() ">
 		AND IS_FILE = #{isFile,jdbcType=VARCHAR}
 	</if>			
   </select>  

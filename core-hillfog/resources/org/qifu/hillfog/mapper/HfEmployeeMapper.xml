@@ -24,22 +24,22 @@
     select *
     from <include refid="org.qifu.hillfog.mapper.DB1Config.schema"/>hf_employee
     WHERE 1=1
-	<if test="account != null and account != '' ">
+	<if test="account != null and account != ''.toString() ">
 		AND ACCOUNT = #{orgId,jdbcType=VARCHAR}
 	</if>		
-	<if test="empId != null and empId != '' ">
+	<if test="empId != null and empId != ''.toString() ">
 		AND EMP_ID = #{orgId,jdbcType=VARCHAR}
 	</if>		
-	<if test="empIdLike != null and empIdLike != '' ">
+	<if test="empIdLike != null and empIdLike != ''.toString() ">
 		AND EMP_ID like #{empIdLike,jdbcType=VARCHAR}
 	</if>			
-	<if test="name != null and name != '' ">
+	<if test="name != null and name != ''.toString() ">
 		AND NAME = #{name,jdbcType=VARCHAR}
 	</if>
-	<if test="nameLike != null and nameLike != '' ">
+	<if test="nameLike != null and nameLike != ''.toString() ">
 		AND NAME like #{nameLike,jdbcType=VARCHAR}
 	</if>			
-	<if test="orderBy != null and orderBy != '' and sortType != null and sortType != '' ">
+	<if test="orderBy != null and orderBy != ''.toString() and sortType != null and sortType != ''.toString() ">
 		ORDER BY  ${orderBy} ${sortType}
 	</if>	
   </select>    
@@ -50,19 +50,19 @@
     select *
     from <include refid="org.qifu.hillfog.mapper.DB1Config.schema"/>hf_employee
     WHERE 1=1
-	<if test="account != null and account != '' ">
+	<if test="account != null and account != ''.toString() ">
 		AND ACCOUNT = #{orgId,jdbcType=VARCHAR}
 	</if>		
-	<if test="empId != null and empId != '' ">
+	<if test="empId != null and empId != ''.toString() ">
 		AND EMP_ID = #{orgId,jdbcType=VARCHAR}
 	</if>		
-	<if test="empIdLike != null and empIdLike != '' ">
+	<if test="empIdLike != null and empIdLike != ''.toString() ">
 		AND EMP_ID like #{empIdLike,jdbcType=VARCHAR}
 	</if>			
-	<if test="name != null and name != '' ">
+	<if test="name != null and name != ''.toString() ">
 		AND NAME = #{name,jdbcType=VARCHAR}
 	</if>
-	<if test="nameLike != null and nameLike != '' ">
+	<if test="nameLike != null and nameLike != ''.toString() ">
 		AND NAME like #{nameLike,jdbcType=VARCHAR}
 	</if>			
 		
@@ -72,19 +72,19 @@
   <select id="count" parameterType="java.util.HashMap" resultType="java.lang.Long">
     select count(*) from <include refid="org.qifu.hillfog.mapper.DB1Config.schema"/>hf_employee
     WHERE 1=1
-	<if test="account != null and account != '' ">
+	<if test="account != null and account != ''.toString() ">
 		AND ACCOUNT = #{orgId,jdbcType=VARCHAR}
 	</if>		
-	<if test="empId != null and empId != '' ">
+	<if test="empId != null and empId != ''.toString() ">
 		AND EMP_ID = #{orgId,jdbcType=VARCHAR}
 	</if>		
-	<if test="empIdLike != null and empIdLike != '' ">
+	<if test="empIdLike != null and empIdLike != ''.toString() ">
 		AND EMP_ID like #{empIdLike,jdbcType=VARCHAR}
 	</if>			
-	<if test="name != null and name != '' ">
+	<if test="name != null and name != ''.toString() ">
 		AND NAME = #{name,jdbcType=VARCHAR}
 	</if>
-	<if test="nameLike != null and nameLike != '' ">
+	<if test="nameLike != null and nameLike != ''.toString() ">
 		AND NAME like #{nameLike,jdbcType=VARCHAR}
 	</if>						
   </select>  

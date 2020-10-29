@@ -36,16 +36,16 @@
     select *
     from <include refid="org.qifu.core.mapper.DB1Config.schema"/>tb_sys_menu
     WHERE 1=1
-	<if test="progId != null and progId != '' ">
+	<if test="progId != null and progId != ''.toString() ">
 		AND PROG_ID = #{progId,jdbcType=VARCHAR}
 	</if>
-	<if test="parentOid != null and parentOid != '' ">
+	<if test="parentOid != null and parentOid != ''.toString() ">
 		AND PARENT_OID = #{parentOid,jdbcType=VARCHAR}
 	</if>	
-	<if test="enableFlag != null and enableFlag != '' ">
+	<if test="enableFlag != null and enableFlag != ''.toString() ">
 		AND ENABLE_FLAG = #{enableFlag,jdbcType=VARCHAR}
 	</if>			
-	<if test="orderBy != null and orderBy != '' and sortType != null and sortType != '' ">
+	<if test="orderBy != null and orderBy != ''.toString() and sortType != null and sortType != ''.toString() ">
 		ORDER BY  ${orderBy} ${sortType}
 	</if>	
   </select>    
@@ -56,13 +56,13 @@
     select *
     from <include refid="org.qifu.core.mapper.DB1Config.schema"/>tb_sys_menu
     WHERE 1=1
-	<if test="progId != null and progId != '' ">
+	<if test="progId != null and progId != ''.toString() ">
 		AND PROG_ID = #{progId,jdbcType=VARCHAR}
 	</if>
-	<if test="parentOid != null and parentOid != '' ">
+	<if test="parentOid != null and parentOid != ''.toString() ">
 		AND PARENT_OID = #{parentOid,jdbcType=VARCHAR}
 	</if>	
-	<if test="enableFlag != null and enableFlag != '' ">
+	<if test="enableFlag != null and enableFlag != ''.toString() ">
 		AND ENABLE_FLAG = #{enableFlag,jdbcType=VARCHAR}
 	</if>	
 		
@@ -72,13 +72,13 @@
   <select id="count" parameterType="java.util.HashMap" resultType="java.lang.Long">
     select count(*) from <include refid="org.qifu.core.mapper.DB1Config.schema"/>tb_sys_menu
     WHERE 1=1
-	<if test="progId != null and progId != '' ">
+	<if test="progId != null and progId != ''.toString() ">
 		AND PROG_ID = #{progId,jdbcType=VARCHAR}
 	</if>
-	<if test="parentOid != null and parentOid != '' ">
+	<if test="parentOid != null and parentOid != ''.toString() ">
 		AND PARENT_OID = #{parentOid,jdbcType=VARCHAR}
 	</if>	
-	<if test="enableFlag != null and enableFlag != '' ">
+	<if test="enableFlag != null and enableFlag != ''.toString() ">
 		AND ENABLE_FLAG = #{enableFlag,jdbcType=VARCHAR}
 	</if>
   </select>  
@@ -191,7 +191,7 @@
 	<include refid="org.qifu.core.mapper.DB1Config.schema"/>tb_sys_prog sp
 	WHERE sm.PROG_ID = sp.PROG_ID
 	AND sp.PROG_SYSTEM = #{progSystem,jdbcType=VARCHAR}
-	<if test="account != null and account != '' ">
+	<if test="account != null and account != ''.toString() ">
 	AND sm.PROG_ID IN (
 		SELECT PROG_ID FROM tb_sys_menu_role WHERE ROLE IN (
 			SELECT ROLE FROM tb_user_role WHERE ACCOUNT = #{account,jdbcType=VARCHAR}

@@ -24,16 +24,16 @@
     select *
     from <include refid="org.qifu.core.mapper.DB1Config.schema"/>tb_sys_bean_help_expr
     WHERE 1=1
-	<if test="helpOid != null and helpOid != '' ">
+	<if test="helpOid != null and helpOid != ''.toString() ">
 		AND HELP_OID = #{helpOid,jdbcType=VARCHAR}
 	</if>
-	<if test="exprId != null and exprId != '' ">
+	<if test="exprId != null and exprId != ''.toString() ">
 		AND EXPR_ID = #{exprId,jdbcType=VARCHAR}
 	</if>
-	<if test="runType != null and runType != '' ">
+	<if test="runType != null and runType != ''.toString() ">
 		AND RUN_TYPE = #{runType,jdbcType=VARCHAR}
 	</if>		
-	<if test="orderBy != null and orderBy != '' and sortType != null and sortType != '' ">
+	<if test="orderBy != null and orderBy != ''.toString() and sortType != null and sortType != ''.toString() ">
 		ORDER BY  ${orderBy} ${sortType}
 	</if>		
   </select>    
@@ -44,13 +44,13 @@
     select *
     from <include refid="org.qifu.core.mapper.DB1Config.schema"/>tb_sys_bean_help_expr
     WHERE 1=1
-	<if test="helpOid != null and helpOid != '' ">
+	<if test="helpOid != null and helpOid != ''.toString() ">
 		AND HELP_OID = #{helpOid,jdbcType=VARCHAR}
 	</if>
-	<if test="exprId != null and exprId != '' ">
+	<if test="exprId != null and exprId != ''.toString() ">
 		AND EXPR_ID = #{exprId,jdbcType=VARCHAR}
 	</if>
-	<if test="runType != null and runType != '' ">
+	<if test="runType != null and runType != ''.toString() ">
 		AND RUN_TYPE = #{runType,jdbcType=VARCHAR}
 	</if>	
 		
@@ -60,13 +60,13 @@
   <select id="count" parameterType="java.util.HashMap" resultType="java.lang.Long">
     select count(*) from <include refid="org.qifu.core.mapper.DB1Config.schema"/>tb_sys_bean_help_expr
     WHERE 1=1
-	<if test="helpOid != null and helpOid != '' ">
+	<if test="helpOid != null and helpOid != ''.toString() ">
 		AND HELP_OID = #{helpOid,jdbcType=VARCHAR}
 	</if>
-	<if test="exprId != null and exprId != '' ">
+	<if test="exprId != null and exprId != ''.toString() ">
 		AND EXPR_ID = #{exprId,jdbcType=VARCHAR}
 	</if>
-	<if test="runType != null and runType != '' ">
+	<if test="runType != null and runType != ''.toString() ">
 		AND RUN_TYPE = #{runType,jdbcType=VARCHAR}
 	</if>		
   </select>  

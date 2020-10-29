@@ -30,22 +30,22 @@
     select *
     from <include refid="org.qifu.core.mapper.DB1Config.schema"/>tb_sys_prog
     WHERE 1=1
-	<if test="progId != null and progId != '' ">
+	<if test="progId != null and progId != ''.toString() ">
 		AND PROG_ID = #{progId,jdbcType=VARCHAR}
 	</if>
-	<if test="name != null and name != '' ">
+	<if test="name != null and name != ''.toString() ">
 		AND NAME = #{name,jdbcType=VARCHAR}
 	</if>	
-	<if test="editMode != null and editMode != '' ">
+	<if test="editMode != null and editMode != ''.toString() ">
 		AND EDIT_MODE = #{editMode,jdbcType=VARCHAR}
 	</if>	
-	<if test="progSystem != null and progSystem != '' ">
+	<if test="progSystem != null and progSystem != ''.toString() ">
 		AND PROG_SYSTEM = #{progSystem,jdbcType=VARCHAR}
 	</if>	
-	<if test="itemType != null and itemType != '' ">
+	<if test="itemType != null and itemType != ''.toString() ">
 		AND ITEM_TYPE = #{itemType,jdbcType=VARCHAR}
 	</if>				
-	<if test="orderBy != null and orderBy != '' and sortType != null and sortType != '' ">
+	<if test="orderBy != null and orderBy != ''.toString() and sortType != null and sortType != ''.toString() ">
 		ORDER BY  ${orderBy} ${sortType}
 	</if>	
   </select>    
@@ -56,19 +56,19 @@
     select *
     from <include refid="org.qifu.core.mapper.DB1Config.schema"/>tb_sys_prog
     WHERE 1=1
-	<if test="progId != null and progId != '' ">
+	<if test="progId != null and progId != ''.toString() ">
 		AND PROG_ID = #{progId,jdbcType=VARCHAR}
 	</if>
-	<if test="name != null and name != '' ">
+	<if test="name != null and name != ''.toString() ">
 		AND NAME LIKE #{name,jdbcType=VARCHAR}
 	</if>	
-	<if test="editMode != null and editMode != '' ">
+	<if test="editMode != null and editMode != ''.toString() ">
 		AND EDIT_MODE = #{editMode,jdbcType=VARCHAR}
 	</if>	
-	<if test="progSystem != null and progSystem != '' ">
+	<if test="progSystem != null and progSystem != ''.toString() ">
 		AND PROG_SYSTEM = #{progSystem,jdbcType=VARCHAR}
 	</if>	
-	<if test="itemType != null and itemType != '' ">
+	<if test="itemType != null and itemType != ''.toString() ">
 		AND ITEM_TYPE = #{itemType,jdbcType=VARCHAR}
 	</if>		
 		
@@ -78,19 +78,19 @@
   <select id="count" parameterType="java.util.HashMap" resultType="java.lang.Long">
     select count(*) from <include refid="org.qifu.core.mapper.DB1Config.schema"/>tb_sys_prog
     WHERE 1=1
-	<if test="progId != null and progId != '' ">
+	<if test="progId != null and progId != ''.toString() ">
 		AND PROG_ID = #{progId,jdbcType=VARCHAR}
 	</if>
-	<if test="name != null and name != '' ">
+	<if test="name != null and name != ''.toString() ">
 		AND NAME LIKE #{name,jdbcType=VARCHAR}
 	</if>	
-	<if test="editMode != null and editMode != '' ">
+	<if test="editMode != null and editMode != ''.toString() ">
 		AND EDIT_MODE = #{editMode,jdbcType=VARCHAR}
 	</if>	
-	<if test="progSystem != null and progSystem != '' ">
+	<if test="progSystem != null and progSystem != ''.toString() ">
 		AND PROG_SYSTEM = #{progSystem,jdbcType=VARCHAR}
 	</if>	
-	<if test="itemType != null and itemType != '' ">
+	<if test="itemType != null and itemType != ''.toString() ">
 		AND ITEM_TYPE = #{itemType,jdbcType=VARCHAR}
 	</if>
   </select>  
@@ -257,15 +257,15 @@
     	SELECT PROG_ID
     	FROM <include refid="org.qifu.core.mapper.DB1Config.schema"/>tb_sys_menu
     	WHERE 1 = 1
-		<if test="menuParentOid != null and menuParentOid != '' ">
+		<if test="menuParentOid != null and menuParentOid != ''.toString() ">
 			AND PARENT_OID = #{menuParentOid,jdbcType=CHAR}
 		</if>
     )
     AND EDIT_MODE = 'N'
-    <if test="progSystem != null and progSystem != '' ">
+    <if test="progSystem != null and progSystem != ''.toString() ">
     	AND PROG_SYSTEM = #{progSystem,jdbcType=VARCHAR}
     </if>
-    <if test="itemType != null and itemType != '' ">
+    <if test="itemType != null and itemType != ''.toString() ">
     	AND ITEM_TYPE = #{itemType,jdbcType=VARCHAR}
     </if>
     ORDER BY PROG_ID ASC

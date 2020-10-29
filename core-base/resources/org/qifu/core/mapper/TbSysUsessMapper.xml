@@ -23,16 +23,16 @@
     select *
     from <include refid="org.qifu.core.mapper.DB1Config.schema"/>tb_sys_usess
     WHERE 1=1
-	<if test="sessionId != null and sessionId != '' ">
+	<if test="sessionId != null and sessionId != ''.toString() ">
 		AND SESSION_ID = #{sessionId,jdbcType=VARCHAR}
 	</if>
-	<if test="account != null and account != '' ">
+	<if test="account != null and account != ''.toString() ">
 		AND ACCOUNT = #{account,jdbcType=VARCHAR}
 	</if>
-	<if test="currentId != null and currentId != '' ">
+	<if test="currentId != null and currentId != ''.toString() ">
 		AND CURRENT_ID = #{currentId,jdbcType=VARCHAR}
 	</if>	
-	<if test="orderBy != null and orderBy != '' and sortType != null and sortType != '' ">
+	<if test="orderBy != null and orderBy != ''.toString() and sortType != null and sortType != ''.toString() ">
 		ORDER BY  ${orderBy} ${sortType}
 	</if>				
   </select>    
@@ -43,13 +43,13 @@
     select *
     from <include refid="org.qifu.core.mapper.DB1Config.schema"/>tb_sys_usess
     WHERE 1=1
-	<if test="sessionId != null and sessionId != '' ">
+	<if test="sessionId != null and sessionId != ''.toString() ">
 		AND SESSION_ID = #{sessionId,jdbcType=VARCHAR}
 	</if>
-	<if test="account != null and account != '' ">
+	<if test="account != null and account != ''.toString() ">
 		AND ACCOUNT = #{account,jdbcType=VARCHAR}
 	</if>
-	<if test="currentId != null and currentId != '' ">
+	<if test="currentId != null and currentId != ''.toString() ">
 		AND CURRENT_ID = #{currentId,jdbcType=VARCHAR}
 	</if>	
 		
@@ -59,13 +59,13 @@
   <select id="count" parameterType="java.util.HashMap" resultType="java.lang.Long">
     select count(*) from <include refid="org.qifu.core.mapper.DB1Config.schema"/>tb_sys_usess
     WHERE 1=1
-	<if test="sessionId != null and sessionId != '' ">
+	<if test="sessionId != null and sessionId != ''.toString() ">
 		AND SESSION_ID = #{sessionId,jdbcType=VARCHAR}
 	</if>
-	<if test="account != null and account != '' ">
+	<if test="account != null and account != ''.toString() ">
 		AND ACCOUNT = #{account,jdbcType=VARCHAR}
 	</if>
-	<if test="currentId != null and currentId != '' ">
+	<if test="currentId != null and currentId != ''.toString() ">
 		AND CURRENT_ID = #{currentId,jdbcType=VARCHAR}
 	</if>
   </select>  

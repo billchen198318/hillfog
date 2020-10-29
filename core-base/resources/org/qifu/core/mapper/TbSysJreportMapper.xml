@@ -38,10 +38,10 @@
     select *
     from <include refid="org.qifu.core.mapper.DB1Config.schema"/>tb_sys_jreport
     WHERE 1=1
-	<if test="reportId != null and reportId != '' ">
+	<if test="reportId != null and reportId != ''.toString() ">
 		AND REPORT_ID = #{reportId,jdbcType=VARCHAR}
 	</if>	
-	<if test="orderBy != null and orderBy != '' and sortType != null and sortType != '' ">
+	<if test="orderBy != null and orderBy != ''.toString() and sortType != null and sortType != ''.toString() ">
 		ORDER BY  ${orderBy} ${sortType}
 	</if>	
   </select>    
@@ -52,7 +52,7 @@
     select *
     from <include refid="org.qifu.core.mapper.DB1Config.schema"/>tb_sys_jreport
     WHERE 1=1
-	<if test="reportId != null and reportId != '' ">
+	<if test="reportId != null and reportId != ''.toString() ">
 		AND REPORT_ID = #{reportId,jdbcType=VARCHAR}
 	</if>	
 		
@@ -62,7 +62,7 @@
   <select id="count" parameterType="java.util.HashMap" resultType="java.lang.Long">
     select count(*) from <include refid="org.qifu.core.mapper.DB1Config.schema"/>tb_sys_jreport
     WHERE 1=1
-	<if test="reportId != null and reportId != '' ">
+	<if test="reportId != null and reportId != ''.toString() ">
 		AND REPORT_ID = #{reportId,jdbcType=VARCHAR}
 	</if>	
   </select>  
@@ -206,10 +206,10 @@
 		UDATE        
     from <include refid="org.qifu.core.mapper.DB1Config.schema"/>tb_sys_jreport
     WHERE 1=1
-	<if test="reportId != null and reportId != '' ">
+	<if test="reportId != null and reportId != ''.toString() ">
 		AND REPORT_ID = #{reportId,jdbcType=VARCHAR}
 	</if>	
-	<if test="orderBy != null and orderBy != '' and sortType != null and sortType != '' ">
+	<if test="orderBy != null and orderBy != ''.toString() and sortType != null and sortType != ''.toString() ">
 		ORDER BY  ${orderBy} ${sortType}
 	</if>	
   </select>    
@@ -230,7 +230,7 @@
 		UDATE    
     from <include refid="org.qifu.core.mapper.DB1Config.schema"/>tb_sys_jreport
     WHERE 1=1
-	<if test="reportId != null and reportId != '' ">
+	<if test="reportId != null and reportId != ''.toString() ">
 		AND REPORT_ID = #{reportId,jdbcType=VARCHAR}
 	</if>	
 		

@@ -24,13 +24,13 @@
     select *
     from <include refid="org.qifu.core.mapper.DB1Config.schema"/>tb_sys_event_log
     WHERE 1=1
-	<if test="sysId != null and sysId != '' ">
+	<if test="sysId != null and sysId != ''.toString() ">
 		AND SYS_ID = #{sysId,jdbcType=VARCHAR}
 	</if>
-	<if test="user != null and user != '' ">
+	<if test="user != null and user != ''.toString() ">
 		AND USER = #{user,jdbcType=VARCHAR}
 	</if>			
-	<if test="orderBy != null and orderBy != '' and sortType != null and sortType != '' ">
+	<if test="orderBy != null and orderBy != ''.toString() and sortType != null and sortType != ''.toString() ">
 		ORDER BY  ${orderBy} ${sortType}
 	</if>	
   </select>    
@@ -41,10 +41,10 @@
     select *
     from <include refid="org.qifu.core.mapper.DB1Config.schema"/>tb_sys_event_log
     WHERE 1=1
-	<if test="sysId != null and sysId != '' ">
+	<if test="sysId != null and sysId != ''.toString() ">
 		AND SYS_ID = #{sysId,jdbcType=VARCHAR}
 	</if>
-	<if test="user != null and user != '' ">
+	<if test="user != null and user != ''.toString() ">
 		AND USER = #{user,jdbcType=VARCHAR}
 	</if>	
 		
@@ -54,10 +54,10 @@
   <select id="count" parameterType="java.util.HashMap" resultType="java.lang.Long">
     select count(*) from <include refid="org.qifu.core.mapper.DB1Config.schema"/>tb_sys_event_log
     WHERE 1=1
-	<if test="sysId != null and sysId != '' ">
+	<if test="sysId != null and sysId != ''.toString() ">
 		AND SYS_ID = #{sysId,jdbcType=VARCHAR}
 	</if>
-	<if test="user != null and user != '' ">
+	<if test="user != null and user != ''.toString() ">
 		AND USER = #{user,jdbcType=VARCHAR}
 	</if>	
   </select>  
