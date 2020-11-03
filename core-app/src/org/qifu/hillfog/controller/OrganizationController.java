@@ -164,11 +164,7 @@ public class OrganizationController extends BaseControllerSupport implements IPa
 			orgDept.setDescription( orgDept.getDescription().substring(0, MAX_LENGTH) );
 		}
 		DefaultResult<HfOrgDept> iResult = this.orgDeptService.insert(orgDept);
-		if (iResult.getValue() != null) {
-			result.setValue( iResult.getValue() );
-			result.setSuccess( YES );
-		}
-		result.setMessage( iResult.getMessage() );
+		this.setDefaultResponseJsonResult(result, iResult);
 	}	
 	
 	@ControllerMethodAuthority(check = true, programId = "HF_PROG001D0001A")
@@ -191,11 +187,7 @@ public class OrganizationController extends BaseControllerSupport implements IPa
 	private void update(DefaultControllerJsonResultObj<HfOrgDept> result, HfOrgDept orgDept) throws AuthorityException, ControllerException, ServiceException, Exception {
 		this.checkFields(result, orgDept);
 		DefaultResult<HfOrgDept> sysResult = this.orgDeptService.update(orgDept);
-		if ( sysResult.getValue() != null ) {
-			result.setValue( sysResult.getValue() );
-			result.setSuccess( YES );
-		}
-		result.setMessage( sysResult.getMessage() );
+		this.setDefaultResponseJsonResult(result, sysResult);
 	}	
 	
 	@ControllerMethodAuthority(check = true, programId = "HF_PROG001D0001E")
@@ -217,10 +209,7 @@ public class OrganizationController extends BaseControllerSupport implements IPa
 	
 	private void delete(DefaultControllerJsonResultObj<Boolean> result, HfOrgDept orgDept) throws AuthorityException, ControllerException, ServiceException, Exception {
 		DefaultResult<Boolean> sysResult = this.organizationLogicService.delete(orgDept);
-		if (sysResult.getValue() != null) {
-			result.setSuccess( YES );
-		}
-		result.setMessage( sysResult.getMessage() );
+		this.setDefaultResponseJsonResult(result, sysResult);
 	}	
 	
 	@ControllerMethodAuthority(check = true, programId = "HF_PROG001D0001D")

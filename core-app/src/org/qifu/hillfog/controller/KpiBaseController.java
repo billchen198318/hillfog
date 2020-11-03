@@ -234,11 +234,7 @@ public class KpiBaseController extends BaseControllerSupport implements IPageNam
 		Map<String, List<Map<String, Object>>> jsonData2 = (Map<String, List<Map<String, Object>>>) new ObjectMapper().readValue( selKpiEmp, LinkedHashMap.class );
 		List empInputAutocompleteList = jsonData2.get("items");
 		DefaultResult<HfKpi> iResult = this.kpiLogicService.create(kpi, forOid, aggrOid, orgInputAutocompleteList, empInputAutocompleteList);
-		if (iResult.getValue() != null) {
-			result.setValue( iResult.getValue() );
-			result.setSuccess( YES );
-		}
-		result.setMessage( iResult.getMessage() );		
+		this.setDefaultResponseJsonResult(result, iResult);	
 	}
 	
 	@ControllerMethodAuthority(check = true, programId = "HF_PROG001D0005A")
@@ -271,11 +267,7 @@ public class KpiBaseController extends BaseControllerSupport implements IPageNam
 		Map<String, List<Map<String, Object>>> jsonData2 = (Map<String, List<Map<String, Object>>>) new ObjectMapper().readValue( selKpiEmp, LinkedHashMap.class );
 		List empInputAutocompleteList = jsonData2.get("items");
 		DefaultResult<HfKpi> uResult = this.kpiLogicService.update(kpi, forOid, aggrOid, orgInputAutocompleteList, empInputAutocompleteList);
-		if (uResult.getValue() != null) {
-			result.setValue( uResult.getValue() );
-			result.setSuccess( YES );
-		}
-		result.setMessage( uResult.getMessage() );		
+		this.setDefaultResponseJsonResult(result, uResult);		
 	}	
 	
 	@ControllerMethodAuthority(check = true, programId = "HF_PROG001D0005E")
@@ -303,10 +295,7 @@ public class KpiBaseController extends BaseControllerSupport implements IPageNam
 	
 	private void delete(DefaultControllerJsonResultObj<Boolean> result, HfKpi kpi) throws AuthorityException, ControllerException, ServiceException, Exception {
 		DefaultResult<Boolean> dResult = this.kpiLogicService.delete(kpi);
-		if (dResult.getValue() != null) {
-			result.setSuccess( YES );
-		}
-		result.setMessage( dResult.getMessage() );
+		this.setDefaultResponseJsonResult(result, dResult);
 	}	
 	
 	@ControllerMethodAuthority(check = true, programId = "HF_PROG001D0005D")

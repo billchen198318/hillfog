@@ -168,11 +168,7 @@ public class AggregationMethodController extends BaseControllerSupport implement
 			aggrMethod.setDescription( aggrMethod.getDescription().substring(0, MAX_LENGTH) );
 		}
 		DefaultResult<HfAggregationMethod> iResult = this.aggregationMethodService.insert(aggrMethod);
-		if (iResult.getValue() != null) {
-			result.setValue( iResult.getValue() );
-			result.setSuccess( YES );
-		}
-		result.setMessage( iResult.getMessage() );
+		this.setDefaultResponseJsonResult(result, iResult);
 	}	
 	
 	@ControllerMethodAuthority(check = true, programId = "HF_PROG001D0004A")
@@ -198,11 +194,7 @@ public class AggregationMethodController extends BaseControllerSupport implement
 			aggrMethod.setDescription( aggrMethod.getDescription().substring(0, MAX_LENGTH) );
 		}
 		DefaultResult<HfAggregationMethod> uResult = this.aggregationMethodService.update(aggrMethod);
-		if ( uResult.getValue() != null ) {
-			result.setValue( uResult.getValue() );
-			result.setSuccess( YES );
-		}
-		result.setMessage( uResult.getMessage() );
+		this.setDefaultResponseJsonResult(result, uResult);
 	}	
 	
 	@ControllerMethodAuthority(check = true, programId = "HF_PROG001D0004E")
@@ -224,10 +216,7 @@ public class AggregationMethodController extends BaseControllerSupport implement
 	
 	private void delete(DefaultControllerJsonResultObj<Boolean> result, HfAggregationMethod aggrMethod) throws AuthorityException, ControllerException, ServiceException, Exception {
 		DefaultResult<Boolean> dResult = this.aggregationMethodLogicService.delete(aggrMethod);
-		if (dResult.getValue() != null) {
-			result.setSuccess( YES );
-		}
-		result.setMessage( dResult.getMessage() );
+		this.setDefaultResponseJsonResult(result, dResult);
 	}	
 	
 	@ControllerMethodAuthority(check = true, programId = "HF_PROG001D0004D")

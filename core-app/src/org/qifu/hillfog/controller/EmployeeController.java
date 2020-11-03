@@ -199,11 +199,7 @@ public class EmployeeController extends BaseControllerSupport implements IPageNa
 		Map<String, List<Map<String, Object>>> jsonData = (Map<String, List<Map<String, Object>>>) new ObjectMapper().readValue( orgInputAutocompleteJsonStr, LinkedHashMap.class );
 		List orgInputAutocompleteList = jsonData.get("items");
 		DefaultResult<HfEmployee> iResult = this.employeeLogicService.create(employee, password1, orgInputAutocompleteList);
-		if (iResult.getValue() != null) {
-			result.setValue( iResult.getValue() );
-			result.setSuccess( YES );
-		}
-		result.setMessage( iResult.getMessage() );		
+		this.setDefaultResponseJsonResult(result, iResult);
 	}
 	
 	@ControllerMethodAuthority(check = true, programId = "HF_PROG001D0002A")
@@ -233,11 +229,7 @@ public class EmployeeController extends BaseControllerSupport implements IPageNa
 		Map<String, List<Map<String, Object>>> jsonData = (Map<String, List<Map<String, Object>>>) new ObjectMapper().readValue( orgInputAutocompleteJsonStr, LinkedHashMap.class );
 		List orgInputAutocompleteList = jsonData.get("items");		
 		DefaultResult<HfEmployee> uResult = this.employeeLogicService.update(employee, password1, orgInputAutocompleteList);
-		if ( uResult.getValue() != null ) {
-			result.setValue( uResult.getValue() );
-			result.setSuccess( YES );
-		}
-		result.setMessage( uResult.getMessage() );
+		this.setDefaultResponseJsonResult(result, uResult);
 	}	
 	
 	@ControllerMethodAuthority(check = true, programId = "HF_PROG001D0002E")
@@ -264,10 +256,7 @@ public class EmployeeController extends BaseControllerSupport implements IPageNa
 	
 	private void delete(DefaultControllerJsonResultObj<Boolean> result, HfEmployee employee) throws AuthorityException, ControllerException, ServiceException, Exception {
 		DefaultResult<Boolean> sysResult = this.employeeLogicService.delete(employee);
-		if (sysResult.getValue() != null) {
-			result.setSuccess( YES );
-		}
-		result.setMessage( sysResult.getMessage() );
+		this.setDefaultResponseJsonResult(result, sysResult);
 	}	
 	
 	@ControllerMethodAuthority(check = true, programId = "HF_PROG001D0002D")

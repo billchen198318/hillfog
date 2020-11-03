@@ -230,11 +230,7 @@ public class FormulaController extends BaseControllerSupport implements IPageNam
 			formula.setDescription( formula.getDescription().substring(0, MAX_LENGTH) );
 		}
 		DefaultResult<HfFormula> iResult = this.formulaService.insert(formula);
-		if (iResult.getValue() != null) {
-			result.setValue( iResult.getValue() );
-			result.setSuccess( YES );
-		}
-		result.setMessage( iResult.getMessage() );
+		this.setDefaultResponseJsonResult(result, iResult);
 	}	
 	
 	@ControllerMethodAuthority(check = true, programId = "HF_PROG001D0003A")
@@ -261,11 +257,7 @@ public class FormulaController extends BaseControllerSupport implements IPageNam
 			formula.setDescription( formula.getDescription().substring(0, MAX_LENGTH) );
 		}
 		DefaultResult<HfFormula> uResult = this.formulaService.update(formula);
-		if ( uResult.getValue() != null ) {
-			result.setValue( uResult.getValue() );
-			result.setSuccess( YES );
-		}
-		result.setMessage( uResult.getMessage() );
+		this.setDefaultResponseJsonResult(result, uResult);
 	}	
 	
 	@ControllerMethodAuthority(check = true, programId = "HF_PROG001D0003E")
@@ -287,10 +279,7 @@ public class FormulaController extends BaseControllerSupport implements IPageNam
 	
 	private void delete(DefaultControllerJsonResultObj<Boolean> result, HfFormula formula) throws AuthorityException, ControllerException, ServiceException, Exception {
 		DefaultResult<Boolean> dResult = this.formulaLogicService.delete(formula);
-		if (dResult.getValue() != null) {
-			result.setSuccess( YES );
-		}
-		result.setMessage( dResult.getMessage() );
+		this.setDefaultResponseJsonResult(result, dResult);
 	}	
 	
 	@ControllerMethodAuthority(check = true, programId = "HF_PROG001D0003D")
