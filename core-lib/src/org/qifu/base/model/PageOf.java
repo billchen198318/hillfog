@@ -253,4 +253,35 @@ public class PageOf implements java.io.Serializable {
 		return this;
 	}	
 	
+	// for postgresql, ex: SELECT * FROM "tb_prog" ORDER BY "PROG_ID", "NAME" ASC
+	public PageOf andFieldWrap() {
+		if (StringUtils.isBlank(this.orderBy)) {
+			return this;
+		}
+		this.orderBy = StringUtils.deleteWhitespace(this.orderBy);
+		this.orderBy = this.orderBy.replaceAll(",,", ",");
+		if (this.orderBy.endsWith(",")) {
+			this.orderBy = this.orderBy.substring(0, this.orderBy.length()-1);
+		}
+		if (this.orderBy.indexOf(",") == -1) {
+			if (!(this.orderBy.startsWith("\"") && this.orderBy.endsWith("\""))) {
+				this.orderBy = "\"" + this.orderBy + "\"";
+			}
+			return this;
+		}
+		String tmp[] = this.orderBy.split(",");
+		String newOrderBy = "";
+		for (int i = 0; i < tmp.length; i++) {
+			if (!(tmp[i].startsWith("\"") && tmp[i].endsWith("\""))) {
+				tmp[i] = "\"" + tmp[i] + "\"";
+			}
+			newOrderBy += tmp[i];
+			if ((i+1) < tmp.length) {
+				newOrderBy += ",";
+			}
+		}
+		this.orderBy = newOrderBy;
+		return this;
+	}
+	
 }
