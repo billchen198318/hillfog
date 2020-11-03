@@ -161,32 +161,24 @@ public class SysExpressionController extends BaseControllerSupport implements IP
 	private void save(DefaultControllerJsonResultObj<TbSysExpression> result, TbSysExpression sysExpression) throws AuthorityException, ControllerException, ServiceException, Exception {
 		this.checkFields(result, sysExpression);
 		DefaultResult<TbSysExpression> cResult = this.systemExpressionLogicService.create(sysExpression);
-		if ( cResult.getValue() != null ) {
-			cResult.getValue().setContent( "" ); // 不要回填 content
-			result.setValue( cResult.getValue() );
-			result.setSuccess( YES );
-		}
-		result.setMessage( cResult.getMessage() );		
+		this.setDefaultResponseJsonResult(result, cResult);
+		if (result.getValue() != null) {
+			result.getValue().setContent(""); // 不要回填 content
+		}	
 	}
 	
 	private void update(DefaultControllerJsonResultObj<TbSysExpression> result, TbSysExpression sysExpression) throws AuthorityException, ControllerException, ServiceException, Exception {
 		this.checkFields(result, sysExpression);
 		DefaultResult<TbSysExpression> uResult = this.systemExpressionLogicService.update(sysExpression);
-		if ( uResult.getValue() != null ) {
-			uResult.getValue().setContent( "" ); // 不要回填 content
-			result.setValue( uResult.getValue() );
-			result.setSuccess( YES );
-		}
-		result.setMessage( uResult.getMessage() );		
+		this.setDefaultResponseJsonResult(result, uResult);
+		if (result.getValue() != null) {
+			result.getValue().setContent(""); // 不要回填 content
+		}		
 	}
 	
 	private void delete(DefaultControllerJsonResultObj<Boolean> result, TbSysExpression sysExpression) throws AuthorityException, ControllerException, ServiceException, Exception {
 		DefaultResult<Boolean> dResult = this.systemExpressionLogicService.delete(sysExpression);
-		if ( dResult.getValue() != null && dResult.getValue() ) {
-			result.setValue( dResult.getValue() );
-			result.setSuccess( YES );
-		}
-		result.setMessage( dResult.getMessage() );
+		this.setDefaultResponseJsonResult(result, dResult);
 	}	
 	
 	@ControllerMethodAuthority(check = true, programId = "CORE_PROG003D0002A")

@@ -137,20 +137,12 @@ public class RolePermissionController extends BaseControllerSupport implements I
 	private void save(DefaultControllerJsonResultObj<TbRolePermission> result, TbRolePermission rolePermission, String roleOid) throws AuthorityException, ControllerException, ServiceException, Exception {
 		this.checkFields(result, rolePermission);
 		DefaultResult<TbRolePermission> permResult = this.roleLogicService.createPermission(rolePermission, roleOid);
-		if ( permResult.getValue() != null ) {
-			result.setValue( permResult.getValue() );
-			result.setSuccess( YES );			
-		}
-		result.setMessage( permResult.getMessage() );
+		this.setDefaultResponseJsonResult(result, permResult);
 	}
 	
 	private void delete(DefaultControllerJsonResultObj<Boolean> result, TbRolePermission rolePermission) throws AuthorityException, ControllerException, ServiceException, Exception {
 		DefaultResult<Boolean> permResult = this.roleLogicService.deletePermission(rolePermission);
-		if ( permResult.getValue() != null && permResult.getValue() ) {
-			result.setValue( Boolean.TRUE );
-			result.setSuccess( YES );
-		}
-		result.setMessage( permResult.getMessage() );
+		this.setDefaultResponseJsonResult(result, permResult);
 	}
 	
 	@ControllerMethodAuthority(check = true, programId = "CORE_PROG002D0001S01A")

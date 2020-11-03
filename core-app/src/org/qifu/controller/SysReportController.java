@@ -265,13 +265,11 @@ public class SysReportController extends BaseControllerSupport implements IPageN
 		JReportUtils.selfTestDecompress4Upload(uploadOid);
 		this.fillUploadFileContent(result, sysJreport, uploadOid);
 		DefaultResult<TbSysJreport> rResult = this.systemJreportLogicService.create(sysJreport);
-		if ( rResult.getValue() != null ) {
-			JReportUtils.deployReport( rResult.getValue() );
-			rResult.getValue().setContent( null ); // 不傳回 content byte[] 內容
-			result.setValue( rResult.getValue() );
-			result.setSuccess( YES );
+		this.setDefaultResponseJsonResult(result, rResult);
+		if (result.getValue() != null) {
+			JReportUtils.deployReport( result.getValue() );
+			result.getValue().setContent( null ); // 不傳回 content byte[] 內容
 		}
-		result.setMessage( rResult.getMessage() );
 	}	
 	
 	private void update(DefaultControllerJsonResultObj<TbSysJreport> result, TbSysJreport sysJreport, String uploadOid) throws AuthorityException, ControllerException, ServiceException, Exception {
@@ -281,43 +279,29 @@ public class SysReportController extends BaseControllerSupport implements IPageN
 			this.fillUploadFileContent(result, sysJreport, uploadOid);
 		}
 		DefaultResult<TbSysJreport> rResult = this.systemJreportLogicService.update(sysJreport);
-		if ( rResult.getValue() != null ) {
+		this.setDefaultResponseJsonResult(result, rResult);
+		if (result.getValue() != null) {
 			if (!StringUtils.isBlank(uploadOid)) { // 由於 content 內容改變了(有重新上傳報表), 所以重新部屬
-				JReportUtils.deployReport( rResult.getValue() );
+				JReportUtils.deployReport( result.getValue() );
 			}
-			rResult.getValue().setContent( null ); // 不傳回 content byte[] 內容
-			result.setValue( rResult.getValue() );
-			result.setSuccess( YES );
-		}
-		result.setMessage( rResult.getMessage() );		
+			result.getValue().setContent( null ); // 不傳回 content byte[] 內容
+		}	
 	}
 	
 	private void delete(DefaultControllerJsonResultObj<Boolean> result, TbSysJreport sysJreport) throws AuthorityException, ControllerException, ServiceException, Exception {
 		DefaultResult<Boolean> tResult = this.systemJreportLogicService.delete(sysJreport);
-		if ( tResult.getValue() != null && tResult.getValue() ) {
-			result.setValue( Boolean.TRUE );
-			result.setSuccess( YES );
-		}
-		result.setMessage( tResult.getMessage() );
+		this.setDefaultResponseJsonResult(result, tResult);
 	}	
 	
 	private void saveParam(DefaultControllerJsonResultObj<TbSysJreportParam> result, TbSysJreportParam sysJreportParam, String reportOid) throws AuthorityException, ControllerException, ServiceException, Exception {
 		this.checkFieldsForParam(result, sysJreportParam);
 		DefaultResult<TbSysJreportParam> pResult = this.systemJreportLogicService.createParam(sysJreportParam, reportOid);
-		if ( pResult.getValue() != null ) {
-			result.setValue( pResult.getValue() );
-			result.setSuccess(YES);
-		}
-		result.setMessage( pResult.getMessage() );
+		this.setDefaultResponseJsonResult(result, pResult);
 	}
 	
 	private void deleteParam(DefaultControllerJsonResultObj<Boolean> result, TbSysJreportParam sysJreportParam) throws AuthorityException, ControllerException, ServiceException, Exception {
 		DefaultResult<Boolean> pResult = this.systemJreportLogicService.deleteParam(sysJreportParam);
-		if ( pResult.getValue() != null && pResult.getValue() ) {
-			result.setValue( Boolean.TRUE );
-			result.setSuccess( YES );
-		}
-		result.setMessage( pResult.getMessage() );
+		this.setDefaultResponseJsonResult(result, pResult);
 	}
 	
 	@ControllerMethodAuthority(check = true, programId = "CORE_PROG001D0005A")

@@ -206,11 +206,7 @@ public class SysProgramController extends BaseControllerSupport implements IPage
 		sysProg.setDialogW( NumberUtils.toInt(w) );
 		sysProg.setDialogH( NumberUtils.toInt(h) );
 		DefaultResult<TbSysProg> progResult = this.systemProgramLogicService.create(sysProg, sysOid, iconOid);
-		if (progResult.getValue() != null) {
-			result.setValue( progResult.getValue() );
-			result.setSuccess( YES );
-		}
-		result.setMessage( progResult.getMessage() );
+		this.setDefaultResponseJsonResult(result, progResult);
 	}
 	
 	private void update(DefaultControllerJsonResultObj<TbSysProg> result, TbSysProg sysProg, String sysOid, String iconOid, String w, String h) throws AuthorityException, ControllerException, ServiceException, Exception {
@@ -218,20 +214,12 @@ public class SysProgramController extends BaseControllerSupport implements IPage
 		sysProg.setDialogW( NumberUtils.toInt(w) );
 		sysProg.setDialogH( NumberUtils.toInt(h) );
 		DefaultResult<TbSysProg> progResult = this.systemProgramLogicService.update(sysProg, sysOid, iconOid);
-		if (progResult.getValue() != null) {
-			result.setValue( progResult.getValue() );
-			result.setSuccess( YES );
-		}
-		result.setMessage( progResult.getMessage() );		
+		this.setDefaultResponseJsonResult(result, progResult);
 	}
 	
 	private void delete(DefaultControllerJsonResultObj<Boolean> result, TbSysProg sysProg) throws AuthorityException, ControllerException, ServiceException, Exception {
 		DefaultResult<Boolean> progResult = this.systemProgramLogicService.delete(sysProg);
-		if (progResult.getValue() != null) {
-			result.setValue( progResult.getValue() );
-			result.setSuccess( YES );
-		}
-		result.setMessage( progResult.getMessage() );
+		this.setDefaultResponseJsonResult(result, progResult);
 	}	
 	
 	@ControllerMethodAuthority(check = true, programId = "CORE_PROG001D0002A")

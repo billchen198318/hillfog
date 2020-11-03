@@ -101,11 +101,7 @@ public class SysLoginLogViewController extends BaseControllerSupport implements 
 	
 	private void delete(DefaultControllerJsonResultObj<Boolean> result, TbSysLoginLog sysLoginLog) throws AuthorityException, ControllerException, ServiceException, Exception {
 		DefaultResult<Boolean> dResult = this.sysLoginLogService.delete(sysLoginLog);
-		if ( dResult.getValue() != null && dResult.getValue() ) {
-			result.setValue( dResult.getValue() );
-			result.setSuccess( YES );
-		}
-		result.setMessage( dResult.getMessage() );			
+		this.setDefaultResponseJsonResult(result, dResult);		
 	}
 	
 	private void deleteAll(DefaultControllerJsonResultObj<Boolean> result) throws AuthorityException, ControllerException, ServiceException, Exception {

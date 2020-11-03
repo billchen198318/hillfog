@@ -214,49 +214,29 @@ public class SysTemplateController extends BaseControllerSupport implements IPag
 	private void save(DefaultControllerJsonResultObj<TbSysTemplate> result, TbSysTemplate template) throws AuthorityException, ControllerException, ServiceException, Exception {
 		this.checkFields(result, template);
 		DefaultResult<TbSysTemplate> tResult = this.systemTemplateLogicService.create(template);
-		if ( tResult.getValue() != null ) {
-			result.setValue( tResult.getValue() );
-			result.setSuccess( YES );
-		}
-		result.setMessage( tResult.getMessage() );
+		this.setDefaultResponseJsonResult(result, tResult);
 	}
 	
 	private void update(DefaultControllerJsonResultObj<TbSysTemplate> result, TbSysTemplate template) throws AuthorityException, ControllerException, ServiceException, Exception {
 		this.checkFields(result, template);
 		DefaultResult<TbSysTemplate> tResult = this.systemTemplateLogicService.update(template);
-		if ( tResult.getValue() != null ) {
-			result.setValue( tResult.getValue() );
-			result.setSuccess( YES );
-		}
-		result.setMessage( tResult.getMessage() );		
+		this.setDefaultResponseJsonResult(result, tResult);	
 	}
 	
 	private void delete(DefaultControllerJsonResultObj<Boolean> result, TbSysTemplate template) throws AuthorityException, ControllerException, ServiceException, Exception {
 		DefaultResult<Boolean> tResult = this.systemTemplateLogicService.delete(template);
-		if ( tResult.getValue() != null && tResult.getValue() ) {
-			result.setValue( Boolean.TRUE );
-			result.setSuccess( YES );
-		}
-		result.setMessage( tResult.getMessage() );
+		this.setDefaultResponseJsonResult(result, tResult);
 	}
 	
 	private void saveParam(DefaultControllerJsonResultObj<TbSysTemplateParam> result, String templateOid, TbSysTemplateParam templateParam) throws AuthorityException, ControllerException, ServiceException, Exception {
 		this.checkFieldsForParam(result, templateParam);
 		DefaultResult<TbSysTemplateParam> tResult = this.systemTemplateLogicService.createParam(templateParam, templateOid);
-		if ( tResult.getValue() != null ) {
-			result.setValue( tResult.getValue() );
-			result.setSuccess( YES );
-		}
-		result.setMessage( tResult.getMessage() );
+		this.setDefaultResponseJsonResult(result, tResult);
 	}	
 	
 	private void deleteParam(DefaultControllerJsonResultObj<Boolean> result, TbSysTemplateParam templateParam) throws AuthorityException, ControllerException, ServiceException, Exception {
 		DefaultResult<Boolean> tResult = this.systemTemplateLogicService.deleteParam(templateParam);
-		if ( tResult.getValue() != null && tResult.getValue() ) {
-			result.setValue( Boolean.TRUE );
-			result.setSuccess( YES );
-		}
-		result.setMessage( tResult.getMessage() );
+		this.setDefaultResponseJsonResult(result, tResult);
 	}		
 	
 	@ControllerMethodAuthority(check = true, programId = "CORE_PROG001D0004A")

@@ -38,6 +38,7 @@ import org.qifu.base.message.BaseSystemMessage;
 import org.qifu.base.model.CheckControllerFieldHandler;
 import org.qifu.base.model.ControllerMethodAuthority;
 import org.qifu.base.model.DefaultControllerJsonResultObj;
+import org.qifu.base.model.DefaultResult;
 import org.qifu.base.model.PageOf;
 import org.qifu.base.model.QueryControllerJsonResultObj;
 import org.qifu.base.model.QueryParamBuilder;
@@ -444,6 +445,14 @@ public abstract class BaseControllerSupport {
 		} else {
 			jsonResult.setMessage( queryResult.getMessage() );
 		}		
+	}
+	
+	protected <T> void setDefaultResponseJsonResult(DefaultControllerJsonResultObj<T> jsonResult, DefaultResult<T> actionResult) {
+		if ( actionResult.getValue() != null || (actionResult.getValue() instanceof Boolean && Boolean.TRUE.equals(actionResult.getValue())) ) {
+			jsonResult.setValue(actionResult.getValue());
+			jsonResult.setSuccess( YES );
+		}
+		jsonResult.setMessage( actionResult.getMessage() );
 	}
 	
 	protected <T> CheckControllerFieldHandler<T> getCheckControllerFieldHandler(DefaultControllerJsonResultObj<T> result) {

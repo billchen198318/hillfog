@@ -182,10 +182,7 @@ public class SysSiteController extends BaseControllerSupport implements IPageNam
 	
 	private void delete(DefaultControllerJsonResultObj<Boolean> result, TbSys sys) throws AuthorityException, ControllerException, ServiceException, Exception {
 		DefaultResult<Boolean> sysResult = this.applicationSystemLogicService.delete(sys);
-		if (sysResult.getValue() != null) {
-			result.setSuccess( YES );
-		}
-		result.setMessage( sysResult.getMessage() );		
+		this.setDefaultResponseJsonResult(result, sysResult);
 	}	
 	
 	@ControllerMethodAuthority(check = true, programId = "CORE_PROG001D0001D")
@@ -219,11 +216,7 @@ public class SysSiteController extends BaseControllerSupport implements IPageNam
 	private void save(DefaultControllerJsonResultObj<TbSys> result, TbSys sys) throws AuthorityException, ControllerException, ServiceException, Exception {
 		this.checkFields(result, sys);
 		DefaultResult<TbSys> sysResult = this.applicationSystemLogicService.create(sys, sys.getIcon());
-		if ( sysResult.getValue() != null ) {
-			result.setValue( sysResult.getValue() );
-			result.setSuccess( YES );
-		}
-		result.setMessage( sysResult.getMessage() );		
+		this.setDefaultResponseJsonResult(result, sysResult);
 	}
 	
 	@ControllerMethodAuthority(check = true, programId = "CORE_PROG001D0001A")
@@ -246,11 +239,7 @@ public class SysSiteController extends BaseControllerSupport implements IPageNam
 	private void update(DefaultControllerJsonResultObj<TbSys> result, TbSys sys) throws AuthorityException, ControllerException, ServiceException, Exception {
 		this.checkFields(result, sys);
 		DefaultResult<TbSys> sysResult = this.applicationSystemLogicService.update(sys, sys.getIcon());
-		if ( sysResult.getValue() != null ) {
-			result.setValue( sysResult.getValue() );
-			result.setSuccess( YES );
-		}
-		result.setMessage( sysResult.getMessage() );
+		this.setDefaultResponseJsonResult(result, sysResult);
 	}	
 	
 	@ControllerMethodAuthority(check = true, programId = "CORE_PROG001D0001E")

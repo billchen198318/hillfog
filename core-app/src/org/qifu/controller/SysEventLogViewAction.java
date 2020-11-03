@@ -101,11 +101,7 @@ public class SysEventLogViewAction extends BaseControllerSupport implements IPag
 	
 	private void delete(DefaultControllerJsonResultObj<Boolean> result, TbSysEventLog sysEventLog) throws AuthorityException, ControllerException, ServiceException, Exception {
 		DefaultResult<Boolean> dResult = this.sysEventLogService.delete(sysEventLog);
-		if ( dResult.getValue() != null && dResult.getValue() ) {
-			result.setValue( dResult.getValue() );
-			result.setSuccess( YES );
-		}
-		result.setMessage( dResult.getMessage() );			
+		this.setDefaultResponseJsonResult(result, dResult);		
 	}
 	
 	private void deleteAll(DefaultControllerJsonResultObj<Boolean> result) throws AuthorityException, ControllerException, ServiceException, Exception {

@@ -101,11 +101,7 @@ public class SysExpressionJobLogViewController extends BaseControllerSupport imp
 	
 	private void delete(DefaultControllerJsonResultObj<Boolean> result, TbSysExprJobLog sysExprJobLog) throws AuthorityException, ControllerException, ServiceException, Exception {
 		DefaultResult<Boolean> dResult = this.sysExprJobLogService.delete(sysExprJobLog);
-		if ( dResult.getValue() != null && dResult.getValue() ) {
-			result.setValue( dResult.getValue() );
-			result.setSuccess( YES );
-		}
-		result.setMessage( dResult.getMessage() );			
+		this.setDefaultResponseJsonResult(result, dResult);
 	}
 	
 	private void deleteAll(DefaultControllerJsonResultObj<Boolean> result) throws AuthorityException, ControllerException, ServiceException, Exception {

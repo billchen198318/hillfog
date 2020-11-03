@@ -292,68 +292,40 @@ public class SysBeanSupportController extends BaseControllerSupport implements I
 	private void save(DefaultControllerJsonResultObj<TbSysBeanHelp> result, TbSysBeanHelp sysBeanHelp, String systemOid) throws AuthorityException, ControllerException, ServiceException, Exception {
 		this.checkFields(result, sysBeanHelp, systemOid);
 		DefaultResult<TbSysBeanHelp> cResult = this.systemBeanHelpLogicService.create(sysBeanHelp, systemOid);
-		if ( cResult.getValue() != null ) {
-			result.setValue( cResult.getValue() );
-			result.setSuccess( YES );
-		}
-		result.setMessage( cResult.getMessage());		
+		this.setDefaultResponseJsonResult(result, cResult);
 	}	
 	
 	private void update(DefaultControllerJsonResultObj<TbSysBeanHelp> result, TbSysBeanHelp sysBeanHelp, String systemOid) throws AuthorityException, ControllerException, ServiceException, Exception {
 		this.checkFields(result, sysBeanHelp, systemOid);
 		DefaultResult<TbSysBeanHelp> uResult = this.systemBeanHelpLogicService.update(sysBeanHelp, systemOid);
-		if ( uResult.getValue() != null ) {
-			result.setValue( uResult.getValue() );
-			result.setSuccess( YES );
-		}
-		result.setMessage( uResult.getMessage() );		
+		this.setDefaultResponseJsonResult(result, uResult);
 	}	
 	
 	private void delete(DefaultControllerJsonResultObj<Boolean> result, TbSysBeanHelp sysBeanHelp) throws AuthorityException, ControllerException, ServiceException, Exception {
 		DefaultResult<Boolean> dResult = this.systemBeanHelpLogicService.delete(sysBeanHelp);
-		if ( dResult.getValue() != null && dResult.getValue() ) {
-			result.setValue( dResult.getValue() );
-			result.setSuccess( YES );
-		}
-		result.setMessage( dResult.getMessage() );		
+		this.setDefaultResponseJsonResult(result, dResult);
 	}	 
 	
 	private void saveExpression(DefaultControllerJsonResultObj<TbSysBeanHelpExpr> result, TbSysBeanHelpExpr sysBeanHelpExpr, String sysBeanHelpOid, String expressionOid) throws AuthorityException, ControllerException, ServiceException, Exception {
 		this.checkFieldsForExpression(result, sysBeanHelpExpr, sysBeanHelpOid, expressionOid);
 		DefaultResult<TbSysBeanHelpExpr> cResult = this.systemBeanHelpLogicService.createExpr(sysBeanHelpExpr, sysBeanHelpOid, expressionOid);
-		if ( cResult.getValue() != null ) {
-			result.setValue( cResult.getValue() );
-			result.setSuccess( YES );
-		}
-		result.setMessage( cResult.getMessage() );			
+		this.setDefaultResponseJsonResult(result, cResult);
 	}
 	
 	private void deleteExpression(DefaultControllerJsonResultObj<Boolean> result, TbSysBeanHelpExpr sysBeanHelpExpr) throws AuthorityException, ControllerException, ServiceException, Exception {
 		DefaultResult<Boolean> dResult = this.systemBeanHelpLogicService.deleteExpr(sysBeanHelpExpr);
-		if ( dResult.getValue() != null && dResult.getValue() ) {
-			result.setValue( dResult.getValue() );
-			result.setSuccess( YES );
-		}
-		result.setMessage( dResult.getMessage() );			
+		this.setDefaultResponseJsonResult(result, dResult);			
 	}
 	
 	private void saveExpressionMap(DefaultControllerJsonResultObj<TbSysBeanHelpExprMap> result, TbSysBeanHelpExprMap sysBeanHelpExprMap, String sysBeanHelpExprOid) throws AuthorityException, ControllerException, ServiceException, Exception {
 		this.checkFieldsForExpressionMap(result, sysBeanHelpExprMap, sysBeanHelpExprOid);
 		DefaultResult<TbSysBeanHelpExprMap> cResult = this.systemBeanHelpLogicService.createExprMap(sysBeanHelpExprMap, sysBeanHelpExprOid);
-		if ( cResult.getValue() != null ) {
-			result.setValue( cResult.getValue() );
-			result.setSuccess( YES );
-		}
-		result.setMessage( cResult.getMessage() );			
+		this.setDefaultResponseJsonResult(result, cResult);
 	}	
 	
 	private void deleteExpressionMap(DefaultControllerJsonResultObj<Boolean> result, TbSysBeanHelpExprMap sysBeanHelpExprMap) throws AuthorityException, ControllerException, ServiceException, Exception {
 		DefaultResult<Boolean> dResult = this.systemBeanHelpLogicService.deleteExprMap(sysBeanHelpExprMap);
-		if ( dResult.getValue() != null && dResult.getValue() ) {
-			result.setValue( dResult.getValue() );
-			result.setSuccess( YES );
-		}
-		result.setMessage( dResult.getMessage() );			
+		this.setDefaultResponseJsonResult(result, dResult);
 	}	
 	
 	@ControllerMethodAuthority(check = true, programId = "CORE_PROG003D0003A")

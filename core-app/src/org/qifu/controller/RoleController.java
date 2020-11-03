@@ -106,40 +106,24 @@ public class RoleController extends BaseControllerSupport implements IPageNamesp
 	private void save(DefaultControllerJsonResultObj<TbRole> result, TbRole role) throws AuthorityException, ControllerException, ServiceException, Exception {
 		this.checkFields(result, role);
 		DefaultResult<TbRole> roleResult = this.roleLogicService.create(role);
-		if ( roleResult.getValue() != null ) {
-			result.setValue( roleResult.getValue() );
-			result.setSuccess( YES );
-		}
-		result.setMessage( roleResult.getMessage() );
+		this.setDefaultResponseJsonResult(result, roleResult);
 	}
 	
 	private void update(DefaultControllerJsonResultObj<TbRole> result, TbRole role) throws AuthorityException, ControllerException, ServiceException, Exception {
 		this.checkFields(result, role);
 		DefaultResult<TbRole> roleResult = this.roleLogicService.update(role);
-		if ( roleResult.getValue() != null ) {
-			result.setValue( roleResult.getValue() );
-			result.setSuccess( YES );
-		}
-		result.setMessage( roleResult.getMessage() );
+		this.setDefaultResponseJsonResult(result, roleResult);
 	}
 	
 	private void delete(DefaultControllerJsonResultObj<Boolean> result, TbRole role) throws AuthorityException, ControllerException, ServiceException, Exception {
 		DefaultResult<Boolean> roleResult = this.roleLogicService.delete(role);
-		if ( roleResult.getValue() != null && roleResult.getValue() ) {
-			result.setValue( Boolean.TRUE );
-			result.setSuccess( YES );
-		}
-		result.setMessage( roleResult.getMessage() );
+		this.setDefaultResponseJsonResult(result, roleResult);
 	}
 	
 	private void saveAsNew(DefaultControllerJsonResultObj<TbRole> result, String fromRoleOid, TbRole role) throws AuthorityException, ControllerException, ServiceException, Exception {
 		this.checkFields(result, role);
 		DefaultResult<TbRole> roleResult = this.roleLogicService.copyAsNew(fromRoleOid, role);
-		if ( roleResult.getValue() != null ) {
-			result.setValue( roleResult.getValue() );
-			result.setSuccess( YES );
-		}
-		result.setMessage( roleResult.getMessage() );
+		this.setDefaultResponseJsonResult(result, roleResult);
 	}	
 	
 	@ControllerMethodAuthority(check = true, programId = "CORE_PROG002D0001Q")

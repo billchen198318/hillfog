@@ -109,10 +109,7 @@ public class UserRoleController extends BaseControllerSupport implements IPageNa
 		}
 		try {
 			DefaultResult<Boolean> updateResult = this.roleLogicService.updateUserRole(accountOid, this.transformAppendKeyStringToList(appendOid));
-			if (updateResult.getValue() != null && updateResult.getValue()) {
-				result.setSuccess(YES);
-			}
-			result.setMessage( updateResult.getMessage() );
+			this.setDefaultResponseJsonResult(result, updateResult);
 		} catch (AuthorityException | ServiceException | ControllerException e) {
 			this.baseExceptionResult(result, e);
 		} catch (Exception e) {

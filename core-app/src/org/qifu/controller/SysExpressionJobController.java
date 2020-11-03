@@ -212,30 +212,18 @@ public class SysExpressionJobController extends BaseControllerSupport implements
 	private void save(DefaultControllerJsonResultObj<TbSysExprJob> result, TbSysExprJob sysExprJob, String systemOid, String expressionOid) throws AuthorityException, ControllerException, ServiceException, Exception {
 		this.checkFields(result, sysExprJob, systemOid, expressionOid);
 		DefaultResult<TbSysExprJob> cResult = this.systemExpressionLogicService.createJob(sysExprJob, systemOid, expressionOid);
-		if ( cResult.getValue() != null ) {
-			result.setValue( cResult.getValue() );
-			result.setSuccess( YES );
-		}
-		result.setMessage( cResult.getMessage() );		
+		this.setDefaultResponseJsonResult(result, cResult);
 	}	
 	
 	private void update(DefaultControllerJsonResultObj<TbSysExprJob> result, TbSysExprJob sysExprJob, String systemOid, String expressionOid) throws AuthorityException, ControllerException, ServiceException, Exception {
 		this.checkFields(result, sysExprJob, systemOid, expressionOid);
 		DefaultResult<TbSysExprJob> uResult = this.systemExpressionLogicService.updateJob(sysExprJob, systemOid, expressionOid);
-		if ( uResult.getValue() != null ) {
-			result.setValue( uResult.getValue() );
-			result.setSuccess( YES );
-		}
-		result.setMessage( uResult.getMessage() );		
+		this.setDefaultResponseJsonResult(result, uResult);
 	}	
 	
 	private void delete(DefaultControllerJsonResultObj<Boolean> result, TbSysExprJob sysExprJob) throws AuthorityException, ControllerException, ServiceException, Exception {
 		DefaultResult<Boolean> dResult = this.systemExpressionLogicService.deleteJob(sysExprJob);
-		if ( dResult.getValue() != null && dResult.getValue() ) {
-			result.setValue( dResult.getValue() );
-			result.setSuccess( YES );
-		}
-		result.setMessage( dResult.getMessage() );		
+		this.setDefaultResponseJsonResult(result, dResult);
 	}
 	
 	private void manualExecute(DefaultControllerJsonResultObj<TbSysExprJob> result, HttpServletRequest request, TbSysExprJob sysExprJob) throws AuthorityException, ControllerException, ServiceException, Exception {
