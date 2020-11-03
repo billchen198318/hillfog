@@ -26,16 +26,16 @@
     select *
     from <include refid="org.qifu.hillfog.mapper.DB1Config.schema"/>hf_aggregation_method
     WHERE 1=1
-	<if test="aggrId != null and aggrId != '' ">
+	<if test="aggrId != null and aggrId != ''.toString() ">
 		AND AGGR_ID = #{aggrId,jdbcType=VARCHAR}
 	</if>			
-	<if test="name != null and name != '' ">
+	<if test="name != null and name != ''.toString() ">
 		AND NAME = #{name,jdbcType=VARCHAR}
 	</if>
-	<if test="nameLike != null and nameLike != '' ">
+	<if test="nameLike != null and nameLike != ''.toString() ">
 		AND NAME like #{nameLike,jdbcType=VARCHAR}
 	</if>			
-	<if test="orderBy != null and orderBy != '' and sortType != null and sortType != '' ">
+	<if test="orderBy != null and orderBy != ''.toString() and sortType != null and sortType != ''.toString() ">
 		ORDER BY  ${orderBy} ${sortType}
 	</if>	
   </select>    
@@ -46,13 +46,13 @@
     select *
     from <include refid="org.qifu.hillfog.mapper.DB1Config.schema"/>hf_aggregation_method
     WHERE 1=1
-	<if test="aggrId != null and aggrId != '' ">
+	<if test="aggrId != null and aggrId != ''.toString() ">
 		AND AGGR_ID = #{aggrId,jdbcType=VARCHAR}
 	</if>			
-	<if test="name != null and name != '' ">
+	<if test="name != null and name != ''.toString() ">
 		AND NAME = #{name,jdbcType=VARCHAR}
 	</if>
-	<if test="nameLike != null and nameLike != '' ">
+	<if test="nameLike != null and nameLike != ''.toString() ">
 		AND NAME like #{nameLike,jdbcType=VARCHAR}
 	</if>				
 		
@@ -62,13 +62,13 @@
   <select id="count" parameterType="java.util.HashMap" resultType="java.lang.Long">
     select count(*) from <include refid="org.qifu.hillfog.mapper.DB1Config.schema"/>hf_aggregation_method
     WHERE 1=1
-	<if test="aggrId != null and aggrId != '' ">
+	<if test="aggrId != null and aggrId != ''.toString() ">
 		AND AGGR_ID = #{aggrId,jdbcType=VARCHAR}
 	</if>			
-	<if test="name != null and name != '' ">
+	<if test="name != null and name != ''.toString() ">
 		AND NAME = #{name,jdbcType=VARCHAR}
 	</if>
-	<if test="nameLike != null and nameLike != '' ">
+	<if test="nameLike != null and nameLike != ''.toString() ">
 		AND NAME like #{nameLike,jdbcType=VARCHAR}
 	</if>					
   </select>  
@@ -206,10 +206,10 @@
   	select *
     from <include refid="org.qifu.hillfog.mapper.DB1Config.schema"/>hf_aggregation_method
     where 1=1
-	<if test="oid != null and oid != '' ">
+	<if test="oid != null and oid != ''.toString() ">
 		AND OID = #{oid,jdbcType=CHAR}
 	</if>    
-	<if test="aggrId != null and aggrId != '' ">
+	<if test="aggrId != null and aggrId != ''.toString() ">
 		AND AGGR_ID = #{aggrId,jdbcType=VARCHAR}
 	</if>	  
   </select>   

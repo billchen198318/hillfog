@@ -33,19 +33,19 @@
     select *
     from <include refid="org.qifu.core.mapper.DB1Config.schema"/>tb_sys_expr_job
     WHERE 1=1
-	<if test="system != null and system != '' ">
+	<if test="system != null and system != ''.toString() ">
 		AND SYSTEM = #{system,jdbcType=VARCHAR}
 	</if>    
-	<if test="id != null and id != '' ">
+	<if test="id != null and id != ''.toString() ">
 		AND ID = #{id,jdbcType=VARCHAR}
 	</if>
-	<if test="name != null and name != '' ">
+	<if test="name != null and name != ''.toString() ">
 		AND NAME = #{name,jdbcType=VARCHAR}
 	</if>
-	<if test="active != null and active != '' ">
+	<if test="active != null and active != ''.toString() ">
 		AND ACTIVE = #{active,jdbcType=VARCHAR}
 	</if>				
-	<if test="orderBy != null and orderBy != '' and sortType != null and sortType != '' ">
+	<if test="orderBy != null and orderBy != ''.toString() and sortType != null and sortType != ''.toString() ">
 		ORDER BY  ${orderBy} ${sortType}
 	</if>	
   </select>    
@@ -56,16 +56,16 @@
     select *
     from <include refid="org.qifu.core.mapper.DB1Config.schema"/>tb_sys_expr_job
     WHERE 1=1
-	<if test="system != null and system != '' ">
+	<if test="system != null and system != ''.toString() ">
 		AND SYSTEM = #{system,jdbcType=VARCHAR}
 	</if>    
-	<if test="id != null and id != '' ">
+	<if test="id != null and id != ''.toString() ">
 		AND ID = #{id,jdbcType=VARCHAR}
 	</if>
-	<if test="name != null and name != '' ">
+	<if test="name != null and name != ''.toString() ">
 		AND NAME LIKE #{name,jdbcType=VARCHAR}
 	</if>
-	<if test="active != null and active != '' ">
+	<if test="active != null and active != ''.toString() ">
 		AND ACTIVE = #{active,jdbcType=VARCHAR}
 	</if>	
 		
@@ -75,16 +75,16 @@
   <select id="count" parameterType="java.util.HashMap" resultType="java.lang.Long">
     select count(*) from <include refid="org.qifu.core.mapper.DB1Config.schema"/>tb_sys_expr_job
     WHERE 1=1
-	<if test="system != null and system != '' ">
+	<if test="system != null and system != ''.toString() ">
 		AND SYSTEM = #{system,jdbcType=VARCHAR}
 	</if>    
-	<if test="id != null and id != '' ">
+	<if test="id != null and id != ''.toString() ">
 		AND ID = #{id,jdbcType=VARCHAR}
 	</if>
-	<if test="name != null and name != '' ">
+	<if test="name != null and name != ''.toString() ">
 		AND NAME LIKE #{name,jdbcType=VARCHAR}
 	</if>
-	<if test="active != null and active != '' ">
+	<if test="active != null and active != ''.toString() ">
 		AND ACTIVE = #{active,jdbcType=VARCHAR}
 	</if>	
   </select>  

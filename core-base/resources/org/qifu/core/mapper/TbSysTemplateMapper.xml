@@ -24,10 +24,10 @@
     select *
     from <include refid="org.qifu.core.mapper.DB1Config.schema"/>tb_sys_template
     WHERE 1=1
-	<if test="templateId != null and templateId != '' ">
+	<if test="templateId != null and templateId != ''.toString() ">
 		AND TEMPLATE_ID = #{templateId,jdbcType=VARCHAR}
 	</if>	
-	<if test="orderBy != null and orderBy != '' and sortType != null and sortType != '' ">
+	<if test="orderBy != null and orderBy != ''.toString() and sortType != null and sortType != ''.toString() ">
 		ORDER BY  ${orderBy} ${sortType}
 	</if>	
   </select>    
@@ -38,10 +38,10 @@
     select *
     from <include refid="org.qifu.core.mapper.DB1Config.schema"/>tb_sys_template
     WHERE 1=1
-	<if test="templateId != null and templateId != '' ">
+	<if test="templateId != null and templateId != ''.toString() ">
 		AND TEMPLATE_ID = #{templateId,jdbcType=VARCHAR}
 	</if>
-	<if test="title != null and title != '' ">
+	<if test="title != null and title != ''.toString() ">
 		AND TITLE LIKE #{title,jdbcType=VARCHAR}
 	</if>	
 			
@@ -51,10 +51,10 @@
   <select id="count" parameterType="java.util.HashMap" resultType="java.lang.Long">
     select count(*) from <include refid="org.qifu.core.mapper.DB1Config.schema"/>tb_sys_template
     WHERE 1=1
-	<if test="templateId != null and templateId != '' ">
+	<if test="templateId != null and templateId != ''.toString() ">
 		AND TEMPLATE_ID = #{templateId,jdbcType=VARCHAR}
 	</if>	
-	<if test="title != null and title != '' ">
+	<if test="title != null and title != ''.toString() ">
 		AND TITLE LIKE #{title,jdbcType=VARCHAR}
 	</if>		
   </select>  

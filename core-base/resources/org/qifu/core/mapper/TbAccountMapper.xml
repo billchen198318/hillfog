@@ -23,13 +23,13 @@
     select *
     from <include refid="org.qifu.core.mapper.DB1Config.schema"/>tb_account
     WHERE 1=1
-	<if test="account != null and account != '' ">
+	<if test="account != null and account != ''.toString() ">
 		AND ACCOUNT = #{account,jdbcType=VARCHAR}
 	</if>
-	<if test="onJob != null and onJob != '' ">
+	<if test="onJob != null and onJob != ''.toString() ">
 		AND ON_JOB = #{onJob,jdbcType=VARCHAR}
 	</if>			
-	<if test="orderBy != null and orderBy != '' and sortType != null and sortType != '' ">
+	<if test="orderBy != null and orderBy != ''.toString() and sortType != null and sortType != ''.toString() ">
 		ORDER BY  ${orderBy} ${sortType}
 	</if>
   </select>    
@@ -40,10 +40,10 @@
     select *
     from <include refid="org.qifu.core.mapper.DB1Config.schema"/>tb_account
     WHERE 1=1
-	<if test="account != null and account != '' ">
+	<if test="account != null and account != ''.toString() ">
 		AND ACCOUNT = #{account,jdbcType=VARCHAR}
 	</if>
-	<if test="onJob != null and onJob != '' ">
+	<if test="onJob != null and onJob != ''.toString() ">
 		AND ON_JOB = #{onJob,jdbcType=VARCHAR}
 	</if>	
 		
@@ -53,10 +53,10 @@
   <select id="count" parameterType="java.util.HashMap" resultType="java.lang.Long">
     select count(*) from <include refid="org.qifu.core.mapper.DB1Config.schema"/>tb_account
     WHERE 1=1
-	<if test="account != null and account != '' ">
+	<if test="account != null and account != ''.toString() ">
 		AND ACCOUNT = #{account,jdbcType=VARCHAR}
 	</if>
-	<if test="onJob != null and onJob != '' ">
+	<if test="onJob != null and onJob != ''.toString() ">
 		AND ON_JOB = #{onJob,jdbcType=VARCHAR}
 	</if>
   </select>  

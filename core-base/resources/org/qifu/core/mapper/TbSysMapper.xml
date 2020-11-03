@@ -26,16 +26,16 @@
     select *
     from <include refid="org.qifu.core.mapper.DB1Config.schema"/>tb_sys
     WHERE 1=1
-	<if test="sysId != null and sysId != '' ">
+	<if test="sysId != null and sysId != ''.toString() ">
 		AND SYS_ID = #{sysId,jdbcType=VARCHAR}
 	</if>
-	<if test="name != null and name != '' ">
+	<if test="name != null and name != ''.toString() ">
 		AND NAME = #{name,jdbcType=VARCHAR}
 	</if>	
-	<if test="isLocal != null and isLocal != '' ">
+	<if test="isLocal != null and isLocal != ''.toString() ">
 		AND IS_LOCAL = #{isLocal,jdbcType=VARCHAR}
 	</if>			
-	<if test="orderBy != null and orderBy != '' and sortType != null and sortType != '' ">
+	<if test="orderBy != null and orderBy != ''.toString() and sortType != null and sortType != ''.toString() ">
 		ORDER BY  ${orderBy} ${sortType}
 	</if>	
   </select>    
@@ -46,13 +46,13 @@
     select *
     from <include refid="org.qifu.core.mapper.DB1Config.schema"/>tb_sys
     WHERE 1=1
-	<if test="sysId != null and sysId != '' ">
+	<if test="sysId != null and sysId != ''.toString() ">
 		AND SYS_ID = #{sysId,jdbcType=VARCHAR}
 	</if>
-	<if test="name != null and name != '' ">
+	<if test="name != null and name != ''.toString() ">
 		AND NAME LIKE #{name,jdbcType=VARCHAR}
 	</if>	
-	<if test="isLocal != null and isLocal != '' ">
+	<if test="isLocal != null and isLocal != ''.toString() ">
 		AND IS_LOCAL = #{isLocal,jdbcType=VARCHAR}
 	</if>		
 		
@@ -62,13 +62,13 @@
   <select id="count" parameterType="java.util.HashMap" resultType="java.lang.Long">
     select count(*) from <include refid="org.qifu.core.mapper.DB1Config.schema"/>tb_sys
     WHERE 1=1
-	<if test="sysId != null and sysId != '' ">
+	<if test="sysId != null and sysId != ''.toString() ">
 		AND SYS_ID = #{sysId,jdbcType=VARCHAR}
 	</if>
-	<if test="name != null and name != '' ">
+	<if test="name != null and name != ''.toString() ">
 		AND NAME LIKE #{name,jdbcType=VARCHAR}
 	</if>	
-	<if test="isLocal != null and isLocal != '' ">
+	<if test="isLocal != null and isLocal != ''.toString() ">
 		AND IS_LOCAL = #{isLocal,jdbcType=VARCHAR}
 	</if>	
   </select>  

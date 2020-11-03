@@ -28,13 +28,13 @@
     select *
     from <include refid="org.qifu.core.mapper.DB1Config.schema"/>tb_sys_code
     WHERE 1=1
-	<if test="code != null and code != '' ">
+	<if test="code != null and code != ''.toString() ">
 		AND CODE = #{code,jdbcType=VARCHAR}
 	</if>
-	<if test="type != null and type != '' ">
+	<if test="type != null and type != ''.toString() ">
 		AND TYPE = #{type,jdbcType=VARCHAR}
 	</if>			
-	<if test="orderBy != null and orderBy != '' and sortType != null and sortType != '' ">
+	<if test="orderBy != null and orderBy != ''.toString() and sortType != null and sortType != ''.toString() ">
 		ORDER BY  ${orderBy} ${sortType}
 	</if>	
   </select>    
@@ -45,10 +45,10 @@
     select *
     from <include refid="org.qifu.core.mapper.DB1Config.schema"/>tb_sys_code
     WHERE 1=1
-	<if test="code != null and code != '' ">
+	<if test="code != null and code != ''.toString() ">
 		AND CODE = #{code,jdbcType=VARCHAR}
 	</if>
-	<if test="type != null and type != '' ">
+	<if test="type != null and type != ''.toString() ">
 		AND TYPE = #{type,jdbcType=VARCHAR}
 	</if>	
 		
@@ -58,10 +58,10 @@
   <select id="count" parameterType="java.util.HashMap" resultType="java.lang.Long">
     select count(*) from <include refid="org.qifu.core.mapper.DB1Config.schema"/>tb_sys_code
     WHERE 1=1
-	<if test="code != null and code != '' ">
+	<if test="code != null and code != ''.toString() ">
 		AND CODE = #{code,jdbcType=VARCHAR}
 	</if>
-	<if test="type != null and type != '' ">
+	<if test="type != null and type != ''.toString() ">
 		AND TYPE = #{type,jdbcType=VARCHAR}
 	</if>		
   </select>  
