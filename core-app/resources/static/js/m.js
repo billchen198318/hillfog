@@ -229,14 +229,23 @@ function hidePleaseWaitForQueryGrid() {
 }
 
 function toastrInfo(message) {
-	toastr.options = { onclick: function () { alert(message); } }
+	toastr.options = { 
+		onclick: function () { alert(message); },
+		positionClass: 'toast-bottom-right'
+	}
 	toastr.info( message.replace(/\n/gi, "<br>").replace("/\r\n", "<br>") );
 }
 function toastrWarning(message) {
-	toastr.options = { onclick: function () { alert(message); } }
+	toastr.options = { 
+		onclick: function () { alert(message); },
+		positionClass: 'toast-bottom-right'
+	}
 	toastr.warning( message.replace(/\n/gi, "<br>").replace("/\r\n", "<br>") );
 }
 function toastrError(message) {
-	toastr.options = { onclick: function () { alert(message); } }
+	toastr.options = { 
+		onclick: function () { alert(message); },
+		positionClass: 'toast-bottom-right'
+	}
 	toastr.error( message.replace(/\n/gi, "<br>").replace("/\r\n", "<br>") );
 }
