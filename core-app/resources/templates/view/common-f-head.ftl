@@ -49,6 +49,13 @@ function hidePleaseWaitForQueryGrid() {
 	//$('#myPleaseWaitForQueryGrid-${programId}').modal('hide');
 	parent.bootbox.hideAll();
 }
+
+function showPleaseWaitModal() {
+	$('#myPleaseWait-${programId}').modal('show');
+}
+function hidePleaseWaitModal() {
+	$('#myPleaseWait-${programId}').modal('hide');
+}
 </script>
 
 <!-- 上傳 modal -->

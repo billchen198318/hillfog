@@ -1,3 +1,7 @@
+window.addEventListener("beforeunload", function (event) {
+	showPleaseWaitModal();
+});
+
 // ====================================================================
 // https://stackoverflow.com/questions/995183/how-to-allow-only-numeric-0-9-in-html-inputbox-using-jquery
 // Numeric only control handler
