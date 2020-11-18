@@ -1,5 +1,8 @@
-window.addEventListener("beforeunload", function (event) {
+window.addEventListener("beforeunload", function (event) { // for refresh icon click in page toolbar
 	showPleaseWaitModal();
+});
+window.addEventListener("load", function(event) { // for addTab() will call showPleaseWait(), in file f.js
+	parent.hidePleaseWait();
 });
 
 // ====================================================================

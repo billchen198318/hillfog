@@ -50,7 +50,7 @@ function addTab( tabId, srcUrl ) {
 				srcUrl = src;
 			}
 			$("#" + tabId).find('iframe').attr("src", srcUrl);
-			
+			showPleaseWait();
 			return;
 		}
 	}
@@ -82,6 +82,7 @@ function addTab( tabId, srcUrl ) {
 	
 	activaTab(tabId);
 	
+	showPleaseWait();
 }
 
 
