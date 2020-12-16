@@ -1,9 +1,11 @@
 window.addEventListener("beforeunload", function (event) { // for refresh icon click in page toolbar
 	showPleaseWaitModal();
 });
+/*
 window.addEventListener("load", function(event) { // for addTab() will call showPleaseWait(), in file f.js
 	parent.hidePleaseWait();
 });
+*/
 
 // ====================================================================
 // https://stackoverflow.com/questions/995183/how-to-allow-only-numeric-0-9-in-html-inputbox-using-jquery
