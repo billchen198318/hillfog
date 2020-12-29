@@ -193,9 +193,9 @@ function commonDownloadFile(uploadOid) {
 	);
 }
 setTimeout(function(){
-	$('#myPleaseWait-${programId}').css('z-index', '99');
-	$('#myPleaseWaitForQueryGrid-${programId}').css('z-index', '99');
-	$('#modal-upload-${programId}').css('z-index', '99');
+	$('#myPleaseWait-${programId}').css('z-index', '9999');
+	$('#myPleaseWaitForQueryGrid-${programId}').css('z-index', '9999');
+	$('#modal-upload-${programId}').css('z-index', '9999');
 }, 3500);
 </script>
 </#macro>
