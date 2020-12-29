@@ -37,7 +37,7 @@
 </div>        
 <script>
 setTimeout(function(){
-	$('#${programId}_toolbar').css('z-index', '99999');
+	$('#${programId}_toolbar').css('z-index', '90');
 }, 3000);
 </script>
 
