@@ -26,15 +26,15 @@ import java.util.TimerTask;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.qifu.core.util.UploadSupportUtils;
+import org.qifu.core.util.JReportUtils;
 import org.qifu.core.util.UserUtils;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ClearTempUploadEvent {
-	protected Logger logger = LogManager.getLogger(ClearTempUploadEvent.class);
+public class JReportDeployEvent {
+	protected Logger logger = LogManager.getLogger(JReportDeployEvent.class);
 	
 	@EventListener(ApplicationStartedEvent.class)
 	public void afterStartup() {	
@@ -42,18 +42,18 @@ public class ClearTempUploadEvent {
 				new TimerTask() {
 					@Override
 					public void run() {
-						logger.warn("Clear upload type is TMP data.");
+						logger.warn("deploy jreport resource...");
 						UserUtils.setUserInfoForUserLocalUtilsBackgroundMode();
 						try {
-							UploadSupportUtils.cleanTempUpload();
+							JReportUtils.deploy();
 						} catch (Exception e) {
 							e.printStackTrace();
 						}
 						UserUtils.removeForUserLocalUtils();
 						logger.info("fine.");
 			        }
-				}, 30000
+				}, 40000
 		);		
-	}
+	}	
 	
 }
