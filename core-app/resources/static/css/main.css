@@ -162,13 +162,13 @@ sup {
 }
 
 a {
-  color: #009688;
+  color: #00B0FF; /* 2021-01-27 rem #009688 */
   text-decoration: none;
   background-color: transparent;
 }
 
 a:hover {
-  color: #004a43;
+  color: #0098DC; /* 2021-01-27 rem #004a43 */
   text-decoration: underline;
 }
 
@@ -15256,7 +15256,7 @@ be a descendant of the grid when it is being dragged.
 
 .app-menu__item.active, .app-menu__item:hover, .app-menu__item:focus {
   background: #0d1214;
-  border-left-color: #009688;
+  border-left-color: #FF5900; /* 2021-01-27 rem #009688 */
   text-decoration: none;
   color: #fff;
 }
@@ -15276,7 +15276,7 @@ be a descendant of the grid when it is being dragged.
 }
 
 .treeview.is-expanded [data-toggle='treeview'] {
-  border-left-color: #009688;
+  border-left-color: #FF5900; /* 2021-01-27 rem #009688 */
   background: #0d1214;
 }
 
@@ -15382,7 +15382,7 @@ be a descendant of the grid when it is being dragged.
   .sidebar-mini.sidenav-toggled .treeview:hover .app-menu__item {
     overflow: visible;
     background: #0d1214;
-    border-left-color: #009688;
+    border-left-color: #FF5900; /* 2021-01-27 rem #009688 */
     color: #fff;
   }
   .sidebar-mini.sidenav-toggled .treeview:hover .app-menu__label {
