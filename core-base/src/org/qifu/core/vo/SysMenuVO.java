@@ -37,6 +37,7 @@ public class SysMenuVO extends BaseValueObj implements java.io.Serializable {
 	private String progSystem;
 	private String itemType;
 	private String icon;	
+	private String fontIconClassId;
 	// ----------------------------------------------------------------------------
 	
 	public SysMenuVO() {
@@ -51,7 +52,7 @@ public class SysMenuVO extends BaseValueObj implements java.io.Serializable {
 	}
 	
 	public SysMenuVO(String oid, String progId, String parentOid, String enableFlag, 
-			String name, String url, String progSystem, String itemType, String icon) {
+			String name, String url, String progSystem, String itemType, String icon, String fontIconClassId) {
 		this.oid = oid;
 		this.progId = progId;
 		this.parentOid = parentOid;
@@ -61,6 +62,7 @@ public class SysMenuVO extends BaseValueObj implements java.io.Serializable {
 		this.progSystem = progSystem;
 		this.itemType = itemType;
 		this.icon = icon;
+		this.fontIconClassId = fontIconClassId;
 	}
 	
 	@Override
@@ -137,6 +139,14 @@ public class SysMenuVO extends BaseValueObj implements java.io.Serializable {
 
 	public void setIcon(String icon) {
 		this.icon = icon;
+	}
+
+	public String getFontIconClassId() {
+		return fontIconClassId;
+	}
+
+	public void setFontIconClassId(String fontIconClassId) {
+		this.fontIconClassId = fontIconClassId;
 	}	
 	
 	// ----------------------------------------------------------------------------

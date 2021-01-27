@@ -39,7 +39,7 @@ body {
   <tr>
     <td width="48" bgcolor="#E9D8D8">&nbsp;</td>
     <td bgcolor="#E9D8D8" style="border-bottom-right-radius: 5px;">  	
-    	<strong>contact:</strong> <a href="mailto:${errorContact}">${qifu_errorContact}</a> 
+    	<strong>contact:</strong> <a href="mailto:${qifu_errorContact}">${qifu_errorContact}</a> 
     </td>
   </tr>
 </table>

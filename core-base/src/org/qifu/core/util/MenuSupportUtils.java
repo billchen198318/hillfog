@@ -160,7 +160,7 @@ public class MenuSupportUtils {
 			List<TbSysProg> sysProgList = sysProgListResult.getValue();
 			for (int i=0; sysProgListResult.getValue()!=null && i<sysProgListResult.getValue().size(); i++) {
 				TbSysProg sysProg = sysProgListResult.getValue().get(i);
-				jsSb.append("_prog.push({\"id\" : \"" + sysProg.getProgId() + "\", \"itemType\" : \"" + sysProg.getItemType() + "\", \"name\" : \"" + sysProg.getName() + "\", \"icon\" : \"" + IconUtils.getUrl(basePath, sysProg.getIcon()) + "\", \"url\" : \"" + getUrl(basePath, sys, sysProg) + "\"});").append("\n");
+				jsSb.append("_prog.push({\"id\" : \"" + sysProg.getProgId() + "\", \"itemType\" : \"" + sysProg.getItemType() + "\", \"name\" : \"" + sysProg.getName() + "\", \"icon\" : \"" + IconUtils.getUrl(basePath, sysProg.getIcon()) + "\", \"url\" : \"" + getUrl(basePath, sys, sysProg) + "\", \"font_icon_class_id\" : \"" + sysProg.getFontIconClassId() + "\"});").append("\n");
 				
 				if (YesNo.YES.equals(sysProg.getIsDialog())) {
 					modalHtmlSb.append( getModalHtml(sysProg) );
@@ -189,7 +189,7 @@ public class MenuSupportUtils {
 					throw new ServiceException( BaseSystemMessage.dataErrors() );
 				}
 				
-				navHtmlSb.append("<li class=\"treeview\"><a class=\"app-menu__item\" href=\"#\" data-toggle=\"treeview\"><i class=\"app-menu__icon fa fa-folder\"></i><span class=\"app-menu__label\">" + pSysProg.getName() + "</span><i class=\"treeview-indicator fa fa-angle-right\"></i></a>");
+				navHtmlSb.append("<li class=\"treeview\"><a class=\"app-menu__item\" href=\"#\" data-toggle=\"treeview\"><i class=\"app-menu__icon fa fa-" + pSysProg.getFontIconClassId() + "\"></i><span class=\"app-menu__label\">" + pSysProg.getName() + "</span><i class=\"treeview-indicator fa fa-angle-right\"></i></a>");
 				navHtmlSb.append("<ul class=\"treeview-menu\">");
 				
 				for (SysMenuVO cMenu : childSysMenuList) {
@@ -197,7 +197,7 @@ public class MenuSupportUtils {
 					if (null == cSysProg) {
 						throw new ServiceException( BaseSystemMessage.dataErrors() );
 					}
-					navHtmlSb.append("<li><a class=\"treeview-item\" href=\"#\" onclick=\"addTab('" + cSysProg.getProgId() + "', null);\"><i class=\"icon fa fa-circle-o\"></i>" + "&nbsp;&nbsp;" + cSysProg.getName() + "</a></li>");
+					navHtmlSb.append("<li><a class=\"treeview-item\" href=\"#\" onclick=\"addTab('" + cSysProg.getProgId() + "', null);\"><i class=\"icon fa fa-" + cSysProg.getFontIconClassId() + "\"></i>" + "&nbsp;&nbsp;" + cSysProg.getName() + "</a></li>");
 				}
 				
 				navHtmlSb.append("</ul>");

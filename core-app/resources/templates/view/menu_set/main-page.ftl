@@ -91,7 +91,8 @@ function progFolderChange() {
 					}
 					str += '<tr>';
 					str += '<td><div class="form-check"><input type="checkbox" class="form-check-input" id="prog' + progAll[p].oid + '" name="prog' + progAll[p].oid + '" onclick="updateMenu();" ' + chkStr + ' value="' + progAll[p].oid + '" ></div></td>';
-					str += '<td><img src="' + parent.getIconUrlFromId(progAll[p].icon) + '" border="0">&nbsp;' + progAll[p].name + '</td>';
+					//str += '<td><img src="' + parent.getIconUrlFromId(progAll[p].icon) + '" border="0">&nbsp;' + progAll[p].name + '</td>';
+					str += '<td><i class="icon fa fa-' + progAll[p].fontIconClassId + '">&nbsp;' + progAll[p].name + '</td>';
 					str += '</tr>';
 				}
 				str += '</tbody>';
@@ -161,12 +162,10 @@ function updateMenu() {
 		<div class="col-xs-6 col-md-6 col-lg-6">
 			<@qifu.select dataSource="sysMap" name="sysOid" id="sysOid" value="" label="System" requiredFlag="Y" onchange="sysChange();"></@qifu.select>
 		</div>
-	</div>
-	<div class="row">
 		<div class="col-xs-6 col-md-6 col-lg-6">
 			<@qifu.select dataSource="folderProgMap" name="folderProgOid" id="folderProgOid" value="" label="Program folder" requiredFlag="Y" onchange="progFolderChange();"></@qifu.select>
 		</div>
-	</div>		
+	</div>
 	<div class="row">&nbsp;</div>
 	<div class="row">
 		<div id="progListGrid" class="col-md-12"></div>

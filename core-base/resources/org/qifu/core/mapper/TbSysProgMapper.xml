@@ -14,6 +14,7 @@
     <result column="PROG_SYSTEM" jdbcType="VARCHAR" property="progSystem" />
     <result column="ITEM_TYPE" jdbcType="VARCHAR" property="itemType" />
     <result column="ICON" jdbcType="VARCHAR" property="icon" />
+	<result column="FONT_ICON_CLASS_ID" jdbcType="VARCHAR" property="fontIconClassId" />
     <result column="CUSERID" jdbcType="VARCHAR" property="cuserid" />
     <result column="CDATE" jdbcType="TIMESTAMP" property="cdate" />
     <result column="UUSERID" jdbcType="VARCHAR" property="uuserid" />
@@ -131,6 +132,9 @@
       <if test="icon != null">
         ICON,
       </if>
+      <if test="fontIconClassId != null">
+        FONT_ICON_CLASS_ID,
+      </if>
       <if test="cuserid != null">
         CUSERID,
       </if>
@@ -177,6 +181,9 @@
       </if>
       <if test="icon != null">
         #{icon,jdbcType=VARCHAR},
+      </if>
+      <if test="fontIconClassId != null">
+        #{fontIconClassId,jdbcType=VARCHAR},
       </if>
       <if test="cuserid != null">
         #{cuserid,jdbcType=VARCHAR},
@@ -225,6 +232,9 @@
       </if>
       <if test="icon != null">
         ICON = #{icon,jdbcType=VARCHAR},
+      </if>
+      <if test="fontIconClassId != null">
+        FONT_ICON_CLASS_ID = #{fontIconClassId,jdbcType=VARCHAR},
       </if>
       <!--  
       <if test="cuserid != null">

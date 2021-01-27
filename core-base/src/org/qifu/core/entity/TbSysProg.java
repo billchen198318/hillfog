@@ -23,6 +23,7 @@ public class TbSysProg implements java.io.Serializable {
 	private String progSystem;
 	private String itemType;
 	private String icon;
+	private String fontIconClassId;
 	private String cuserid;
 	private Date cdate;
 	private String uuserid;
@@ -118,6 +119,14 @@ public class TbSysProg implements java.io.Serializable {
 		this.icon = icon;
 	}
 	
+	public String getFontIconClassId() {
+		return fontIconClassId;
+	}
+
+	public void setFontIconClassId(String fontIconClassId) {
+		this.fontIconClassId = fontIconClassId;
+	}
+
 	@CreateUserField(name = "cuserid")
 	public String getCuserid() {
 		return cuserid;

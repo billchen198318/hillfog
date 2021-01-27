@@ -85,12 +85,10 @@ function clearSave() {
 		<div class="col-xs-6 col-md-6 col-lg-6">
 			<@qifu.textbox name="id" value="" id="id" label="Id" requiredFlag="Y" maxlength="10" placeholder="Enter Id"></@qifu.textbox>
 		</div>
-	</div>
-	<div class="row">
 		<div class="col-xs-6 col-md-6 col-lg-6">
 			<@qifu.textbox name="title" value="" id="title" label="Title" requiredFlag="Y" maxlength="200" placeholder="Enter title"></@qifu.textbox>
 		</div>
-	</div>	
+	</div>
 </div>
 <div class="form-group" id="form-group2">
 	<@qifu.textarea name="message" id="message" value="" label="Message" requiredFlag="Y" escapeHtml="N"></@qifu.textarea>

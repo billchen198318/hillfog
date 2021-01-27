@@ -117,17 +117,18 @@ function deleteRecord(oid) {
         <div class="col-xs-6 col-md-6 col-lg-6">
         	Role&nbsp;:&nbsp;${role.role}
         </div>
+        <div class="col-xs-6 col-md-6 col-lg-6">
+        	&nbsp;
+        </div>
 	</div>        
 	<div class="row">
         <div class="col-xs-6 col-md-6 col-lg-6">
         	<@qifu.textbox name="role" value="" id="permission" label="Permission" requiredFlag="Y" maxlength="255" placeholder="Enter permission"></@qifu.textbox>
        </div>
-	</div>
-	<div class="row">
-        <div class="col-xs-6 col-md-6 col-lg-6">
-        	<@qifu.select dataSource="permTypeMap" name="permissionType" id="permissionType" value="" label="Type" requiredFlag="Y"></@qifu.select>
+       <div class="col-xs-6 col-md-6 col-lg-6">
+       		<@qifu.select dataSource="permTypeMap" name="permissionType" id="permissionType" value="" label="Type" requiredFlag="Y"></@qifu.select>
        </div>
-	</div>	
+	</div>
 </div>
 <div class="form-group" id="form-group2">	
 	<div class="row">

@@ -24,6 +24,7 @@
   	<result column="PROG_SYSTEM" jdbcType="VARCHAR" property="progSystem" />
   	<result column="ITEM_TYPE" jdbcType="VARCHAR" property="itemType" />
   	<result column="ICON" jdbcType="VARCHAR" property="icon" />
+	<result column="FONT_ICON_CLASS_ID" jdbcType="VARCHAR" property="fontIconClassId" />
   </resultMap>
   
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
@@ -185,7 +186,8 @@
 		sp.URL, 
 		sp.PROG_SYSTEM, 
 		sp.ITEM_TYPE, 
-		sp.ICON
+		sp.ICON,
+		sp.FONT_ICON_CLASS_ID
 	FROM 
 	<include refid="org.qifu.core.mapper.DB1Config.schema"/>tb_sys_menu sm,
 	<include refid="org.qifu.core.mapper.DB1Config.schema"/>tb_sys_prog sp

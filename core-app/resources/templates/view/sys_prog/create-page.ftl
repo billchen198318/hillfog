@@ -18,32 +18,37 @@
 $( document ).ready(function() {
 	
 	$("#icon").trigger("change");
+	$("#fontIconClassId").on("click", function(){
+		showCommonFontIconSelectModal();
+	});
 	
 });
 
 var msgFields = new Object();
-msgFields['progSystemOid'] 	= 'progSystem';
-msgFields['progId'] 		= 'progId';
-msgFields['name'] 			= 'name';
-msgFields['url']			= 'url';
-msgFields['itemType']		= 'itemType';
-msgFields['iconOid']		= 'icon';
-msgFields['editMode']		= 'editMode';
-msgFields['isDialog']		= 'isDialog';
-msgFields['dialogWidth']	= 'dialogWidth';
-msgFields['dialogHeight']	= 'dialogHeight';
+msgFields['progSystemOid'] 		= 'progSystem';
+msgFields['progId'] 			= 'progId';
+msgFields['name'] 				= 'name';
+msgFields['url']				= 'url';
+msgFields['itemType']			= 'itemType';
+msgFields['iconOid']			= 'icon';
+msgFields['fontIconClassId']	= 'fontIconClassId';
+msgFields['editMode']			= 'editMode';
+msgFields['isDialog']			= 'isDialog';
+msgFields['dialogWidth']		= 'dialogWidth';
+msgFields['dialogHeight']		= 'dialogHeight';
 
 var formGroups = new Object();
-formGroups['progSystem'] 	= 'form-group1';
-formGroups['progId'] 		= 'form-group1';
-formGroups['name'] 			= 'form-group1';
-formGroups['url'] 			= 'form-group2';
-formGroups['itemType'] 		= 'form-group2';
-formGroups['icon'] 			= 'form-group2';
-formGroups['editMode'] 		= 'form-group2';
-formGroups['isDialog'] 		= 'form-group3';
-formGroups['dialogWidth'] 	= 'form-group3';
-formGroups['dialogHeight'] 	= 'form-group3';
+formGroups['progSystem'] 		= 'form-group1';
+formGroups['progId'] 			= 'form-group1';
+formGroups['name'] 				= 'form-group1';
+formGroups['url'] 				= 'form-group2';
+formGroups['itemType'] 			= 'form-group2';
+formGroups['icon'] 				= 'form-group2';
+formGroups['fontIconClassId'] 	= 'form-group2';
+formGroups['editMode'] 			= 'form-group2';
+formGroups['isDialog'] 			= 'form-group3';
+formGroups['dialogWidth'] 		= 'form-group3';
+formGroups['dialogHeight'] 		= 'form-group3';
 
 function saveSuccess(data) {
 	clearWarningMessageField(formGroups, msgFields);
@@ -60,6 +65,12 @@ function clearSave() {
 	clearWarningMessageField(formGroups, msgFields);
 	document.getElementById("CORE_PROG001D0002A_form").reset();
 	$("#icon").trigger("change");
+}
+
+function setSelectFontIcon(fontClass) {
+	$("#fontIconClassId").val(fontClass);
+	hiddenCommonFontIconSelectModal();
+	$("#fontIconClassIdShow").html( '<i class="icon fa fa-' + fontClass + '"></i>' );
 }
 
 </script>
@@ -84,21 +95,25 @@ function clearSave() {
 <#import "../common-f-head.ftl" as cfh />
 <@cfh.commonFormHeadContent /> 
 
+<#import "../common-fonticonselect-head.ftl" as cficonsel >
+<@cficonsel.commonFontIconSelectHeadContent setFontIconFunctionMethodName="setSelectFontIcon" />
+
 <form action="." name="CORE_PROG001D0002A_form" id="CORE_PROG001D0002A_form">
 <div class="form-group" id="form-group1">
 	<div class="row">
 		<div class="col-xs-6 col-md-6 col-lg-6">
 			<@qifu.select dataSource="sysMap" name="progSystem" id="progSystem" value="" label="System" requiredFlag="Y" />
 		</div>
-	</div>
-	<div class="row">
 		<div class="col-xs-6 col-md-6 col-lg-6">
 			<@qifu.textbox name="progId" value="" id="progId" label="Id" requiredFlag="Y" maxlength="50" placeholder="Enter Program Id" />
-		</div>
+		</div>		
 	</div>
 	<div class="row">
 		<div class="col-xs-6 col-md-6 col-lg-6">
 			<@qifu.textbox name="name" value="" id="name" label="Name" requiredFlag="Y" maxlength="100" placeholder="Enter Program Name" />
+		</div>
+		<div class="col-xs-6 col-md-6 col-lg-6">
+			&nbsp;
 		</div>
 	</div>
 </div>
@@ -107,12 +122,11 @@ function clearSave() {
 		<div class="col-xs-6 col-md-6 col-lg-6">
 			<@qifu.textbox name="url" value="" id="url" label="Url" maxlength="255" placeholder="Enter Program URL" />
 		</div>
-	</div>
-	<div class="row">
 		<div class="col-xs-6 col-md-6 col-lg-6">
 			<@qifu.select dataSource="{ \"FOLDER\":\"FOLDER\", \"ITEM\":\"ITEM\" }" name="itemType" id="itemType" value="" label="Type" requiredFlag="Y" />
-		</div>
+		</div>		
 	</div>
+	<br/>
 	<div class="row">
 		<div class="col-xs-6 col-md-6 col-lg-6">
 			<@qifu.select dataSource="iconMap" name="icon" id="icon" value="" label="Icon" requiredFlag="Y" onchange="showIcon();" />
@@ -133,12 +147,19 @@ function clearSave() {
 			}
 			</script>			
 		</div>
-	</div>	
+		<div class="col-xs-6 col-md-6 col-lg-6">
+			<@qifu.textbox name="fontIconClassId" value="" id="fontIconClassId" label="Menu Font Icon" requiredFlag="Y" readonly="Y" maxlength="100" placeholder="click select font icon." />
+			<div id="fontIconClassIdShow"></div>
+		</div>		
+	</div>
 	<div class="row">
 		<div class="col-xs-6 col-md-6 col-lg-6">
 			<@qifu.checkbox name="editMode" id="editMode" label="Edit mode" />
 		</div>
-	</div>
+		<div class="col-xs-6 col-md-6 col-lg-6">
+			&nbsp;
+		</div>
+	</div>	
 </div>	
 <div class="form-group" id="form-group3">
 	<div class="row">
@@ -167,16 +188,17 @@ function clearSave() {
 			xhrUrl="./sysProgramSaveJson"
 			xhrParameter="
 			{
-				'progSystemOid'	:	$('#progSystem').val(),
-				'progId'		:	$('#progId').val(),
-				'name'			:	$('#name').val(),
-				'url'			:	$('#url').val(),
-				'itemType'		:	$('#itemType').val(),
-				'iconOid'		:	$('#icon').val(),
-				'editMode'		:	( $('#editMode').is(':checked') ? 'Y' : 'N' ),
-				'isDialog'		:	( $('#isDialog').is(':checked') ? 'Y' : 'N' ),
-				'dialogWidth'	:	$('#dialogWidth').val(),
-				'dialogHeight'	:	$('#dialogHeight').val()
+				'progSystemOid'		:	$('#progSystem').val(),
+				'progId'			:	$('#progId').val(),
+				'name'				:	$('#name').val(),
+				'url'				:	$('#url').val(),
+				'itemType'			:	$('#itemType').val(),
+				'iconOid'			:	$('#icon').val(),
+				'editMode'			:	( $('#editMode').is(':checked') ? 'Y' : 'N' ),
+				'isDialog'			:	( $('#isDialog').is(':checked') ? 'Y' : 'N' ),
+				'dialogWidth'		:	$('#dialogWidth').val(),
+				'dialogHeight'		:	$('#dialogHeight').val(),
+				'fontIconClassId'	:	$('#fontIconClassId').val()
 			}
 			"
 			onclick="btnSave();"

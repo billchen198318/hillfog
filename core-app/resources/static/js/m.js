@@ -57,11 +57,13 @@ function addTab( tabId, srcUrl ) {
 	var progName = 'unknown';
 	var progIcon = './unknown.png';
 	var progUrl = '';
+	var fontIconClassId = 'circle-o';
 	for (var i=0; _prog != null && i< _prog.length; i++) {
 		if ( _prog[i].id == tabId ) {
 			progName = _prog[i].name;
 			progIcon = _prog[i].icon;
 			progUrl = _prog[i].url;
+			fontIconClassId = _prog[i].font_icon_class_id;
 		}
 	}
 	if ('' == progUrl || null == progUrl) {
@@ -73,8 +75,10 @@ function addTab( tabId, srcUrl ) {
 	}
 	
 	srcUrl = getPageUrl(srcUrl);
-	
-	$('#myTab').append('<li class="nav-item" id="_tab_' + tabId + '"><a class="nav-link" data-toggle="tab" href="#' + tabId + '" role="tab" aria-controls="' + tabId + '"><img src="' + progIcon + '" broder="0">&nbsp;' + progName + '&nbsp;<span class="badge badge-warning btn" onclick="closeTab(\'' + tabId + '\');">X</span></a></li>');
+	// 2020-01-20 rem
+	//$('#myTab').append('<li class="nav-item" id="_tab_' + tabId + '"><a class="nav-link" data-toggle="tab" href="#' + tabId + '" role="tab" aria-controls="' + tabId + '"><img src="' + progIcon + '" broder="0">&nbsp;' + progName + '&nbsp;<span class="badge badge-warning btn" onclick="closeTab(\'' + tabId + '\');">X</span></a></li>');
+	// 2020-01-20 add
+	$('#myTab').append('<li class="nav-item" id="_tab_' + tabId + '"><a class="nav-link" data-toggle="tab" href="#' + tabId + '" role="tab" aria-controls="' + tabId + '"><i class="icon fa fa-' + fontIconClassId + '"></i>&nbsp;' + progName + '&nbsp;<i class="icon fa fa-close btn" onclick="closeTab(\'' + tabId + '\');"></i></a></li>');
 	$('#myTabContent').append('<div class="tab-pane" style="height: 100%;" id="' + tabId + '" data-src="' + srcUrl + '"><iframe src="' + srcUrl + '" ></iframe></div>');
 	
 	

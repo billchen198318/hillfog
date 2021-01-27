@@ -79,11 +79,9 @@ function clearSave() {
 		<div class="col-xs-6 col-md-6 col-lg-6">
 			<@qifu.textbox name="sysId" value="" id="sysId" label="Id" requiredFlag="Y" maxlength="10" placeholder="Enter Id (only normal character)" />
 		</div>
-	</div>
-	<div class="row">
 		<div class="col-xs-6 col-md-6 col-lg-6">
 			<@qifu.textbox name="name" value="" id="name" label="Name" requiredFlag="Y" maxlength="100" placeholder="Enter name" />
-		</div>
+		</div>		
 	</div>
 </div>
 <div class="form-group" id="form-group2">	
@@ -91,12 +89,10 @@ function clearSave() {
 		<div class="col-xs-6 col-md-6 col-lg-6">
 			<@qifu.textbox name="host" value="" id="host" label="Host" requiredFlag="Y" maxlength="200" placeholder="Enter host e.g: 127.0.0.1:8080" />
 		</div>
-	</div>
-	<div class="row">
 		<div class="col-xs-6 col-md-6 col-lg-6">
 			<@qifu.textbox name="contextPath" value="" id="contextPath" label="Context path" requiredFlag="Y" maxlength="100" placeholder="Enter host e.g: demo-web" />
-		</div>
-	</div>	
+		</div>		
+	</div>
 </div>	
 <div class="form-group">
 	<div class="row">
@@ -119,11 +115,9 @@ function clearSave() {
 			}
 			</script>
 		</div>
-	</div>
-	<div class="row">
 		<div class="col-xs-6 col-md-6 col-lg-6">
 			<@qifu.checkbox name="local" id="local" label="Local" />
-		</div>
+		</div>		
 	</div>
 </div>
 

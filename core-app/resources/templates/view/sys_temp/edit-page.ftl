@@ -82,12 +82,10 @@ function clearUpdate() {
 		<div class="col-xs-6 col-md-6 col-lg-6">
 			<@qifu.textbox name="id" value="template.templateId" id="id" label="Id" requiredFlag="Y" maxlength="10" placeholder="Enter Id" readonly="Y"></@qifu.textbox>
 		</div>
-	</div>
-	<div class="row">
 		<div class="col-xs-6 col-md-6 col-lg-6">
 			<@qifu.textbox name="title" value="template.title" id="title" label="Title" requiredFlag="Y" maxlength="200" placeholder="Enter title"></@qifu.textbox>
 		</div>
-	</div>	
+	</div>
 </div>
 <div class="form-group" id="form-group2">
 	<@qifu.textarea name="message" id="message" value="template.message" label="Message" requiredFlag="Y" escapeHtml="N"></@qifu.textarea>

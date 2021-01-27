@@ -83,11 +83,9 @@ function clearUpdate() {
 		<div class="col-xs-6 col-md-6 col-lg-6">
 			<@qifu.textbox name="sysId" value="sys.sysId" id="sysId" label="Id (read only)" requiredFlag="Y" maxlength="10" placeholder="Enter Id (only normal character)" readonly="Y" />
 		</div>
-	</div>
-	<div class="row">
 		<div class="col-xs-6 col-md-6 col-lg-6">
 			<@qifu.textbox name="name" value="sys.name" id="name" label="Name" requiredFlag="Y" maxlength="100" placeholder="Enter name" />
-		</div>
+		</div>		
 	</div>
 </div>
 <div class="form-group" id="form-group2">	
@@ -95,12 +93,10 @@ function clearUpdate() {
 		<div class="col-xs-6 col-md-6 col-lg-6">
 			<@qifu.textbox name="host" value="sys.host" id="host" label="Host" requiredFlag="Y" maxlength="200" placeholder="Enter host e.g: 127.0.0.1:8080" />
 		</div>
-	</div>
-	<div class="row">
 		<div class="col-xs-6 col-md-6 col-lg-6">
 			<@qifu.textbox name="contextPath" value="sys.contextPath" id="contextPath" label="Context path" requiredFlag="Y" maxlength="100" placeholder="Enter host e.g: demo-web" />
-		</div>
-	</div>	
+		</div>		
+	</div>
 </div>	
 <div class="form-group">
 	<div class="row">
@@ -123,11 +119,9 @@ function clearUpdate() {
 			}
 			</script>			
 		</div>
-	</div>
-	<div class="row">
 		<div class="col-xs-6 col-md-6 col-lg-6">
 			<@qifu.checkbox name="local" id="local" label="Local" checkedTest=" \"Y\" == sys.isLocal " />
-		</div>
+		</div>		
 	</div>
 </div>
 
@@ -159,6 +153,6 @@ function clearUpdate() {
 <br/>
 <br/>
 <br/>
-		
+	
 </body>
 </html>

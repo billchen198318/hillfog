@@ -1,5 +1,5 @@
 <p style="margin-bottom: 20px"></p><!-- need with .app-title padding 10px -->
-<div id="${programId}_toolbar" class="app-title" style="background: linear-gradient(to top, #f8f9fa, #ffffff); position: fixed; width: 100vw; overflow: hidden;">
+<div id="${programId}_toolbar" class="app-title" style="background: linear-gradient(to top, #f8f9fa, #ffffff); position: fixed; width: 103vw; overflow: hidden;">
 	<div>
 		<h1>${programName}</h1>
 <#if description?? && description != "">
@@ -31,7 +31,7 @@
 	</div>    
 	
         <ul class="app-breadcrumb breadcrumb">
-          <li class="breadcrumb-item" title="${programName}"><font color="#6c757d">${programId}</font></li>
+          <li class="breadcrumb-item" title="${programName}"><font color="#6c757d">${programId}</font>&nbsp;&nbsp;&nbsp;</li>
         </ul>
         		
 </div>        

@@ -167,8 +167,6 @@ function updateMenuRoleEnable() {
 		<div class="col-xs-6 col-md-6 col-lg-6">
 			<@qifu.select dataSource="sysMap" name="sysOid" id="sysOid" value="" label="System" requiredFlag="Y" onchange="sysChange();"></@qifu.select>
 		</div>
-	</div>
-	<div class="row">
 		<div class="col-xs-6 col-md-6 col-lg-6">
 			<@qifu.select dataSource="progMap" name="progOid" id="progOid" value="" label="System" requiredFlag="Y" onchange="progChange();"></@qifu.select>
 		</div>
