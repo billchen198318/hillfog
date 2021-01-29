@@ -90,13 +90,16 @@ ${menuResult.modalHtmlData}
     
     <main class="app-content">
     
-		<!-- Tab -->
-		<ul class="nav nav-tabs" id="myTab" role="tablist">
-		</ul>
-
-		<!-- Tab panes -->
-		<div class="tab-content" id="myTabContent">
-		</div>    
+    	<nav class="tabbable"> <!-- 2021-01-29 add -->
+			<!-- Tab -->
+			<ul class="nav nav-tabs" id="myTab" role="tablist">
+			</ul>
+			
+			<!-- Tab panes -->
+			<div class="tab-content" id="myTabContent">
+			</div>   	
+					
+		</nav> <!-- 2021-01-29 add --> 
       
     </main>
     
