@@ -23,7 +23,8 @@
 </#if>	
 			
 <#if cancelEnable == "Y" >			
-			&nbsp;<font color="#BDBDBD">|</font>&nbsp;
+			<!-- &nbsp;<font color="#BDBDBD">|</font>&nbsp; -->
+			&nbsp;<i class="icon fa fa-ellipsis-v" style="color:#BDBDBD"></i>&nbsp;
 			<img class="btn btn-light btn-sm" alt="close" title="Close" src="./images/close.png" onclick="${cancelJsMethod}"/>			
 </#if>			
 
