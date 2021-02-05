@@ -369,7 +369,7 @@ function removeArrayByPos(arr, pos) {
 	<div class="row">
 		<div class="col-xs-6 col-md-6 col-lg-6">
 			<@qifu.textbox name="kpiOrga" value="" id="kpiOrga" label="Organization" requiredFlag="Y" maxlength="100" placeholder="Enter organization" />
-			<button type="button" class="btn btn-info" id="btnAddOrganization" title="add organization" onclick="addOrganization();">ADD</button>
+			<button type="button" class="btn btn-info" id="btnAddOrganization" title="add organization" onclick="addOrganization();"><i class="icon fa fa-plus"></i>&nbsp;ADD</button>
 			<div>
 				<span id="selOrgDeptShowLabel">&nbsp;</span>
 			</div>					
@@ -378,7 +378,7 @@ function removeArrayByPos(arr, pos) {
 	<div class="row">
 		<div class="col-xs-6 col-md-6 col-lg-6">
 			<@qifu.textbox name="kpiEmpl" value="" id="kpiEmpl" label="Employee" requiredFlag="Y" maxlength="100" placeholder="Enter employee" />
-			<button type="button" class="btn btn-info" id="btnAddEmployee" title="add employee" onclick="addEmployee();">ADD</button>
+			<button type="button" class="btn btn-info" id="btnAddEmployee" title="add employee" onclick="addEmployee();"><i class="icon fa fa-plus"></i>&nbsp;ADD</button>
 			<div>
 				<span id="selEmpShowLabel">&nbsp;</span>
 			</div>					
@@ -400,7 +400,7 @@ function removeArrayByPos(arr, pos) {
 
 <div class="row">
 	<div class="col-xs-6 col-md-6 col-lg-6">
-		<@qifu.button id="btnSave" label="Save"
+		<@qifu.button id="btnSave" label="<i class=\"icon fa fa-floppy-o\"></i>&nbsp;Save"
 			xhrUrl="./hfKpiBaseSaveJson"
 			xhrParameter="
 			{
@@ -425,7 +425,7 @@ function removeArrayByPos(arr, pos) {
 			onclick="btnSave();"
 			loadFunction="saveSuccess(data);"
 			errorFunction="clearSave();" />
-		<@qifu.button id="btnClear" label="Clear" onclick="clearSave();" />
+		<@qifu.button id="btnClear" label="<i class=\"icon fa fa-hand-paper-o\"></i>&nbsp;Clear" onclick="clearSave();" />
 	</div>
 </div>
 

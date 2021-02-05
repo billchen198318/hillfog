@@ -284,9 +284,9 @@ function queryClear() {
 					
 					<p style="margin-bottom: 10px"></p>
 				
-					<button type="button" class="btn btn-success" id="btnQuery" onclick="queryReport();">Query</button>
+					<button type="button" class="btn btn-success" id="btnQuery" onclick="queryReport();"><i class="icon fa fa-search"></i>&nbsp;Query</button>
 					&nbsp;
-					<button type="button" class="btn btn-success" id="btnClear" onclick="queryClear();">Clear</button>				
+					<button type="button" class="btn btn-success" id="btnClear" onclick="queryClear();"><i class="icon fa fa-hand-paper-o"></i>&nbsp;Clear</button>				
 				</div>
 			</div>				
 		</div>

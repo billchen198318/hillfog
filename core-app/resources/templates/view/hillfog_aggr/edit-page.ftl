@@ -156,7 +156,7 @@ function clearUpdate() {
 
 <div class="row">
 	<div class="col-xs-6 col-md-6 col-lg-6">
-		<@qifu.button id="btnUpdate" label="Save"
+		<@qifu.button id="btnUpdate" label="<i class=\"icon fa fa-floppy-o\"></i>&nbsp;Save"
 			xhrUrl="./hfAggregationMethodUpdateJson"
 			xhrParameter="
 			{
@@ -172,7 +172,7 @@ function clearUpdate() {
 			onclick="btnUpdate();"
 			loadFunction="updateSuccess(data);"
 			errorFunction="clearUpdate();" />
-		<@qifu.button id="btnClear" label="Clear" onclick="clearUpdate();" />
+		<@qifu.button id="btnClear" label="<i class=\"icon fa fa-hand-paper-o\"></i>&nbsp;Clear" onclick="clearUpdate();" />
 	</div>
 </div>
 
