@@ -102,8 +102,8 @@ function deleteRecord(oid) {
       
 <p style="margin-bottom: 10px"></p>
       
-<button type="button" class="btn btn-primary" id="btnQuery" onclick="queryGrid();">Query</button>
-<button type="button" class="btn btn-primary" id="btnClear" onclick="queryClear();">Clear</button>
+<button type="button" class="btn btn-primary" id="btnQuery" onclick="queryGrid();"><i class="icon fa fa-search"></i>&nbsp;Query</button>
+<button type="button" class="btn btn-primary" id="btnClear" onclick="queryClear();"><i class="icon fa fa-hand-paper-o"></i>&nbsp;Clear</button>
 
 <p style="margin-bottom: 10px"></p>
 <p style="margin-bottom: 10px"></p>
@@ -125,7 +125,7 @@ function deleteRecord(oid) {
 <p style="margin-bottom: 10px"></p>
 <p style="margin-bottom: 10px"></p>
 
-<@qifu.button id="btnDeleteAll" label="Clear log"
+<@qifu.button id="btnDeleteAll" label="<i class=\"icon fa fa-trash-o\"></i>&nbsp;Clear log"
 	xhrUrl="./sysExpressionJobLogDeleteAllJson"
 	xhrParameter="{	}"
 	onclick="btnDeleteAll();"

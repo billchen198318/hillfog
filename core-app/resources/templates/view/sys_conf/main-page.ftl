@@ -57,10 +57,13 @@ function updateSuccess(data) {
 			<@qifu.checkbox name="mailEnable" id="mailEnable" checkedTest=" \"Y\" == mailEnable " label="Mail sender enable"></@qifu.checkbox>
 		</div>
 	</div>
+	
+	<br>
+	
 	<div class="row">
 		<div class="col-xs-6 col-md-6 col-lg-6">
 		
-		<@qifu.button id="btnUpdate" label="Save"
+		<@qifu.button id="btnUpdate" label="<i class=\"icon fa fa-floppy-o\"></i>&nbsp;Save"
 			xhrUrl="./sysSettingUpdateJson"
 			xhrParameter="
 			{

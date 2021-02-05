@@ -84,7 +84,7 @@ function clearSave() {
 
 <div class="row">
 	<div class="col-xs-6 col-md-6 col-lg-6">
-		<@qifu.button id="btnSave" label="Save"
+		<@qifu.button id="btnSave" label="<i class=\"icon fa fa-floppy-o\"></i>&nbsp;Save"
 			xhrUrl="./roleCopySaveJson"
 			xhrParameter="
 			{
@@ -98,7 +98,7 @@ function clearSave() {
 			errorFunction="clearSave();"
 			selfPleaseWaitShow="Y">
 		</@qifu.button>
-		<@qifu.button id="btnClear" label="Clear" onclick="clearSave();"></@qifu.button>
+		<@qifu.button id="btnClear" label="<i class=\"icon fa fa-hand-paper-o\"></i>&nbsp;Clear" onclick="clearSave();"></@qifu.button>
 	</div>
 </div>
 

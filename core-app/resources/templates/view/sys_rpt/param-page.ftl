@@ -133,9 +133,9 @@ function deleteRecord(oid) {
 
 <div class="row">
 	<div class="col-xs-6 col-md-6 col-lg-6">
-		<button type="button" class="btn btn-primary" id="btnQuery" onclick="queryGrid();">Query</button>
+		<button type="button" class="btn btn-primary" id="btnQuery" onclick="queryGrid();"><i class="icon fa fa-search"></i>&nbsp;Query</button>
 		&nbsp;
-		<@qifu.button id="btnSave" label="Save"
+		<@qifu.button id="btnSave" label="<i class=\"icon fa fa-floppy-o\"></i>&nbsp;Save"
 			xhrUrl="./sysJreportParamSaveJson"
 			xhrParameter="
 			{
@@ -148,7 +148,7 @@ function deleteRecord(oid) {
 			loadFunction="saveSuccess(data);"
 			errorFunction="clearSave();">
 		</@qifu.button>
-		<@qifu.button id="btnClear" label="Clear" onclick="clearSave();"></@qifu.button>
+		<@qifu.button id="btnClear" label="<i class=\"icon fa fa-hand-paper-o\"></i>&nbsp;Clear" onclick="clearSave();"></@qifu.button>
 	</div>
 </div>
 

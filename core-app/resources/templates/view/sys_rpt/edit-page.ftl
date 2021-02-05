@@ -99,7 +99,7 @@ function uploadModal() {
 	</div>
 	<div class="row">
 		<div class="col-xs-6 col-md-6 col-lg-6">
-			<@qifu.button id="uploadBtn" label="Upload file (zip)" cssClass="btn btn-info" onclick="uploadModal();">&nbsp;</@qifu.button><div id="uploadLabel"></div>
+			<@qifu.button id="uploadBtn" label="<i class=\"icon fa fa-upload\"></i>&nbsp;Upload file (zip)" cssClass="btn btn-info" onclick="uploadModal();">&nbsp;</@qifu.button><div id="uploadLabel"></div>
 		</div>
 	</div>
 </div>
@@ -108,7 +108,7 @@ function uploadModal() {
 
 <div class="row">
 	<div class="col-xs-6 col-md-6 col-lg-6">
-		<@qifu.button id="btnUpdate" label="Save"
+		<@qifu.button id="btnUpdate" label="<i class=\"icon fa fa-floppy-o\"></i>&nbsp;Save"
 			xhrUrl="./sysReportUpdateJson"
 			xhrParameter="
 			{
@@ -123,7 +123,7 @@ function uploadModal() {
 			loadFunction="updateSuccess(data);"
 			errorFunction="clearUpdate();">
 		</@qifu.button>
-		<@qifu.button id="btnClear" label="Clear" onclick="clearUpdate();"></@qifu.button>
+		<@qifu.button id="btnClear" label="<i class=\"icon fa fa-hand-paper-o\"></i>&nbsp;Clear" onclick="clearUpdate();"></@qifu.button>
 	</div>
 </div>
 

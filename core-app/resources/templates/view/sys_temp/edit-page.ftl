@@ -51,7 +51,7 @@ function updateSuccess(data) {
 
 function clearUpdate() {
 	clearWarningMessageField(formGroups, msgFields);
-	parent.getProgUrlForOid('CORE_PROG001D0004E', '${template.oid}');
+	window.location = parent.getProgUrlForOid('CORE_PROG001D0004E', '${template.oid}');
 }
 
 </script>
@@ -102,7 +102,7 @@ function clearUpdate() {
 
 <div class="row">
 	<div class="col-xs-6 col-md-6 col-lg-6">
-		<@qifu.button id="btnUpdate" label="Save"
+		<@qifu.button id="btnUpdate" label="<i class=\"icon fa fa-floppy-o\"></i>&nbsp;Save"
 			xhrUrl="./sysTemplateUpdateJson"
 			xhrParameter="
 			{
@@ -117,7 +117,7 @@ function clearUpdate() {
 			loadFunction="updateSuccess(data);"
 			errorFunction="clearUpdate();">
 		</@qifu.button>
-		<@qifu.button id="btnClear" label="Clear" onclick="clearUpdate();"></@qifu.button>
+		<@qifu.button id="btnClear" label="<i class=\"icon fa fa-hand-paper-o\"></i>&nbsp;Clear" onclick="clearUpdate();"></@qifu.button>
 	</div>
 </div>
 

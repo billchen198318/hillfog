@@ -56,7 +56,7 @@ function previewReport() {
 <@qifu.if test=" null != paramList && paramList.size > 0 ">
 	<div class="row">
 		<div class="col-xs-6 col-md-6 col-lg-6">
-			<@qifu.button id="preview" label="Preview" onclick="previewReport();"></@qifu.button>
+			<@qifu.button id="preview" label="<i class=\"icon fa fa-file-pdf-o\"></i>&nbsp;Preview" onclick="previewReport();"></@qifu.button>
 		</div>
 	</div>
 	
