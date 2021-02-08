@@ -25,6 +25,8 @@ import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -32,9 +34,8 @@ import java.util.Map;
 
 import javax.sql.DataSource;
 
-import org.hibernate.Session;
-import org.hibernate.metadata.ClassMetadata;
 import org.qifu.base.AppContext;
+import org.qifu.base.model.PleaseSelect;
 import org.springframework.jdbc.CannotGetJdbcConnectionException;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceUtils;
@@ -113,10 +114,10 @@ public class DataUtils {
 		return tableMetadatas;
 	}
 	
-	public static Map<String,  ClassMetadata> getClassMetadata(Session session) throws Exception {		
-		Map<String, ClassMetadata> classMetadataMap = session.getSessionFactory().getAllClassMetadata();		
-		return classMetadataMap;
-	}
+//	public static Map<String,  ClassMetadata> getClassMetadata(Session session) throws Exception {		
+//		Map<String, ClassMetadata> classMetadataMap = session.getSessionFactory().getAllClassMetadata();		
+//		return classMetadataMap;
+//	}
 	
 	public static NamedParameterJdbcTemplate getManualJdbcTemplate(DataSource dataSource) throws Exception {
 		NamedParameterJdbcTemplate jdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
@@ -132,17 +133,72 @@ public class DataUtils {
 		return getManualJdbcTemplate( ManualDataSourceFactory.getDataSource(dataSourceClass, url, user, password) );
 	}
 	
-	public List<String> getEntityNameList(Session session) throws Exception {		
-		Map<String, ClassMetadata> classMetadataMap = getClassMetadata(session);
-		List<String> names = new LinkedList<String>();
-		for (Map.Entry<String, ClassMetadata> entry : classMetadataMap.entrySet()) {
-			names.add(entry.getValue().getEntityName());
-		}		
+//	public List<String> getEntityNameList(Session session) throws Exception {		
+//		Map<String, ClassMetadata> classMetadataMap = getClassMetadata(session);
+//		List<String> names = new LinkedList<String>();
+//		for (Map.Entry<String, ClassMetadata> entry : classMetadataMap.entrySet()) {
+//			names.add(entry.getValue().getEntityName());
+//		}		
+//		return names;
+//	}
+//	
+//	public ClassMetadata getClassMetadataByEntityName(Session session, String name) throws Exception {
+//		return session.getSessionFactory().getClassMetadata(name);
+//	}
+	
+	/**
+	 * 排除系統表
+	 */
+	public static String[] getTablesWithDoReleaseConnection(String dataSourceId) throws Exception {
+		Connection connection = getConnection(dataSourceId);
+		DatabaseMetaData metaData = connection.getMetaData();
+		String[] types = {"TABLE"};
+		ResultSet rs = metaData.getTables(null, null, "%", types);
+		List<String> tables = new ArrayList<String>();
+		while (rs.next()) {
+			String tableName = rs.getString("TABLE_NAME");
+			if (tableName.startsWith("tb_") || tableName.startsWith("TB_") || tableName.startsWith("act_") || tableName.indexOf("qrtz_") > -1) {
+				continue;
+			}
+			tables.add(tableName);
+		}
+		String[] names = new String[tables.size()];
+		tables.toArray(names);		
+		doReleaseConnection(dataSourceId, connection);
 		return names;
 	}
 	
-	public ClassMetadata getClassMetadataByEntityName(Session session, String name) throws Exception {
-		return session.getSessionFactory().getClassMetadata(name);
+	public static Map<String, String> getTablesWithDoReleaseConnection(String dataSourceId, boolean pleaseSelect) throws Exception {
+		String[] tables = getTablesWithDoReleaseConnection(dataSourceId);
+		Map<String, String> dataMap = PleaseSelect.pageSelectMap(pleaseSelect);
+		for (int i = 0; tables != null && i < tables.length; i++) {
+			dataMap.put(tables[i], tables[i]);
+		}
+		return dataMap;
 	}
+	
+	public static Map<String, Map<String, String>> getTableMetadataWithDoReleaseConnection(String dataSourceId, String tableName) throws Exception {
+		Connection connection = getConnection(dataSourceId);
+		Map<String, Map<String, String>> tableMetadatas = new LinkedHashMap<String, Map<String, String>>();
+		DatabaseMetaData metadata = connection.getMetaData();
+		ResultSet resultSet = metadata.getColumns(null, null, tableName, null);
+		while (resultSet.next()) {
+			Map<String, String> metaDataMap = new HashMap<String, String>();
+			String name = resultSet.getString("COLUMN_NAME");
+			String nametToLowerCase = name.toLowerCase();
+			if (nametToLowerCase.equals("oid") || nametToLowerCase.equals("cuserid") || nametToLowerCase.equals("cdate")
+					|| nametToLowerCase.equals("uuserid") || nametToLowerCase.equals("udate") ) { // 不顯示這5個欄位
+				continue;
+			}
+			String type = resultSet.getString("TYPE_NAME");
+			int size = resultSet.getInt("COLUMN_SIZE");
+			metaDataMap.put("COLUMN_NAME", name);
+			metaDataMap.put("TYPE_NAME", type);
+			metaDataMap.put("COLUMN_SIZE", Integer.toString(size));
+			tableMetadatas.put(name, metaDataMap);
+		}
+		doReleaseConnection(dataSourceId, connection);
+		return tableMetadatas;
+	}	
 	
 }
