@@ -1,6 +1,0 @@
-{
-	"excludePathPatterns" : [
-		"/helloApi**",
-		"/user/gradeList"
-	]
-}

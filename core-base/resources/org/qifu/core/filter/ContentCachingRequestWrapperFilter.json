@@ -1,6 +1,0 @@
-{
-	"excludePathPatterns" : [
-		"/sysApiEventLog/findPage",
-		"/sysApiLoginLog/findPage"
-	]
-}

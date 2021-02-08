@@ -258,7 +258,7 @@
 		    <artifactId>core-lib</artifactId>
 		    <scope>system</scope>
 		    <version>0.0.1-SNAPSHOT</version>
-		    <systemPath>${workspaceDir}/core-lib/target/core-lib-0.0.1-SNAPSHOT.jar</systemPath>
+		    <systemPath>${workspaceDir}/thirdpartylib/core-lib-0.0.1-SNAPSHOT.jar</systemPath>
 		</dependency>
         
 		<dependency>
@@ -266,7 +266,7 @@
 		    <artifactId>core-base</artifactId>
 		    <scope>system</scope>
 		    <version>0.0.1-SNAPSHOT</version>
-		    <systemPath>${workspaceDir}/core-base/target/core-base-0.0.1-SNAPSHOT.jar</systemPath>
+		    <systemPath>${workspaceDir}/thirdpartylib/core-base-0.0.1-SNAPSHOT.jar</systemPath>
 		</dependency>
 		        
   </dependencies>

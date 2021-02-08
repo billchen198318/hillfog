@@ -1,1 +1,0 @@
-<button type="button" class="${cssClass}" id="${id}" onclick="${onclick}" <#if disabled == "Y" >disabled="disabled"</#if> >${label}</button>
