@@ -247,8 +247,6 @@
     <orderEntry type="library" name="Maven: org.springframework.security:spring-security-taglibs:5.2.2.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.security:spring-security-acl:5.2.2.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: net.lingala.zip4j:zip4j:2.6.2" level="project" />
-    <orderEntry type="module" module-name="core-lib" />
-    <orderEntry type="module" module-name="core-base" />
 	<orderEntry type="module" module-name="core-hillfog" />
   </component>
 </module>
