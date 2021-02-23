@@ -1,5 +1,7 @@
 {
 	"excludePathPatterns" : [
+		"/highcharts**",
+		"/highcharts/**",
 		"/helloApi**",
 		"/helloApi/**",
 		"/user/gradeList"

@@ -317,7 +317,15 @@
 		    <version>0.0.1-SNAPSHOT</version>
 		    <systemPath>${workspaceDir}/core-hillfog/target/core-hillfog-0.0.1-SNAPSHOT.jar</systemPath>
 		</dependency>	
-		        
+
+		<dependency>
+		    <groupId>org.qifu</groupId>
+		    <artifactId>highcharts</artifactId>
+		    <scope>system</scope>
+		    <version>highcharts-9.0.1</version>
+		    <systemPath>${workspaceDir}/thirdpartylib/highcharts-9.0.1.jar</systemPath>
+		</dependency>	
+				        
   </dependencies>
   
   	<build>
