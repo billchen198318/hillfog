@@ -272,11 +272,13 @@
 <!-- 		</dependency>					 -->
         
         <!-- Maybe can change to mariadb and mariadb-JDBC-driver is good for than MySQL. -->
+        <!--  
 		<dependency>
 		    <groupId>mysql</groupId>
 		    <artifactId>mysql-connector-java</artifactId>
 		    <version>8.0.21</version>
 		</dependency>  
+		-->
 		
 		<!--  
 		<dependency>
@@ -285,6 +287,13 @@
 		    <version>2.4.3</version>
 		</dependency>
 		-->	
+		
+		<dependency>
+		    <groupId>com.h2database</groupId>
+		    <artifactId>h2</artifactId>
+		    <scope>runtime</scope>
+		    <version>1.4.200</version>
+		</dependency>		
 		
 		<dependency>
 		    <groupId>org.qifu</groupId>
