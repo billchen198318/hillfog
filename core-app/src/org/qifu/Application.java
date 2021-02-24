@@ -29,6 +29,7 @@ import javax.annotation.Resource;
 import javax.sql.DataSource;
 
 import org.qifu.base.AppContext;
+import org.qifu.support.DBDataInit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -71,6 +72,7 @@ public class Application {
     	
 		System.out.println("test DataBase connection....");
 		try (Connection connection = this.dataSource.getConnection()) {
+			DBDataInit.create(connection);
 			System.out.println("DataBase [" + this.dataSource.toString() + "] connection success.");
 		} catch (SQLException e) {
 			e.printStackTrace();
