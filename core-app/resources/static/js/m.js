@@ -78,7 +78,7 @@ function addTab( tabId, srcUrl ) {
 	// 2020-01-20 rem
 	//$('#myTab').append('<li class="nav-item" id="_tab_' + tabId + '"><a class="nav-link" data-toggle="tab" href="#' + tabId + '" role="tab" aria-controls="' + tabId + '"><img src="' + progIcon + '" broder="0">&nbsp;' + progName + '&nbsp;<span class="badge badge-warning btn" onclick="closeTab(\'' + tabId + '\');">X</span></a></li>');
 	// 2020-01-20 add
-	$('#myTab').append('<li class="nav-item" id="_tab_' + tabId + '"><a class="nav-link" data-toggle="tab" href="#' + tabId + '" role="tab" aria-controls="' + tabId + '"><i class="icon fa fa-' + fontIconClassId + '"></i>&nbsp;' + progName + '&nbsp;<i class="icon fa fa-close btn" style="color:#FF9933" onclick="closeTab(\'' + tabId + '\');"></i></a></li>');
+	$('#myTab').append('<li class="nav-item" id="_tab_' + tabId + '"><a class="nav-link" data-toggle="tab" href="#' + tabId + '" role="tab" aria-controls="' + tabId + '"><i class="icon fa fa-' + fontIconClassId + '"></i>&nbsp;' + progName + '&nbsp;<i class="icon fa fa-close btn-circle btn" style="color:#FF9933" onclick="closeTab(\'' + tabId + '\');"></i></a></li>');
 	$('#myTabContent').append('<div class="tab-pane" style="height: 100%;" id="' + tabId + '" data-src="' + srcUrl + '"><iframe src="' + srcUrl + '" ></iframe></div>');
 	
 	
