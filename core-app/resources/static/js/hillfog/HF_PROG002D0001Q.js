@@ -1,6 +1,8 @@
 var _gaugeIdHead = 'gauge_';
 var _lineIdHead = 'line_';
+var _chartsArr = [];
 function showContent(data) {
+	_chartsArr = [];
 	var str = '';
 	for (var d in data) {
 		var scoreData = data[d];
@@ -39,7 +41,7 @@ function createContent(scoreData) {
 	<div class="row mx-auto flex-column">
 		<span class="badge badge-info"><h2>${scoreData.kpi.id}&nbsp;-&nbsp;${scoreData.kpi.name}</h2></span>
 		<span class="badge badge-secondary"><h2>${scoreData.date1}&nbsp;~&nbsp;${scoreData.date2}</h2></span>
-		<div class="col-6" id="${currGaugeIdHead}" style="width: 500px;height:450px;"></div>
+		<div class="col-6 align-self-center" id="${currGaugeIdHead}" style="width: 500px;height:450px;"></div>
 		${lineContent}
 	</div>
 	<table class="table">
@@ -57,7 +59,7 @@ function createContent(scoreData) {
 		var infoDetail = infoDetailContent(scoreData.dataRangeScores[n]);
 		detailContent += `
 		<tr>
-			<td>${infoDetail}<div class="col-6" id="${currDateRangeGaugeIdHead}" style="width: 400px;height:350px;"></div></td>
+			<td class="text-center">${infoDetail}<div class="row mx-auto flex-column"><div class="col-6 align-self-center" id="${currDateRangeGaugeIdHead}" style="width: 400px;height:350px;"></div></div></td>
 		</tr>
 		`;
 	}
@@ -76,7 +78,7 @@ function lineChartContent(scoreData) {
 	}
 	var currLineIdHead = _lineIdHead + scoreData.kpi.id;
 	var str = `
-	<div class="col-6" id="${currLineIdHead}" style="width: 600px;height:450px;"></div>
+	<div class="col-6 align-self-center" id="${currLineIdHead}" style="width: 600px;height:450px;"></div>
 	`;
 	return str;
 }
@@ -139,6 +141,7 @@ function gaugeChart(chartId, seriesName, dataValue, dataName) {
 	};
 	
 	myChart.setOption(option, true);
+	_chartsArr.push( myChart );
 }
 
 function lineChart(chartId, scoreData) {
@@ -208,6 +211,6 @@ function lineChart(chartId, scoreData) {
 	};	
 	
 	myChart.setOption(option, true);
-	
+	_chartsArr.push(myChart);
 }
 

@@ -163,6 +163,13 @@ $( document ).ready(function() {
 		);		
 	});
 	
+	
+	window.addEventListener('resize',function(){
+		for (var n = 0; !(_chartsArr === undefined) && null != _chartsArr && n < _chartsArr.length; n++) {
+			_chartsArr[n].resize();
+		}
+	});	
+	
 });
 
 function changeQueryButtonStatus() {
