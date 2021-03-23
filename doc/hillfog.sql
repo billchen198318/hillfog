@@ -150,6 +150,99 @@ INSERT INTO `hf_formula` VALUES ('6349c44a-07d1-11eb-a5e8-ef9de1a822a0','F001','
 UNLOCK TABLES;
 
 --
+-- Table structure for table `hf_initiatives`
+--
+
+DROP TABLE IF EXISTS `hf_initiatives`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `hf_initiatives` (
+  `OID` char(36) NOT NULL,
+  `OBJ_OID` char(36) NOT NULL,
+  `CONTENT` varchar(2000) NOT NULL DEFAULT ' ',
+  `CUSERID` varchar(24) NOT NULL,
+  `CDATE` datetime NOT NULL,
+  `UUSERID` varchar(24) DEFAULT NULL,
+  `UDATE` datetime DEFAULT NULL,
+  PRIMARY KEY (`OID`),
+  KEY `IDX_1` (`OBJ_OID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `hf_initiatives`
+--
+
+LOCK TABLES `hf_initiatives` WRITE;
+/*!40000 ALTER TABLE `hf_initiatives` DISABLE KEYS */;
+/*!40000 ALTER TABLE `hf_initiatives` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `hf_key_res`
+--
+
+DROP TABLE IF EXISTS `hf_key_res`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `hf_key_res` (
+  `OID` char(36) NOT NULL,
+  `OBJ_OID` char(36) NOT NULL,
+  `NAME` varchar(100) NOT NULL,
+  `TARGET` decimal(12,2) NOT NULL DEFAULT 0.00,
+  `GP_TYPE` varchar(1) NOT NULL,
+  `OP_TARGET` varchar(1) NOT NULL,
+  `DESCRIPTION` varchar(500) NOT NULL DEFAULT ' ',
+  `CUSERID` varchar(24) NOT NULL,
+  `CDATE` datetime NOT NULL,
+  `UUSERID` varchar(24) DEFAULT NULL,
+  `UDATE` datetime DEFAULT NULL,
+  PRIMARY KEY (`OID`),
+  UNIQUE KEY `UK_1` (`OBJ_OID`,`NAME`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `hf_key_res`
+--
+
+LOCK TABLES `hf_key_res` WRITE;
+/*!40000 ALTER TABLE `hf_key_res` DISABLE KEYS */;
+/*!40000 ALTER TABLE `hf_key_res` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `hf_key_res_val`
+--
+
+DROP TABLE IF EXISTS `hf_key_res_val`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `hf_key_res_val` (
+  `OID` char(36) NOT NULL,
+  `OBJ_OID` char(36) NOT NULL,
+  `RES_OID` char(36) NOT NULL,
+  `DATE` varchar(8) NOT NULL,
+  `VALUE` decimal(12,2) NOT NULL DEFAULT 0.00,
+  `CUSERID` varchar(24) NOT NULL,
+  `CDATE` datetime NOT NULL,
+  `UUSERID` varchar(24) DEFAULT NULL,
+  `UDATE` datetime DEFAULT NULL,
+  PRIMARY KEY (`OID`),
+  UNIQUE KEY `UK_1` (`OBJ_OID`,`RES_OID`,`DATE`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `hf_key_res_val`
+--
+
+LOCK TABLES `hf_key_res_val` WRITE;
+/*!40000 ALTER TABLE `hf_key_res_val` DISABLE KEYS */;
+/*!40000 ALTER TABLE `hf_key_res_val` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `hf_kpi`
 --
 
@@ -285,6 +378,95 @@ CREATE TABLE `hf_measure_data` (
 LOCK TABLES `hf_measure_data` WRITE;
 /*!40000 ALTER TABLE `hf_measure_data` DISABLE KEYS */;
 /*!40000 ALTER TABLE `hf_measure_data` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `hf_obj_dept`
+--
+
+DROP TABLE IF EXISTS `hf_obj_dept`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `hf_obj_dept` (
+  `OID` char(36) NOT NULL,
+  `OBJ_OID` char(36) NOT NULL,
+  `ORG_ID` varchar(15) NOT NULL,
+  `CUSERID` varchar(24) NOT NULL,
+  `CDATE` datetime NOT NULL,
+  `UUSERID` varchar(24) DEFAULT NULL,
+  `UDATE` datetime DEFAULT NULL,
+  PRIMARY KEY (`OID`),
+  UNIQUE KEY `UK_1` (`OBJ_OID`,`ORG_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `hf_obj_dept`
+--
+
+LOCK TABLES `hf_obj_dept` WRITE;
+/*!40000 ALTER TABLE `hf_obj_dept` DISABLE KEYS */;
+/*!40000 ALTER TABLE `hf_obj_dept` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `hf_obj_owner`
+--
+
+DROP TABLE IF EXISTS `hf_obj_owner`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `hf_obj_owner` (
+  `OID` char(36) NOT NULL,
+  `OBJ_OID` char(36) NOT NULL,
+  `ACCOUNT` varchar(24) NOT NULL,
+  `CUSERID` varchar(24) NOT NULL,
+  `CDATE` datetime NOT NULL,
+  `UUSERID` varchar(24) DEFAULT NULL,
+  `UDATE` datetime DEFAULT NULL,
+  PRIMARY KEY (`OID`),
+  UNIQUE KEY `UK_1` (`OBJ_OID`,`ACCOUNT`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `hf_obj_owner`
+--
+
+LOCK TABLES `hf_obj_owner` WRITE;
+/*!40000 ALTER TABLE `hf_obj_owner` DISABLE KEYS */;
+/*!40000 ALTER TABLE `hf_obj_owner` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `hf_objective`
+--
+
+DROP TABLE IF EXISTS `hf_objective`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `hf_objective` (
+  `OID` char(36) NOT NULL,
+  `NAME` varchar(100) NOT NULL,
+  `START_DATE` varchar(8) NOT NULL,
+  `END_DATE` varchar(8) NOT NULL,
+  `DESCRIPTION` varchar(500) NOT NULL DEFAULT ' ',
+  `CUSERID` varchar(24) NOT NULL,
+  `CDATE` datetime NOT NULL,
+  `UUSERID` varchar(24) DEFAULT NULL,
+  `UDATE` datetime DEFAULT NULL,
+  PRIMARY KEY (`OID`),
+  UNIQUE KEY `UK_1` (`NAME`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `hf_objective`
+--
+
+LOCK TABLES `hf_objective` WRITE;
+/*!40000 ALTER TABLE `hf_objective` DISABLE KEYS */;
+/*!40000 ALTER TABLE `hf_objective` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -1177,4 +1359,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-02-02 13:49:00
+-- Dump completed on 2021-03-23 22:59:22
