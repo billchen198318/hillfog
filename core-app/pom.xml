@@ -14,6 +14,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <java.version>11</java.version>
     <workspaceDir>${project.basedir}/../</workspaceDir> <!-- /home/git7/qifu/ -->
+    <baseConfigFile>DEV</baseConfigFile> <!-- DEV , PROD -->
   </properties>
   
   <parent>
@@ -359,7 +360,15 @@
 	            <includes>                      
 	                <include>**/*.sql</include>
 	            </includes>
-	        </resource>	 	        
+	        </resource>	 	  
+	        
+	        <!-- for config properties or other settings file -->
+	        <resource>
+	            <directory>${workspaceDir}/doc/${baseConfigFile}/</directory>
+	            <includes>                      
+	                <include>**/*.*</include>
+	            </includes>
+	        </resource>		        
 	        
 	    </resources>
 		<plugins>
