@@ -41,7 +41,7 @@ function createContent(scoreData) {
 	<div class="row mx-auto flex-column">
 		<span class="badge badge-info"><h2>${scoreData.kpi.id}&nbsp;-&nbsp;${scoreData.kpi.name}</h2></span>
 		<span class="badge badge-secondary"><h2>${scoreData.date1}&nbsp;~&nbsp;${scoreData.date2}</h2></span>
-		<div class="col-6 align-self-center" id="${currGaugeIdHead}" style="width: 500px;height:450px;"></div>
+		<div class="col-12 align-self-center" id="${currGaugeIdHead}" style="width: 97%;height:450px;"></div>
 		${lineContent}
 	</div>
 	<table class="table">
@@ -59,7 +59,7 @@ function createContent(scoreData) {
 		var infoDetail = infoDetailContent(scoreData.dataRangeScores[n]);
 		detailContent += `
 		<tr>
-			<td class="text-center">${infoDetail}<div class="row mx-auto flex-column"><div class="col-6 align-self-center" id="${currDateRangeGaugeIdHead}" style="width: 400px;height:350px;"></div></div></td>
+			<td class="text-center">${infoDetail}<div class="row mx-auto flex-column"><div class="col-6 align-self-center" id="${currDateRangeGaugeIdHead}" style="width: 97%;height:350px;"></div></div></td>
 		</tr>
 		`;
 	}
@@ -78,7 +78,7 @@ function lineChartContent(scoreData) {
 	}
 	var currLineIdHead = _lineIdHead + scoreData.kpi.id;
 	var str = `
-	<div class="col-6 align-self-center" id="${currLineIdHead}" style="width: 600px;height:450px;"></div>
+	<div class="col-12 align-self-center" id="${currLineIdHead}" style="width: 97%;height:450px;"></div>
 	`;
 	return str;
 }
