@@ -6,7 +6,7 @@ current in developing, not yet completed.
 Item  | Status
 ------------- | -------------
 KPI  | in developing
-OKR  | Not yet in progress
+OKR  | in developing
 PDCA  | Not yet in progress
 BSC  | Not yet in progress
 
