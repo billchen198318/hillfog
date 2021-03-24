@@ -37,11 +37,13 @@ import org.qifu.base.service.BaseLogicService;
 import org.qifu.hillfog.entity.HfEmployeeOrg;
 import org.qifu.hillfog.entity.HfKpiOrga;
 import org.qifu.hillfog.entity.HfMeasureData;
+import org.qifu.hillfog.entity.HfObjDept;
 import org.qifu.hillfog.entity.HfOrgDept;
 import org.qifu.hillfog.logic.IOrganizationLogicService;
 import org.qifu.hillfog.service.IEmployeeOrgService;
 import org.qifu.hillfog.service.IKpiOrgaService;
 import org.qifu.hillfog.service.IMeasureDataService;
+import org.qifu.hillfog.service.IObjDeptService;
 import org.qifu.hillfog.service.IOrgDeptService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -64,6 +66,9 @@ public class OrganizationLogicServiceImpl extends BaseLogicService implements IO
 	IKpiOrgaService<HfKpiOrga, String> kpiOrgaService;
 	
 	@Autowired
+	IObjDeptService<HfObjDept, String> objDeptService;
+	
+	@Autowired
 	IMeasureDataService<HfMeasureData, String> measureDataService;	
 	
 	@ServiceMethodAuthority(type = ServiceMethodType.DELETE)
@@ -83,6 +88,9 @@ public class OrganizationLogicServiceImpl extends BaseLogicService implements IO
 			throw new ServiceException( BaseSystemMessage.dataCannotDelete() );
 		}
 		if (this.kpiOrgaService.count(paramMap) > 0) {
+			throw new ServiceException( BaseSystemMessage.dataCannotDelete() );
+		}
+		if (this.objDeptService.count(paramMap) > 0) {
 			throw new ServiceException( BaseSystemMessage.dataCannotDelete() );
 		}
 		this.measureDataService.deleteByOrgId(orgDept.getOrgId());

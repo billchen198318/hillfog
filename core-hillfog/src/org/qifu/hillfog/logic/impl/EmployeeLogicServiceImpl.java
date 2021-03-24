@@ -46,12 +46,14 @@ import org.qifu.hillfog.entity.HfEmployee;
 import org.qifu.hillfog.entity.HfEmployeeOrg;
 import org.qifu.hillfog.entity.HfKpiEmpl;
 import org.qifu.hillfog.entity.HfMeasureData;
+import org.qifu.hillfog.entity.HfObjOwner;
 import org.qifu.hillfog.entity.HfOrgDept;
 import org.qifu.hillfog.logic.IEmployeeLogicService;
 import org.qifu.hillfog.service.IEmployeeOrgService;
 import org.qifu.hillfog.service.IEmployeeService;
 import org.qifu.hillfog.service.IKpiEmplService;
 import org.qifu.hillfog.service.IMeasureDataService;
+import org.qifu.hillfog.service.IObjOwnerService;
 import org.qifu.hillfog.service.IOrgDeptService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -84,6 +86,9 @@ public class EmployeeLogicServiceImpl extends BaseLogicService implements IEmplo
 	
 	@Autowired
 	IMeasureDataService<HfMeasureData, String> measureDataService;
+	
+	@Autowired
+	IObjOwnerService<HfObjOwner, String> objOwnerService;
 	
     @Autowired
     PasswordEncoder passwordEncoder;
@@ -211,6 +216,9 @@ public class EmployeeLogicServiceImpl extends BaseLogicService implements IEmplo
 		Map<String, Object> paramMap = new HashMap<String, Object>();
 		paramMap.put("account", employee.getAccount());
 		if (this.kpiEmplService.count(paramMap) > 0) {
+			throw new ServiceException( BaseSystemMessage.dataCannotDelete() );
+		}
+		if (this.objOwnerService.count(paramMap) > 0) {
 			throw new ServiceException( BaseSystemMessage.dataCannotDelete() );
 		}
 		this.measureDataService.deleteByAccount(employee.getAccount());
