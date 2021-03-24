@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.qifu.hillfog.mapper.HfKeyResMapper">
+
+  <resultMap id="BaseResultMap" type="org.qifu.hillfog.entity.HfKeyRes">
+    <id column="OID" jdbcType="CHAR" property="oid" />
+    <result column="OBJ_OID" jdbcType="CHAR" property="objOid" />
+    <result column="NAME" jdbcType="VARCHAR" property="name" />
+    <result column="TARGET" jdbcType="DECIMAL" property="target" />
+    <result column="GP_TYPE" jdbcType="VARCHAR" property="gpType" />
+    <result column="OP_TARGET" jdbcType="VARCHAR" property="opTarget" />
+    <result column="DESCRIPTION" jdbcType="VARCHAR" property="description" />
+    <result column="CUSERID" jdbcType="VARCHAR" property="cuserid" />
+    <result column="CDATE" jdbcType="TIMESTAMP" property="cdate" />
+    <result column="UUSERID" jdbcType="VARCHAR" property="uuserid" />
+    <result column="UDATE" jdbcType="TIMESTAMP" property="udate" />
+  </resultMap>
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select *
+    from <include refid="org.qifu.hillfog.mapper.DB1Config.schema"/>hf_key_res
+    where OID = #{oid,jdbcType=CHAR}
+  </select>  
+  
+  <select id="selectListByParams" parameterType="java.util.HashMap" resultMap="BaseResultMap">
+    select *
+    from <include refid="org.qifu.hillfog.mapper.DB1Config.schema"/>hf_key_res
+    WHERE 1=1
+	<if test="objOid != null and objOid != ''.toString() ">
+		AND OBJ_OID = #{objOid,jdbcType=VARCHAR}
+	</if>			
+	<if test="name != null and name != ''.toString() ">
+		AND NAME = #{name,jdbcType=VARCHAR}
+	</if>
+	<if test="nameLike != null and nameLike != ''.toString() ">
+		AND NAME like #{nameLike,jdbcType=VARCHAR}
+	</if>
+	<if test="gpType != null and gpType != ''.toString() ">
+		AND GP_TYPE = #{gpType,jdbcType=VARCHAR}
+	</if>			
+	<if test="orderBy != null and orderBy != ''.toString() and sortType != null and sortType != ''.toString() ">
+		ORDER BY  ${orderBy} ${sortType}
+	</if>	
+  </select>    
+  
+  <select id="findPage" parameterType="java.util.HashMap" resultMap="BaseResultMap">
+  	<include refid="org.qifu.hillfog.mapper.DB1Config.sql1"/>
+  	
+    select *
+    from <include refid="org.qifu.hillfog.mapper.DB1Config.schema"/>hf_key_res
+    WHERE 1=1
+	<if test="objOid != null and objOid != ''.toString() ">
+		AND OBJ_OID = #{objOid,jdbcType=VARCHAR}
+	</if>			
+	<if test="name != null and name != ''.toString() ">
+		AND NAME = #{name,jdbcType=VARCHAR}
+	</if>
+	<if test="nameLike != null and nameLike != ''.toString() ">
+		AND NAME like #{nameLike,jdbcType=VARCHAR}
+	</if>
+	<if test="gpType != null and gpType != ''.toString() ">
+		AND GP_TYPE = #{gpType,jdbcType=VARCHAR}
+	</if>	
+	
+	<include refid="org.qifu.hillfog.mapper.DB1Config.sql2"/>
+  </select>  
+  
+  <select id="count" parameterType="java.util.HashMap" resultType="java.lang.Long">
+    select count(*) from <include refid="org.qifu.hillfog.mapper.DB1Config.schema"/>hf_key_res
+    WHERE 1=1
+	<if test="objOid != null and objOid != ''.toString() ">
+		AND OBJ_OID = #{objOid,jdbcType=VARCHAR}
+	</if>			
+	<if test="name != null and name != ''.toString() ">
+		AND NAME = #{name,jdbcType=VARCHAR}
+	</if>
+	<if test="nameLike != null and nameLike != ''.toString() ">
+		AND NAME like #{nameLike,jdbcType=VARCHAR}
+	</if>
+	<if test="gpType != null and gpType != ''.toString() ">
+		AND GP_TYPE = #{gpType,jdbcType=VARCHAR}
+	</if>						
+  </select>  
+  
+  <insert id="insert" parameterType="org.qifu.hillfog.entity.HfKeyRes"> 
+    insert into <include refid="org.qifu.hillfog.mapper.DB1Config.schema"/>hf_key_res
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="oid != null">
+        OID,
+      </if>
+      <if test="objOid != null">
+        OBJ_OID,
+      </if>
+      <if test="name != null">
+        NAME,
+      </if>
+      <if test="target != null">
+        TARGET,
+      </if>
+      <if test="gpType != null">
+        GP_TYPE,
+      </if>
+      <if test="opTarget != null">
+        OP_TARGET,
+      </if>
+      <if test="description != null">
+        DESCRIPTION,
+      </if>
+      <if test="cuserid != null">
+        CUSERID,
+      </if>
+      <if test="cdate != null">
+        CDATE,
+      </if>
+      <if test="uuserid != null">
+        UUSERID,
+      </if>
+      <if test="udate != null">
+        UDATE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="oid != null">
+        #{oid,jdbcType=CHAR},
+      </if>
+      <if test="objOid != null">
+        #{objOid,jdbcType=CHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="target != null">
+        #{target,jdbcType=DECIMAL},
+      </if>
+      <if test="gpType != null">
+        #{gpType,jdbcType=VARCHAR},
+      </if>
+      <if test="opTarget != null">
+        #{opTarget,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="cuserid != null">
+        #{cuserid,jdbcType=VARCHAR},
+      </if>
+      <if test="cdate != null">
+        #{cdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="uuserid != null">
+        #{uuserid,jdbcType=VARCHAR},
+      </if>
+      <if test="udate != null">
+        #{udate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>  
+  
+  <update id="update" parameterType="org.qifu.hillfog.entity.HfKeyRes">
+    update <include refid="org.qifu.hillfog.mapper.DB1Config.schema"/>hf_key_res
+    <set>
+      <if test="objOid != null">
+        OBJ_OID = #{objOid,jdbcType=CHAR},
+      </if>
+      <if test="name != null">
+        NAME = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="target != null">
+        TARGET = #{target,jdbcType=DECIMAL},
+      </if>
+      <if test="gpType != null">
+        GP_TYPE = #{gpType,jdbcType=VARCHAR},
+      </if>
+      <if test="opTarget != null">
+        OP_TARGET = #{opTarget,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+        DESCRIPTION = #{description,jdbcType=VARCHAR},
+      </if>
+      <!--  
+      <if test="cuserid != null">
+        CUSERID = #{cuserid,jdbcType=VARCHAR},
+      </if>
+      <if test="cdate != null">
+        CDATE = #{cdate,jdbcType=TIMESTAMP},
+      </if>
+      -->
+      <if test="uuserid != null">
+        UUSERID = #{uuserid,jdbcType=VARCHAR},
+      </if>
+      <if test="udate != null">
+        UDATE = #{udate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where OID = #{oid,jdbcType=CHAR}
+  </update>  
+  
+  <delete id="delete" parameterType="org.qifu.hillfog.entity.HfKeyRes">
+    delete from <include refid="org.qifu.hillfog.mapper.DB1Config.schema"/>hf_key_res
+    where OID = #{oid,jdbcType=CHAR}
+  </delete>
+  
+</mapper>
