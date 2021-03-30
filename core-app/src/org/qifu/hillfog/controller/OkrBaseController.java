@@ -31,18 +31,22 @@ import org.qifu.base.exception.AuthorityException;
 import org.qifu.base.exception.ControllerException;
 import org.qifu.base.exception.ServiceException;
 import org.qifu.base.model.ControllerMethodAuthority;
+import org.qifu.base.model.DefaultControllerJsonResultObj;
 import org.qifu.base.model.DefaultResult;
 import org.qifu.base.model.SortType;
 import org.qifu.hillfog.entity.HfEmployee;
+import org.qifu.hillfog.entity.HfKpi;
 import org.qifu.hillfog.entity.HfObjective;
 import org.qifu.hillfog.entity.HfOrgDept;
 import org.qifu.hillfog.service.IEmployeeService;
 import org.qifu.hillfog.service.IObjectiveService;
 import org.qifu.hillfog.service.IOrgDeptService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class OkrBaseController extends BaseControllerSupport implements IPageNamespaceProvide {
@@ -62,10 +66,12 @@ public class OkrBaseController extends BaseControllerSupport implements IPageNam
 	}
 	
 	private void init(String type, ModelMap mm) throws AuthorityException, ControllerException, ServiceException, Exception {
-		mm.put("orgInputAutocomplete", pageAutocompleteContent(this.orgDeptService.findInputAutocomplete()));
-		mm.put("empInputAutocomplete", pageAutocompleteContent(this.employeeService.findInputAutocomplete()));		
-		List<HfObjective> objectiveList = this.objectiveService.selectList("NAME", SortType.ASC).getValue();
+		if ("mainPage".equals(type) || "createPage".equals(type)) {
+			mm.put("orgInputAutocomplete", pageAutocompleteContent(this.orgDeptService.findInputAutocomplete()));
+			mm.put("empInputAutocomplete", pageAutocompleteContent(this.employeeService.findInputAutocomplete()));			
+		}		
 		
+		//List<HfObjective> objectiveList = this.objectiveService.selectList("NAME", SortType.ASC).getValue();
 		//mm.put("objectiveList", objectiveList);
 		
 	}
@@ -81,6 +87,23 @@ public class OkrBaseController extends BaseControllerSupport implements IPageNam
 		this.getDefaultModelMap(mm, this.currentMethodAuthority());
 		try {
 			this.init("mainPage", mm);
+		} catch (AuthorityException e) {
+			viewName = this.getAuthorityExceptionPage(e, mm);
+		} catch (ControllerException | ServiceException e) {
+			viewName = this.getServiceOrControllerExceptionPage(e, mm);
+		} catch (Exception e) {
+			viewName = this.getExceptionPage(e, mm);
+		}
+		return viewName;
+	}		
+	
+	@ControllerMethodAuthority(check = true, programId = "HF_PROG001D0006A")
+	@RequestMapping("/hfOkrBaseAddPage")
+	public String createPage(ModelMap mm, HttpServletRequest request) {
+		String viewName = this.viewCreatePage();
+		this.getDefaultModelMap(mm, this.currentMethodAuthority());
+		try {
+			this.init("createPage", mm);
 		} catch (AuthorityException e) {
 			viewName = this.getAuthorityExceptionPage(e, mm);
 		} catch (ControllerException | ServiceException e) {

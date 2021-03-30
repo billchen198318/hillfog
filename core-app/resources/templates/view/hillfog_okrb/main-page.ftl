@@ -107,6 +107,10 @@ function btnClear() {
 	$("#objOwner").val('');
 }
 
+function btnAdd() {
+	// to add objective item.
+}
+
 </script>
 
 </head>
@@ -117,11 +121,15 @@ function btnClear() {
 		<div class="col p-2 bg-secondary rounded">
 			<div class="row">
 				<div class="col-xs-12 col-md-12 col-lg-12 text-white">
+					<!--  
 					<span class="badge badge-info"><h6>Objectives</h6></span>
 					&nbsp;
+					-->
 					<span class="btn badge btn-light" onclick="btnQuery();"><h6><i class="icon fa fa-refresh"></i>&nbsp;Refresh</h6></span>	
 					<span class="btn badge btn-light" onclick="btnClear();"><h6><i class="icon fa fa-hand-paper-o"></i>&nbsp;Clear</h6></span>	
 					&nbsp;
+					&nbsp;
+					<span class="btn badge btn-light" onclick="btnAdd();"><h6><i class="icon fa fa-plus-circle"></i>&nbsp;Add objective</h6></span>
 				</div>
 			</div>			
 			<div class="row">
