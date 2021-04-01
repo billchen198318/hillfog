@@ -8,6 +8,7 @@
 <@cfi.commonFormHeadResource /> 
 
 <script type="text/javascript" src="${qifu_basePath}js/jquery-ui.min.js?ver=${qifu_jsVerBuild}"></script>
+<script type="text/javascript" src="${qifu_basePath}js/vue.global.js"></script>
 
 <style type="text/css">
 
@@ -109,6 +110,7 @@ function btnClear() {
 
 function btnAdd() {
 	// to add objective item.
+	window.location = parent.getProgUrl('HF_PROG001D0006A');
 }
 
 </script>
@@ -116,6 +118,9 @@ function btnAdd() {
 </head>
 
 <body>
+
+<#import "../common-f-head.ftl" as cfh />
+<@cfh.commonFormHeadContent /> 
 
 	<div class="row">
 		<div class="col p-2 bg-secondary rounded">
@@ -125,19 +130,19 @@ function btnAdd() {
 					<span class="badge badge-info"><h6>Objectives</h6></span>
 					&nbsp;
 					-->
-					<span class="btn badge btn-light" onclick="btnQuery();"><h6><i class="icon fa fa-refresh"></i>&nbsp;Refresh</h6></span>	
-					<span class="btn badge btn-light" onclick="btnClear();"><h6><i class="icon fa fa-hand-paper-o"></i>&nbsp;Clear</h6></span>	
+					<span class="btn badge btn-info" onclick="btnQuery();"><h6><i class="icon fa fa-refresh"></i>&nbsp;Refresh</h6></span>	
+					<span class="btn badge btn-info" onclick="btnClear();"><h6><i class="icon fa fa-hand-paper-o"></i>&nbsp;Clear</h6></span>	
 					&nbsp;
 					&nbsp;
-					<span class="btn badge btn-light" onclick="btnAdd();"><h6><i class="icon fa fa-plus-circle"></i>&nbsp;Add objective</h6></span>
+					<span class="btn badge btn-info" onclick="btnAdd();"><h6><i class="icon fa fa-plus-circle"></i>&nbsp;Add objective</h6></span>
 				</div>
 			</div>			
 			<div class="row">
 				<div class="col-xs-6 col-md-6 col-lg-6 text-white">
-					<@qifu.textbox type="date" name="date1" value="date1" id="date1" label="Start" requiredFlag="N" maxlength="10" placeholder="Enter start date" />
+					<@qifu.textbox type="date" name="date1" value="" id="date1" label="Start" requiredFlag="N" maxlength="10" placeholder="Enter start date" />
 				</div>
 				<div class="col-xs-6 col-md-6 col-lg-6 text-white">
-					<@qifu.textbox type="date" name="date2" value="date2" id="date2" label="End" requiredFlag="N" maxlength="10" placeholder="Enter end date" />
+					<@qifu.textbox type="date" name="date2" value="" id="date2" label="End" requiredFlag="N" maxlength="10" placeholder="Enter end date" />
 				</div>		
 			</div>				
 			<div class="row">
@@ -155,6 +160,8 @@ function btnAdd() {
 <br/>
 <br/>
 <br/>
+
+<script type="text/javascript" src="${qifu_basePath}js/hillfog/HF_PROG001D0006Q.js?ver=${qifu_jsVerBuild}"></script>
 
 </body>
 </html>
