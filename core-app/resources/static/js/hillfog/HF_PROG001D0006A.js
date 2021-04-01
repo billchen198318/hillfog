@@ -2,12 +2,13 @@ var keyResultItemList = [];
 const PageEventHandling = {
 	data() {
 		return {
-			keyResultList  : keyResultItemList
+			keyResultList  :	keyResultItemList
 		}
 	},
 	methods: {
-		addKeyResult	: addKeyRes,
-		removeKeyResult	: removeKeyRes
+		addKeyResult	:	addKeyRes,
+		removeKeyResult	:	removeKeyRes,
+		clearKeyResult	:	clearKeyRes
 	},
 	mounted() {
 		this.addKeyResult();
@@ -28,6 +29,10 @@ function addKeyRes() {
 
 function removeKeyRes(index) {
 	removeArrayByPos(this.keyResultList, index);
+}
+
+function clearKeyRes() {
+	this.keyResultList = [];
 }
 
 const app = Vue.createApp(PageEventHandling);

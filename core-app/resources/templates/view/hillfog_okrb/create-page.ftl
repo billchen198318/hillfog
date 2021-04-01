@@ -95,6 +95,8 @@ $( document ).ready(function() {
 		$(this).autocomplete("search", " ");
 	});			
 	
+	$("#clearKeyRes").hide();
+	
 });
 
 function btnObjectiveList() {
@@ -116,6 +118,7 @@ function btnClear() {
 	selEmpList = [];
 	paintOrganization();
 	paintEmployee();	
+	$("#clearKeyRes").click();
 }
 
 //====================================================================
@@ -322,7 +325,8 @@ function removeArrayByPos(arr, pos) {
 			<br>
 			
 			<button type="button" class="btn btn-primary" id="btnAddKeyRes" title="add key result" v-on:click="addKeyResult"><i class="icon fa fa-plus"></i>&nbsp;Add Key Result</button>
-		
+			<button type="button" class="btn btn-primary" id="clearKeyRes" title="clear key result" v-on:click="clearKeyResult"><i class="icon fa fa-hand-paper-o"></i>&nbsp;Clear Key Result</button>
+			
 		</div>
 	</div>
 
