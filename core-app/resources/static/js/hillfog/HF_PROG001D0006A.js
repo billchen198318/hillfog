@@ -24,7 +24,7 @@ const PageEventHandling = {
 function addKeyRes() {
 	this.keyResultList.push({
 		'name'			:	'',
-		'target'		:	0,
+		'target'		:	'0',
 		'gpType'		:	'1',
 		'opTarget'		:	'1',
 		'description'	:	''

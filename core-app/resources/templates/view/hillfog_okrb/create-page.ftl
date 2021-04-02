@@ -104,11 +104,50 @@ function btnObjectiveList() {
 	window.location = parent.getProgUrl('HF_PROG001D0006Q');
 }
 
+var msgFields = new Object();
+msgFields['name'] 		= 'name';
+msgFields['date1'] 		= 'date1';
+msgFields['date2'] 		= 'date2';
+msgFields['objOrg'] 	= 'objOrg';
+
+var formGroups = new Object();
+formGroups['name'] 		= 'form-group1';
+formGroups['date1'] 	= 'form-group1';
+formGroups['date2'] 	= 'form-group1';
+formGroups['objOrg'] 	= 'form-group1';
+
 function btnSave() {
-	
+	clearWarningMessageField(formGroups, msgFields);
+	xhrSendParameter(
+			'./hfOkrBaseSaveJson', 
+			{ 
+				'name' 			:	$("#name").val(),
+				'date1'			:	$("#date1").val(),
+				'date2'			:	$("#date2").val(),
+				'description'	:	$("#description").val(),
+				'objDept'		:	JSON.stringify( { 'items' : selDeptList } ),
+				'objOwner'		:	JSON.stringify( { 'items' : selEmpList } ),
+				'keyResults'	:	JSON.stringify( { 'items' : keyResultItemList } ),
+				'initiatives'	:	JSON.stringify( { 'items' : initiativesItemList } )
+			}, 
+			function(data) {
+				if ( _qifu_success_flag != data.success ) {
+					setWarningMessageField(formGroups, msgFields, data.checkFields);
+					parent.toastrWarning( data.message );
+					return;
+				}
+				parent.toastrInfo( data.message );
+				btnClear();
+			}, 
+			function() {
+				window.location = parent.getProgUrl('HF_PROG001D0006A');
+			},
+			_qifu_defaultSelfPleaseWaitShow
+	);
 }
 
 function btnClear() {
+	clearWarningMessageField(formGroups, msgFields);
 	$("#name").val('');
 	$("#date1").val('');
 	$("#date2").val('');	
@@ -121,6 +160,8 @@ function btnClear() {
 	paintEmployee();	
 	$("#btnClearKeyRes").click();
 	$("#btnClearInitiative").click();
+	$("#btnAddKeyRes").click();
+	$("#btnAddInitiative").click();
 }
 
 //====================================================================
@@ -232,6 +273,7 @@ function removeArrayByPos(arr, pos) {
 <#import "../common-f-head.ftl" as cfh />
 <@cfh.commonFormHeadContent /> 
 
+<div class="form-group" id="form-group1">
 	<div class="row">
 		<div class="col p-2 bg-secondary rounded">
 			<div class="row">
@@ -279,12 +321,14 @@ function removeArrayByPos(arr, pos) {
 			<@qifu.textarea name="description" value="" id="description" label="Description" rows="3" placeholder="Enter description"></@qifu.textarea>
 		</div>	
 	</div>		
+</div>
+<div class="form-group" id="form-group2">	
 	<div class="row">	
 		<div id="main-content" class="col-xs-12 col-md-12 col-lg-12">
 		
 			<br>
 			
-			<h5><span class="badge badge-pill badge-success">Key Result</span></h5>
+			<h4><span class="badge badge-pill badge-success">Key Result</span></h4>
 			
 			<table v-if=" keyResultList.length > 0 " class="table">
 	        	<thead>
@@ -292,7 +336,7 @@ function removeArrayByPos(arr, pos) {
 	        			<th>#</th>
 	        			<th>Name</th>
 	        			<th>Target</th>
-	        			<th>Value type</th>
+	        			<th>Method</th>
 	        			<th>Operator</th>
 	        			<th>Description</th>
 	        		</tr>
@@ -333,7 +377,7 @@ function removeArrayByPos(arr, pos) {
 			<br>
 			<br>
 			
-			<h5><span class="badge badge-pill badge-success">Initiatives</span></h5>
+			<h4><span class="badge badge-pill badge-success">Initiatives</span></h4>
 			
 			<table v-if=" initiativesList.length > 0 " class="table">
 	        	<thead>
@@ -356,6 +400,7 @@ function removeArrayByPos(arr, pos) {
 			
 		</div>
 	</div>
+</div>
 
 <br/>
 <br/>

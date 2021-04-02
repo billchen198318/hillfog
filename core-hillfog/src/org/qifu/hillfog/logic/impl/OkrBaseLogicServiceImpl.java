@@ -1,0 +1,180 @@
+/* 
+ * Copyright 2019-2021 qifu of copyright Chen Xin Nien
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * 
+ * -----------------------------------------------------------------------
+ * 
+ * author: 	Chen Xin Nien
+ * contact: chen.xin.nien@gmail.com
+ * 
+ */
+package org.qifu.hillfog.logic.impl;
+
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.qifu.base.exception.ServiceException;
+import org.qifu.base.message.BaseSystemMessage;
+import org.qifu.base.model.DefaultResult;
+import org.qifu.base.model.ServiceAuthority;
+import org.qifu.base.model.ServiceMethodAuthority;
+import org.qifu.base.model.ServiceMethodType;
+import org.qifu.base.service.BaseLogicService;
+import org.qifu.hillfog.entity.HfEmployee;
+import org.qifu.hillfog.entity.HfInitiatives;
+import org.qifu.hillfog.entity.HfKeyRes;
+import org.qifu.hillfog.entity.HfObjDept;
+import org.qifu.hillfog.entity.HfObjOwner;
+import org.qifu.hillfog.entity.HfObjective;
+import org.qifu.hillfog.entity.HfOrgDept;
+import org.qifu.hillfog.logic.IOkrBaseLogicService;
+import org.qifu.hillfog.service.IEmployeeService;
+import org.qifu.hillfog.service.IInitiativesService;
+import org.qifu.hillfog.service.IKeyResService;
+import org.qifu.hillfog.service.IObjDeptService;
+import org.qifu.hillfog.service.IObjOwnerService;
+import org.qifu.hillfog.service.IObjectiveService;
+import org.qifu.hillfog.service.IOrgDeptService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
+@Service
+@ServiceAuthority(check = true)
+@Transactional(propagation=Propagation.REQUIRED, readOnly=true)
+public class OkrBaseLogicServiceImpl extends BaseLogicService implements IOkrBaseLogicService {
+	protected Logger logger = LogManager.getLogger(OkrBaseLogicServiceImpl.class);
+	
+	private static final int MAX_LENGTH = 500; // for description field
+	private static final int MAX_CONTENT_LENGTH = 2000; // for initiative content field
+	
+	@Autowired
+	IObjectiveService<HfObjective, String> objectiveService;
+	
+	@Autowired
+	IObjOwnerService<HfObjOwner, String> objOwnerService;
+	
+	@Autowired
+	IObjDeptService<HfObjDept, String> objDeptService;
+	
+	@Autowired
+	IKeyResService<HfKeyRes, String> keyResService;
+	
+	@Autowired
+	IInitiativesService<HfInitiatives, String> initiativesService;
+	
+	@Autowired
+	IEmployeeService<HfEmployee, String> employeeService;
+	
+	@Autowired
+	IOrgDeptService<HfOrgDept, String> orgDeptService;	
+	
+	@ServiceMethodAuthority(type = ServiceMethodType.INSERT)
+	@Transactional(
+			propagation=Propagation.REQUIRED, 
+			readOnly=false,
+			rollbackFor={RuntimeException.class, IOException.class, Exception.class} )  	
+	@Override
+	public DefaultResult<HfObjective> create(HfObjective objective, List<String> objDeptList, List<String> objOwnerList, List<Map<String, Object>> keyResultMapList, List<Map<String, Object>> initiativesMapList) throws ServiceException, Exception {
+		if (null == objective || null == objDeptList || null == objOwnerList || null == keyResultMapList || null == initiativesMapList) {
+			throw new ServiceException( BaseSystemMessage.objectNull() );
+		}
+		if (keyResultMapList.size() < 1) {
+			throw new ServiceException("Need key result!");
+		}
+		this.setStringValueMaxLength(objective, "description", MAX_LENGTH);
+		objective.setStartDate( this.defaultString(objective.getStartDate()).replaceAll("-", "").replaceAll("/", "") );
+		objective.setEndDate( this.defaultString(objective.getEndDate()).replaceAll("-", "").replaceAll("/", "") );
+		DefaultResult<HfObjective> mResult = this.objectiveService.insert(objective);
+		objective = mResult.getValueEmptyThrowMessage();
+		int size = this.createObjectiveOwner(objective, objOwnerList);
+		size += this.createObjectiveDept(objective, objDeptList);
+		if (size < 1) {
+			throw new ServiceException("Objective's organization or owner need one record!");
+		}
+		this.createKeyResult(objective, keyResultMapList);
+		this.createInitiative(objective, initiativesMapList);
+		return mResult;
+	}
+	
+	private void createKeyResult(HfObjective objective, List<Map<String, Object>> keyResultMapList) throws ServiceException, Exception {
+		for (int i = 0 ; i < keyResultMapList.size(); i++) {
+			Map<String, Object> dataMap = keyResultMapList.get(i);
+			HfKeyRes keyRes = new HfKeyRes();
+			keyRes.setObjOid( objective.getOid() );
+			keyRes.setName( String.valueOf(dataMap.get("name")) );
+			keyRes.setTarget( new BigDecimal(NumberUtils.toInt(String.valueOf(dataMap.get("target")), 0)) );
+			keyRes.setGpType( String.valueOf(dataMap.get("gpType")) );
+			keyRes.setOpTarget( String.valueOf(dataMap.get("opTarget")) );
+			keyRes.setDescription( String.valueOf(dataMap.get("description")) );
+			this.setStringValueMaxLength(keyRes, "description", MAX_LENGTH);
+			this.keyResService.insert(keyRes);
+		}
+	}
+	
+	private void createInitiative(HfObjective objective, List<Map<String, Object>> initiativesMapList) throws ServiceException, Exception {
+		for (int i = 0 ; i < initiativesMapList.size(); i++) {
+			Map<String, Object> dataMap = initiativesMapList.get(i);
+			HfInitiatives initiative = new HfInitiatives();
+			initiative.setObjOid( objective.getOid() );
+			initiative.setContent( String.valueOf(dataMap.get("content")) );
+			this.setStringValueMaxLength(initiative, "content", MAX_CONTENT_LENGTH);
+			this.initiativesService.insert(initiative);
+		}
+	}
+	
+	private int createObjectiveOwner(HfObjective objective, List<String> objOwnerList) throws ServiceException, Exception {
+		int size = 0;
+		for (String str : objOwnerList) {
+			String tmp[] = str.split("/");
+			if (tmp == null || tmp.length != 3) {
+				throw new ServiceException( BaseSystemMessage.searchNoData() );
+			}
+			String account = StringUtils.deleteWhitespace(tmp[1]);
+			if (this.isBlank(account)) {
+				continue;
+			}
+			HfObjOwner objOwner = new HfObjOwner();
+			objOwner.setAccount(account);
+			objOwner.setObjOid(objective.getOid());
+			this.objOwnerService.insert(objOwner);
+			size++;
+		}
+		return size;
+	}
+	
+	private int createObjectiveDept(HfObjective objective, List<String> objDeptList) throws ServiceException, Exception {
+		int size = 0;
+		for (String str : objDeptList) {
+			String orgId = StringUtils.deleteWhitespace(str.split("/")[0]);
+			if (this.isBlank(orgId)) {
+				continue;
+			}
+			HfObjDept objDept = new HfObjDept();
+			objDept.setOrgId(orgId);
+			objDept.setObjOid(objective.getOid());
+			this.objDeptService.insert(objDept);
+			size++;
+		}
+		return size;
+	}
+
+}
