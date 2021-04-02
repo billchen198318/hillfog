@@ -1,17 +1,23 @@
 var keyResultItemList = [];
+var initiativesItemList = [];
 const PageEventHandling = {
 	data() {
 		return {
-			keyResultList  :	keyResultItemList
+			keyResultList	:	keyResultItemList,
+			initiativesList	:	initiativesItemList
 		}
 	},
 	methods: {
-		addKeyResult	:	addKeyRes,
-		removeKeyResult	:	removeKeyRes,
-		clearKeyResult	:	clearKeyRes
+		addKeyResult		:	addKeyRes,
+		removeKeyResult		:	removeKeyRes,
+		clearKeyResult		:	clearKeyRes,
+		addInitiative		:	addInitiativeItem,
+		removeInitiative	:	removeInitiativeItem,
+		clearInitiative		:	clearInitiativeItem
 	},
 	mounted() {
 		this.addKeyResult();
+		this.addInitiative();
 	}
 }
 
@@ -23,8 +29,12 @@ function addKeyRes() {
 		'opTarget'		:	'1',
 		'description'	:	''
 	});
-	
-	console.log(this.keyResultList);
+}
+
+function addInitiativeItem() {
+	this.initiativesList.push({
+		'content'	:	''
+	});	
 }
 
 function removeKeyRes(index) {
@@ -33,6 +43,14 @@ function removeKeyRes(index) {
 
 function clearKeyRes() {
 	this.keyResultList = [];
+}
+
+function removeInitiativeItem(index) {
+	removeArrayByPos(this.initiativesList, index);
+}
+
+function clearInitiativeItem() {
+	this.initiativesList = [];
 }
 
 const app = Vue.createApp(PageEventHandling);

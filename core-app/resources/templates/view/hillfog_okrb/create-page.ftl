@@ -95,7 +95,8 @@ $( document ).ready(function() {
 		$(this).autocomplete("search", " ");
 	});			
 	
-	$("#clearKeyRes").hide();
+	$("#btnClearKeyRes").hide();
+	$("#btnClearInitiative").hide();
 	
 });
 
@@ -118,7 +119,8 @@ function btnClear() {
 	selEmpList = [];
 	paintOrganization();
 	paintEmployee();	
-	$("#clearKeyRes").click();
+	$("#btnClearKeyRes").click();
+	$("#btnClearInitiative").click();
 }
 
 //====================================================================
@@ -325,7 +327,32 @@ function removeArrayByPos(arr, pos) {
 			<br>
 			
 			<button type="button" class="btn btn-primary" id="btnAddKeyRes" title="add key result" v-on:click="addKeyResult"><i class="icon fa fa-plus"></i>&nbsp;Add Key Result</button>
-			<button type="button" class="btn btn-primary" id="clearKeyRes" title="clear key result" v-on:click="clearKeyResult"><i class="icon fa fa-hand-paper-o"></i>&nbsp;Clear Key Result</button>
+			<button type="button" class="btn btn-primary" id="btnClearKeyRes" title="clear key result" v-on:click="clearKeyResult"><i class="icon fa fa-hand-paper-o"></i>&nbsp;Clear Key Result</button>
+			
+			<br>
+			<br>
+			<br>
+			
+			<h5><span class="badge badge-pill badge-success">Initiatives</span></h5>
+			
+			<table v-if=" initiativesList.length > 0 " class="table">
+	        	<thead>
+	        		<tr>
+	        			<th>#</th>
+	        			<th>Content</th>
+	        		</tr>
+	        	</thead>
+	        	<tr v-for="(d, index) in initiativesList">  
+	        		<td width="10%">
+	        			<button type="button" class="btn btn-dark" id="btnRemoveInitiative" title="remove initiative" v-on:click="removeInitiative(index)"><i class="icon fa fa-remove"></i></button>
+	        		</td>
+	        		<td width="90%"><textarea class="form-control" rows="2" placeholder="Enter content" v-model="d.content"></textarea></td>  
+	        	</tr>  
+			</table>	
+			
+			<button type="button" class="btn btn-primary" id="btnAddInitiative" title="add initiative" v-on:click="addInitiative"><i class="icon fa fa-plus"></i>&nbsp;Add Initiative</button>
+			<button type="button" class="btn btn-primary" id="btnClearInitiative" title="clear initiative" v-on:click="clearInitiative"><i class="icon fa fa-hand-paper-o"></i>&nbsp;Clear Initiatives</button>
+						
 			
 		</div>
 	</div>
