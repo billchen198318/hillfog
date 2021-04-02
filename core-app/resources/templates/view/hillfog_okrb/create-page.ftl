@@ -309,16 +309,16 @@ function removeArrayByPos(arr, pos) {
 	        				<option value="4">4 - Min</option>
 	        			</select>		
 	        		</td>
-	        		<td width="15%">
+	        		<td width="10%">
 	        			<select class="form-control" v-model="d.opTarget">
-	        				<option value="1">1 - &gt;</option>
-	        				<option value="2">2 - &lt;</option>
-	        				<option value="3">3 - =</option>
-	        				<option value="4">4 - &gt;=</option>
-	        				<option value="5">5 - &lt;=</option>
+	        				<option value="1">&nbsp;&gt;</option>
+	        				<option value="2">&nbsp;&lt;</option>
+	        				<option value="3">&nbsp;=</option>
+	        				<option value="4">&nbsp;&gt;=</option>
+	        				<option value="5">&nbsp;&lt;=</option>
 	        			</select>		
 	        		</td>
-	        		<td width="20%"><textarea class="form-control" rows="2" placeholder="Enter description" v-model="d.description"></textarea></td>  
+	        		<td width="25%"><textarea class="form-control" rows="1" placeholder="Enter description" v-model="d.description"></textarea></td>  
 	        	</tr>  
 			</table>			
 			
