@@ -93,23 +93,9 @@ $( document ).ready(function() {
 		$(this).autocomplete("search", " ");
 	});		
 	
-	btnQuery();
-	
 });
 
-function btnQuery() {
-	// query objective items.
-}
-
-function btnClear() {
-	$("#date1").val('');
-	$("#date2").val('');	
-	$("#objOrg").val('');
-	$("#objOwner").val('');
-}
-
 function btnAdd() {
-	// to add objective item.
 	window.location = parent.getProgUrl('HF_PROG001D0006A');
 }
 
@@ -122,6 +108,9 @@ function btnAdd() {
 <#import "../common-f-head.ftl" as cfh />
 <@cfh.commonFormHeadContent /> 
 
+<div id="main-content" class="col-xs-12">
+
+
 	<div class="row">
 		<div class="col p-2 bg-secondary rounded">
 			<div class="row">
@@ -130,8 +119,8 @@ function btnAdd() {
 					<span class="badge badge-info"><h6>Objectives</h6></span>
 					&nbsp;
 					-->
-					<span class="btn badge btn-info" onclick="btnQuery();"><h6><i class="icon fa fa-refresh"></i>&nbsp;Refresh</h6></span>	
-					<span class="btn badge btn-info" onclick="btnClear();"><h6><i class="icon fa fa-hand-paper-o"></i>&nbsp;Clear</h6></span>	
+					<span class="btn badge btn-info" v-on:click="queryObjectives"><h6><i class="icon fa fa-search"></i>&nbsp;Query</h6></span>	
+					<span class="btn badge btn-info" v-on:click="clearObjectives"><h6><i class="icon fa fa-hand-paper-o"></i>&nbsp;Clear</h6></span>	
 					&nbsp;
 					&nbsp;
 					<span class="btn badge btn-info" onclick="btnAdd();"><h6><i class="icon fa fa-plus-circle"></i>&nbsp;Add objective</h6></span>
@@ -156,6 +145,27 @@ function btnAdd() {
 		</div>
 	</div>
 	
+	<br>
+
+	<div class="row">
+		
+		
+			<div class="card-columns col-xs-12 col-md-12 col-lg-12" v-if=" objectives.length > 0 ">
+			
+			  <div class="card border-dark" v-for="d in objectives">
+			    <div class="card-body">
+			      <h5 class="card-title">{{ d.name }}</h5>
+			      <p class="card-text">{{ d.description }}</p>
+			    </div>
+			  </div>
+			  
+			</div>
+		
+  		
+	</div>
+	
+	
+</div>
 	
 <br/>
 <br/>

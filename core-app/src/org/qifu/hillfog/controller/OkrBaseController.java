@@ -217,4 +217,22 @@ public class OkrBaseController extends BaseControllerSupport implements IPageNam
 		return result;		
 	}
 	
+	@ControllerMethodAuthority(check = true, programId = "HF_PROG001D0006Q")
+	@RequestMapping(value = "/hfOkrBaseQueryJson", produces = MediaType.APPLICATION_JSON_VALUE)		
+	public @ResponseBody DefaultControllerJsonResultObj<List<HfObjective>> doQuery(HttpServletRequest request) {
+		DefaultControllerJsonResultObj<List<HfObjective>> result = this.getDefaultJsonResult(this.currentMethodAuthority());
+		if (!this.isAuthorizeAndLoginFromControllerJsonResult(result)) {
+			return result;
+		}
+		try {
+			DefaultResult<List<HfObjective>> qResult = this.objectiveService.selectList("NAME", SortType.ASC);
+			this.setDefaultResponseJsonResult(result, qResult);
+		} catch (AuthorityException | ServiceException | ControllerException e) {
+			this.baseExceptionResult(result, e);	
+		} catch (Exception e) {
+			this.exceptionResult(result, e);
+		}
+		return result;		
+	}	
+	
 }
