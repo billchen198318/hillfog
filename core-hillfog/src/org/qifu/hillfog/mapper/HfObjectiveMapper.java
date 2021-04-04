@@ -21,11 +21,16 @@
  */
 package org.qifu.hillfog.mapper;
 
+import java.util.List;
+import java.util.Map;
+
 import org.apache.ibatis.annotations.Mapper;
 import org.qifu.base.mapper.IBaseMapper;
 import org.qifu.hillfog.entity.HfObjective;
 
 @Mapper
 public interface HfObjectiveMapper extends IBaseMapper<HfObjective, String> {
+	
+	public List<HfObjective> selectQueryObjectiveList(Map<String, Object> paramMap);
 	
 }

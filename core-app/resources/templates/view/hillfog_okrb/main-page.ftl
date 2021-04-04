@@ -120,8 +120,8 @@ function btnAdd() {
 					&nbsp;
 					-->
 					<span class="btn badge btn-info" v-on:click="queryObjectives"><h6><i class="icon fa fa-search"></i>&nbsp;Query</h6></span>	
-					<span class="btn badge btn-info" v-on:click="clearObjectives"><h6><i class="icon fa fa-hand-paper-o"></i>&nbsp;Clear</h6></span>	
 					&nbsp;
+					<span class="btn badge btn-info" v-on:click="clearObjectives"><h6><i class="icon fa fa-hand-paper-o"></i>&nbsp;Clear</h6></span>	
 					&nbsp;
 					<span class="btn badge btn-info" onclick="btnAdd();"><h6><i class="icon fa fa-plus-circle"></i>&nbsp;Add objective</h6></span>
 				</div>
@@ -155,7 +155,20 @@ function btnAdd() {
 			  <div class="card border-dark" v-for="d in objectives">
 			    <div class="card-body">
 			      <h5 class="card-title">{{ d.name }}</h5>
+			      
+			      <h5><span class="badge badge-secondary">Objective:&nbsp;<span class="badge badge-info">{{ d.objectiveSize }}</span></span></h5>
+			      <h5><span class="badge badge-secondary">Initiative:&nbsp;<span class="badge badge-info">{{ d.initiativeSize }}</span></span></h5>
+			      
 			      <p class="card-text">{{ d.description }}</p>
+			      
+			      <br>
+			      
+<button type="button" class="btn btn-primary" title="Edit"><i class="icon fa fa-edit"></i></button>
+&nbsp;
+<button type="button" class="btn btn-primary" title="Enter key result masure data."><i class="icon fa fa-calendar"></i></button>
+&nbsp;
+<button type="button" class="btn btn-danger" title="Delete"><i class="icon fa fa-trash-o"></i></button>	      
+			      
 			    </div>
 			  </div>
 			  

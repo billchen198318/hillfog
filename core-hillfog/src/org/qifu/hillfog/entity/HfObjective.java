@@ -22,7 +22,30 @@ public class HfObjective implements java.io.Serializable {
     private String uuserid;
     private Date udate;
     
-    @EntityPK(name = "oid", autoUUID = true)
+    // =====================================================================
+    // 查詢顯示用
+    private int objectiveSize = 0;
+    private int initiativeSize = 0;
+    
+    public int getObjectiveSize() {
+		return objectiveSize;
+	}
+
+	public void setObjectiveSize(int objectiveSize) {
+		this.objectiveSize = objectiveSize;
+	}
+
+	public int getInitiativeSize() {
+		return initiativeSize;
+	}
+
+	public void setInitiativeSize(int initiativeSize) {
+		this.initiativeSize = initiativeSize;
+	}    
+    
+    // =====================================================================
+
+	@EntityPK(name = "oid", autoUUID = true)
     public String getOid() {
         return oid;
     }

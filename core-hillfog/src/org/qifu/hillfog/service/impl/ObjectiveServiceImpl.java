@@ -21,7 +21,16 @@
  */
 package org.qifu.hillfog.service.impl;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.commons.lang3.StringUtils;
+import org.qifu.base.exception.ServiceException;
 import org.qifu.base.mapper.IBaseMapper;
+import org.qifu.base.message.BaseSystemMessage;
+import org.qifu.base.model.DefaultResult;
+import org.qifu.base.model.YesNo;
 import org.qifu.base.service.BaseService;
 import org.qifu.hillfog.entity.HfObjective;
 import org.qifu.hillfog.mapper.HfObjectiveMapper;
@@ -43,6 +52,32 @@ public class ObjectiveServiceImpl extends BaseService<HfObjective, String> imple
 	@Override
 	protected IBaseMapper<HfObjective, String> getBaseMapper() {
 		return this.hfObjectiveMapper;
+	}
+
+	@Override
+	public DefaultResult<List<HfObjective>> selectQueryObjectiveList(String ownerAccount, String departmentId, String startDate, String endDate) throws ServiceException, Exception {
+		DefaultResult<List<HfObjective>> result = new DefaultResult<List<HfObjective>>();
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		if (!StringUtils.isBlank(ownerAccount)) {
+			paramMap.put("ownerAccount", ownerAccount);
+		}
+		if (!StringUtils.isBlank(ownerAccount)) {
+			paramMap.put("departmentId", departmentId);
+		}
+		if (!StringUtils.isBlank(startDate)) {
+			paramMap.put("startDate", this.defaultString(endDate).replaceAll("-", "").replaceAll("/", ""));
+		}
+		if (!StringUtils.isBlank(endDate)) {
+			paramMap.put("endDate", this.defaultString(startDate).replaceAll("-", "").replaceAll("/", ""));
+		}
+		List<HfObjective> searchList = this.hfObjectiveMapper.selectQueryObjectiveList(paramMap);
+		if (searchList.size() < 1) {
+			result.setMessage( BaseSystemMessage.searchNoData() );
+		} else {
+			result.setValue( searchList );
+		}
+		result.setSuccess( YesNo.YES );
+		return result;
 	}
 	
 }

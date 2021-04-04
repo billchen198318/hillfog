@@ -21,9 +21,15 @@
  */
 package org.qifu.hillfog.service;
 
+import java.util.List;
+
+import org.qifu.base.exception.ServiceException;
+import org.qifu.base.model.DefaultResult;
 import org.qifu.base.service.IBaseService;
 import org.qifu.hillfog.entity.HfObjective;
 
 public interface IObjectiveService<T, E> extends IBaseService<HfObjective, String> {
+	
+	public DefaultResult<List<HfObjective>> selectQueryObjectiveList(String ownerAccount, String departmentId, String startDate, String endDate) throws ServiceException, Exception;
 	
 }

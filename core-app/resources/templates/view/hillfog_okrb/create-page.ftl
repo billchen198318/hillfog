@@ -279,9 +279,10 @@ function removeArrayByPos(arr, pos) {
 			<div class="row">
 				<div class="col-xs-12 col-md-12 col-lg-12 text-white">
 					<span class="btn badge btn-info" onclick="btnObjectiveList();"><h6><i class="icon fa fa-backward"></i>&nbsp;Back objective list</h6></span>	
-					<span class="btn badge btn-info" onclick="btnSave();"><h6><i class="icon fa fa-floppy-o"></i>&nbsp;Save</h6></span>
-					<span class="btn badge btn-info" onclick="btnClear();"><h6><i class="icon fa fa-hand-paper-o"></i>&nbsp;Clear</h6></span>
 					&nbsp;
+					<span class="btn badge btn-info" onclick="btnSave();"><h6><i class="icon fa fa-floppy-o"></i>&nbsp;Save</h6></span>
+					&nbsp;
+					<span class="btn badge btn-info" onclick="btnClear();"><h6><i class="icon fa fa-hand-paper-o"></i>&nbsp;Clear</h6></span>
 					&nbsp;
 				</div>
 			</div>

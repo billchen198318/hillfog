@@ -217,6 +217,12 @@ public class OkrBaseController extends BaseControllerSupport implements IPageNam
 		return result;		
 	}
 	
+	private void queryObjectives(DefaultControllerJsonResultObj<List<HfObjective>> result, HttpServletRequest request) throws ServiceException, Exception {
+		DefaultResult<List<HfObjective>> qResult = this.objectiveService.selectQueryObjectiveList(
+				request.getParameter("ownerAccount"), request.getParameter("departmentId"), request.getParameter("startDate"), request.getParameter("endDate"));
+		this.setDefaultResponseJsonResult(result, qResult);
+	}
+	
 	@ControllerMethodAuthority(check = true, programId = "HF_PROG001D0006Q")
 	@RequestMapping(value = "/hfOkrBaseQueryJson", produces = MediaType.APPLICATION_JSON_VALUE)		
 	public @ResponseBody DefaultControllerJsonResultObj<List<HfObjective>> doQuery(HttpServletRequest request) {
@@ -225,8 +231,7 @@ public class OkrBaseController extends BaseControllerSupport implements IPageNam
 			return result;
 		}
 		try {
-			DefaultResult<List<HfObjective>> qResult = this.objectiveService.selectList("NAME", SortType.ASC);
-			this.setDefaultResponseJsonResult(result, qResult);
+			this.queryObjectives(result, request);
 		} catch (AuthorityException | ServiceException | ControllerException e) {
 			this.baseExceptionResult(result, e);	
 		} catch (Exception e) {
