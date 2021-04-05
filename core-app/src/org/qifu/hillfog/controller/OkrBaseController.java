@@ -21,6 +21,8 @@
  */
 package org.qifu.hillfog.controller;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,10 +43,14 @@ import org.qifu.base.model.DefaultControllerJsonResultObj;
 import org.qifu.base.model.DefaultResult;
 import org.qifu.base.model.SortType;
 import org.qifu.hillfog.entity.HfEmployee;
+import org.qifu.hillfog.entity.HfInitiatives;
+import org.qifu.hillfog.entity.HfKeyRes;
 import org.qifu.hillfog.entity.HfObjective;
 import org.qifu.hillfog.entity.HfOrgDept;
 import org.qifu.hillfog.logic.IOkrBaseLogicService;
 import org.qifu.hillfog.service.IEmployeeService;
+import org.qifu.hillfog.service.IInitiativesService;
+import org.qifu.hillfog.service.IKeyResService;
 import org.qifu.hillfog.service.IObjectiveService;
 import org.qifu.hillfog.service.IOrgDeptService;
 import org.qifu.util.SimpleUtils;
@@ -73,20 +79,30 @@ public class OkrBaseController extends BaseControllerSupport implements IPageNam
 	@Autowired
 	IOkrBaseLogicService okrBaseLogicService;
 	
+	@Autowired
+	IKeyResService<HfKeyRes, String> keyResService;
+	
+	@Autowired
+	IInitiativesService<HfInitiatives, String> initiativesService;	
+	
 	@Override
 	public String viewPageNamespace() {
 		return "hillfog_okrb";
 	}
 	
 	private void init(String type, ModelMap mm) throws AuthorityException, ControllerException, ServiceException, Exception {
-		if ("mainPage".equals(type) || "createPage".equals(type)) {
+		if ("mainPage".equals(type) || "createPage".equals(type) || "editPage".equals(type)) {
 			mm.put("orgInputAutocomplete", pageAutocompleteContent(this.orgDeptService.findInputAutocomplete()));
 			mm.put("empInputAutocomplete", pageAutocompleteContent(this.employeeService.findInputAutocomplete()));			
 		}		
 	}
 	
 	private void fetch(ModelMap mm, String oid) throws AuthorityException, ControllerException, ServiceException, Exception {
-		
+		HfObjective objective = this.objectiveService.selectByPrimaryKey(oid).getValueEmptyThrowMessage();
+		mm.put("objective", objective);
+		// 取出 objective - owner & department
+		mm.put("selOrgInputAutocomplete", pageAutocompleteContent(this.orgDeptService.findInputAutocompleteByObjectiveOid(objective.getOid())));
+		mm.put("selEmpInputAutocomplete", pageAutocompleteContent(this.employeeService.findInputAutocompleteByObjectiveOid(objective.getOid())));
 	}
 	
 	@ControllerMethodAuthority(check = true, programId = "HF_PROG001D0006Q")
@@ -224,6 +240,22 @@ public class OkrBaseController extends BaseControllerSupport implements IPageNam
 		this.setDefaultResponseJsonResult(result, qResult);
 	}
 	
+	private void queryAllData(DefaultControllerJsonResultObj<HfObjective> result, HfObjective objective) throws ServiceException, Exception {
+		objective = this.objectiveService.selectByEntityPrimaryKey(objective).getValueEmptyThrowMessage();
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("objOid", objective.getOid());
+		objective.setInitiativeList( this.initiativesService.selectListByParams(paramMap).getValue() );
+		objective.setKeyResList( this.keyResService.selectListByParams(paramMap, "NAME", SortType.ASC).getValue() );
+		if (objective.getInitiativeList() == null) {
+			objective.setInitiativeList(new ArrayList<HfInitiatives>());
+		}
+		if (objective.getKeyResList() == null) {
+			objective.setKeyResList(new ArrayList<HfKeyRes>());
+		}
+		result.setValue( objective );
+		result.setSuccess( YES );
+	}
+	
 	@ControllerMethodAuthority(check = true, programId = "HF_PROG001D0006Q")
 	@RequestMapping(value = "/hfOkrBaseQueryJson", produces = MediaType.APPLICATION_JSON_VALUE)		
 	public @ResponseBody DefaultControllerJsonResultObj<List<HfObjective>> doQuery(HttpServletRequest request) {
@@ -275,6 +307,23 @@ public class OkrBaseController extends BaseControllerSupport implements IPageNam
 			viewName = this.getExceptionPage(e, mm);
 		}
 		return viewName;
+	}	
+	
+	@ControllerMethodAuthority(check = true, programId = "HF_PROG001D0006E")
+	@RequestMapping(value = "/hfOkrBaseQueryAllDataJson", produces = MediaType.APPLICATION_JSON_VALUE)		
+	public @ResponseBody DefaultControllerJsonResultObj<HfObjective> doQueryAllData(HttpServletRequest request, HfObjective objective) {
+		DefaultControllerJsonResultObj<HfObjective> result = this.getDefaultJsonResult(this.currentMethodAuthority());
+		if (!this.isAuthorizeAndLoginFromControllerJsonResult(result)) {
+			return result;
+		}
+		try {
+			this.queryAllData(result, objective);
+		} catch (AuthorityException | ServiceException | ControllerException e) {
+			this.baseExceptionResult(result, e);	
+		} catch (Exception e) {
+			this.exceptionResult(result, e);
+		}
+		return result;		
 	}	
 	
 }

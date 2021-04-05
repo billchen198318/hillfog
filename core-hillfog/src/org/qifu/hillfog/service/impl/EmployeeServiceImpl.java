@@ -123,6 +123,32 @@ public class EmployeeServiceImpl extends BaseService<HfEmployee, String> impleme
 			dataList.add( this.getPagefieldValue(employee) );
 		}		
 		return dataList;
+	}
+
+	/**
+	 * Objective的負責人
+	 * 
+	 * @param oid
+	 * @return
+	 * @throws ServiceException
+	 * @throws Exception
+	 */	
+	@Override
+	public List<String> findInputAutocompleteByObjectiveOid(String oid) throws ServiceException, Exception {
+		if (StringUtils.isBlank(oid)) {
+			throw new ServiceException( BaseSystemMessage.parameterBlank() );
+		}
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("objOid", oid);
+		List<HfEmployee> empList = this.employeeMapper.findObjectiveOwner(paramMap);
+		List<String> dataList = new ArrayList<String>();
+		if (empList == null || empList.size() < 1) {
+			return dataList;
+		}
+		for (HfEmployee employee : empList) {
+			dataList.add( this.getPagefieldValue(employee) );
+		}		
+		return dataList;
 	}	
 	
 }

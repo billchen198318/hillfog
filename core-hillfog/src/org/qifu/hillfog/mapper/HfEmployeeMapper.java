@@ -39,4 +39,12 @@ public interface HfEmployeeMapper extends IBaseMapper<HfEmployee, String> {
 	 */
 	public List<HfEmployee> findKpiOwner(Map<String, Object> paramMap);
 	
+	/**
+	 * Objective的負責人
+	 * 
+	 * @param paramMap
+	 * @return
+	 */
+	public List<HfEmployee> findObjectiveOwner(Map<String, Object> paramMap);
+	
 }

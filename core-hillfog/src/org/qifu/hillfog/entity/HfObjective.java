@@ -1,6 +1,7 @@
 package org.qifu.hillfog.entity;
 
 import java.util.Date;
+import java.util.List;
 
 import org.qifu.base.model.CreateDateField;
 import org.qifu.base.model.CreateUserField;
@@ -41,6 +42,26 @@ public class HfObjective implements java.io.Serializable {
 
 	public void setInitiativeSize(int initiativeSize) {
 		this.initiativeSize = initiativeSize;
+	}    
+	
+	// 編輯頁面顯示用
+	private List<HfKeyRes> keyResList = null;
+    private List<HfInitiatives> initiativeList = null;
+	
+	public List<HfKeyRes> getKeyResList() {
+		return keyResList;
+	}
+	
+	public void setKeyResList(List<HfKeyRes> keyResList) {
+		this.keyResList = keyResList;
+	}
+	
+	public List<HfInitiatives> getInitiativeList() {
+		return initiativeList;
+	}
+	
+	public void setInitiativeList(List<HfInitiatives> initiativeList) {
+		this.initiativeList = initiativeList;
 	}    
     
     // =====================================================================

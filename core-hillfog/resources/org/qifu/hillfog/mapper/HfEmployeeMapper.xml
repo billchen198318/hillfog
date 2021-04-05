@@ -200,4 +200,15 @@
 	ORDER BY M.EMP_ID ASC    
   </select>
   
+  <!-- OBJECTIVE的負責人 -->
+  <select id="findObjectiveOwner" parameterType="java.util.HashMap" resultMap="BaseResultMap">
+	SELECT M.*
+	FROM 
+	<include refid="org.qifu.hillfog.mapper.DB1Config.schema"/>hf_employee M, 
+	<include refid="org.qifu.hillfog.mapper.DB1Config.schema"/>hf_obj_owner B
+	WHERE M.ACCOUNT = B.ACCOUNT
+	AND B.OBJ_OID = #{objOid,jdbcType=VARCHAR}
+	ORDER BY M.EMP_ID ASC    
+  </select>  
+  
 </mapper>

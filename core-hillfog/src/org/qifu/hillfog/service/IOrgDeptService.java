@@ -54,4 +54,14 @@ public interface IOrgDeptService<T, E> extends IBaseService<HfOrgDept, String> {
 	 */
 	public List<String> findInputAutocompleteByKpiId(String kpiId) throws ServiceException, Exception;
 	
+	/**
+	 * Objective的負責部門
+	 * 
+	 * @param oid
+	 * @return
+	 * @throws ServiceException
+	 * @throws Exception
+	 */
+	public List<String> findInputAutocompleteByObjectiveOid(String oid) throws ServiceException, Exception;
+	
 }

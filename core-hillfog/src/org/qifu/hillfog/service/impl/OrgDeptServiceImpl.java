@@ -138,6 +138,32 @@ public class OrgDeptServiceImpl extends BaseService<HfOrgDept, String> implement
 			dataList.add( this.getPagefieldValue(orgDept) );
 		}
 		return dataList;
+	}
+
+	/**
+	 * Objective的負責部門
+	 * 
+	 * @param oid
+	 * @return
+	 * @throws ServiceException
+	 * @throws Exception
+	 */	
+	@Override
+	public List<String> findInputAutocompleteByObjectiveOid(String oid) throws ServiceException, Exception {
+		if (StringUtils.isBlank(oid)) {
+			throw new ServiceException( BaseSystemMessage.parameterBlank() );
+		}
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("objOid", oid);		
+		List<HfOrgDept> orgList = this.orgDeptMapper.findObjectiveDepartment(paramMap);
+		List<String> dataList = new ArrayList<String>();
+		if (orgList == null || orgList.size() < 1) {
+			return dataList;
+		}		
+		for (HfOrgDept orgDept : orgList) {
+			dataList.add( this.getPagefieldValue(orgDept) );
+		}
+		return dataList;
 	}	
 	
 }

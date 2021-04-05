@@ -52,4 +52,14 @@ public interface IEmployeeService<T, E> extends IBaseService<HfEmployee, String>
 	 */
 	public List<String> findInputAutocompleteByKpiId(String kpiId) throws ServiceException, Exception;
 	
+	/**
+	 * Objective的負責人
+	 * 
+	 * @param oid
+	 * @return
+	 * @throws ServiceException
+	 * @throws Exception
+	 */
+	public List<String> findInputAutocompleteByObjectiveOid(String oid) throws ServiceException, Exception;
+	
 }

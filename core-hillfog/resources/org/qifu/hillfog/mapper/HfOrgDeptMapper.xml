@@ -182,4 +182,15 @@
 	ORDER BY M.ORG_ID ASC
   </select>  
   
+  <!-- OBJECTIVE的負責部門 -->
+  <select id="findObjectiveDepartment" parameterType="java.util.HashMap" resultMap="BaseResultMap">
+	SELECT M.*
+	FROM 
+	<include refid="org.qifu.hillfog.mapper.DB1Config.schema"/>hf_org_dept M, 
+	<include refid="org.qifu.hillfog.mapper.DB1Config.schema"/>hf_obj_dept B
+	WHERE M.ORG_ID = B.ORG_ID
+	AND B.OBJ_OID = #{objOid,jdbcType=VARCHAR}
+	ORDER BY M.ORG_ID ASC
+  </select>  
+    
 </mapper>
