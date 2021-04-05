@@ -163,11 +163,13 @@ function btnAdd() {
 			      
 			      <br>
 			      
-<button type="button" class="btn btn-primary" title="Edit"><i class="icon fa fa-edit"></i></button>
+<button type="button" class="btn btn-primary" title="Edit" v-on:click="editObjective(d.oid)"><i class="icon fa fa-edit"></i></button>
 &nbsp;
-<button type="button" class="btn btn-primary" title="Enter key result masure data."><i class="icon fa fa-calendar"></i></button>
+<button type="button" class="btn btn-primary" title="Enter key result masure data." v-on:click="enMeasure4Objective(d.oid)"><i class="icon fa fa-calendar"></i></button>
 &nbsp;
-<button type="button" class="btn btn-danger" title="Delete"><i class="icon fa fa-trash-o"></i></button>	      
+&nbsp;
+&nbsp;
+<button type="button" class="btn btn-danger" title="Delete" v-on:click="deleteObjective(d.oid)"><i class="icon fa fa-trash-o"></i></button>	      
 			      
 			    </div>
 			  </div>

@@ -1,5 +1,5 @@
 ;             
-CREATE USER IF NOT EXISTS "SA" SALT 'fde55046eed89043' HASH 'ae02b85009f9a3634972261e0bdad95f18b7c7db775273c6f15485b9d6552b6d' ADMIN;         
+CREATE USER IF NOT EXISTS "SA" SALT '1e2bb4baeef6f7c4' HASH '1de143467d6f6c79502b810d99f3d3c447427cbde8f0b17a9d627aa4908141da' ADMIN;         
 CREATE CACHED TABLE "PUBLIC"."TB_ACCOUNT"(
     "OID" CHAR(36) NOT NULL,
     "ACCOUNT" VARCHAR(24) NOT NULL,
@@ -383,7 +383,7 @@ CREATE CACHED TABLE "PUBLIC"."TB_SYS_PROG"(
     "UDATE" DATETIME DEFAULT NULL
 );            
 ALTER TABLE "PUBLIC"."TB_SYS_PROG" ADD CONSTRAINT "PUBLIC"."CONSTRAINT_806D" PRIMARY KEY("OID");              
--- 64 +/- SELECT COUNT(*) FROM PUBLIC.TB_SYS_PROG;            
+-- 66 +/- SELECT COUNT(*) FROM PUBLIC.TB_SYS_PROG;            
 INSERT INTO "PUBLIC"."TB_SYS_PROG" VALUES
 ('005463fd-a1f4-4e9f-89a7-bd86aedfcbdf', 'CORE_PROG003D0002E', 'ZC02 - Expression (Edit)', 'sysExpressionEditPage', 'Y', 'N', 0, 0, 'CORE', 'ITEM', 'TEXT_SOURCE', 'code', 'admin', TIMESTAMP '2017-05-24 11:38:45', 'admin', TIMESTAMP '2021-01-27 03:50:24'),
 ('133801b1-02d1-11eb-9af6-8dacfb641865', 'HF_PROG001D0003A', 'BA03 - Formula (Create)', 'hfFormulaCreatePage', 'N', 'N', 0, 0, 'CORE', 'ITEM', 'TEXT_SOURCE', 'calculator', 'admin', TIMESTAMP '2020-09-30 03:57:35', 'admin', TIMESTAMP '2021-01-27 05:21:13'),
@@ -451,7 +451,9 @@ INSERT INTO "PUBLIC"."TB_SYS_PROG" VALUES
 ('fd55cb27-30d6-4d48-9ec9-26de2ba087ac', 'HF_PROG001D', 'BA. Basic', '', 'N', 'N', 0, 0, 'CORE', 'FOLDER', 'PROPERTIES', 'star', 'admin', TIMESTAMP '2020-09-23 06:53:15', 'admin', TIMESTAMP '2021-01-27 04:48:44'),
 ('fee6533d-da1c-444b-aec9-6d4f81fa051d', 'CORE_PROG003D0003S01Q', 'ZC03 - Bean support (Expression)', 'sysBeanSupportExpressionPage', 'Y', 'N', 0, 0, 'CORE', 'ITEM', 'SYSTEM', 'support', 'admin', TIMESTAMP '2017-05-25 10:41:46', 'admin', TIMESTAMP '2021-01-27 03:52:22'),
 ('b32515ff-8d0f-11eb-8e8a-9f40aff77a7b', 'HF_PROG001D0006Q', 'BA06 - OKR Base', 'hfOkrBasePage', 'N', 'N', 0, 0, 'CORE', 'ITEM', 'HELP_ABOUT', 'cube', 'admin', TIMESTAMP '2021-03-25 10:13:33.452', NULL, NULL),
-('df0edf80-92bd-11eb-9709-838bc98e4a9a', 'HF_PROG001D0006A', 'BA06 - OKR Base (Add objective)', 'hfOkrBaseAddPage', 'N', 'N', 0, 0, 'CORE', 'ITEM', 'HELP_ABOUT', 'cubes', 'admin', TIMESTAMP '2021-04-01 15:42:55.371', NULL, NULL);
+('df0edf80-92bd-11eb-9709-838bc98e4a9a', 'HF_PROG001D0006A', 'BA06 - OKR Base (Add objective)', 'hfOkrBaseAddPage', 'N', 'N', 0, 0, 'CORE', 'ITEM', 'HELP_ABOUT', 'cubes', 'admin', TIMESTAMP '2021-04-01 15:42:55.371', NULL, NULL),
+('48e41d4f-959f-11eb-b675-69460beb3f77', 'HF_PROG001D0006M', 'BA06 - OKR Base (Masure data)', 'hfOkrBaseEnterMasureDataPage', 'Y', 'N', 0, 0, 'CORE', 'ITEM', 'HELP_ABOUT', 'cube', 'admin', TIMESTAMP '2021-04-05 07:41:32.019', NULL, NULL),
+('6fc93cc1-959f-11eb-b675-d34390f2ebad', 'HF_PROG001D0006E', 'BA06 - OKR Base (Edit)', 'hfOkrBaseEditPage', 'Y', 'N', 0, 0, 'CORE', 'ITEM', 'HELP_ABOUT', 'cube', 'admin', TIMESTAMP '2021-04-05 07:42:37.274', NULL, NULL);  
 CREATE INDEX "PUBLIC"."SYS_PROG_IDX_1" ON "PUBLIC"."TB_SYS_PROG"("PROG_SYSTEM");              
 CREATE CACHED TABLE "PUBLIC"."TB_SYS_QFIELD_LOG"(
     "OID" CHAR(36) NOT NULL,

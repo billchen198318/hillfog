@@ -10,7 +10,8 @@ const PageEventHandling = {
 		editObjective		:	editObjectiveItem,
 		queryObjectives		:	queryObjectiveList,
 		setObjectives		:	setObjectiveList,
-		clearObjectives		:	clearObjectiveList
+		clearObjectives		:	clearObjectiveList,
+		enMeasure4Objective	:	enterMeasure4ObjectiveItem
 	},
 	mounted() {
 		this.queryObjectives();
@@ -21,8 +22,12 @@ function deleteObjectiveItem(oid) {
 	alert('DEL: ' + oid);
 }
 
+function enterMeasure4ObjectiveItem(oid) {
+	window.location = parent.getProgUrlForOid('HF_PROG001D0006M', oid);
+}
+
 function editObjectiveItem(oid)	{
-	alert('EDIT: ' + oid);
+	window.location = parent.getProgUrlForOid('HF_PROG001D0006E', oid);
 }
 
 function setObjectiveList(data) {

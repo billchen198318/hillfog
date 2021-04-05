@@ -53,6 +53,7 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -238,6 +239,42 @@ public class OkrBaseController extends BaseControllerSupport implements IPageNam
 			this.exceptionResult(result, e);
 		}
 		return result;		
+	}	
+	
+	@ControllerMethodAuthority(check = true, programId = "HF_PROG001D0006E")
+	@RequestMapping("/hfOkrBaseEditPage")
+	public String editPage(ModelMap mm, HttpServletRequest request, @RequestParam(name="oid") String oid) {
+		String viewName = this.viewEditPage();
+		this.getDefaultModelMap(mm, this.currentMethodAuthority());
+		try {
+			this.fetch(mm, oid);
+			this.init("editPage", mm);
+		} catch (AuthorityException e) {
+			viewName = this.getAuthorityExceptionPage(e, mm);
+		} catch (ControllerException | ServiceException e) {
+			viewName = this.getServiceOrControllerExceptionPage(e, mm);
+		} catch (Exception e) {
+			viewName = this.getExceptionPage(e, mm);
+		}
+		return viewName;
+	}		
+	
+	@ControllerMethodAuthority(check = true, programId = "HF_PROG001D0006M")
+	@RequestMapping("/hfOkrBaseEnterMasureDataPage")
+	public String enterMeasureDataPage(ModelMap mm, HttpServletRequest request, @RequestParam(name="oid") String oid) {
+		String viewName = this.viewPageWithNamespace("masure-data-page");
+		this.getDefaultModelMap(mm, this.currentMethodAuthority());
+		try {
+			this.fetch(mm, oid);
+			this.init("enterMeasureDataPage", mm);
+		} catch (AuthorityException e) {
+			viewName = this.getAuthorityExceptionPage(e, mm);
+		} catch (ControllerException | ServiceException e) {
+			viewName = this.getServiceOrControllerExceptionPage(e, mm);
+		} catch (Exception e) {
+			viewName = this.getExceptionPage(e, mm);
+		}
+		return viewName;
 	}	
 	
 }
