@@ -55,7 +55,7 @@ public class ObjectiveServiceImpl extends BaseService<HfObjective, String> imple
 	}
 
 	@Override
-	public DefaultResult<List<HfObjective>> selectQueryObjectiveList(String ownerAccount, String departmentId, String startDate, String endDate) throws ServiceException, Exception {
+	public DefaultResult<List<HfObjective>> selectQueryObjectiveList(String ownerAccount, String departmentId, String startDate, String endDate, String name) throws ServiceException, Exception {
 		DefaultResult<List<HfObjective>> result = new DefaultResult<List<HfObjective>>();
 		Map<String, Object> paramMap = new HashMap<String, Object>();
 		if (!StringUtils.isBlank(ownerAccount)) {
@@ -69,6 +69,9 @@ public class ObjectiveServiceImpl extends BaseService<HfObjective, String> imple
 		}
 		if (!StringUtils.isBlank(endDate)) {
 			paramMap.put("endDate", this.defaultString(endDate).replaceAll("-", "").replaceAll("/", ""));
+		}
+		if (!StringUtils.isBlank(name)) {
+			paramMap.put("name", "%"+name+"%");
 		}
 		List<HfObjective> searchList = this.hfObjectiveMapper.selectQueryObjectiveList(paramMap);
 		if (searchList.size() < 1) {

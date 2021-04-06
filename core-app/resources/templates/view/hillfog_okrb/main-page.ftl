@@ -142,6 +142,11 @@ function btnAdd() {
 					<@qifu.textbox name="objOwner" value="" id="objOwner" label="Employee" requiredFlag="N" maxlength="100" placeholder="Enter employee" />
 				</div>			
 			</div>
+			<div class="row">
+				<div class="col-xs-12 col-md-12 col-lg-12 text-white">
+					<@qifu.textbox name="name" value="" id="name" label="Name" requiredFlag="N" maxlength="100" placeholder="Enter name" />
+				</div>
+			</div>
 		</div>
 	</div>
 	

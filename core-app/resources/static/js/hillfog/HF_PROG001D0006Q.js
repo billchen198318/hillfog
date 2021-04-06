@@ -71,7 +71,7 @@ function clearObjectiveList() {
 	$("#date2").val('');	
 	$("#objOrg").val('');
 	$("#objOwner").val('');
-		
+	$("#name").val('');
 }
 
 function queryObjectiveList() {
@@ -81,7 +81,8 @@ function queryObjectiveList() {
 			'startDate'		:	$("#date1").val(),
 			'endDate'		:	$("#date2").val(),
 			'ownerAccount'	:	$("#objOwner").val(),
-			'departmentId'	:	$("#objOrg").val()		
+			'departmentId'	:	$("#objOrg").val(),
+			'name'			:	$("#name").val()
 		}, 
 		this.setObjectives, 
 		this.clearObjectives,

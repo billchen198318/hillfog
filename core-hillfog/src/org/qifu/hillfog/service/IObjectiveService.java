@@ -30,6 +30,6 @@ import org.qifu.hillfog.entity.HfObjective;
 
 public interface IObjectiveService<T, E> extends IBaseService<HfObjective, String> {
 	
-	public DefaultResult<List<HfObjective>> selectQueryObjectiveList(String ownerAccount, String departmentId, String startDate, String endDate) throws ServiceException, Exception;
+	public DefaultResult<List<HfObjective>> selectQueryObjectiveList(String ownerAccount, String departmentId, String startDate, String endDate, String name) throws ServiceException, Exception;
 	
 }

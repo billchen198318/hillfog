@@ -248,7 +248,8 @@ public class OkrBaseController extends BaseControllerSupport implements IPageNam
 		if (tmp != null && tmp.length >= 3) {
 			accountId = StringUtils.deleteWhitespace(tmp[1]);
 		}
-		DefaultResult<List<HfObjective>> qResult = this.objectiveService.selectQueryObjectiveList(accountId, departmentId, startDate, endDate);
+		String name = StringUtils.defaultString(request.getParameter("name"));
+		DefaultResult<List<HfObjective>> qResult = this.objectiveService.selectQueryObjectiveList(accountId, departmentId, startDate, endDate, name);
 		this.setDefaultResponseJsonResult(result, qResult);
 		result.setSuccess(YES);
 	}

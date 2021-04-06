@@ -205,18 +205,21 @@
 	FROM	<include refid="org.qifu.hillfog.mapper.DB1Config.schema"/>HF_OBJECTIVE m
 	WHERE 1 = 1
 	<if test="ownerAccount != null and ownerAccount != ''.toString() ">
-	AND m.OID in (
-		SELECT o.OBJ_OID FROM HF_OBJ_OWNER o WHERE o.ACCOUNT = #{ownerAccount,jdbcType=VARCHAR}
-	)
+		AND m.OID in (
+			SELECT o.OBJ_OID FROM HF_OBJ_OWNER o WHERE o.ACCOUNT = #{ownerAccount,jdbcType=VARCHAR}
+		)
 	</if>
 	<if test="departmentId != null and departmentId != ''.toString() ">
-	AND m.OID in (
-		SELECT o.OBJ_OID FROM HF_OBJ_DEPT o WHERE o.ORG_ID = #{departmentId,jdbcType=VARCHAR}
-	)
+		AND m.OID in (
+			SELECT o.OBJ_OID FROM HF_OBJ_DEPT o WHERE o.ORG_ID = #{departmentId,jdbcType=VARCHAR}
+		)
 	</if>
 	<if test="startDate != null and startDate != ''.toString() and endDate != null and endDate != ''.toString()">
 		AND m.START_DATE <![CDATA[>=]]> #{startDate,jdbcType=VARCHAR} 
 		AND m.END_DATE <![CDATA[<=]]> #{endDate,jdbcType=VARCHAR} 
+	</if>
+	<if test="name != null and name != ''.toString() ">
+		AND m.NAME like #{name,jdbcType=VARCHAR}
 	</if>
 	ORDER BY m.NAME ASC
   </select> 
