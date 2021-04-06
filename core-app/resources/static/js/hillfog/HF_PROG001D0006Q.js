@@ -33,8 +33,12 @@ function editObjectiveItem(oid)	{
 function setObjectiveList(data) {
 	if ( _qifu_success_flag != data.success ) {
 		parent.toastrWarning( data.message );
-	}	
-	this.objectives = data.value;
+	}
+	if (data.value != null) {
+		this.objectives = data.value;
+	} else {
+		this.objectives = [];
+	}
 }
 
 function clearObjectiveList() {
@@ -48,11 +52,16 @@ function clearObjectiveList() {
 
 function queryObjectiveList() {
 	xhrSendParameter(
-			'./hfOkrBaseQueryJson', 
-			{ }, 
-			this.setObjectives, 
-			this.clearObjectives,
-			_qifu_defaultSelfPleaseWaitShow
+		'./hfOkrBaseQueryJson', 
+		{ 
+			'startDate'		:	$("#date1").val(),
+			'endDate'		:	$("#date2").val(),
+			'ownerAccount'	:	$("#objOwner").val(),
+			'departmentId'	:	$("#objOrg").val()		
+		}, 
+		this.setObjectives, 
+		this.clearObjectives,
+		_qifu_defaultSelfPleaseWaitShow
 	);		
 }
 

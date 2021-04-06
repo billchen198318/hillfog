@@ -139,6 +139,7 @@ public class OkrBaseController extends BaseControllerSupport implements IPageNam
 		return viewName;
 	}		
 	
+	/*
 	@ControllerMethodAuthority(check = true, programId = "HF_PROG001D0006Q")
 	@RequestMapping(value = "/hfOkrBaseQueryObjectiveListJson", produces = MediaType.APPLICATION_JSON_VALUE)		
 	public @ResponseBody DefaultControllerJsonResultObj<List<HfObjective>> doQueryObjectiveList(HttpServletRequest request) {
@@ -159,6 +160,7 @@ public class OkrBaseController extends BaseControllerSupport implements IPageNam
 		}
 		return result;		
 	}
+	*/
 	
 	private void checkFields(DefaultControllerJsonResultObj<HfObjective> result, HttpServletRequest request, HfObjective objective) throws ControllerException, ServiceException, Exception {
 		String objDept = request.getParameter("objDept");
@@ -217,6 +219,28 @@ public class OkrBaseController extends BaseControllerSupport implements IPageNam
 		this.setDefaultResponseJsonResult(result, iResult);
 	}
 	
+	private void update(DefaultControllerJsonResultObj<HfObjective> result, HttpServletRequest request, HfObjective objective) throws AuthorityException, ControllerException, ServiceException, Exception {
+		this.checkFields(result, request, objective);
+		String objDept = request.getParameter("objDept");
+		String objOwner = request.getParameter("objOwner");
+		Map<String, List<Map<String, Object>>> objDeptJsonData = (Map<String, List<Map<String, Object>>>) new ObjectMapper().readValue( objDept, LinkedHashMap.class );
+		List objDeptList = objDeptJsonData.get("items");
+		Map<String, List<Map<String, Object>>> objOwnerJsonData = (Map<String, List<Map<String, Object>>>) new ObjectMapper().readValue( objOwner, LinkedHashMap.class );
+		List objOwnerList = objOwnerJsonData.get("items");
+		
+		String keyResults = request.getParameter("keyResults");
+		String initiatives = request.getParameter("initiatives");
+		Map<String, List<Map<String, Object>>> keyResultsJsonData = (Map<String, List<Map<String, Object>>>) new ObjectMapper().readValue( keyResults, LinkedHashMap.class );
+		List keyResultsMapList = keyResultsJsonData.get("items");
+		Map<String, List<Map<String, Object>>> initiativesJsonData = (Map<String, List<Map<String, Object>>>) new ObjectMapper().readValue( initiatives, LinkedHashMap.class );
+		List initiativesMapList = initiativesJsonData.get("items");
+		
+		/*
+		DefaultResult<HfObjective> uResult = this.okrBaseLogicService.update(objective, objDeptList, objOwnerList, keyResultsMapList, initiativesMapList);
+		this.setDefaultResponseJsonResult(result, uResult);
+		*/
+	}	
+	
 	@ControllerMethodAuthority(check = true, programId = "HF_PROG001D0006A")
 	@RequestMapping(value = "/hfOkrBaseSaveJson", produces = MediaType.APPLICATION_JSON_VALUE)		
 	public @ResponseBody DefaultControllerJsonResultObj<HfObjective> doSave(HttpServletRequest request, HfObjective objective) {
@@ -235,9 +259,24 @@ public class OkrBaseController extends BaseControllerSupport implements IPageNam
 	}
 	
 	private void queryObjectives(DefaultControllerJsonResultObj<List<HfObjective>> result, HttpServletRequest request) throws ServiceException, Exception {
-		DefaultResult<List<HfObjective>> qResult = this.objectiveService.selectQueryObjectiveList(
-				request.getParameter("ownerAccount"), request.getParameter("departmentId"), request.getParameter("startDate"), request.getParameter("endDate"));
+		String startDate = request.getParameter("startDate");
+		String endDate = request.getParameter("endDate");
+		String departmentId = StringUtils.defaultString(request.getParameter("departmentId"));
+		String accountId = StringUtils.defaultString(request.getParameter("ownerAccount"));
+		if (!SimpleUtils.isDate(startDate) || !SimpleUtils.isDate(endDate)) {
+			startDate = "";
+			endDate = "";
+		}
+		startDate = startDate.replaceAll("-", "").replaceAll("/", "");
+		endDate = endDate.replaceAll("-", "").replaceAll("/", "");
+		departmentId = StringUtils.deleteWhitespace(departmentId.split("/")[0]);
+		String tmp[] = accountId.split("/");
+		if (tmp != null && tmp.length >= 3) {
+			accountId = StringUtils.deleteWhitespace(tmp[1]);
+		}
+		DefaultResult<List<HfObjective>> qResult = this.objectiveService.selectQueryObjectiveList(accountId, departmentId, startDate, endDate);
 		this.setDefaultResponseJsonResult(result, qResult);
+		result.setSuccess(YES);
 	}
 	
 	private void queryAllData(DefaultControllerJsonResultObj<HfObjective> result, HfObjective objective) throws ServiceException, Exception {
@@ -318,6 +357,23 @@ public class OkrBaseController extends BaseControllerSupport implements IPageNam
 		}
 		try {
 			this.queryAllData(result, objective);
+		} catch (AuthorityException | ServiceException | ControllerException e) {
+			this.baseExceptionResult(result, e);	
+		} catch (Exception e) {
+			this.exceptionResult(result, e);
+		}
+		return result;		
+	}	
+	
+	@ControllerMethodAuthority(check = true, programId = "HF_PROG001D0006E")
+	@RequestMapping(value = "/hfOkrBaseUpdateJson", produces = MediaType.APPLICATION_JSON_VALUE)		
+	public @ResponseBody DefaultControllerJsonResultObj<HfObjective> doUpdate(HttpServletRequest request, HfObjective objective) {
+		DefaultControllerJsonResultObj<HfObjective> result = this.getDefaultJsonResult(this.currentMethodAuthority());
+		if (!this.isAuthorizeAndLoginFromControllerJsonResult(result)) {
+			return result;
+		}
+		try {
+			this.update(result, request, objective);
 		} catch (AuthorityException | ServiceException | ControllerException e) {
 			this.baseExceptionResult(result, e);	
 		} catch (Exception e) {

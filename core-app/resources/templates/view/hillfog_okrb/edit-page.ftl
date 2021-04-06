@@ -123,10 +123,10 @@ formGroups['objOrg'] 	= 'form-group1';
 
 function btnSave() {
 	clearWarningMessageField(formGroups, msgFields);
-	/*
 	xhrSendParameter(
-			'./hfOkrBaseSaveJson', 
+			'./hfOkrBaseUpdateJson', 
 			{ 
+				'oid'			:	_oid,
 				'name' 			:	$("#name").val(),
 				'date1'			:	$("#date1").val(),
 				'date2'			:	$("#date2").val(),
@@ -143,14 +143,12 @@ function btnSave() {
 					return;
 				}
 				parent.toastrInfo( data.message );
-				btnClear();
 			}, 
 			function() {
-				window.location = parent.getProgUrl('HF_PROG001D0006A');
+				btnClear();
 			},
 			_qifu_defaultSelfPleaseWaitShow
 	);
-	*/
 }
 
 function btnClear() {

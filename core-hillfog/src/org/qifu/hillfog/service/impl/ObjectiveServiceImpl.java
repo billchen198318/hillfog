@@ -61,14 +61,14 @@ public class ObjectiveServiceImpl extends BaseService<HfObjective, String> imple
 		if (!StringUtils.isBlank(ownerAccount)) {
 			paramMap.put("ownerAccount", ownerAccount);
 		}
-		if (!StringUtils.isBlank(ownerAccount)) {
+		if (!StringUtils.isBlank(departmentId)) {
 			paramMap.put("departmentId", departmentId);
 		}
 		if (!StringUtils.isBlank(startDate)) {
-			paramMap.put("startDate", this.defaultString(endDate).replaceAll("-", "").replaceAll("/", ""));
+			paramMap.put("startDate", this.defaultString(startDate).replaceAll("-", "").replaceAll("/", ""));
 		}
 		if (!StringUtils.isBlank(endDate)) {
-			paramMap.put("endDate", this.defaultString(startDate).replaceAll("-", "").replaceAll("/", ""));
+			paramMap.put("endDate", this.defaultString(endDate).replaceAll("-", "").replaceAll("/", ""));
 		}
 		List<HfObjective> searchList = this.hfObjectiveMapper.selectQueryObjectiveList(paramMap);
 		if (searchList.size() < 1) {
