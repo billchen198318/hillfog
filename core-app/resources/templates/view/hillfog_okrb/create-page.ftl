@@ -127,8 +127,8 @@ function btnSave() {
 				'description'	:	$("#description").val(),
 				'objDept'		:	JSON.stringify( { 'items' : selDeptList } ),
 				'objOwner'		:	JSON.stringify( { 'items' : selEmpList } ),
-				'keyResults'	:	JSON.stringify( { 'items' : keyResultItemList } ),
-				'initiatives'	:	JSON.stringify( { 'items' : initiativesItemList } )
+				'keyResults'	:	JSON.stringify( { 'items' : vm.keyResultList } ),
+				'initiatives'	:	JSON.stringify( { 'items' : vm.initiativesList } )
 			}, 
 			function(data) {
 				if ( _qifu_success_flag != data.success ) {

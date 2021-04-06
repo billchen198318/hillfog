@@ -235,10 +235,8 @@ public class OkrBaseController extends BaseControllerSupport implements IPageNam
 		Map<String, List<Map<String, Object>>> initiativesJsonData = (Map<String, List<Map<String, Object>>>) new ObjectMapper().readValue( initiatives, LinkedHashMap.class );
 		List initiativesMapList = initiativesJsonData.get("items");
 		
-		/*
 		DefaultResult<HfObjective> uResult = this.okrBaseLogicService.update(objective, objDeptList, objOwnerList, keyResultsMapList, initiativesMapList);
 		this.setDefaultResponseJsonResult(result, uResult);
-		*/
 	}	
 	
 	@ControllerMethodAuthority(check = true, programId = "HF_PROG001D0006A")

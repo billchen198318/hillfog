@@ -21,11 +21,15 @@
  */
 package org.qifu.hillfog.mapper;
 
+import java.util.Map;
+
 import org.apache.ibatis.annotations.Mapper;
 import org.qifu.base.mapper.IBaseMapper;
 import org.qifu.hillfog.entity.HfKeyResVal;
 
 @Mapper
 public interface HfKeyResValMapper extends IBaseMapper<HfKeyResVal, String> {
+	
+	public Boolean deleteForObjOidAndResOid(Map<String, Object> paramMap);
 	
 }

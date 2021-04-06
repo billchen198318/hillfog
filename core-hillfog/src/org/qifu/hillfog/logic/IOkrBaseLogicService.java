@@ -32,4 +32,6 @@ public interface IOkrBaseLogicService {
 	
 	public DefaultResult<HfObjective> create(HfObjective objective, List<String> objDeptList, List<String> objOwnerList, List<Map<String, Object>> keyResultMapList, List<Map<String, Object>> initiativesMapList) throws ServiceException, Exception;
 	
+	public DefaultResult<HfObjective> update(HfObjective objective, List<String> objDeptList, List<String> objOwnerList, List<Map<String, Object>> keyResultMapList, List<Map<String, Object>> initiativesMapList) throws ServiceException, Exception;
+	
 }

@@ -159,7 +159,7 @@ function btnAdd() {
 			      <h5><span class="badge badge-secondary">Objective:&nbsp;<span class="badge badge-info">{{ d.objectiveSize }}</span></span></h5>
 			      <h5><span class="badge badge-secondary">Initiative:&nbsp;<span class="badge badge-info">{{ d.initiativeSize }}</span></span></h5>
 			      
-			      <p class="card-text">{{ d.description }}</p>
+			      <p class="card-text"><pre>{{ d.description }}</pre></p>
 			      
 			      <br>
 			      

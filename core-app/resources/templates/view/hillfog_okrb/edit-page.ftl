@@ -103,6 +103,9 @@ $( document ).ready(function() {
 	paintOrganization();
 	paintEmployee();	
 	
+	$("#date1").val('${objective.startDateShow}');
+	$("#date2").val('${objective.endDateShow}');
+	
 });
 
 function btnObjectiveList() {
@@ -133,8 +136,8 @@ function btnSave() {
 				'description'	:	$("#description").val(),
 				'objDept'		:	JSON.stringify( { 'items' : selDeptList } ),
 				'objOwner'		:	JSON.stringify( { 'items' : selEmpList } ),
-				'keyResults'	:	JSON.stringify( { 'items' : keyResultItemList } ),
-				'initiatives'	:	JSON.stringify( { 'items' : initiativesItemList } )
+				'keyResults'	:	JSON.stringify( { 'items' : vm.keyResultList } ),
+				'initiatives'	:	JSON.stringify( { 'items' : vm.initiativesList } )
 			}, 
 			function(data) {
 				if ( _qifu_success_flag != data.success ) {
@@ -281,7 +284,7 @@ function removeArrayByPos(arr, pos) {
 	</div>
 	<div class="row">
 		<div class="col-xs-12 col-md-12 col-lg-12">
-			<@qifu.textbox type="text" name="name" value="" id="name" label="Name" requiredFlag="Y" maxlength="100" placeholder="Enter name" />
+			<@qifu.textbox type="text" name="name" value="${objective.name}" id="name" label="Name" requiredFlag="Y" maxlength="100" placeholder="Enter name" />
 		</div>	
 	</div>		
 	<div class="row">
@@ -310,7 +313,7 @@ function removeArrayByPos(arr, pos) {
 	</div>	
 	<div class="row">
 		<div class="col-xs-12 col-md-12 col-lg-12">
-			<@qifu.textarea name="description" value="" id="description" label="Description" rows="3" placeholder="Enter description"></@qifu.textarea>
+			<@qifu.textarea name="description" value="${objective.description}" id="description" label="Description" rows="3" placeholder="Enter description"></@qifu.textarea>
 		</div>	
 	</div>		
 </div>

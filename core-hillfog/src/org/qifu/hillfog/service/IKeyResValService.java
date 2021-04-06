@@ -21,9 +21,12 @@
  */
 package org.qifu.hillfog.service;
 
+import org.qifu.base.exception.ServiceException;
 import org.qifu.base.service.IBaseService;
 import org.qifu.hillfog.entity.HfKeyResVal;
 
 public interface IKeyResValService<T, E> extends IBaseService<HfKeyResVal, String> {
+	
+	public void deleteForObjOidAndResOid(String objOid, String resOid) throws ServiceException, Exception;
 	
 }

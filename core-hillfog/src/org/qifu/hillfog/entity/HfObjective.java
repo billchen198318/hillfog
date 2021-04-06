@@ -3,12 +3,14 @@ package org.qifu.hillfog.entity;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.qifu.base.model.CreateDateField;
 import org.qifu.base.model.CreateUserField;
 import org.qifu.base.model.EntityPK;
 import org.qifu.base.model.EntityUK;
 import org.qifu.base.model.UpdateDateField;
 import org.qifu.base.model.UpdateUserField;
+import org.qifu.util.SimpleUtils;
 
 public class HfObjective implements java.io.Serializable {
 	private static final long serialVersionUID = 1324236282306951288L;
@@ -63,6 +65,20 @@ public class HfObjective implements java.io.Serializable {
 	public void setInitiativeList(List<HfInitiatives> initiativeList) {
 		this.initiativeList = initiativeList;
 	}    
+	
+    public String getStartDateShow() {
+    	if (!SimpleUtils.isDate(this.startDate)) {
+    		return "";
+    	}
+        return startDate.substring(0, 4) + "-" + startDate.substring(4, 6) + "-" + startDate.substring(6, 8);
+    }	
+    
+    public String getEndDateShow() {
+    	if (!SimpleUtils.isDate(this.endDate)) {
+    		return "";
+    	}
+    	return endDate.substring(0, 4) + "-" + endDate.substring(4, 6) + "-" + endDate.substring(6, 8);
+    }
     
     // =====================================================================
 

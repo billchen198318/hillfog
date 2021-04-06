@@ -54,4 +54,4 @@ function clearInitiativeItem() {
 }
 
 const app = Vue.createApp(PageEventHandling);
-app.mount('#main-content');
+var vm = app.mount('#main-content');

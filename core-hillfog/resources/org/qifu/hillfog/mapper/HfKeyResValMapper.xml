@@ -171,4 +171,10 @@
     where OID = #{oid,jdbcType=CHAR}
   </delete>
   
+  <!-- 刪除 Key Result 衡量數據 -->
+  <delete id="deleteForObjOidAndResOid" parameterType="java.util.HashMap">
+	DELETE FROM <include refid="org.qifu.hillfog.mapper.DB1Config.schema"/>hf_key_res_val 
+	WHERE OBJ_OID = #{objOid,jdbcType=CHAR} AND RES_OID = #{resOid,jdbcType=CHAR}
+  </delete>
+  
 </mapper>

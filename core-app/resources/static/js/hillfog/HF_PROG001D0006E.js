@@ -18,7 +18,7 @@ const PageEventHandling = {
 		setQueryData		:	setObjectiveAndInitiatives,
 		clearPage			:	clearEditPage
 	},
-	mounted() {
+	mounted() {	
 		this.queryObjective();
 	}
 }
@@ -40,6 +40,7 @@ function setObjectiveAndInitiatives(data) {
 	}		
 	this.keyResultList = data.value.keyResList;
 	this.initiativesList = data.value.initiativeList;
+	
 }
 
 function clearEditPage() {
@@ -80,4 +81,4 @@ function clearInitiativeItem() {
 }
 
 const app = Vue.createApp(PageEventHandling);
-app.mount('#main-content');
+const vm = app.mount('#main-content');

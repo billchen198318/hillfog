@@ -23,6 +23,7 @@ package org.qifu.hillfog.logic.impl;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -40,6 +41,7 @@ import org.qifu.base.service.BaseLogicService;
 import org.qifu.hillfog.entity.HfEmployee;
 import org.qifu.hillfog.entity.HfInitiatives;
 import org.qifu.hillfog.entity.HfKeyRes;
+import org.qifu.hillfog.entity.HfKeyResVal;
 import org.qifu.hillfog.entity.HfObjDept;
 import org.qifu.hillfog.entity.HfObjOwner;
 import org.qifu.hillfog.entity.HfObjective;
@@ -48,6 +50,7 @@ import org.qifu.hillfog.logic.IOkrBaseLogicService;
 import org.qifu.hillfog.service.IEmployeeService;
 import org.qifu.hillfog.service.IInitiativesService;
 import org.qifu.hillfog.service.IKeyResService;
+import org.qifu.hillfog.service.IKeyResValService;
 import org.qifu.hillfog.service.IObjDeptService;
 import org.qifu.hillfog.service.IObjOwnerService;
 import org.qifu.hillfog.service.IObjectiveService;
@@ -77,6 +80,9 @@ public class OkrBaseLogicServiceImpl extends BaseLogicService implements IOkrBas
 	
 	@Autowired
 	IKeyResService<HfKeyRes, String> keyResService;
+	
+	@Autowired
+	IKeyResValService<HfKeyResVal, String> keyResValService;
 	
 	@Autowired
 	IInitiativesService<HfInitiatives, String> initiativesService;
@@ -115,6 +121,43 @@ public class OkrBaseLogicServiceImpl extends BaseLogicService implements IOkrBas
 		return mResult;
 	}
 	
+	@ServiceMethodAuthority(type = ServiceMethodType.UPDATE)
+	@Transactional(
+			propagation=Propagation.REQUIRED, 
+			readOnly=false,
+			rollbackFor={RuntimeException.class, IOException.class, Exception.class} )  	
+	@Override
+	public DefaultResult<HfObjective> update(HfObjective objective, List<String> objDeptList, List<String> objOwnerList, List<Map<String, Object>> keyResultMapList, List<Map<String, Object>> initiativesMapList) throws ServiceException, Exception {
+		if (null == objective || this.isBlank(objective.getOid()) || null == objDeptList || null == objOwnerList || null == keyResultMapList || null == initiativesMapList) {
+			throw new ServiceException( BaseSystemMessage.objectNull() );
+		}
+		if (keyResultMapList.size() < 1) {
+			throw new ServiceException("Need key result!");
+		}
+		this.setStringValueMaxLength(objective, "description", MAX_LENGTH);
+		objective.setStartDate( this.defaultString(objective.getStartDate()).replaceAll("-", "").replaceAll("/", "") );
+		objective.setEndDate( this.defaultString(objective.getEndDate()).replaceAll("-", "").replaceAll("/", "") );
+		HfObjective checkUkObjective = this.objectiveService.selectByUniqueKey(objective).getValue();
+		if (checkUkObjective != null && !this.isBlank(checkUkObjective.getOid())) {
+			if (!checkUkObjective.getOid().equals(objective.getOid())) {
+				throw new ServiceException("Please change name, has other objective use.");
+			}
+		}
+		DefaultResult<HfObjective> mResult = this.objectiveService.update(objective);
+		objective = mResult.getValueEmptyThrowMessage();
+		this.removeObjectiveOwner(objective);
+		this.removeObjectiveDept(objective);
+		int size = this.createObjectiveOwner(objective, objOwnerList);
+		size += this.createObjectiveDept(objective, objDeptList);
+		if (size < 1) {
+			throw new ServiceException("Objective's organization or owner need one record!");
+		}
+		this.createOrUpdateOrRemoveKeyResult(objective, keyResultMapList);
+		this.removeInitiative(objective);
+		this.createInitiative(objective, initiativesMapList);
+		return mResult;
+	}	
+	
 	private void createKeyResult(HfObjective objective, List<Map<String, Object>> keyResultMapList) throws ServiceException, Exception {
 		for (int i = 0 ; i < keyResultMapList.size(); i++) {
 			Map<String, Object> dataMap = keyResultMapList.get(i);
@@ -130,9 +173,51 @@ public class OkrBaseLogicServiceImpl extends BaseLogicService implements IOkrBas
 		}
 	}
 	
+	private void createOrUpdateOrRemoveKeyResult(HfObjective objective, List<Map<String, Object>> keyResultMapList) throws ServiceException, Exception {
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("objOid", objective.getOid());		
+		List<HfKeyRes> oldKeyResList = this.keyResService.selectListByParams(paramMap).getValue();
+		for (HfKeyRes oldKeyRes : oldKeyResList) { // 1. first remove old key result data, record no found in update.
+			boolean isFound = false;
+			for (int i = 0 ; i < keyResultMapList.size(); i++) {
+				Map<String, Object> dataMap = keyResultMapList.get(i);
+				String oid = (String)dataMap.get("oid");
+				if (oldKeyRes.getOid().equals(oid)) {
+					isFound = true;
+				}
+			}
+			if (!isFound) {
+				this.keyResService.delete(oldKeyRes);
+				// delete key result value
+				this.keyResValService.deleteForObjOidAndResOid(objective.getOid(), oldKeyRes.getOid());
+			}
+		}
+		for (int i = 0 ; i < keyResultMapList.size(); i++) { // 2. create or update key result.
+			Map<String, Object> dataMap = keyResultMapList.get(i);
+			String oid = (String)dataMap.get("oid");
+			HfKeyRes keyRes = new HfKeyRes();
+			keyRes.setObjOid( objective.getOid() );
+			keyRes.setName( String.valueOf(dataMap.get("name")) );
+			keyRes.setTarget( new BigDecimal(NumberUtils.toInt(String.valueOf(dataMap.get("target")), 0)) );
+			keyRes.setGpType( String.valueOf(dataMap.get("gpType")) );
+			keyRes.setOpTarget( String.valueOf(dataMap.get("opTarget")) );
+			keyRes.setDescription( String.valueOf(dataMap.get("description")) );
+			this.setStringValueMaxLength(keyRes, "description", MAX_LENGTH);			
+			if (this.isBlank(oid) || "0".equals(oid)) { // create
+				this.keyResService.insert(keyRes);
+			} else { // update
+				keyRes.setOid( oid );
+				this.keyResService.update(keyRes);
+			}
+		}
+	}
+	
 	private void createInitiative(HfObjective objective, List<Map<String, Object>> initiativesMapList) throws ServiceException, Exception {
 		for (int i = 0 ; i < initiativesMapList.size(); i++) {
 			Map<String, Object> dataMap = initiativesMapList.get(i);
+			if (dataMap.get("content") == null || this.isBlank((String)dataMap.get("content"))) {
+				continue;
+			}
 			HfInitiatives initiative = new HfInitiatives();
 			initiative.setObjOid( objective.getOid() );
 			initiative.setContent( String.valueOf(dataMap.get("content")) );
@@ -176,5 +261,32 @@ public class OkrBaseLogicServiceImpl extends BaseLogicService implements IOkrBas
 		}
 		return size;
 	}
-
+	
+	private void removeInitiative(HfObjective objective) throws ServiceException, Exception {
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("objOid", objective.getOid());
+		List<HfInitiatives> initiativeList = this.initiativesService.selectListByParams(paramMap).getValue();
+		for (HfInitiatives initiative : initiativeList) {
+			this.initiativesService.delete(initiative);
+		}
+	}
+	
+	private void removeObjectiveOwner(HfObjective objective) throws ServiceException, Exception {
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("objOid", objective.getOid());
+		List<HfObjOwner> ownerList = this.objOwnerService.selectListByParams(paramMap).getValue();
+		for (HfObjOwner owner : ownerList) {
+			this.objOwnerService.delete(owner);
+		}
+	}
+	
+	private void removeObjectiveDept(HfObjective objective) throws ServiceException, Exception {
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("objOid", objective.getOid());
+		List<HfObjDept> deptList = this.objDeptService.selectListByParams(paramMap).getValue();
+		for (HfObjDept dept : deptList) {
+			this.objDeptService.delete(dept);
+		}
+	}
+	
 }
