@@ -32,4 +32,6 @@ public interface HfKeyResValMapper extends IBaseMapper<HfKeyResVal, String> {
 	
 	public Boolean deleteForObjOidAndResOid(Map<String, Object> paramMap);
 	
+	public Boolean deleteForObjOid(Map<String, Object> paramMap);
+	
 }

@@ -66,5 +66,19 @@ public class KeyResValServiceImpl extends BaseService<HfKeyResVal, String> imple
 		paramMap.put("resOid", resOid);
 		this.hfKeyResValMapper.deleteForObjOidAndResOid(paramMap);
 	}
+
+	@Transactional(
+			propagation=Propagation.REQUIRED, 
+			readOnly=false,
+			rollbackFor={RuntimeException.class, IOException.class, Exception.class} )		
+	@Override
+	public void deleteForObjOid(String objOid) throws ServiceException, Exception {
+		if (StringUtils.isBlank(objOid)) {
+			throw new ServiceException( BaseSystemMessage.parameterBlank() );
+		}
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("objOid", objOid);
+		this.hfKeyResValMapper.deleteForObjOidAndResOid(paramMap);
+	}
 	
 }

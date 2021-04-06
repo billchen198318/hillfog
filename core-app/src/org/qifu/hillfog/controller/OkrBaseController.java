@@ -36,7 +36,6 @@ import org.qifu.base.controller.IPageNamespaceProvide;
 import org.qifu.base.exception.AuthorityException;
 import org.qifu.base.exception.ControllerException;
 import org.qifu.base.exception.ServiceException;
-import org.qifu.base.message.BaseSystemMessage;
 import org.qifu.base.model.CheckControllerFieldHandler;
 import org.qifu.base.model.ControllerMethodAuthority;
 import org.qifu.base.model.DefaultControllerJsonResultObj;
@@ -137,30 +136,7 @@ public class OkrBaseController extends BaseControllerSupport implements IPageNam
 			viewName = this.getExceptionPage(e, mm);
 		}
 		return viewName;
-	}		
-	
-	/*
-	@ControllerMethodAuthority(check = true, programId = "HF_PROG001D0006Q")
-	@RequestMapping(value = "/hfOkrBaseQueryObjectiveListJson", produces = MediaType.APPLICATION_JSON_VALUE)		
-	public @ResponseBody DefaultControllerJsonResultObj<List<HfObjective>> doQueryObjectiveList(HttpServletRequest request) {
-		DefaultControllerJsonResultObj<List<HfObjective>> result = this.getDefaultJsonResult(this.currentMethodAuthority());
-		if (!this.isAuthorizeAndLoginFromControllerJsonResult(result)) {
-			return result;
-		}
-		try {
-			result.setValue( this.objectiveService.selectList("NAME", SortType.ASC).getValue() );
-			result.setSuccess( YES );
-			if ( result.getValue() == null || result.getValue().size() < 1) {
-				result.setMessage( BaseSystemMessage.searchNoData() );
-			}
-		} catch (AuthorityException | ServiceException | ControllerException e) {
-			this.baseExceptionResult(result, e);	
-		} catch (Exception e) {
-			this.exceptionResult(result, e);
-		}
-		return result;		
 	}
-	*/
 	
 	private void checkFields(DefaultControllerJsonResultObj<HfObjective> result, HttpServletRequest request, HfObjective objective) throws ControllerException, ServiceException, Exception {
 		String objDept = request.getParameter("objDept");
@@ -379,5 +355,27 @@ public class OkrBaseController extends BaseControllerSupport implements IPageNam
 		}
 		return result;		
 	}	
+	
+	private void delete(DefaultControllerJsonResultObj<Boolean> result, HfObjective objective) throws AuthorityException, ControllerException, ServiceException, Exception {
+		DefaultResult<Boolean> dResult = this.okrBaseLogicService.delete(objective);
+		this.setDefaultResponseJsonResult(result, dResult);
+	}		
+	
+	@ControllerMethodAuthority(check = true, programId = "HF_PROG001D0006D")
+	@RequestMapping(value = "/hfOkrBaseDeleteJson", produces = MediaType.APPLICATION_JSON_VALUE)			
+	public @ResponseBody DefaultControllerJsonResultObj<Boolean> doDelete(HfObjective objective) {
+		DefaultControllerJsonResultObj<Boolean> result = this.getDefaultJsonResult(this.currentMethodAuthority());
+		if (!this.isAuthorizeAndLoginFromControllerJsonResult(result)) {
+			return result;
+		}
+		try {
+			this.delete(result, objective);
+		} catch (AuthorityException | ServiceException | ControllerException e) {
+			this.baseExceptionResult(result, e);
+		} catch (Exception e) {
+			this.exceptionResult(result, e);
+		}
+		return result;
+	}
 	
 }

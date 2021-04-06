@@ -156,6 +156,30 @@ public class OkrBaseLogicServiceImpl extends BaseLogicService implements IOkrBas
 		this.removeInitiative(objective);
 		this.createInitiative(objective, initiativesMapList);
 		return mResult;
+	}
+	
+	@ServiceMethodAuthority(type = ServiceMethodType.DELETE)
+	@Transactional(
+			propagation=Propagation.REQUIRED, 
+			readOnly=false,
+			rollbackFor={RuntimeException.class, IOException.class, Exception.class} ) 	
+	@Override
+	public DefaultResult<Boolean> delete(HfObjective objective) throws ServiceException, Exception {
+		if (null == objective || this.isBlank(objective.getOid())) {
+			throw new ServiceException( BaseSystemMessage.objectNull() );
+		}
+		this.removeInitiative(objective);
+		this.removeObjectiveDept(objective);
+		this.removeObjectiveOwner(objective);
+		// remove key result & key result measure data.
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("objOid", objective.getOid());		
+		List<HfKeyRes> keyResList = this.keyResService.selectListByParams(paramMap).getValue();
+		for (HfKeyRes keyRes : keyResList) {
+			this.keyResService.delete(keyRes);
+		}
+		this.keyResValService.deleteForObjOid(objective.getOid());
+		return this.objectiveService.delete(objective);
 	}	
 	
 	private void createKeyResult(HfObjective objective, List<Map<String, Object>> keyResultMapList) throws ServiceException, Exception {

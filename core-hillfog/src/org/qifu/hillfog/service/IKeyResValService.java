@@ -29,4 +29,6 @@ public interface IKeyResValService<T, E> extends IBaseService<HfKeyResVal, Strin
 	
 	public void deleteForObjOidAndResOid(String objOid, String resOid) throws ServiceException, Exception;
 	
+	public void deleteForObjOid(String objOid) throws ServiceException, Exception;
+	
 }

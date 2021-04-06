@@ -19,7 +19,31 @@ const PageEventHandling = {
 }
 
 function deleteObjectiveItem(oid) {
-	alert('DEL: ' + oid);
+	var that = this;
+	parent.bootbox.confirm(
+			"Delete?", 
+			function(result) { 
+				if (!result) {
+					return;
+				}
+				xhrSendParameter(
+					'./hfOkrBaseDeleteJson', 
+					{ 
+						'oid'	:	oid	
+					}, 
+					function(data) {
+						if ( _qifu_success_flag != data.success ) {
+							parent.toastrWarning( data.message );
+						} else {
+							parent.toastrInfo( data.message );
+						}
+						that.queryObjectives();
+					}, 
+					that.queryObjectives,
+					_qifu_defaultSelfPleaseWaitShow
+				);
+			}
+	);			
 }
 
 function enterMeasure4ObjectiveItem(oid) {
