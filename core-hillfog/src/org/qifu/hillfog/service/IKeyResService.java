@@ -21,9 +21,14 @@
  */
 package org.qifu.hillfog.service;
 
+import java.util.Map;
+
+import org.qifu.base.exception.ServiceException;
 import org.qifu.base.service.IBaseService;
 import org.qifu.hillfog.entity.HfKeyRes;
 
 public interface IKeyResService<T, E> extends IBaseService<HfKeyRes, String> {
+	
+	public Map<String, String> findSelectOptionsMapByObjectiveOid(boolean pleaseSelect, String objectiveOid) throws ServiceException, Exception;
 	
 }

@@ -21,7 +21,17 @@
  */
 package org.qifu.hillfog.service.impl;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.commons.lang3.StringUtils;
+import org.qifu.base.exception.ServiceException;
 import org.qifu.base.mapper.IBaseMapper;
+import org.qifu.base.message.BaseSystemMessage;
+import org.qifu.base.model.DefaultResult;
+import org.qifu.base.model.PleaseSelect;
+import org.qifu.base.model.SortType;
 import org.qifu.base.service.BaseService;
 import org.qifu.hillfog.entity.HfKeyRes;
 import org.qifu.hillfog.mapper.HfKeyResMapper;
@@ -43,6 +53,22 @@ public class KeyResServiceImpl extends BaseService<HfKeyRes, String> implements 
 	@Override
 	protected IBaseMapper<HfKeyRes, String> getBaseMapper() {
 		return this.hfKeyResMapper;
+	}
+
+	@Override
+	public Map<String, String> findSelectOptionsMapByObjectiveOid(boolean pleaseSelect, String objectiveOid) throws ServiceException, Exception {
+		if (StringUtils.isBlank(objectiveOid)) {
+			throw new ServiceException( BaseSystemMessage.parameterBlank() );
+		}
+		Map<String, String> optionsMap = PleaseSelect.pageSelectMap(pleaseSelect);
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("objOid", objectiveOid);
+		DefaultResult<List<HfKeyRes>> searchResult = this.selectListByParams(paramMap, "NAME", SortType.ASC);
+		for (int i = 0; searchResult.getValue() != null && i < searchResult.getValue().size(); i++) {
+			HfKeyRes keyRes = searchResult.getValue().get(i);
+			optionsMap.put(keyRes.getOid(), keyRes.getName());
+		}
+		return optionsMap;
 	}
 	
 }

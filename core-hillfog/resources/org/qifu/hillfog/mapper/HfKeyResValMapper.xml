@@ -32,6 +32,9 @@
 	</if>				
 	<if test="date != null and date != ''.toString() ">
 		AND DATE = #{date,jdbcType=VARCHAR}
+	</if>		
+	<if test="dateLike != null and dateLike != ''.toString() ">
+		AND DATE LIKE #{dateLike,jdbcType=VARCHAR}
 	</if>			
 	<if test="orderBy != null and orderBy != ''.toString() and sortType != null and sortType != ''.toString() ">
 		ORDER BY  ${orderBy} ${sortType}
