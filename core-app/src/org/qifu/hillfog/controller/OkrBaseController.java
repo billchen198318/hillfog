@@ -22,6 +22,7 @@
 package org.qifu.hillfog.controller;
 
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -32,6 +33,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.joda.time.DateTime;
+import org.qifu.base.Constants;
 import org.qifu.base.controller.BaseControllerSupport;
 import org.qifu.base.controller.IPageNamespaceProvide;
 import org.qifu.base.exception.AuthorityException;
@@ -50,7 +52,9 @@ import org.qifu.hillfog.entity.HfKeyRes;
 import org.qifu.hillfog.entity.HfKeyResVal;
 import org.qifu.hillfog.entity.HfObjective;
 import org.qifu.hillfog.entity.HfOrgDept;
+import org.qifu.hillfog.logic.IMeasureDataLogicService;
 import org.qifu.hillfog.logic.IOkrBaseLogicService;
+import org.qifu.hillfog.model.MeasureDataCode;
 import org.qifu.hillfog.service.IEmployeeService;
 import org.qifu.hillfog.service.IInitiativesService;
 import org.qifu.hillfog.service.IKeyResService;
@@ -64,6 +68,7 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -94,6 +99,9 @@ public class OkrBaseController extends BaseControllerSupport implements IPageNam
 	
 	@Autowired
 	IInitiativesService<HfInitiatives, String> initiativesService;	
+	
+	@Autowired
+	IMeasureDataLogicService measureDataLogicService;
 	
 	@Override
 	public String viewPageNamespace() {
@@ -347,7 +355,7 @@ public class OkrBaseController extends BaseControllerSupport implements IPageNam
 		Map<String, Object> paramMap = new HashMap<String, Object>();
 		paramMap.put("objOid", objectiveOid);
 		paramMap.put("resOid", keyResOid);
-		paramMap.put("dateLike", date.substring(0, 6)+"%");
+		paramMap.put("dateLike", date.replaceAll("-", "").replaceAll("/", "").substring(0, 6)+"%");
 		searchList = this.keyResValService.selectListByParams(paramMap).getValue();
 		if (null == searchList) {
 			searchList = new ArrayList<HfKeyResVal>();
@@ -508,5 +516,43 @@ public class OkrBaseController extends BaseControllerSupport implements IPageNam
 		}
 		return result;
 	}
+	
+	private void update(DefaultControllerJsonResultObj<Boolean> result, HttpServletRequest request) throws AuthorityException, ControllerException, ServiceException, Exception {
+		List<Map<String, String>> fieldDataList = new ArrayList<Map<String, String>>();
+		Enumeration<String> reqParam = request.getParameterNames();
+		while (reqParam.hasMoreElements()) {
+			String paramName = reqParam.nextElement();
+			if (paramName.startsWith(MeasureDataCode.MEASURE_DATA_ACTUAL_ID)) {
+				String dateStr = paramName.split(Constants.INPUT_NAME_DELIMITER)[1];
+				String actualParamName = MeasureDataCode.MEASURE_DATA_ACTUAL_ID + dateStr;
+				Map<String, String> miMap = new HashMap<String, String>();
+				miMap.put(paramName, StringUtils.defaultString(request.getParameter(paramName)).trim());
+				miMap.put(actualParamName, StringUtils.defaultString(request.getParameter(actualParamName)).trim());
+				fieldDataList.add(miMap);
+			}
+		}
+		DefaultResult<Boolean> uResult = this.measureDataLogicService.createOrUpdateForKeyResultValue(
+				request.getParameter("objectiveOid"), 
+				request.getParameter("keyResOid"), 
+				fieldDataList);
+		this.setDefaultResponseJsonResult(result, uResult);
+	}
+	
+	@ControllerMethodAuthority(check = true, programId = "HF_PROG001D0006M")
+	@RequestMapping(value = "/hfOkrBaseEnterMasureDataUpdateJson", method = RequestMethod.POST)	
+	public @ResponseBody DefaultControllerJsonResultObj<Boolean> doUpdate(HttpServletRequest request) {
+		DefaultControllerJsonResultObj<Boolean> result = this.getDefaultJsonResult(this.currentMethodAuthority());
+		if (!this.isAuthorizeAndLoginFromControllerJsonResult(result)) {
+			return result;
+		}
+		try {
+			this.update(result, request);
+		} catch (AuthorityException | ServiceException | ControllerException e) {
+			this.baseExceptionResult(result, e);	
+		} catch (Exception e) {
+			this.exceptionResult(result, e);
+		}
+		return result;		
+	}	
 	
 }

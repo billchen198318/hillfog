@@ -47,7 +47,7 @@
 					<b><font color="#FF8000" >${dayCount?string?left_pad(2, "0")}</font></b>	
 					
 					<br/>
-		      		<input type="text" class="form-control" name="MEASURE_DATA_VALUE:${dayStr}" id="MEASURE_DATA_VALUE:${dayStr}" value="${actualValue}" maxlength="12" placeholder="Enter value"></input>
+		      		<input type="text" class="form-control" name="MEASURE_DATA_ACTUAL:${dayStr}" id="MEASURE_DATA_ACTUAL:${dayStr}" value="${actualValue}" maxlength="12" placeholder="Enter value"></input>
 		      		<br/>
       		
 				</td>				

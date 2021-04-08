@@ -77,7 +77,22 @@ function btnObjectiveList() {
 }
 
 function btnSave() {
-	
+	xhrSendForm(
+			'./hfOkrBaseEnterMasureDataUpdateJson', 
+			'measureDataForm', 
+			function(data) {
+				if ( _qifu_success_flag != data.success ) {
+					parent.toastrWarning( data.message );
+					paintContent();
+					return;
+				}
+				parent.toastrInfo( data.message );
+			}, 
+			function() {
+				btnClear();
+			},
+			_qifu_defaultSelfPleaseWaitShow
+	);	
 }
 
 function btnClear() {

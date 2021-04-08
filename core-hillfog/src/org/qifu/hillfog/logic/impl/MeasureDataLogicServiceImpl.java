@@ -39,13 +39,19 @@ import org.qifu.base.model.ServiceAuthority;
 import org.qifu.base.model.ServiceMethodAuthority;
 import org.qifu.base.model.ServiceMethodType;
 import org.qifu.base.service.BaseLogicService;
+import org.qifu.hillfog.entity.HfKeyRes;
+import org.qifu.hillfog.entity.HfKeyResVal;
 import org.qifu.hillfog.entity.HfKpi;
 import org.qifu.hillfog.entity.HfMeasureData;
+import org.qifu.hillfog.entity.HfObjective;
 import org.qifu.hillfog.logic.IMeasureDataLogicService;
 import org.qifu.hillfog.model.KpiBasicCode;
 import org.qifu.hillfog.model.MeasureDataCode;
+import org.qifu.hillfog.service.IKeyResService;
+import org.qifu.hillfog.service.IKeyResValService;
 import org.qifu.hillfog.service.IKpiService;
 import org.qifu.hillfog.service.IMeasureDataService;
+import org.qifu.hillfog.service.IObjectiveService;
 import org.qifu.util.SimpleUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -63,6 +69,15 @@ public class MeasureDataLogicServiceImpl extends BaseLogicService implements IMe
 	
 	@Autowired
 	IMeasureDataService<HfMeasureData, String> measureDataService;	
+	
+	@Autowired
+	IObjectiveService<HfObjective, String> objectiveService;
+	
+	@Autowired
+	IKeyResService<HfKeyRes, String> keyResService;
+	
+	@Autowired
+	IKeyResValService<HfKeyResVal, String> keyResValService;	
 	
 	@ServiceMethodAuthority(type = {ServiceMethodType.INSERT, ServiceMethodType.UPDATE})
 	@Transactional(
@@ -90,12 +105,14 @@ public class MeasureDataLogicServiceImpl extends BaseLogicService implements IMe
 		HfKpi kpi = this.kpiService.selectByPrimaryKey(kpiOid).getValueEmptyThrowMessage();
 		DefaultResult<Boolean> result = new DefaultResult<Boolean>();
 		for (Map<String, String> fieldMap : fieldDataList) {
+			/*
 			for (Entry<String, String> entry : fieldMap.entrySet()) {
 				if (entry.getKey().startsWith(MeasureDataCode.MEASURE_DATA_TARGET_ID)) {
 					String fieldDate = entry.getKey().split(Constants.INPUT_NAME_DELIMITER)[1];
 					this.deleteMeasureData(kpi, frequency, fieldDate, account, orgId);
 				}
 			}
+			*/
 			for (Entry<String, String> entry : fieldMap.entrySet()) {
 				if (entry.getKey().startsWith(MeasureDataCode.MEASURE_DATA_TARGET_ID)) {
 					String fieldDate = entry.getKey().split(Constants.INPUT_NAME_DELIMITER)[1];
@@ -138,6 +155,56 @@ public class MeasureDataLogicServiceImpl extends BaseLogicService implements IMe
 			return;
 		}
 		this.measureDataService.delete(measureData);
+	}
+	
+	@ServiceMethodAuthority(type = {ServiceMethodType.INSERT, ServiceMethodType.UPDATE})
+	@Transactional(
+			propagation=Propagation.REQUIRED, 
+			readOnly=false,
+			rollbackFor={RuntimeException.class, IOException.class, Exception.class} )	
+	@Override
+	public DefaultResult<Boolean> createOrUpdateForKeyResultValue(String objectiveOid, String keyResOid, List<Map<String, String>> fieldDataList) throws ServiceException, Exception {
+		if (this.isBlank(objectiveOid) || this.isBlank(keyResOid)) {
+			throw new ServiceException( BaseSystemMessage.parameterBlank() );
+		}
+		DefaultResult<Boolean> result = new DefaultResult<Boolean>();
+		for (Map<String, String> fieldMap : fieldDataList) {
+			for (Entry<String, String> entry : fieldMap.entrySet()) {
+				if (entry.getKey().startsWith(MeasureDataCode.MEASURE_DATA_ACTUAL_ID)) {
+					String fieldDate = entry.getKey().split(Constants.INPUT_NAME_DELIMITER)[1];
+					String actual = fieldMap.get(MeasureDataCode.MEASURE_DATA_ACTUAL_ID + fieldDate);
+					this.deleteMeasureDataForKeyResultValue(objectiveOid, keyResOid, fieldDate);
+					if (!NumberUtils.isCreatable(actual)) {
+						continue;
+					}
+					this.createMeasureDataForKeyResultValue(objectiveOid, keyResOid, fieldDate, new BigDecimal(actual));
+				}
+			}
+		}
+		result.setValue(true);
+		result.setMessage( BaseSystemMessage.updateSuccess() );
+		return result;
+	}
+	
+	private void createMeasureDataForKeyResultValue(String objectiveOid, String keyResOid, String date, BigDecimal actual) throws ServiceException, Exception {
+		HfKeyResVal krv = new HfKeyResVal();
+		krv.setObjOid(objectiveOid);
+		krv.setResOid(keyResOid);
+		krv.setValue(actual);
+		krv.setDate(date);
+		this.keyResValService.insert(krv);
+	}
+	
+	private void deleteMeasureDataForKeyResultValue(String objectiveOid, String keyResOid, String date) throws ServiceException, Exception {
+		HfKeyResVal krv = new HfKeyResVal();
+		krv.setObjOid(objectiveOid);
+		krv.setResOid(keyResOid);
+		krv.setDate(date);
+		krv = this.keyResValService.selectByUniqueKey(krv).getValue();
+		if (null == krv || this.isBlank(krv.getOid())) {
+			return;
+		}
+		this.keyResValService.delete(krv);
 	}
 	
 }

@@ -31,4 +31,6 @@ public interface IMeasureDataLogicService {
 	
 	public DefaultResult<Boolean> createOrUpdate(String kpiOid, String frequency, String date, String dataFor, String account, String orgId, List<Map<String, String>> fieldDataList) throws ServiceException, Exception;
 	
+	public DefaultResult<Boolean> createOrUpdateForKeyResultValue(String objectiveOid, String keyResOid, List<Map<String, String>> fieldDataList) throws ServiceException, Exception;
+	
 }
