@@ -9,11 +9,20 @@ const PageEventHandling = {
 		queryObjectives		:	queryObjectiveList,
 		setObjectives		:	setObjectiveList,
 		clearObjectives		:	clearObjectiveList,
-		viewDetail			:	viewDetailItem
+		viewDetail			:	viewDetailItem,
+		progressDiv			:	progressDivFormatter
 	},
 	mounted() {
 		this.queryObjectives();
 	}
+}
+
+function progressDivFormatter(val) {
+	return `
+		<div class="progress">
+			<div class="progress-bar bg-info" role="progressbar" style="width: ${val}%" aria-valuenow="${val}" aria-valuemin="0" aria-valuemax="100"></div>
+		</div>
+	`;
 }
 
 function setObjectiveList(data) {
@@ -38,7 +47,7 @@ function clearObjectiveList() {
 
 function queryObjectiveList() {
 	xhrSendParameter(
-		'./hfOkrBaseQueryJson', 
+		'./hfOkrReportQueryJson', 
 		{ 
 			'startDate'		:	$("#date1").val(),
 			'endDate'		:	$("#date2").val(),

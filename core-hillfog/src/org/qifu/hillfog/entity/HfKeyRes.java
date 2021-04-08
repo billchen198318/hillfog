@@ -2,6 +2,7 @@ package org.qifu.hillfog.entity;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 import org.qifu.base.model.CreateDateField;
 import org.qifu.base.model.CreateUserField;
@@ -25,7 +26,40 @@ public class HfKeyRes implements java.io.Serializable {
     private String uuserid;
     private Date udate;
     
-    @EntityPK(name = "oid", autoUUID = true)
+    // ===================================================================
+    
+    private BigDecimal progressPercentage = BigDecimal.ZERO;
+    private BigDecimal measureValue = BigDecimal.ZERO;
+    
+    private List<HfKeyResVal> keyResValList = null;
+    
+    public List<HfKeyResVal> getKeyResValList() {
+		return keyResValList;
+	}
+
+	public void setKeyResValList(List<HfKeyResVal> keyResValList) {
+		this.keyResValList = keyResValList;
+	}    
+	
+	public BigDecimal getProgressPercentage() {
+		return progressPercentage;
+	}
+
+	public void setProgressPercentage(BigDecimal progressPercentage) {
+		this.progressPercentage = progressPercentage;
+	}
+
+	public BigDecimal getMeasureValue() {
+		return measureValue;
+	}
+
+	public void setMeasureValue(BigDecimal measureValue) {
+		this.measureValue = measureValue;
+	}
+	
+    // ===================================================================
+
+	@EntityPK(name = "oid", autoUUID = true)
     public String getOid() {
         return oid;
     }

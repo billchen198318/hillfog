@@ -155,6 +155,10 @@ $( document ).ready(function() {
 			    <div class="card-body">
 			      <h5 class="card-title">{{ d.name }}</h5>
 			      
+				Progress:&nbsp;{{ d.progressPercentage }}%
+				<div v-html=" progressDiv(d.progressPercentage) "></div>		
+				<br>	      
+			      
 			      <h5><span class="badge badge-secondary">Objective:&nbsp;<span class="badge badge-info">{{ d.objectiveSize }}</span></span></h5>
 			      <h5><span class="badge badge-secondary">Initiative:&nbsp;<span class="badge badge-info">{{ d.initiativeSize }}</span></span></h5>
 			      

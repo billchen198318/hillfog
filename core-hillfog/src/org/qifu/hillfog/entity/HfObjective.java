@@ -1,5 +1,6 @@
 package org.qifu.hillfog.entity;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -29,6 +30,9 @@ public class HfObjective implements java.io.Serializable {
     // 查詢顯示用
     private int objectiveSize = 0;
     private int initiativeSize = 0;
+    
+    // 顯示用 - 達成率
+    private BigDecimal progressPercentage = BigDecimal.ZERO;
     
     public int getObjectiveSize() {
 		return objectiveSize;
@@ -80,6 +84,14 @@ public class HfObjective implements java.io.Serializable {
     	return endDate.substring(0, 4) + "-" + endDate.substring(4, 6) + "-" + endDate.substring(6, 8);
     }
     
+	public BigDecimal getProgressPercentage() {
+		return progressPercentage;
+	}
+
+	public void setProgressPercentage(BigDecimal progressPercentage) {
+		this.progressPercentage = progressPercentage;
+	}
+	
     // =====================================================================
 
 	@EntityPK(name = "oid", autoUUID = true)
