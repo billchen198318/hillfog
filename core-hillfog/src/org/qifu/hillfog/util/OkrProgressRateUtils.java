@@ -189,7 +189,7 @@ public class OkrProgressRateUtils {
 					keyRes.setProgressPercentage( fullPercentage );
 				} else {
 					if (keyRes.getTarget() != BigDecimal.ZERO) {
-						keyRes.setProgressPercentage( keyRes.getMeasureValue().divide(keyRes.getTarget(), 2, RoundingMode.HALF_UP) );
+						keyRes.setProgressPercentage( keyRes.getMeasureValue().divide(keyRes.getTarget(), 2, RoundingMode.HALF_UP).multiply(fullPercentage) );
 					}
 				}
 			}
@@ -198,7 +198,7 @@ public class OkrProgressRateUtils {
 					keyRes.setProgressPercentage( fullPercentage );
 				} else {
 					if (keyRes.getMeasureValue() != BigDecimal.ZERO) {
-						keyRes.setProgressPercentage( keyRes.getTarget().divide(keyRes.getMeasureValue(), 2, RoundingMode.HALF_UP) );
+						keyRes.setProgressPercentage( keyRes.getTarget().divide(keyRes.getMeasureValue(), 2, RoundingMode.HALF_UP).multiply(fullPercentage) );
 					}
 				}
 			}
@@ -208,11 +208,11 @@ public class OkrProgressRateUtils {
 				} else {
 					if (keyRes.getMeasureValue().compareTo(keyRes.getTarget()) >= 0) { // 數據大
 						if (keyRes.getMeasureValue() != BigDecimal.ZERO) {
-							keyRes.setProgressPercentage( keyRes.getTarget().divide(keyRes.getMeasureValue(), 2, RoundingMode.HALF_UP) );
+							keyRes.setProgressPercentage( keyRes.getTarget().divide(keyRes.getMeasureValue(), 2, RoundingMode.HALF_UP).multiply(fullPercentage) );
 						}					
 					} else { // target大
 						if (keyRes.getTarget() != BigDecimal.ZERO) {
-							keyRes.setProgressPercentage( keyRes.getMeasureValue().divide(keyRes.getTarget(), 2, RoundingMode.HALF_UP) );
+							keyRes.setProgressPercentage( keyRes.getMeasureValue().divide(keyRes.getTarget(), 2, RoundingMode.HALF_UP).multiply(fullPercentage) );
 						}
 					}
 				}
@@ -222,7 +222,7 @@ public class OkrProgressRateUtils {
 					keyRes.setProgressPercentage( fullPercentage );
 				} else {
 					if (keyRes.getTarget() != BigDecimal.ZERO) {
-						keyRes.setProgressPercentage( keyRes.getMeasureValue().divide(keyRes.getTarget(), 2, RoundingMode.HALF_UP) );
+						keyRes.setProgressPercentage( keyRes.getMeasureValue().divide(keyRes.getTarget(), 2, RoundingMode.HALF_UP).multiply(fullPercentage) );
 					}
 				}				
 			}
@@ -231,7 +231,7 @@ public class OkrProgressRateUtils {
 					keyRes.setProgressPercentage( fullPercentage );
 				} else {
 					if (keyRes.getMeasureValue() != BigDecimal.ZERO) {
-						keyRes.setProgressPercentage( keyRes.getTarget().divide(keyRes.getMeasureValue(), 2, RoundingMode.HALF_UP) );
+						keyRes.setProgressPercentage( keyRes.getTarget().divide(keyRes.getMeasureValue(), 2, RoundingMode.HALF_UP).multiply(fullPercentage) );
 					}
 				}				
 			}
