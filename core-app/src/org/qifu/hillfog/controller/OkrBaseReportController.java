@@ -47,6 +47,7 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
@@ -67,8 +68,21 @@ public class OkrBaseReportController extends BaseControllerSupport implements IP
 	}
 	
 	private void init(String type, ModelMap mm) throws AuthorityException, ControllerException, ServiceException, Exception {
-		mm.put("orgInputAutocomplete", pageAutocompleteContent(this.orgDeptService.findInputAutocomplete()));
-		mm.put("empInputAutocomplete", pageAutocompleteContent(this.employeeService.findInputAutocomplete()));
+		if ("mainPage".equals(type)) {
+			mm.put("orgInputAutocomplete", pageAutocompleteContent(this.orgDeptService.findInputAutocomplete()));
+			mm.put("empInputAutocomplete", pageAutocompleteContent(this.employeeService.findInputAutocomplete()));			
+		}
+		if ("detailPage".equals(type)) {
+			HfObjective objective = (HfObjective) mm.get("objective");
+			mm.put("selOrgInputAutocomplete", pageAutocompleteContent(this.orgDeptService.findInputAutocompleteByObjectiveOid(objective.getOid())));
+			mm.put("selEmpInputAutocomplete", pageAutocompleteContent(this.employeeService.findInputAutocompleteByObjectiveOid(objective.getOid())));				
+		}
+	}
+	
+	private void fetch(ModelMap mm, String oid) throws AuthorityException, ControllerException, ServiceException, Exception {
+		HfObjective objective = this.objectiveService.selectByPrimaryKey(oid).getValueEmptyThrowMessage();
+		OkrProgressRateUtils.build().fromObjective(objective).process().loadInitiatives();
+		mm.put("objective", objective);
 	}
 	
 	@ControllerMethodAuthority(check = true, programId = "HF_PROG003D0001Q")
@@ -128,6 +142,24 @@ public class OkrBaseReportController extends BaseControllerSupport implements IP
 			this.exceptionResult(result, e);
 		}
 		return result;		
+	}	
+	
+	@ControllerMethodAuthority(check = true, programId = "HF_PROG003D0001Q01D")
+	@RequestMapping("/hfOkrReportDetailPage")
+	public String detailPage(ModelMap mm, HttpServletRequest request, @RequestParam(name="oid") String oid) {
+		String viewName = this.viewPageWithNamespace("detail-page");
+		this.getDefaultModelMap(mm, this.currentMethodAuthority());
+		try {
+			this.fetch(mm, oid);
+			this.init("detailPage", mm);
+		} catch (AuthorityException e) {
+			viewName = this.getAuthorityExceptionPage(e, mm);
+		} catch (ControllerException | ServiceException e) {
+			viewName = this.getServiceOrControllerExceptionPage(e, mm);
+		} catch (Exception e) {
+			viewName = this.getExceptionPage(e, mm);
+		}
+		return viewName;
 	}	
 	
 }

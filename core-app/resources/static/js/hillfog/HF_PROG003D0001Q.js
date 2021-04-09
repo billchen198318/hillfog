@@ -62,7 +62,7 @@ function queryObjectiveList() {
 }
 
 function viewDetailItem(oid) {
-	alert(oid);
+	window.location = parent.getProgUrlForOid('HF_PROG003D0001Q01D', oid);
 }
 
 const app = Vue.createApp(PageEventHandling);

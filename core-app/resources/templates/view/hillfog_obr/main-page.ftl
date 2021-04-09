@@ -166,7 +166,7 @@ $( document ).ready(function() {
 			      
 			      <br>
 			      
-<button type="button" class="btn btn-primary" title="view" v-on:click="viewDetail(d.oid)"><i class="icon fa fa-eye"></i></button>
+<button type="button" class="btn btn-info" title="view" v-on:click="viewDetail(d.oid)"><i class="icon fa fa-eye"></i></button>
 &nbsp;      
 
 			    </div>

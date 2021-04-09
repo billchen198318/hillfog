@@ -33,10 +33,12 @@ import org.qifu.base.AppContext;
 import org.qifu.base.exception.ServiceException;
 import org.qifu.base.message.BaseSystemMessage;
 import org.qifu.base.model.SortType;
+import org.qifu.hillfog.entity.HfInitiatives;
 import org.qifu.hillfog.entity.HfKeyRes;
 import org.qifu.hillfog.entity.HfKeyResVal;
 import org.qifu.hillfog.entity.HfObjective;
 import org.qifu.hillfog.model.OkrProgressRateData;
+import org.qifu.hillfog.service.IInitiativesService;
 import org.qifu.hillfog.service.IKeyResService;
 import org.qifu.hillfog.service.IKeyResValService;
 import org.qifu.hillfog.service.IObjectiveService;
@@ -45,7 +47,8 @@ public class OkrProgressRateUtils {
 	
 	IObjectiveService<HfObjective, String> objectiveService;
 	IKeyResService<HfKeyRes, String> keyResService;
-	IKeyResValService<HfKeyResVal, String> keyResValService;	
+	IKeyResValService<HfKeyResVal, String> keyResValService;
+	IInitiativesService<HfInitiatives, String> initiativesService;
 	
 	private OkrProgressRateData progressRateData = new OkrProgressRateData();
 	
@@ -54,6 +57,7 @@ public class OkrProgressRateUtils {
 			objectiveService = (IObjectiveService<HfObjective, String>) AppContext.getBean(IObjectiveService.class);
 			keyResService = (IKeyResService<HfKeyRes, String>) AppContext.getBean(IKeyResService.class);
 			keyResValService = (IKeyResValService<HfKeyResVal, String>) AppContext.getBean(IKeyResValService.class);
+			initiativesService = (IInitiativesService<HfInitiatives, String>) AppContext.getBean(IInitiativesService.class);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -88,6 +92,16 @@ public class OkrProgressRateUtils {
 		}
 		progressRateData.setObjective(objective);
 		this.fillKeyResAllData(objective.getOid());
+		return this;
+	}
+	
+	public OkrProgressRateUtils loadInitiatives() throws ServiceException, Exception {
+		if (this.progressRateData.getObjective() == null) {
+			return this;
+		}
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("objOid", this.progressRateData.getObjective().getOid());
+		this.progressRateData.getObjective().setInitiativeList( this.initiativesService.selectListByParams(paramMap).getValue() );
 		return this;
 	}
 	
