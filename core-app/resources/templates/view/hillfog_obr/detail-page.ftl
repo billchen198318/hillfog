@@ -9,6 +9,10 @@
 
 <style type="text/css">
 
+.borderless td, .borderless th {
+	border: none;
+}
+
 </style>
 
 
@@ -70,7 +74,7 @@ function btnBackReport() {
 	
 	<br>
 	
-	<table class="table table-bordered">
+	<table class="table table-bordered borderless">
 	  <tbody>
 	    <tr>
 	      <td><h3><span class="badge badge-pill badge-success">${objective.name}</span></h3></td>
