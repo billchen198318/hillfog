@@ -12,4 +12,11 @@ BSC  | Not yet in progress
 
 ### Screenshot: 
 
-<img alt="demo1" src="https://raw.githubusercontent.com/billchen198318/hillfog/master/doc/001.png">
+### OKR report
+<img alt="demo1" src="https://raw.githubusercontent.com/billchen198318/hillfog/master/doc/P01.png">
+
+### OKR report detail view
+<img alt="demo2" src="https://raw.githubusercontent.com/billchen198318/hillfog/master/doc/P02.png">
+
+### KPI report
+<img alt="demo3" src="https://raw.githubusercontent.com/billchen198318/hillfog/master/doc/P03.png">
