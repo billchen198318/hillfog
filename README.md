@@ -14,6 +14,8 @@ BSC  | Not yet in progress
 ### how to run hillfog (require JAVA11)
 `java -Xmx512M -jar hillfog-0.0.1-demo1.jar`
 
+use browser(Chrome or Firefox) open http://127.0.0.1:8088
+
 ### Screenshot: 
 
 ### OKR report
