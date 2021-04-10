@@ -10,6 +10,10 @@ OKR  | in developing
 PDCA  | Not yet in progress
 BSC  | Not yet in progress
 
+
+### how to run hillfog (require JAVA11)
+`java -Xmx512M -jar hillfog-0.0.1-demo1.jar`
+
 ### Screenshot: 
 
 ### OKR report
