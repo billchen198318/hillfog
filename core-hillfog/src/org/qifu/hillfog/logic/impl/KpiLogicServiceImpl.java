@@ -222,7 +222,7 @@ public class KpiLogicServiceImpl extends BaseLogicService implements IKpiLogicSe
 			this.kpiEmplService.insert(kpiEmpl);
 			size++;
 		}
-		if (KpiBasicCode.DATA_TYPE_BOTH.equals(kpi.getDataType()) || KpiBasicCode.DATA_TYPE_PERSONAL.equals(kpi.getDataType()) && size < 1) {
+		if ((KpiBasicCode.DATA_TYPE_BOTH.equals(kpi.getDataType()) || KpiBasicCode.DATA_TYPE_PERSONAL.equals(kpi.getDataType())) && size < 1) {
 			throw new ServiceException( BaseSystemMessage.dataErrors() );
 		}
 	}
@@ -246,7 +246,7 @@ public class KpiLogicServiceImpl extends BaseLogicService implements IKpiLogicSe
 			this.kpiOrgaService.insert(kpiOrga);
 			size++;
 		}
-		if (KpiBasicCode.DATA_TYPE_BOTH.equals(kpi.getDataType()) || KpiBasicCode.DATA_TYPE_DEPARTMENT.equals(kpi.getDataType()) && size < 1) {
+		if ((KpiBasicCode.DATA_TYPE_BOTH.equals(kpi.getDataType()) || KpiBasicCode.DATA_TYPE_DEPARTMENT.equals(kpi.getDataType())) && size < 1) {
 			throw new ServiceException( BaseSystemMessage.dataErrors() );
 		}
 	}
