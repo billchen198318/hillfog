@@ -2,4 +2,4 @@ language: java
 install: cd core-hillfog && mvn install -DskipTests=true -Dmaven.javadoc.skip=true && cd ../core-app && mvn install -DskipTests=true -Dmaven.javadoc.skip=true 
 jdk:
  - openjdk11
-script: mvn test
+script: mvnw clean install
