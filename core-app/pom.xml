@@ -15,6 +15,7 @@
     <java.version>11</java.version>
     <workspaceDir>${project.basedir}/../</workspaceDir> <!-- /home/git7/qifu/ -->
     <baseConfigFile>DEV</baseConfigFile> <!-- DEV , PROD -->
+    <spring.boot.mainclass>org.qifu.Application</spring.boot.mainclass>
   </properties>
   
   <parent>
@@ -383,6 +384,9 @@
                         <goals>
                             <goal>repackage</goal>
                         </goals>
+				        <configuration>
+				          <mainClass>${spring.boot.mainclass}</mainClass>
+				        </configuration>                        
                     </execution>
                 </executions>				
 			</plugin>
