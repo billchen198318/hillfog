@@ -2,3 +2,4 @@ language: java
 install: cd core-app && mvn install -DskipTests=true -Dmaven.javadoc.skip=true
 jdk:
  - openjdk11
+script: ./mvnw clean install
