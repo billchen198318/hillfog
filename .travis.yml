@@ -1,5 +1,5 @@
 language: java
-install: cd core-app && mvn install -DskipTests=true -Dmaven.javadoc.skip=true
+install: cd core-hillfog && mvn install -DskipTests=true -Dmaven.javadoc.skip=true && cd ../core-app && mvn install -DskipTests=true -Dmaven.javadoc.skip=true 
 jdk:
  - openjdk11
-script: cd core-app && mvnw clean install
+script: mvn test
