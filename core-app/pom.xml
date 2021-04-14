@@ -15,7 +15,6 @@
     <java.version>11</java.version>
     <workspaceDir>${project.basedir}/../</workspaceDir> <!-- /home/git7/qifu/ -->
     <baseConfigFile>DEV</baseConfigFile> <!-- DEV , PROD -->
-    <spring.boot.mainclass>org.qifu.Application</spring.boot.mainclass>
   </properties>
   
   <parent>
@@ -378,15 +377,13 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
 					<includeSystemScope>true</includeSystemScope>
+					<skip>true</skip>
 				</configuration>
                 <executions>
                     <execution>
                         <goals>
                             <goal>repackage</goal>
-                        </goals>
-				        <configuration>
-				          <mainClass>${spring.boot.mainclass}</mainClass>
-				        </configuration>                        
+                        </goals>                   
                     </execution>
                 </executions>				
 			</plugin>
