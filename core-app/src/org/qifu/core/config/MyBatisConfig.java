@@ -36,6 +36,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @MapperScan(basePackages = {"org.qifu.core.mapper", "org.qifu.hillfog.mapper"}, sqlSessionFactoryRef = "sqlSessionFactory")
@@ -79,4 +80,9 @@ public class MyBatisConfig implements EnvironmentAware {
         return sqlSessionFactoryBean.getObject();
     }
 	
+    @Bean(name = "transactionManager")
+    public DataSourceTransactionManager transactionManager() {
+    	return new DataSourceTransactionManager(dataSource());
+    }
+    
 }
