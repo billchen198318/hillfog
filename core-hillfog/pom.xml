@@ -102,7 +102,7 @@
 		<dependency>
 		    <groupId>org.mybatis</groupId>
 		    <artifactId>mybatis</artifactId>
-		    <version>3.5.2</version>
+		    <version>3.5.6</version>
 		</dependency>		
 		
 		<dependency>
@@ -120,7 +120,7 @@
 		<dependency>
 		    <groupId>commons-io</groupId>
 		    <artifactId>commons-io</artifactId>
-		    <version>2.6</version>
+		    <version>2.7</version>
 		</dependency>	
 		
 		<dependency>
