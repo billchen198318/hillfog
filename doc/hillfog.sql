@@ -502,6 +502,202 @@ INSERT INTO `hf_org_dept` VALUES ('036ae3f5-0519-11eb-b8a3-f12f3fa151f4','SD','S
 UNLOCK TABLES;
 
 --
+-- Table structure for table `hf_pdca`
+--
+
+DROP TABLE IF EXISTS `hf_pdca`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `hf_pdca` (
+  `OID` char(36) NOT NULL,
+  `NAME` varchar(100) NOT NULL,
+  `MST_TYPE` varchar(1) NOT NULL DEFAULT ' ',
+  `MST_OID` char(36) NOT NULL,
+  `KPI_FREQUENCY` varchar(1) NOT NULL DEFAULT ' ',
+  `KPI_MEASURE_DATE1` varchar(8) NOT NULL DEFAULT '00000000',
+  `KPI_MEASURE_DATE2` varchar(8) NOT NULL DEFAULT '00000000',
+  `START_DATE` varchar(8) NOT NULL,
+  `END_DATE` varchar(8) NOT NULL,
+  `CONFIRM_UID` varchar(24) DEFAULT NULL,
+  `CONFIRM_DATE` datetime DEFAULT NULL,
+  `DESCRIPTION` varchar(4000) DEFAULT NULL,
+  `PDCA_NUM` varchar(100) NOT NULL,
+  `CUSERID` varchar(24) NOT NULL,
+  `CDATE` datetime NOT NULL,
+  `UUSERID` varchar(24) DEFAULT NULL,
+  `UDATE` datetime DEFAULT NULL,
+  PRIMARY KEY (`OID`),
+  UNIQUE KEY `UK_1` (`NAME`,`MST_TYPE`,`MST_OID`),
+  KEY `IDX_1` (`START_DATE`,`END_DATE`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `hf_pdca`
+--
+
+LOCK TABLES `hf_pdca` WRITE;
+/*!40000 ALTER TABLE `hf_pdca` DISABLE KEYS */;
+/*!40000 ALTER TABLE `hf_pdca` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `hf_pdca_attc`
+--
+
+DROP TABLE IF EXISTS `hf_pdca_attc`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `hf_pdca_attc` (
+  `OID` char(36) NOT NULL,
+  `PDCA_OID` char(36) NOT NULL,
+  `UPLOAD_OID` char(36) NOT NULL,
+  `CUSERID` varchar(24) NOT NULL,
+  `CDATE` datetime NOT NULL,
+  `UUSERID` varchar(24) DEFAULT NULL,
+  `UDATE` datetime DEFAULT NULL,
+  PRIMARY KEY (`OID`),
+  KEY `IDX_1` (`PDCA_OID`,`UPLOAD_OID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `hf_pdca_attc`
+--
+
+LOCK TABLES `hf_pdca_attc` WRITE;
+/*!40000 ALTER TABLE `hf_pdca_attc` DISABLE KEYS */;
+/*!40000 ALTER TABLE `hf_pdca_attc` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `hf_pdca_close_req`
+--
+
+DROP TABLE IF EXISTS `hf_pdca_close_req`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `hf_pdca_close_req` (
+  `OID` char(36) NOT NULL,
+  `PDCA_OID` char(36) NOT NULL,
+  `DESCRIPTION` varchar(4000) NOT NULL,
+  `CONFIRM_UID` varchar(24) DEFAULT NULL,
+  `CONFIRM_DATE` datetime DEFAULT NULL,
+  `APPLY_FLAG` varchar(1) NOT NULL DEFAULT 'A',
+  `ALLPY_TEXT` varchar(4000) DEFAULT NULL,
+  `CUSERID` varchar(24) NOT NULL,
+  `CDATE` datetime NOT NULL,
+  `UUSERID` varchar(24) DEFAULT NULL,
+  `UDATE` datetime DEFAULT NULL,
+  PRIMARY KEY (`OID`),
+  KEY `IDX_1` (`PDCA_OID`,`APPLY_FLAG`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `hf_pdca_close_req`
+--
+
+LOCK TABLES `hf_pdca_close_req` WRITE;
+/*!40000 ALTER TABLE `hf_pdca_close_req` DISABLE KEYS */;
+/*!40000 ALTER TABLE `hf_pdca_close_req` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `hf_pdca_item`
+--
+
+DROP TABLE IF EXISTS `hf_pdca_item`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `hf_pdca_item` (
+  `OID` char(36) NOT NULL,
+  `PDCA_OID` char(36) NOT NULL,
+  `TYPE` varchar(1) NOT NULL,
+  `PARENT_OID` char(36) NOT NULL DEFAULT '',
+  `NAME` varchar(50) NOT NULL,
+  `DESCRIPTION` varchar(4000) DEFAULT NULL,
+  `START_DATE` varchar(8) NOT NULL,
+  `END_DATE` varchar(8) NOT NULL,
+  `CUSERID` varchar(24) NOT NULL,
+  `CDATE` datetime NOT NULL,
+  `UUSERID` varchar(24) DEFAULT NULL,
+  `UDATE` datetime DEFAULT NULL,
+  PRIMARY KEY (`OID`),
+  UNIQUE KEY `UK_1` (`PDCA_OID`,`NAME`),
+  KEY `IDX_1` (`TYPE`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `hf_pdca_item`
+--
+
+LOCK TABLES `hf_pdca_item` WRITE;
+/*!40000 ALTER TABLE `hf_pdca_item` DISABLE KEYS */;
+/*!40000 ALTER TABLE `hf_pdca_item` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `hf_pdca_item_owner`
+--
+
+DROP TABLE IF EXISTS `hf_pdca_item_owner`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `hf_pdca_item_owner` (
+  `OID` char(36) NOT NULL,
+  `PDCA_OID` char(36) NOT NULL,
+  `ITEM_OID` char(36) NOT NULL,
+  `OWNER_UID` varchar(24) NOT NULL,
+  `CUSERID` varchar(24) NOT NULL,
+  `CDATE` datetime NOT NULL,
+  `UUSERID` varchar(24) DEFAULT NULL,
+  `UDATE` datetime DEFAULT NULL,
+  PRIMARY KEY (`OID`),
+  UNIQUE KEY `UK_1` (`PDCA_OID`,`ITEM_OID`,`OWNER_UID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `hf_pdca_item_owner`
+--
+
+LOCK TABLES `hf_pdca_item_owner` WRITE;
+/*!40000 ALTER TABLE `hf_pdca_item_owner` DISABLE KEYS */;
+/*!40000 ALTER TABLE `hf_pdca_item_owner` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `hf_pdca_owner`
+--
+
+DROP TABLE IF EXISTS `hf_pdca_owner`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `hf_pdca_owner` (
+  `OID` char(36) NOT NULL,
+  `PDCA_OID` char(36) NOT NULL,
+  `OWNER_UID` varchar(24) NOT NULL,
+  `CUSERID` varchar(24) NOT NULL,
+  `CDATE` datetime NOT NULL,
+  `UUSERID` varchar(24) DEFAULT NULL,
+  `UDATE` datetime DEFAULT NULL,
+  PRIMARY KEY (`OID`),
+  UNIQUE KEY `UK_1` (`PDCA_OID`,`OWNER_UID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `hf_pdca_owner`
+--
+
+LOCK TABLES `hf_pdca_owner` WRITE;
+/*!40000 ALTER TABLE `hf_pdca_owner` DISABLE KEYS */;
+/*!40000 ALTER TABLE `hf_pdca_owner` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `tb_account`
 --
 
@@ -1361,4 +1557,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-04-12 21:41:18
+-- Dump completed on 2021-05-16 20:59:09
