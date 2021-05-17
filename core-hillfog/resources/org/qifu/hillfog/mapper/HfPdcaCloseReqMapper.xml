@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.qifu.hillfog.mapper.HfPdcaCloseReqMapper">
+
+  <resultMap id="BaseResultMap" type="org.qifu.hillfog.entity.HfPdcaCloseReq">
+    <id column="OID" jdbcType="CHAR" property="oid" />
+    <result column="PDCA_OID" jdbcType="CHAR" property="pdcaOid" />
+    <result column="DESCRIPTION" jdbcType="VARCHAR" property="description" />
+    <result column="CONFIRM_UID" jdbcType="VARCHAR" property="confirmUid" />
+    <result column="CONFIRM_DATE" jdbcType="TIMESTAMP" property="confirmDate" />
+    <result column="APPLY_FLAG" jdbcType="VARCHAR" property="applyFlag" />
+    <result column="ALLPY_TEXT" jdbcType="VARCHAR" property="allpyText" />
+    <result column="CUSERID" jdbcType="VARCHAR" property="cuserid" />
+    <result column="CDATE" jdbcType="TIMESTAMP" property="cdate" />
+    <result column="UUSERID" jdbcType="VARCHAR" property="uuserid" />
+    <result column="UDATE" jdbcType="TIMESTAMP" property="udate" />
+  </resultMap>
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select *
+    from <include refid="org.qifu.hillfog.mapper.DB1Config.schema"/>hf_pdca_close_req
+    where OID = #{oid,jdbcType=CHAR}
+  </select>  
+  
+  <select id="selectListByParams" parameterType="java.util.HashMap" resultMap="BaseResultMap">
+    select *
+    from <include refid="org.qifu.hillfog.mapper.DB1Config.schema"/>hf_pdca_close_req
+    WHERE 1=1
+	<if test="pdcaOid != null and pdcaOid != ''.toString() ">
+		AND PDCA_OID = #{pdcaOid,jdbcType=CHAR}
+	</if>			
+	<if test="applyFlag != null and applyFlag != ''.toString() ">
+		AND APPLY_FLAG = #{applyFlag,jdbcType=VARCHAR}
+	</if>	
+	<if test="orderBy != null and orderBy != ''.toString() and sortType != null and sortType != ''.toString() ">
+		ORDER BY  ${orderBy} ${sortType}
+	</if>	
+  </select>    
+  
+  <select id="findPage" parameterType="java.util.HashMap" resultMap="BaseResultMap">
+  	<include refid="org.qifu.hillfog.mapper.DB1Config.sql1"/>
+  	
+    select *
+    from <include refid="org.qifu.hillfog.mapper.DB1Config.schema"/>hf_pdca_close_req
+    WHERE 1=1
+	<if test="pdcaOid != null and pdcaOid != ''.toString() ">
+		AND PDCA_OID = #{pdcaOid,jdbcType=CHAR}
+	</if>			
+	<if test="applyFlag != null and applyFlag != ''.toString() ">
+		AND APPLY_FLAG = #{applyFlag,jdbcType=VARCHAR}
+	</if>			
+		
+	<include refid="org.qifu.hillfog.mapper.DB1Config.sql2"/>
+  </select>  
+  
+  <select id="count" parameterType="java.util.HashMap" resultType="java.lang.Long">
+    select count(*) from <include refid="org.qifu.hillfog.mapper.DB1Config.schema"/>hf_pdca_close_req
+    WHERE 1=1
+	<if test="pdcaOid != null and pdcaOid != ''.toString() ">
+		AND PDCA_OID = #{pdcaOid,jdbcType=CHAR}
+	</if>			
+	<if test="applyFlag != null and applyFlag != ''.toString() ">
+		AND APPLY_FLAG = #{applyFlag,jdbcType=VARCHAR}
+	</if>						
+  </select>  
+  
+  <insert id="insert" parameterType="org.qifu.hillfog.entity.HfPdcaCloseReq"> 
+    insert into <include refid="org.qifu.hillfog.mapper.DB1Config.schema"/>hf_pdca_close_req
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="oid != null">
+        OID,
+      </if>
+      <if test="pdcaOid != null">
+        PDCA_OID,
+      </if>
+      <if test="description != null">
+        DESCRIPTION,
+      </if>
+      <if test="confirmUid != null">
+        CONFIRM_UID,
+      </if>
+      <if test="confirmDate != null">
+        CONFIRM_DATE,
+      </if>
+      <if test="applyFlag != null">
+        APPLY_FLAG,
+      </if>
+      <if test="allpyText != null">
+        ALLPY_TEXT,
+      </if>
+      <if test="cuserid != null">
+        CUSERID,
+      </if>
+      <if test="cdate != null">
+        CDATE,
+      </if>
+      <if test="uuserid != null">
+        UUSERID,
+      </if>
+      <if test="udate != null">
+        UDATE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="oid != null">
+        #{oid,jdbcType=CHAR},
+      </if>
+      <if test="pdcaOid != null">
+        #{pdcaOid,jdbcType=CHAR},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="confirmUid != null">
+        #{confirmUid,jdbcType=VARCHAR},
+      </if>
+      <if test="confirmDate != null">
+        #{confirmDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="applyFlag != null">
+        #{applyFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="allpyText != null">
+        #{allpyText,jdbcType=VARCHAR},
+      </if>
+      <if test="cuserid != null">
+        #{cuserid,jdbcType=VARCHAR},
+      </if>
+      <if test="cdate != null">
+        #{cdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="uuserid != null">
+        #{uuserid,jdbcType=VARCHAR},
+      </if>
+      <if test="udate != null">
+        #{udate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>  
+  
+  <update id="update" parameterType="org.qifu.hillfog.entity.HfPdcaCloseReq">
+    update <include refid="org.qifu.hillfog.mapper.DB1Config.schema"/>hf_pdca_close_req
+    <set>
+      <if test="pdcaOid != null">
+        PDCA_OID = #{pdcaOid,jdbcType=CHAR},
+      </if>
+      <if test="description != null">
+        DESCRIPTION = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="confirmUid != null">
+        CONFIRM_UID = #{confirmUid,jdbcType=VARCHAR},
+      </if>
+      <if test="confirmDate != null">
+        CONFIRM_DATE = #{confirmDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="applyFlag != null">
+        APPLY_FLAG = #{applyFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="allpyText != null">
+        ALLPY_TEXT = #{allpyText,jdbcType=VARCHAR},
+      </if>
+      <!--  
+      <if test="cuserid != null">
+        CUSERID = #{cuserid,jdbcType=VARCHAR},
+      </if>
+      <if test="cdate != null">
+        CDATE = #{cdate,jdbcType=TIMESTAMP},
+      </if>
+      -->
+      <if test="uuserid != null">
+        UUSERID = #{uuserid,jdbcType=VARCHAR},
+      </if>
+      <if test="udate != null">
+        UDATE = #{udate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where OID = #{oid,jdbcType=CHAR}
+  </update>  
+  
+  <delete id="delete" parameterType="org.qifu.hillfog.entity.HfPdcaCloseReq">
+    delete from <include refid="org.qifu.hillfog.mapper.DB1Config.schema"/>hf_pdca_close_req
+    where OID = #{oid,jdbcType=CHAR}
+  </delete>
+  
+</mapper>

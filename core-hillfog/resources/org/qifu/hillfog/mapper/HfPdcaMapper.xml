@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.qifu.hillfog.mapper.HfPdcaMapper">
+
+  <resultMap id="BaseResultMap" type="org.qifu.hillfog.entity.HfPdca">
+    <id column="OID" jdbcType="CHAR" property="oid" />
+    <result column="NAME" jdbcType="VARCHAR" property="name" />
+    <result column="MST_TYPE" jdbcType="VARCHAR" property="mstType" />
+    <result column="MST_OID" jdbcType="CHAR" property="mstOid" />
+    <result column="KPI_FREQUENCY" jdbcType="VARCHAR" property="kpiFrequency" />
+    <result column="KPI_MEASURE_DATE1" jdbcType="VARCHAR" property="kpiMeasureDate1" />
+    <result column="KPI_MEASURE_DATE2" jdbcType="VARCHAR" property="kpiMeasureDate2" />
+    <result column="START_DATE" jdbcType="VARCHAR" property="startDate" />
+    <result column="END_DATE" jdbcType="VARCHAR" property="endDate" />
+    <result column="CONFIRM_UID" jdbcType="VARCHAR" property="confirmUid" />
+    <result column="CONFIRM_DATE" jdbcType="TIMESTAMP" property="confirmDate" />
+    <result column="DESCRIPTION" jdbcType="VARCHAR" property="description" />
+    <result column="PDCA_NUM" jdbcType="VARCHAR" property="pdcaNum" />
+    <result column="CUSERID" jdbcType="VARCHAR" property="cuserid" />
+    <result column="CDATE" jdbcType="TIMESTAMP" property="cdate" />
+    <result column="UUSERID" jdbcType="VARCHAR" property="uuserid" />
+    <result column="UDATE" jdbcType="TIMESTAMP" property="udate" />
+  </resultMap>
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select *
+    from <include refid="org.qifu.hillfog.mapper.DB1Config.schema"/>hf_pdca
+    where OID = #{oid,jdbcType=CHAR}
+  </select>  
+  
+  <select id="selectListByParams" parameterType="java.util.HashMap" resultMap="BaseResultMap">
+    select *
+    from <include refid="org.qifu.hillfog.mapper.DB1Config.schema"/>hf_pdca
+    WHERE 1=1
+	<if test="name != null and name != ''.toString() ">
+		AND NAME = #{name,jdbcType=VARCHAR}
+	</if>			
+	<if test="nameLike != null and nameLike != ''.toString() ">
+		AND NAME like #{nameLike,jdbcType=VARCHAR}
+	</if>
+	<if test="mstType != null and mstType != ''.toString() ">
+		AND MST_TYPE = #{mstType,jdbcType=VARCHAR}
+	</if>			
+	<if test="mstOid != null and mstOid != ''.toString() ">
+		AND MST_OID = #{mstOid,jdbcType=CHAR}
+	</if>		
+	<if test="orderBy != null and orderBy != ''.toString() and sortType != null and sortType != ''.toString() ">
+		ORDER BY  ${orderBy} ${sortType}
+	</if>	
+  </select>    
+  
+  <select id="findPage" parameterType="java.util.HashMap" resultMap="BaseResultMap">
+  	<include refid="org.qifu.hillfog.mapper.DB1Config.sql1"/>
+  	
+    select *
+    from <include refid="org.qifu.hillfog.mapper.DB1Config.schema"/>hf_pdca
+    WHERE 1=1
+	<if test="name != null and name != ''.toString() ">
+		AND NAME = #{name,jdbcType=VARCHAR}
+	</if>			
+	<if test="nameLike != null and nameLike != ''.toString() ">
+		AND NAME like #{nameLike,jdbcType=VARCHAR}
+	</if>
+	<if test="mstType != null and mstType != ''.toString() ">
+		AND MST_TYPE = #{mstType,jdbcType=VARCHAR}
+	</if>			
+	<if test="mstOid != null and mstOid != ''.toString() ">
+		AND MST_OID = #{mstOid,jdbcType=CHAR}
+	</if>					
+	
+	<include refid="org.qifu.hillfog.mapper.DB1Config.sql2"/>
+  </select>  
+  
+  <select id="count" parameterType="java.util.HashMap" resultType="java.lang.Long">
+    select count(*) from <include refid="org.qifu.hillfog.mapper.DB1Config.schema"/>hf_pdca
+    WHERE 1=1
+	<if test="name != null and name != ''.toString() ">
+		AND NAME = #{name,jdbcType=VARCHAR}
+	</if>			
+	<if test="nameLike != null and nameLike != ''.toString() ">
+		AND NAME like #{nameLike,jdbcType=VARCHAR}
+	</if>
+	<if test="mstType != null and mstType != ''.toString() ">
+		AND MST_TYPE = #{mstType,jdbcType=VARCHAR}
+	</if>			
+	<if test="mstOid != null and mstOid != ''.toString() ">
+		AND MST_OID = #{mstOid,jdbcType=CHAR}
+	</if>							
+  </select>  
+  
+  <insert id="insert" parameterType="org.qifu.hillfog.entity.HfPdca"> 
+    insert into <include refid="org.qifu.hillfog.mapper.DB1Config.schema"/>hf_pdca
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="oid != null">
+        OID,
+      </if>
+      <if test="name != null">
+        NAME,
+      </if>
+      <if test="mstType != null">
+        MST_TYPE,
+      </if>
+      <if test="mstOid != null">
+        MST_OID,
+      </if>
+      <if test="kpiFrequency != null">
+        KPI_FREQUENCY,
+      </if>
+      <if test="kpiMeasureDate1 != null">
+        KPI_MEASURE_DATE1,
+      </if>
+      <if test="kpiMeasureDate2 != null">
+        KPI_MEASURE_DATE2,
+      </if>
+      <if test="startDate != null">
+        START_DATE,
+      </if>
+      <if test="endDate != null">
+        END_DATE,
+      </if>
+      <if test="confirmUid != null">
+        CONFIRM_UID,
+      </if>
+      <if test="confirmDate != null">
+        CONFIRM_DATE,
+      </if>
+      <if test="description != null">
+        DESCRIPTION,
+      </if>
+      <if test="pdcaNum != null">
+        PDCA_NUM,
+      </if>
+      <if test="cuserid != null">
+        CUSERID,
+      </if>
+      <if test="cdate != null">
+        CDATE,
+      </if>
+      <if test="uuserid != null">
+        UUSERID,
+      </if>
+      <if test="udate != null">
+        UDATE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="oid != null">
+        #{oid,jdbcType=CHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="mstType != null">
+        #{mstType,jdbcType=VARCHAR},
+      </if>
+      <if test="mstOid != null">
+        #{mstOid,jdbcType=CHAR},
+      </if>
+      <if test="kpiFrequency != null">
+        #{kpiFrequency,jdbcType=VARCHAR},
+      </if>
+      <if test="kpiMeasureDate1 != null">
+        #{kpiMeasureDate1,jdbcType=VARCHAR},
+      </if>
+      <if test="kpiMeasureDate2 != null">
+        #{kpiMeasureDate2,jdbcType=VARCHAR},
+      </if>
+      <if test="startDate != null">
+        #{startDate,jdbcType=VARCHAR},
+      </if>
+      <if test="endDate != null">
+        #{endDate,jdbcType=VARCHAR},
+      </if>
+      <if test="confirmUid != null">
+        #{confirmUid,jdbcType=VARCHAR},
+      </if>
+      <if test="confirmDate != null">
+        #{confirmDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="pdcaNum != null">
+        #{pdcaNum,jdbcType=VARCHAR},
+      </if>
+      <if test="cuserid != null">
+        #{cuserid,jdbcType=VARCHAR},
+      </if>
+      <if test="cdate != null">
+        #{cdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="uuserid != null">
+        #{uuserid,jdbcType=VARCHAR},
+      </if>
+      <if test="udate != null">
+        #{udate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>  
+  
+  <update id="update" parameterType="org.qifu.hillfog.entity.HfPdca">
+    update <include refid="org.qifu.hillfog.mapper.DB1Config.schema"/>hf_pdca
+    <set>
+      <if test="name != null">
+        NAME = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="mstType != null">
+        MST_TYPE = #{mstType,jdbcType=VARCHAR},
+      </if>
+      <if test="mstOid != null">
+        MST_OID = #{mstOid,jdbcType=CHAR},
+      </if>
+      <if test="kpiFrequency != null">
+        KPI_FREQUENCY = #{kpiFrequency,jdbcType=VARCHAR},
+      </if>
+      <if test="kpiMeasureDate1 != null">
+        KPI_MEASURE_DATE1 = #{kpiMeasureDate1,jdbcType=VARCHAR},
+      </if>
+      <if test="kpiMeasureDate2 != null">
+        KPI_MEASURE_DATE2 = #{kpiMeasureDate2,jdbcType=VARCHAR},
+      </if>
+      <if test="startDate != null">
+        START_DATE = #{startDate,jdbcType=VARCHAR},
+      </if>
+      <if test="endDate != null">
+        END_DATE = #{endDate,jdbcType=VARCHAR},
+      </if>
+      <if test="confirmUid != null">
+        CONFIRM_UID = #{confirmUid,jdbcType=VARCHAR},
+      </if>
+      <if test="confirmDate != null">
+        CONFIRM_DATE = #{confirmDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="description != null">
+        DESCRIPTION = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="pdcaNum != null">
+        PDCA_NUM = #{pdcaNum,jdbcType=VARCHAR},
+      </if>
+      <!--  
+      <if test="cuserid != null">
+        CUSERID = #{cuserid,jdbcType=VARCHAR},
+      </if>
+      <if test="cdate != null">
+        CDATE = #{cdate,jdbcType=TIMESTAMP},
+      </if>
+      -->
+      <if test="uuserid != null">
+        UUSERID = #{uuserid,jdbcType=VARCHAR},
+      </if>
+      <if test="udate != null">
+        UDATE = #{udate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where OID = #{oid,jdbcType=CHAR}
+  </update>  
+  
+  <delete id="delete" parameterType="org.qifu.hillfog.entity.HfPdca">
+    delete from <include refid="org.qifu.hillfog.mapper.DB1Config.schema"/>hf_pdca
+    where OID = #{oid,jdbcType=CHAR}
+  </delete>
+    
+</mapper>
