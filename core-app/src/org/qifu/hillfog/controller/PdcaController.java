@@ -29,6 +29,11 @@ import org.qifu.base.exception.AuthorityException;
 import org.qifu.base.exception.ControllerException;
 import org.qifu.base.exception.ServiceException;
 import org.qifu.base.model.ControllerMethodAuthority;
+import org.qifu.hillfog.entity.HfEmployee;
+import org.qifu.hillfog.entity.HfObjective;
+import org.qifu.hillfog.service.IEmployeeService;
+import org.qifu.hillfog.service.IObjectiveService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,17 +42,27 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class PdcaController extends BaseControllerSupport implements IPageNamespaceProvide {
 
+	@Autowired
+	IObjectiveService<HfObjective, String> objectiveService;
+	
+	@Autowired
+	IEmployeeService<HfEmployee, String> employeeService;	
+	
 	@Override
 	public String viewPageNamespace() {
 		return "hillfog_pdca";
 	}
 	
 	private void init(String type, ModelMap mm) throws AuthorityException, ControllerException, ServiceException, Exception {
-		
+		if ("createPage".equals(type) || "editPage".equals(type)) {
+			mm.put("empInputAutocomplete", pageAutocompleteContent(this.employeeService.findInputAutocomplete()));			
+		}		
 	}
 	
 	private void fetch(ModelMap mm, String oid) throws AuthorityException, ControllerException, ServiceException, Exception {
-		mm.put("objectiveOid", oid);
+		HfObjective objective = objectiveService.selectByPrimaryKey(oid).getValueEmptyThrowMessage();
+		mm.put("objective", objective);
+		
 	}
 	
 	@ControllerMethodAuthority(check = true, programId = "HF_PROG004D0001Q")
