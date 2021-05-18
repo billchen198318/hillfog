@@ -82,7 +82,7 @@ function btnSave() {
 }
 
 function btnClear() {
-	window.location = parent.getProgUrlForOid('HF_PROG004D0001A', '${objective.oid}');
+	window.location = parent.getProgUrlForOid('HF_PROG004D0001A', '${oid}') + '&masterType=${masterType}';
 }
 
 </script>
@@ -97,6 +97,30 @@ function btnClear() {
 <div class="form-group" id="form-group1">
 	<div class="row">
 		<div class="col p-2 bg-secondary rounded">
+		
+		<@qifu.if test=" null != masterType && \"O\" == masterType ">
+			<div class="row">
+				<div class="col-xs-12 col-md-12 col-lg-12 text-white">
+					<h4>
+					<span class="badge badge-success"><@qifu.out value="objective.name" escapeHtml="Y" /></span>
+					&nbsp;
+					<span class="badge badge-light"><@qifu.out value="objective.startDateShow" escapeHtml="Y" />&nbsp;~&nbsp;<@qifu.out value="objective.endDateShow" escapeHtml="Y" /></span>
+					</h4>
+				</div>
+			</div>
+		</@qifu.if>
+		<@qifu.if test=" null != masterType && \"K\" == masterType ">
+			<div class="row">
+				<div class="col-xs-12 col-md-12 col-lg-12 text-white">
+					<h4>
+					<span class="badge badge-success"><@qifu.out value="kpi.name" escapeHtml="Y" /></span>
+					&nbsp;
+					
+					</h4>
+				</div>
+			</div>		
+		</@qifu.if>
+			
 			<div class="row">
 				<div class="col-xs-12 col-md-12 col-lg-12 text-white">
 					<span class="btn badge btn-info" onclick="btnSave();"><h6><i class="icon fa fa-floppy-o"></i>&nbsp;Save</h6></span>

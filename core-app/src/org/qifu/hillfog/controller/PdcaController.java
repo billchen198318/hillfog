@@ -30,8 +30,11 @@ import org.qifu.base.exception.ControllerException;
 import org.qifu.base.exception.ServiceException;
 import org.qifu.base.model.ControllerMethodAuthority;
 import org.qifu.hillfog.entity.HfEmployee;
+import org.qifu.hillfog.entity.HfKpi;
 import org.qifu.hillfog.entity.HfObjective;
+import org.qifu.hillfog.model.PDCABase;
 import org.qifu.hillfog.service.IEmployeeService;
+import org.qifu.hillfog.service.IKpiService;
 import org.qifu.hillfog.service.IObjectiveService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -48,20 +51,38 @@ public class PdcaController extends BaseControllerSupport implements IPageNamesp
 	@Autowired
 	IEmployeeService<HfEmployee, String> employeeService;	
 	
+	@Autowired
+	IKpiService<HfKpi, String> kpiService;	
+	
 	@Override
 	public String viewPageNamespace() {
 		return "hillfog_pdca";
 	}
 	
 	private void init(String type, ModelMap mm) throws AuthorityException, ControllerException, ServiceException, Exception {
+		if ("createPage".equals(type)) {
+			
+		}
 		if ("createPage".equals(type) || "editPage".equals(type)) {
 			mm.put("empInputAutocomplete", pageAutocompleteContent(this.employeeService.findInputAutocomplete()));			
 		}		
 	}
 	
+	private void fetchForCreatePage(ModelMap mm, String oid, String masterType) throws AuthorityException, ControllerException, ServiceException, Exception {
+		mm.put("masterType", masterType);
+		mm.put("oid", oid);
+		if (PDCABase.SOURCE_MASTER_KPI_TYPE.equals(masterType)) {
+			HfKpi kpi = kpiService.selectByPrimaryKey(oid).getValueEmptyThrowMessage();
+			mm.put("kpi", kpi);
+		} else if (PDCABase.SOURCE_MASTER_OBJECTIVE_TYPE.equals(masterType)) {
+			HfObjective objective = objectiveService.selectByPrimaryKey(oid).getValueEmptyThrowMessage();
+			mm.put("objective", objective);			
+		} else {
+			throw new ControllerException("args type error!");
+		}
+	}
+	
 	private void fetch(ModelMap mm, String oid) throws AuthorityException, ControllerException, ServiceException, Exception {
-		HfObjective objective = objectiveService.selectByPrimaryKey(oid).getValueEmptyThrowMessage();
-		mm.put("objective", objective);
 		
 	}
 	
@@ -84,11 +105,11 @@ public class PdcaController extends BaseControllerSupport implements IPageNamesp
 	
 	@ControllerMethodAuthority(check = true, programId = "HF_PROG004D0001A")
 	@RequestMapping("/hfPdcaCreatePage")
-	public String createPage(ModelMap mm, HttpServletRequest request, @RequestParam(name="oid") String oid) {
+	public String createPage(ModelMap mm, HttpServletRequest request, @RequestParam(name="oid") String sourceMasterOid, @RequestParam(name="masterType") String masterType) {
 		String viewName = this.viewCreatePage();
 		this.getDefaultModelMap(mm, this.currentMethodAuthority());
 		try {
-			this.fetch(mm, oid);
+			this.fetchForCreatePage(mm, sourceMasterOid, masterType);
 			this.init("createPage", mm);
 		} catch (AuthorityException e) {
 			viewName = this.getAuthorityExceptionPage(e, mm);

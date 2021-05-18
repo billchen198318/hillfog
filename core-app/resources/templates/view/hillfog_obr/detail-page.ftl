@@ -51,7 +51,7 @@ function btnBackReport() {
 }
 
 function btnCreatePdca() {
-	parent.addTab('HF_PROG004D0001A', parent.getProgUrlForOid('HF_PROG004D0001A', '${objective.oid}') );
+	parent.addTab('HF_PROG004D0001A', parent.getProgUrlForOid('HF_PROG004D0001A', '${objective.oid}') + '&masterType=O' );
 }
 
 </script>
