@@ -47,7 +47,7 @@ public class PdcaController extends BaseControllerSupport implements IPageNamesp
 	}
 	
 	private void fetch(ModelMap mm, String oid) throws AuthorityException, ControllerException, ServiceException, Exception {
-		
+		mm.put("objectiveOid", oid);
 	}
 	
 	@ControllerMethodAuthority(check = true, programId = "HF_PROG004D0001Q")
@@ -69,10 +69,11 @@ public class PdcaController extends BaseControllerSupport implements IPageNamesp
 	
 	@ControllerMethodAuthority(check = true, programId = "HF_PROG004D0001A")
 	@RequestMapping("/hfPdcaCreatePage")
-	public String createPage(ModelMap mm, HttpServletRequest request) {
+	public String createPage(ModelMap mm, HttpServletRequest request, @RequestParam(name="oid") String oid) {
 		String viewName = this.viewCreatePage();
 		this.getDefaultModelMap(mm, this.currentMethodAuthority());
 		try {
+			this.fetch(mm, oid);
 			this.init("createPage", mm);
 		} catch (AuthorityException e) {
 			viewName = this.getAuthorityExceptionPage(e, mm);

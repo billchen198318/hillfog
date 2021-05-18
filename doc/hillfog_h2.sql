@@ -616,7 +616,7 @@ INSERT INTO "PUBLIC"."TB_SYS_PROG" VALUES
 INSERT INTO "PUBLIC"."TB_SYS_PROG" VALUES
 ('217b5e19-b7a2-11eb-95b3-2105243e38c1', 'HF_PROG004D', 'BD. PDCA', '', 'N', 'N', 0, 0, 'CORE', 'FOLDER', 'HELP_ABOUT', 'retweet', 'admin', TIMESTAMP '2021-05-18 14:27:33.928', NULL, NULL),
 ('377bd82b-b7a2-11eb-95b3-87837036775a', 'HF_PROG004D0001Q', 'BD01 - PDCA (Query)', 'hfPdcaPage', 'N', 'N', 0, 0, 'CORE', 'ITEM', 'HELP_ABOUT', 'recycle', 'admin', TIMESTAMP '2021-05-18 14:28:10.839', 'admin', TIMESTAMP '2021-05-18 14:31:28.735'),
-('4931892d-b7a2-11eb-95b3-a9c965170a65', 'HF_PROG004D0001A', 'BD01 - PDCA (Create)', 'hfPdcaCreatePage', 'N', 'N', 0, 0, 'CORE', 'ITEM', 'HELP_ABOUT', 'recycle', 'admin', TIMESTAMP '2021-05-18 14:28:40.551', NULL, NULL),
+('4931892d-b7a2-11eb-95b3-a9c965170a65', 'HF_PROG004D0001A', 'BD01 - PDCA (Create)', 'hfPdcaCreatePage', 'Y', 'N', 0, 0, 'CORE', 'ITEM', 'HELP_ABOUT', 'recycle', 'admin', TIMESTAMP '2021-05-18 14:28:40.551', NULL, NULL),
 ('64e228b0-b7a2-11eb-95b3-5d8b4dfc64a6', 'HF_PROG004D0001E', 'BD01 - PDCA (Edit)', 'hfPdcaEditPage', 'Y', 'N', 0, 0, 'CORE', 'ITEM', 'HELP_ABOUT', 'recycle', 'admin', TIMESTAMP '2021-05-18 14:29:27.011', NULL, NULL),
 ('8235a2c3-b7a2-11eb-95b3-05820753f42b', 'HF_PROG004D0001V', 'BD01 - PDCA (Detail)', 'hfPdcaViewDetailPage', 'Y', 'N', 0, 0, 'CORE', 'ITEM', 'HELP_ABOUT', 'recycle', 'admin', TIMESTAMP '2021-05-18 14:30:16.208', NULL, NULL);   
 CREATE INDEX "PUBLIC"."SYS_PROG_IDX_1" ON "PUBLIC"."TB_SYS_PROG"("PROG_SYSTEM");              

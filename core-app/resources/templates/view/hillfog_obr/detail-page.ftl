@@ -50,6 +50,10 @@ function btnBackReport() {
 	window.location = parent.getProgUrl('HF_PROG003D0001Q');
 }
 
+function btnCreatePdca() {
+	parent.addTab('HF_PROG004D0001A', parent.getProgUrlForOid('HF_PROG004D0001A', '${objective.oid}') );
+}
+
 </script>
 
 </head>
@@ -66,6 +70,8 @@ function btnBackReport() {
 			<div class="row">
 				<div class="col-xs-12 col-md-12 col-lg-12 text-white">
 					<span class="btn badge btn-info" onclick="btnBackReport();"><h6><i class="icon fa fa-backward"></i>&nbsp;Back objective list</h6></span>	
+					&nbsp;
+					<span class="btn badge btn-warning" onclick="btnCreatePdca();"><h6><i class="icon fa fa-plus"></i>&nbsp;Create PDCA</h6></span>
 					&nbsp;
 				</div>
 			</div>
