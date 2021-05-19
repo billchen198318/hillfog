@@ -64,6 +64,15 @@
   width: 1px;
 }
 
+
+
+.hrDash{
+  border: 0 none;
+  border-top: 2px dashed #DBDBDB;
+  background: none;
+  height:0;
+}
+
 </style>
 
 
@@ -311,9 +320,61 @@ function removeArrayByPos(arr, pos) {
 
 
 
+<div id="main-content">
+<div class="form-group" id="form-group4">
+
+	<div class="row">	
+		<div class="col-xs-12 col-md-12 col-lg-12">
+		
+			<h4><span class="badge badge-pill badge-success">Plan</span></h4>
+			
+			
+		</div>
+	</div>	
+	
+	<hr class="hrDash">
+	
+	<div class="row">	
+		<div class="col-xs-12 col-md-12 col-lg-12">
+		
+			<h4><span class="badge badge-pill badge-success">Do</span></h4>
+			
+			
+		</div>
+	</div>	
+	
+	<hr class="hrDash">
+	
+	<div class="row">	
+		<div class="col-xs-12 col-md-12 col-lg-12">
+		
+			<h4><span class="badge badge-pill badge-success">Check</span></h4>
+			
+			
+		</div>
+	</div>		
+	
+	<hr class="hrDash">
+	
+	<div class="row">	
+		<div class="col-xs-12 col-md-12 col-lg-12">
+		
+			<h4><span class="badge badge-pill badge-success">Act</span></h4>
+			
+			
+		</div>
+	</div>
+	
+</div>
+</div>
+
+
+
 <br/>
 <br/>
 <br/>
+
+<script type="text/javascript" src="${qifu_basePath}js/hillfog/HF_PROG004D0001A.js?ver=${qifu_jsVerBuild}"></script>
 
 </body>
 </html>
