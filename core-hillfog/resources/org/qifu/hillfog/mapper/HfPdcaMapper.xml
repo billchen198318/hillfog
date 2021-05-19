@@ -259,5 +259,10 @@
     delete from <include refid="org.qifu.hillfog.mapper.DB1Config.schema"/>hf_pdca
     where OID = #{oid,jdbcType=CHAR}
   </delete>
-    
+  
+  <select id="selectMaxPdcaNum" parameterType="java.util.HashMap" resultType="java.lang.String">
+    select MAX(PDCA_NUM) from <include refid="org.qifu.hillfog.mapper.DB1Config.schema"/>hf_pdca
+    WHERE PDCA_NUM LIKE #{pdcaNum,jdbcType=VARCHAR}					
+  </select> 
+      
 </mapper>

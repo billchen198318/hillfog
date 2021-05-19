@@ -21,11 +21,15 @@
  */
 package org.qifu.hillfog.mapper;
 
+import java.util.Map;
+
 import org.apache.ibatis.annotations.Mapper;
 import org.qifu.base.mapper.IBaseMapper;
 import org.qifu.hillfog.entity.HfPdca;
 
 @Mapper
 public interface HfPdcaMapper extends IBaseMapper<HfPdca, String> {
+	
+	public String selectMaxPdcaNum(Map<String, Object> paramMap);
 	
 }

@@ -21,9 +21,12 @@
  */
 package org.qifu.hillfog.service;
 
+import org.qifu.base.exception.ServiceException;
 import org.qifu.base.service.IBaseService;
 import org.qifu.hillfog.entity.HfPdca;
 
 public interface IPdcaService<T, E> extends IBaseService<HfPdca, String> {
+	
+	public String selectMaxPdcaNum(String head) throws ServiceException, Exception;
 	
 }

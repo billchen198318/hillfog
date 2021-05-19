@@ -132,6 +132,15 @@ function btnClear() {
 		</div>
 	</div>
 	
+	<div class="row">
+		<div class="col-xs-6 col-md-6 col-lg-6">
+			PDCA Number:&nbsp;${pdcaNum}
+		</div>
+		<div class="col-xs-6 col-md-6 col-lg-6">
+		
+		</div>		
+	</div>		
+	
 </div>	
 
 

@@ -21,11 +21,22 @@
  */
 package org.qifu.hillfog.service.impl;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
+
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
+import org.qifu.base.exception.ServiceException;
 import org.qifu.base.mapper.IBaseMapper;
+import org.qifu.base.message.BaseSystemMessage;
 import org.qifu.base.service.BaseService;
 import org.qifu.hillfog.entity.HfPdca;
 import org.qifu.hillfog.mapper.HfPdcaMapper;
 import org.qifu.hillfog.service.IPdcaService;
+import org.qifu.util.SimpleUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
@@ -44,5 +55,38 @@ public class PdcaServiceImpl extends BaseService<HfPdca, String> implements IPdc
 	protected IBaseMapper<HfPdca, String> getBaseMapper() {
 		return this.hfPdcaMapper;
 	}
-
+	
+	private String getCurrentMonthText() {
+		Calendar cal = Calendar.getInstance();
+		SimpleDateFormat sdf = new SimpleDateFormat("MMM", Locale.ENGLISH);
+		String monthStr = sdf.format(cal.getTime());
+		if (monthStr.length() > 3) {
+			monthStr = monthStr.substring(0, 3);
+		}
+		return monthStr;
+	}	
+	
+	@Override
+	public String selectMaxPdcaNum(String head) throws ServiceException, Exception {
+		if (StringUtils.isBlank(head)) {
+			throw new ServiceException(BaseSystemMessage.parameterBlank());
+		}
+		String pdcaNum = head + "-" + SimpleUtils.getStrYMD(SimpleUtils.IS_YEAR) + "-" + this.getCurrentMonthText();
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("pdcaNum", pdcaNum+"%");
+		String currentMaxNum = this.hfPdcaMapper.selectMaxPdcaNum(paramMap);
+		if (StringUtils.isBlank(currentMaxNum)) {
+			return pdcaNum + "-001";
+		}
+		String tmp[] = pdcaNum.split("-");
+		if (tmp == null || tmp.length != 4) {
+			throw new ServiceException(BaseSystemMessage.dataErrors());
+		}
+		String num = tmp[tmp.length-1];
+		if (!NumberUtils.isCreatable(num)) {
+			throw new ServiceException(BaseSystemMessage.dataErrors());
+		}
+		return pdcaNum + "-" + StringUtils.leftPad((Integer.parseInt(num)+1)+"", 3, "0");
+	}
+	
 }

@@ -32,10 +32,12 @@ import org.qifu.base.model.ControllerMethodAuthority;
 import org.qifu.hillfog.entity.HfEmployee;
 import org.qifu.hillfog.entity.HfKpi;
 import org.qifu.hillfog.entity.HfObjective;
+import org.qifu.hillfog.entity.HfPdca;
 import org.qifu.hillfog.model.PDCABase;
 import org.qifu.hillfog.service.IEmployeeService;
 import org.qifu.hillfog.service.IKpiService;
 import org.qifu.hillfog.service.IObjectiveService;
+import org.qifu.hillfog.service.IPdcaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -54,6 +56,9 @@ public class PdcaController extends BaseControllerSupport implements IPageNamesp
 	@Autowired
 	IKpiService<HfKpi, String> kpiService;	
 	
+	@Autowired
+	IPdcaService<HfPdca, String> pdcaService;
+	
 	@Override
 	public String viewPageNamespace() {
 		return "hillfog_pdca";
@@ -61,11 +66,22 @@ public class PdcaController extends BaseControllerSupport implements IPageNamesp
 	
 	private void init(String type, ModelMap mm) throws AuthorityException, ControllerException, ServiceException, Exception {
 		if ("createPage".equals(type)) {
-			
+			if (mm.get("masterType") != null) {
+				this.generatePdcaNumber(mm);
+			}
 		}
 		if ("createPage".equals(type) || "editPage".equals(type)) {
 			mm.put("empInputAutocomplete", pageAutocompleteContent(this.employeeService.findInputAutocomplete()));			
 		}		
+	}
+	
+	private void generatePdcaNumber(ModelMap mm) throws ServiceException, Exception {
+		String head = "OKR";
+		if (mm.get("kpi") != null) {
+			HfKpi kpi = (HfKpi) mm.get("kpi");
+			head = kpi.getId();
+		}
+		mm.put("pdcaNum", this.pdcaService.selectMaxPdcaNum(head));
 	}
 	
 	private void fetchForCreatePage(ModelMap mm, String oid, String masterType) throws AuthorityException, ControllerException, ServiceException, Exception {

@@ -528,7 +528,8 @@ CREATE TABLE `hf_pdca` (
   `UDATE` datetime DEFAULT NULL,
   PRIMARY KEY (`OID`),
   UNIQUE KEY `UK_1` (`NAME`,`MST_TYPE`,`MST_OID`),
-  KEY `IDX_1` (`START_DATE`,`END_DATE`)
+  KEY `IDX_1` (`START_DATE`,`END_DATE`),
+  KEY `IDX_2` (`PDCA_NUM`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1557,4 +1558,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-05-18 14:09:24
+-- Dump completed on 2021-05-19  7:13:29
