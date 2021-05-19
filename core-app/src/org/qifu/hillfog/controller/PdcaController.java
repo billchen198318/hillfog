@@ -21,28 +21,39 @@
  */
 package org.qifu.hillfog.controller;
 
+import java.util.Date;
+
 import javax.servlet.http.HttpServletRequest;
 
+import org.joda.time.DateTime;
 import org.qifu.base.controller.BaseControllerSupport;
 import org.qifu.base.controller.IPageNamespaceProvide;
 import org.qifu.base.exception.AuthorityException;
 import org.qifu.base.exception.ControllerException;
 import org.qifu.base.exception.ServiceException;
 import org.qifu.base.model.ControllerMethodAuthority;
+import org.qifu.base.model.DefaultControllerJsonResultObj;
+import org.qifu.core.entity.TbSysUpload;
+import org.qifu.core.util.UploadSupportUtils;
 import org.qifu.hillfog.entity.HfEmployee;
 import org.qifu.hillfog.entity.HfKpi;
 import org.qifu.hillfog.entity.HfObjective;
 import org.qifu.hillfog.entity.HfPdca;
+import org.qifu.hillfog.model.MeasureDataCode;
 import org.qifu.hillfog.model.PDCABase;
 import org.qifu.hillfog.service.IEmployeeService;
 import org.qifu.hillfog.service.IKpiService;
 import org.qifu.hillfog.service.IObjectiveService;
 import org.qifu.hillfog.service.IPdcaService;
+import org.qifu.util.SimpleUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class PdcaController extends BaseControllerSupport implements IPageNamespaceProvide {
@@ -69,9 +80,16 @@ public class PdcaController extends BaseControllerSupport implements IPageNamesp
 			if (mm.get("masterType") != null) {
 				this.generatePdcaNumber(mm);
 			}
+			String startDate = this.getNowDate2();
+			DateTime dateTime = new DateTime(new Date());
+			dateTime = dateTime.plusDays(30);
+			String endDate = SimpleUtils.getStrYMD(dateTime.toDate(), "-");
+			mm.put("startDate", startDate);
+			mm.put("endDate", endDate);
 		}
 		if ("createPage".equals(type) || "editPage".equals(type)) {
-			mm.put("empInputAutocomplete", pageAutocompleteContent(this.employeeService.findInputAutocomplete()));			
+			mm.put("empInputAutocomplete", pageAutocompleteContent(this.employeeService.findInputAutocomplete()));	
+			mm.put("frequencyMap", MeasureDataCode.getFrequencyMap(true));
 		}		
 	}
 	
@@ -118,6 +136,25 @@ public class PdcaController extends BaseControllerSupport implements IPageNamesp
 		}
 		return viewName;
 	}			
+	
+	@ControllerMethodAuthority(check = true, programId = "HF_PROG004D0001Q")
+	@RequestMapping(value = "/hfPdcaLoadUploadFileShowName", produces = MediaType.APPLICATION_JSON_VALUE, method = {RequestMethod.POST, RequestMethod.GET})		
+	public @ResponseBody DefaultControllerJsonResultObj<String> loadUploadFileShowName(HttpServletRequest request, @RequestParam(name="oid") String uploadOid) {
+		DefaultControllerJsonResultObj<String> result = this.getDefaultJsonResult(this.currentMethodAuthority());
+		if (!this.isAuthorizeAndLoginFromControllerJsonResult(result)) {
+			return result;
+		}
+		try {
+			TbSysUpload upload = UploadSupportUtils.findUploadNoByteContent(uploadOid);
+			result.setValue( upload.getShowName() );
+			result.setSuccess( YES );
+		} catch (AuthorityException | ServiceException | ControllerException e) {
+			this.baseExceptionResult(result, e);	
+		} catch (Exception e) {
+			this.exceptionResult(result, e);
+		}
+		return result;
+	}
 	
 	@ControllerMethodAuthority(check = true, programId = "HF_PROG004D0001A")
 	@RequestMapping("/hfPdcaCreatePage")

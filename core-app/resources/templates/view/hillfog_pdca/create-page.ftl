@@ -71,9 +71,20 @@
 
 var empList = [ ${empInputAutocomplete} ];
 var selEmpList = [];
+var uploadAttc = []; // put upload file OID
+var uploadName = []; // put upload file show name
 
 $( document ).ready(function() {
 	
+	$("#ownerUid").autocomplete({
+		source: empList,
+		select: function( event, ui ) {
+			$("#ownerUid").val( ui.item.label );
+			$("#ownerUid").trigger('change');
+		}
+	}).focus(function() {
+		$(this).autocomplete("search", " ");
+	});		
 	
 });
 
@@ -85,6 +96,105 @@ function btnClear() {
 	window.location = parent.getProgUrlForOid('HF_PROG004D0001A', '${oid}') + '&masterType=${masterType}';
 }
 
+function addEmployee() {
+	var inputEmployee = $("#ownerUid").val();
+	if (null == inputEmployee || '' == inputEmployee) {
+		parent.toastrInfo( 'Please input employee!' );
+		return;
+	}
+	var checkInEmployee = false;
+	var checkInSelEmployee = false;	
+	for (var n in empList) {
+		if ( empList[n] == inputEmployee ) {
+			checkInEmployee = true;
+		}
+	}
+	if (!checkInEmployee) {
+		parent.toastrInfo( 'Please input employee!' );
+		return;		
+	}
+	for (var n in selEmpList) {
+		if ( selEmpList[n] == inputEmployee) {
+			checkInSelEmployee = true;
+		}
+	}
+	if (checkInSelEmployee) {
+		parent.toastrInfo( 'Employee is add found!' );
+		return;
+	}
+	selEmpList.push( inputEmployee );
+	$('#ownerUid').val('');
+	paintEmployee();
+	
+}
+function paintEmployee() {
+	$('#selEmpShowLabel').html( '' );
+	var htmlContent = '';
+	for (var n in selEmpList) {
+		htmlContent += '<span class="badge badge-secondary"><font size="3">' + selEmpList[n] + '</font><span class="badge badge-danger btn" onclick="delAddEmployee(' + n + ');">X</span></span>&nbsp;';
+	}
+	$('#selEmpShowLabel').html( htmlContent );
+}
+function delAddEmployee(pos) {
+	removeArrayByPos(selEmpList, pos);
+	paintEmployee();	
+}
+
+function uploadModal() {
+	showCommonUploadModal(
+			'uploadOid', 
+			'tmp', 
+			'Y',
+			function() {
+				parent.toastrInfo('Upload success!');
+				var uploadOid = $("#uploadOid").val();
+				xhrSendParameterNoPleaseWait(
+						'./hfPdcaLoadUploadFileShowName', 
+						{ 'oid' : uploadOid }, 
+						function(data, textStatus) {
+							if ( _qifu_success_flag == data.success ) {
+								uploadName.push( data.value );
+							} else {
+								uploadName.push( uploadOid );
+							}
+							uploadAttc.push( uploadOid );
+							paintAttc();
+						}, 
+						function(jqXHR, textStatus, errorThrown) {
+							
+						}
+				);
+			},
+			function() {
+				parent.toastrWarning('Upload fail!');
+				paintAttc();
+			}
+	);
+}
+function paintAttc() {
+	$('#uploadLabel').html( '' );
+	var htmlContent = '';
+	for (var n in uploadName) {
+		htmlContent += '<span class="badge badge-secondary"><font size="3">' + uploadName[n] + '</font><span class="badge badge-danger btn" onclick="delAttc(' + n + ');">X</span></span>&nbsp;';
+	}
+	$('#uploadLabel').html( htmlContent );
+}
+function delAttc(pos) {
+	removeArrayByPos(uploadAttc, pos);
+	removeArrayByPos(uploadName, pos);
+	paintAttc();	
+}
+
+// ====================================================================
+
+function removeArrayByPos(arr, pos) {
+    for (var i = arr.length; i--;) {
+    	if (pos == i) {
+    		arr.splice(pos, 1);
+    	}
+    }
+}
+
 </script>
 
 </head>
@@ -93,6 +203,8 @@ function btnClear() {
 
 <#import "../common-f-head.ftl" as cfh />
 <@cfh.commonFormHeadContent /> 
+
+<input type="hidden" name="uploadOid" id="uploadOid" value="" />
 
 <div class="form-group" id="form-group1">
 	<div class="row">
@@ -134,14 +246,69 @@ function btnClear() {
 	
 	<div class="row">
 		<div class="col-xs-6 col-md-6 col-lg-6">
-			PDCA Number:&nbsp;${pdcaNum}
+			PDCA Number:<br><span class="badge badge-success">${pdcaNum}</span>
 		</div>
 		<div class="col-xs-6 col-md-6 col-lg-6">
-		
+			<@qifu.textbox type="text" name="name" value="" id="name" label="Name" requiredFlag="Y" maxlength="100" placeholder="Enter name" />
 		</div>		
 	</div>		
 	
+	<div class="row">
+		<div class="col-xs-6 col-md-6 col-lg-6">
+			<@qifu.textbox type="date" name="startDate" value="startDate" id="startDate" label="Start" requiredFlag="Y" maxlength="10" placeholder="Enter start date" />
+		</div>
+		<div class="col-xs-6 col-md-6 col-lg-6">
+			<@qifu.textbox type="date" name="endDate" value="endDate" id="endDate" label="End" requiredFlag="Y" maxlength="10" placeholder="Enter end date" />
+		</div>		
+	</div>	
+		
+	<br>
+	
+	<div class="row">
+		<div class="col-xs-12 col-md-12 col-lg-12">
+			<@qifu.textbox name="ownerUid" value="" id="ownerUid" label="Owner" requiredFlag="N" maxlength="100" placeholder="Enter employee" />
+			<button type="button" class="btn btn-info" id="btnAddEmployee" title="add employee" onclick="addEmployee();"><i class="icon fa fa-plus"></i>&nbsp;ADD</button>
+			<br>
+			<span id="selEmpShowLabel">&nbsp;</span>
+		</div>
+	</div>			
+	
 </div>	
+
+<@qifu.if test=" null != masterType && \"K\" == masterType ">
+<div class="form-group" id="form-group2">
+	<div class="row">
+		<div class="col-xs-12 col-md-12 col-lg-12">
+			<@qifu.select dataSource="frequencyMap" name="frequency" id="frequency" value="" label="Frequency" requiredFlag="Y"></@qifu.select>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-xs-6 col-md-6 col-lg-6">
+			<@qifu.textbox type="date" name="kpiMeasureDate1" value="" id="kpiMeasureDate1" label="KPI measure-data date start" requiredFlag="Y" maxlength="10" placeholder="Enter measure-data date start" />
+		</div>
+		<div class="col-xs-6 col-md-6 col-lg-6">
+			<@qifu.textbox type="date" name="kpiMeasureDate2" value="" id="kpiMeasureDate2" label="KPI measure-data date end" requiredFlag="Y" maxlength="10" placeholder="Enter measure-data date end" />
+		</div>		
+	</div>
+</div>	
+</@qifu.if>
+
+<div class="form-group" id="form-group3">
+	<div class="row">
+		<div class="col-xs-12 col-md-12 col-lg-12">
+			<@qifu.textarea name="description" value="" id="description" label="Description" rows="3" placeholder="Enter description"></@qifu.textarea>
+		</div>
+	</div>
+	
+	<br>
+	
+	<div class="row">
+		<div class="col-xs-12 col-md-12 col-lg-12">
+			<@qifu.button id="uploadBtn" label="<i class=\"icon fa fa-upload\"></i>&nbsp;Upload file" cssClass="btn btn-info" onclick="uploadModal();">&nbsp;</@qifu.button><div id="uploadLabel"></div>
+		</div>
+	</div>	
+</div>
+
 
 
 <br/>
