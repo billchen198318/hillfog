@@ -22,6 +22,7 @@
 package org.qifu.hillfog.controller;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -88,7 +89,9 @@ public class PdcaController extends BaseControllerSupport implements IPageNamesp
 			mm.put("endDate", endDate);
 		}
 		if ("createPage".equals(type) || "editPage".equals(type)) {
-			mm.put("empInputAutocomplete", pageAutocompleteContent(this.employeeService.findInputAutocomplete()));	
+			List<String> empList = this.employeeService.findInputAutocomplete();
+			mm.put("empList", empList);
+			mm.put("empInputAutocomplete", pageAutocompleteContent(empList));	
 			mm.put("frequencyMap", MeasureDataCode.getFrequencyMap(true));
 		}		
 	}

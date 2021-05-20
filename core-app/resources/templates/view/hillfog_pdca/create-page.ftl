@@ -80,8 +80,7 @@
 
 var empList = [ ${empInputAutocomplete} ];
 var selEmpList = [];
-var uploadAttc = []; // put upload file OID
-var uploadName = []; // put upload file show name
+var uploadAttc = []; // put upload file OID and show-name
 
 $( document ).ready(function() {
 	
@@ -94,6 +93,17 @@ $( document ).ready(function() {
 	}).focus(function() {
 		$(this).autocomplete("search", " ");
 	});		
+	
+	$("#pdcaItemOwnerUid").autocomplete({
+		source: empList,
+		select: function( event, ui ) {
+			$("#pdcaItemOwnerUid").val( ui.item.label );
+			$("#pdcaItemOwnerUid").trigger('change');
+		}
+	}).focus(function() {
+		$(this).autocomplete("search", " ");
+	});	
+	
 	
 });
 
@@ -162,11 +172,10 @@ function uploadModal() {
 						{ 'oid' : uploadOid }, 
 						function(data, textStatus) {
 							if ( _qifu_success_flag == data.success ) {
-								uploadName.push( data.value );
+								uploadAttc.push( {'oid' : uploadOid, 'name' : data.value} );
 							} else {
-								uploadName.push( uploadOid );
+								uploadAttc.push( {'oid' : uploadOid, 'name' : uploadOid} );
 							}
-							uploadAttc.push( uploadOid );
 							paintAttc();
 						}, 
 						function(jqXHR, textStatus, errorThrown) {
@@ -183,14 +192,13 @@ function uploadModal() {
 function paintAttc() {
 	$('#uploadLabel').html( '' );
 	var htmlContent = '';
-	for (var n in uploadName) {
-		htmlContent += '<span class="badge badge-secondary"><font size="3">' + uploadName[n] + '</font><span class="badge badge-danger btn" onclick="delAttc(' + n + ');">X</span></span>&nbsp;';
+	for (var n in uploadAttc) {
+		htmlContent += '<span class="badge badge-secondary"><font size="3">' + uploadAttc[n].name + '</font><span class="badge badge-danger btn" onclick="delAttc(' + n + ');">X</span></span>&nbsp;';
 	}
 	$('#uploadLabel').html( htmlContent );
 }
 function delAttc(pos) {
 	removeArrayByPos(uploadAttc, pos);
-	removeArrayByPos(uploadName, pos);
 	paintAttc();	
 }
 
@@ -326,47 +334,119 @@ function removeArrayByPos(arr, pos) {
 	<div class="row">	
 		<div class="col-xs-12 col-md-12 col-lg-12">
 		
+<div class="card">
+  <div class="card-body">		
 			<h4><span class="badge badge-pill badge-success">Plan</span></h4>
 			
+			<table v-if=" planList.length > 0 " class="table">			
+	        	<tr v-for="(d, index) in planList">  
+	        	
+		        	<td width="100%">
+			        	<table border="0" class="table">
+				        	<thead>
+				        		<tr>
+				        			<th>#</th>
+				        			<th>Item name</th>
+				        			<th>Start</th>
+				        			<th>End</th>
+				        			<th>Owner</th>
+				        		</tr>
+				        	</thead>			        	
+			        		<tr>
+				        		<td width="10%">
+				        			<button type="button" class="btn btn-dark" id="btnRemovePlan" title="remove Plan item" v-on:click="removePlanResult(index)"><i class="icon fa fa-remove"></i></button>
+				        		</td>
+				        		<td width="25%"><input type="text" class="form-control" placeholder="Enter name" v-model="d.name"></td>
+				        		<td width="15%"><input type="date" class="form-control" placeholder="Enter start date" v-model="d.startDate"></td>
+				        		<td width="15%"><input type="date" class="form-control" placeholder="Enter end date" v-model="d.endDate"></td>
+				        		<td width="35%">
+								    <select class="form-control" v-on:change="planOwnerUidChange(index, $event)">
+								    		<option value="all">Please select</option>
+								    	<#list empList as emp>
+											<option value="${emp}">${emp}</option>
+										</#list>
+								    </select>
+				        		</td>	        		
+			        		</tr>
+			        		<tr>
+			        			<td colspan="5">
+			        				<textarea class="form-control" rows="3" placeholder="Enter description" v-model="d.description"></textarea>
+			        			</td>
+			        		</tr>
+			        	</table>
+		        	</td>
+
+	        	</tr>	
+	        			
+			</table>
+			
+			<button type="button" class="btn btn-primary" id="btnAddPlanItem" title="add Plan item" v-on:click="addPlanItem"><i class="icon fa fa-plus"></i>&nbsp;Add Plan item</button>			
+	
+	</div>
+</div>		
+			
 			
 		</div>
 	</div>	
+	
+	
+	
 	
 	<hr class="hrDash">
 	
 	<div class="row">	
 		<div class="col-xs-12 col-md-12 col-lg-12">
 		
+<div class="card">
+  <div class="card-body">		
 			<h4><span class="badge badge-pill badge-success">Do</span></h4>
 			
+	</div>
+</div>			
 			
 		</div>
 	</div>	
+	
+	
+	
 	
 	<hr class="hrDash">
 	
 	<div class="row">	
 		<div class="col-xs-12 col-md-12 col-lg-12">
 		
+<div class="card">
+  <div class="card-body">		
 			<h4><span class="badge badge-pill badge-success">Check</span></h4>
-			
+	</div>
+</div>			
 			
 		</div>
 	</div>		
 	
+	
+	
+	
 	<hr class="hrDash">
 	
 	<div class="row">	
 		<div class="col-xs-12 col-md-12 col-lg-12">
 		
+<div class="card">
+  <div class="card-body">		
 			<h4><span class="badge badge-pill badge-success">Act</span></h4>
-			
+	</div>
+</div>			
 			
 		</div>
 	</div>
 	
+	
 </div>
 </div>
+
+
+
 
 
 
