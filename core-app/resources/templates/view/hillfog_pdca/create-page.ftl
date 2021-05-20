@@ -360,13 +360,22 @@ function removeArrayByPos(arr, pos) {
 				        		<td width="15%"><input type="date" class="form-control" placeholder="Enter start date" v-model="d.startDate"></td>
 				        		<td width="15%"><input type="date" class="form-control" placeholder="Enter end date" v-model="d.endDate"></td>
 				        		<td width="35%">
-								    <select class="form-control" v-on:change="planOwnerUidChange(index, $event)">
+								    <select class="form-control" v-model="d.currentSelect" v-on:change="planOwnerUidChange(index, $event)">
 								    		<option value="all">Please select</option>
 								    	<#list empList as emp>
 											<option value="${emp}">${emp}</option>
 										</#list>
 								    </select>
 				        		</td>	        		
+			        		</tr>
+			        		<tr>
+			        			<td colspan="5">
+			        				Owner list:
+			        				<span v-for="(n, ownerIndex) in d.ownerList">
+			        				<span class="badge badge-secondary"><font size="3">{{n}}</font><span class="badge badge-danger btn" v-on:click="removePlanOwnerItem(index, ownerIndex)">X</span></span>
+			        				&nbsp;
+			        				</span>
+			        			</td>
 			        		</tr>
 			        		<tr>
 			        			<td colspan="5">

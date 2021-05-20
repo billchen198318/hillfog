@@ -10,7 +10,8 @@ const PageEventHandling = {
 	methods: {
 		removePlanResult	:	removePlan,
 		addPlanItem			:	addPlan,
-		planOwnerUidChange	:	planOwnerUidSelectChange
+		planOwnerUidChange	:	planOwnerUidSelectChange,
+		removePlanOwnerItem	:	removePlanOwner
 	},
 	mounted() {
 		this.addPlanItem();
@@ -27,12 +28,31 @@ function addPlan() {
 		'startDate'		:	'',
 		'endDate'		:	'',
 		'description'	:	'',
+		'currentSelect'	:	_qifu_please_select_id,
 		'ownerList'		:	[]
 	});
 }
 
 function planOwnerUidSelectChange(planListIndex, event) {
-	alert('planListIndex='+planListIndex + ' , ' + event.target.value);
+	var owner = event.target.value;
+	if ( _qifu_please_select_id == owner ) {
+		return;
+	}
+	var found = false;
+	for (var n in this.planList[planListIndex].ownerList) {
+		if ( owner == this.planList[planListIndex].ownerList[n] ) {
+			found = true;
+		}
+	}
+	if (!found) {
+		this.planList[planListIndex].ownerList.push( owner );
+		//console.log('push owner:' + owner);
+	}
+	this.planList[planListIndex].currentSelect = _qifu_please_select_id;
+}
+
+function removePlanOwner(planIndex, ownerIndex) {
+	removeArrayByPos(this.planList[planIndex].ownerList, ownerIndex);
 }
 
 const app = Vue.createApp(PageEventHandling);
