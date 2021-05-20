@@ -193,7 +193,7 @@ function paintAttc() {
 	$('#uploadLabel').html( '' );
 	var htmlContent = '';
 	for (var n in uploadAttc) {
-		htmlContent += '<span class="badge badge-secondary"><font size="3">' + uploadAttc[n].name + '</font><span class="badge badge-danger btn" onclick="delAttc(' + n + ');">X</span></span>&nbsp;';
+		htmlContent += '<span class="badge badge-light"><font size="3"><a href="javascript:commonDownloadFile(\'' + uploadAttc[n].oid + '\')">' + uploadAttc[n].name + '</a></font><span class="badge badge-danger btn" onclick="delAttc(' + n + ');">X</span></span>&nbsp;';
 	}
 	$('#uploadLabel').html( htmlContent );
 }
