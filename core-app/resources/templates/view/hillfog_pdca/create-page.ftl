@@ -331,10 +331,14 @@ function removeArrayByPos(arr, pos) {
 <div id="main-content">
 <div class="form-group" id="form-group4">
 
+
+
+<!-- ######################################################################################## -->
+<!-- Plan -->
 	<div class="row">	
 		<div class="col-xs-12 col-md-12 col-lg-12">
-		
-<div class="card">
+			
+<div class="card border-dark">
   <div class="card-body">		
 			<h4><span class="badge badge-pill badge-success">Plan</span></h4>
 			
@@ -354,7 +358,7 @@ function removeArrayByPos(arr, pos) {
 				        	</thead>			        	
 			        		<tr>
 				        		<td width="10%">
-				        			<button type="button" class="btn btn-dark" id="btnRemovePlan" title="remove Plan item" v-on:click="removePlanResult(index)"><i class="icon fa fa-remove"></i></button>
+				        			<button type="button" class="btn btn-dark" title="remove Plan item" v-on:click="removePlanResult(index)"><i class="icon fa fa-remove"></i></button>
 				        		</td>
 				        		<td width="25%"><input type="text" class="form-control" placeholder="Enter name" v-model="d.name"></td>
 				        		<td width="15%"><input type="date" class="form-control" placeholder="Enter start date" v-model="d.startDate"></td>
@@ -397,34 +401,98 @@ function removeArrayByPos(arr, pos) {
 			
 		</div>
 	</div>	
-	
+<!-- ######################################################################################## -->	
 	
 	
 	
 	<hr class="hrDash">
 	
+	
+
+<!-- ######################################################################################## -->	
+<!-- Do -->
 	<div class="row">	
 		<div class="col-xs-12 col-md-12 col-lg-12">
 		
-<div class="card">
+<div class="card border-info">
   <div class="card-body">		
 			<h4><span class="badge badge-pill badge-success">Do</span></h4>
+			
+
+			<table v-if=" doList.length > 0 " class="table">			
+	        	<tr v-for="(d, index) in doList">  
+	        	
+		        	<td width="100%">
+			        	<table border="0" class="table">
+				        	<thead>
+				        		<tr>
+				        			<th>#</th>
+				        			<th>Item name</th>
+				        			<th>Start</th>
+				        			<th>End</th>
+				        			<th>Owner</th>
+				        		</tr>
+				        	</thead>			        	
+			        		<tr>
+				        		<td width="10%">
+				        			<button type="button" class="btn btn-dark" title="remove Do item" v-on:click="removeDoResult(index)"><i class="icon fa fa-remove"></i></button>
+				        		</td>
+				        		<td width="25%"><input type="text" class="form-control" placeholder="Enter name" v-model="d.name"></td>
+				        		<td width="15%"><input type="date" class="form-control" placeholder="Enter start date" v-model="d.startDate"></td>
+				        		<td width="15%"><input type="date" class="form-control" placeholder="Enter end date" v-model="d.endDate"></td>
+				        		<td width="35%">
+								    <select class="form-control" v-model="d.currentSelect" v-on:change="doOwnerUidChange(index, $event)">
+								    		<option value="all">Please select</option>
+								    	<#list empList as emp>
+											<option value="${emp}">${emp}</option>
+										</#list>
+								    </select>
+				        		</td>	        		
+			        		</tr>
+			        		<tr>
+			        			<td colspan="5">
+			        				Owner list:
+			        				<span v-for="(n, ownerIndex) in d.ownerList">
+			        				<span class="badge badge-secondary"><font size="3">{{n}}</font><span class="badge badge-danger btn" v-on:click="removeDoOwnerItem(index, ownerIndex)">X</span></span>
+			        				&nbsp;
+			        				</span>
+			        			</td>
+			        		</tr>
+			        		<tr>
+			        			<td colspan="5">
+			        				<textarea class="form-control" rows="3" placeholder="Enter description" v-model="d.description"></textarea>
+			        			</td>
+			        		</tr>
+			        	</table>
+		        	</td>
+
+	        	</tr>	
+	        			
+			</table>
+			
+			<button type="button" class="btn btn-primary" id="btnAddDoItem" title="add Do item" v-on:click="addDoItem"><i class="icon fa fa-plus"></i>&nbsp;Add Do item</button>			
+				
 			
 	</div>
 </div>			
 			
 		</div>
 	</div>	
-	
+<!-- ######################################################################################## -->	
 	
 	
 	
 	<hr class="hrDash">
 	
+	
+	
+	
+<!-- ######################################################################################## -->	
+<!-- Check -->
 	<div class="row">	
 		<div class="col-xs-12 col-md-12 col-lg-12">
 		
-<div class="card">
+<div class="card border-warning">
   <div class="card-body">		
 			<h4><span class="badge badge-pill badge-success">Check</span></h4>
 	</div>
@@ -432,16 +500,22 @@ function removeArrayByPos(arr, pos) {
 			
 		</div>
 	</div>		
+<!-- ######################################################################################## -->	
 	
 	
 	
 	
 	<hr class="hrDash">
 	
+	
+	
+	
+<!-- ######################################################################################## -->	
+<!-- Act -->
 	<div class="row">	
 		<div class="col-xs-12 col-md-12 col-lg-12">
 		
-<div class="card">
+<div class="card border-danger">
   <div class="card-body">		
 			<h4><span class="badge badge-pill badge-success">Act</span></h4>
 	</div>
@@ -449,6 +523,9 @@ function removeArrayByPos(arr, pos) {
 			
 		</div>
 	</div>
+<!-- ######################################################################################## -->
+
+
 	
 	
 </div>
