@@ -449,7 +449,7 @@ function removeArrayByPos(arr, pos) {
 					        		<td colspan="100%">
 										<select v-model="d.parentOid" class="form-control">
 											<option value="all">Select parent Plan item</option>
-											<option v-for="(p, index) in planList" value="{{p.oid}}">Plan item {{index+1}} - {{p.name}}</option>
+											<option v-for="(p, index) in planList" v-bind:value="p.oid">Plan item {{index+1}} - {{p.name}}</option>
 										</select>				        		
 					        		</td>
 					        	</tr>					        	
@@ -534,7 +534,7 @@ function removeArrayByPos(arr, pos) {
 					        		<td colspan="100%">
 										<select v-model="d.parentOid" class="form-control">
 											<option value="all">Select parent Do item</option>
-											<option v-for="(p, index) in doList" value="{{p.oid}}">Do item {{index+1}} - {{p.name}}</option>
+											<option v-for="(p, index) in doList" v-bind:value="p.oid">Do item {{index+1}} - {{p.name}}</option>
 										</select>				        		
 					        		</td>
 					        	</tr>					        	
@@ -621,7 +621,7 @@ function removeArrayByPos(arr, pos) {
 					        		<td colspan="100%">
 										<select v-model="d.parentOid" class="form-control">
 											<option value="all">Select parent Check item</option>
-											<option v-for="(p, index) in checkList" value="{{p.oid}}">Check item {{index+1}} - {{p.name}}</option>
+											<option v-for="(p, index) in checkList" v-bind:value="p.oid">Check item {{index+1}} - {{p.name}}</option>
 										</select>				        		
 					        		</td>
 					        	</tr>					        	
