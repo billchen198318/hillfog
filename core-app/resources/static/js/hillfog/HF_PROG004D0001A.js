@@ -31,6 +31,11 @@ const PageEventHandling = {
 /* ----------------------------------------------------------------------- */
 function removePlan(index) {
 	removeArrayByPos(this.planList, index);
+	if (this.planList.length < 1) {
+		for (var d in this.doList) {
+			this.doList[d].parentOid = _qifu_please_select_id;
+		}
+	}	
 }
 
 function addPlan() {
@@ -85,7 +90,8 @@ function addDo() {
 		'endDate'		:	'',
 		'description'	:	'',
 		'currentSelect'	:	_qifu_please_select_id,
-		'ownerList'		:	[]
+		'ownerList'		:	[],
+		'parentOid'		:	_qifu_please_select_id
 	});
 }
 

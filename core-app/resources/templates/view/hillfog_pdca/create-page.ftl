@@ -418,13 +418,20 @@ function removeArrayByPos(arr, pos) {
   <div class="card-body">		
 			<h4><span class="badge badge-pill badge-success">Do</span></h4>
 			
-
 			<table v-if=" doList.length > 0 " class="table">			
 	        	<tr v-for="(d, index) in doList">  
 	        	
 		        	<td width="100%">
 			        	<table border="0" class="table">
 				        	<thead>
+					        	<tr>
+					        		<td colspan="100%">
+										<select v-model="d.parentOid" class="form-control">
+											<option value="all">Select parent Plan item</option>
+											<option v-for="(p, index) in planList" value="{{p.oid}}">Plan item {{index+1}} - {{p.name}}</option>
+										</select>				        		
+					        		</td>
+					        	</tr>					        	
 				        		<tr>
 				        			<th>#</th>
 				        			<th>Item name</th>
@@ -432,7 +439,7 @@ function removeArrayByPos(arr, pos) {
 				        			<th>End</th>
 				        			<th>Owner</th>
 				        		</tr>
-				        	</thead>			        	
+				        	</thead>		        	
 			        		<tr>
 				        		<td width="10%">
 				        			<button type="button" class="btn btn-dark" title="remove Do item" v-on:click="removeDoResult(index)"><i class="icon fa fa-remove"></i></button>
