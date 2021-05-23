@@ -73,6 +73,27 @@
   height:0;
 }
 
+
+
+.btn-circle.btn-xl {
+    width: 70px;
+    height: 70px;
+    padding: 10px 16px;
+    border-radius: 35px;
+    font-size: 24px;
+    line-height: 1.33;
+}
+
+.btn-circle {
+    width: 35px;
+    height: 30px;
+    padding: 6px 0px;
+    border-radius: 15px;
+    text-align: center;
+    font-size: 12px;
+    line-height: 1.42857;
+}
+
 </style>
 
 
@@ -393,7 +414,7 @@ function removeArrayByPos(arr, pos) {
 	        			
 			</table>
 			
-			<button type="button" class="btn btn-primary" title="add Plan item" v-on:click="addPlanItem"><i class="icon fa fa-plus"></i>&nbsp;Add Plan item</button>			
+			<button type="button" class="btn btn-primary btn-circle" title="add Plan item" v-on:click="addPlanItem"><i class="icon fa fa-plus"></i></button>			
 	
 	</div>
 </div>		
@@ -477,7 +498,7 @@ function removeArrayByPos(arr, pos) {
 	        			
 			</table>
 			
-			<button type="button" class="btn btn-primary" title="add Do item" v-on:click="addDoItem"><i class="icon fa fa-plus"></i>&nbsp;Add Do item</button>			
+			<button type="button" class="btn btn-primary btn-circle" title="add Do item" v-on:click="addDoItem"><i class="icon fa fa-plus"></i></button>			
 				
 			
 	</div>
@@ -562,7 +583,7 @@ function removeArrayByPos(arr, pos) {
 	        			
 			</table>
 			
-			<button type="button" class="btn btn-primary" title="add Check item" v-on:click="addCheckItem"><i class="icon fa fa-plus"></i>&nbsp;Add Check item</button>			
+			<button type="button" class="btn btn-primary btn-circle" title="add Check item" v-on:click="addCheckItem"><i class="icon fa fa-plus"></i></button>			
 				
 						
 			
@@ -649,7 +670,7 @@ function removeArrayByPos(arr, pos) {
 	        			
 			</table>
 			
-			<button type="button" class="btn btn-primary" title="add Act item" v-on:click="addActItem"><i class="icon fa fa-plus"></i>&nbsp;Add Act item</button>			
+			<button type="button" class="btn btn-primary btn-circle" title="add Act item" v-on:click="addActItem"><i class="icon fa fa-plus"></i></button>			
 				
 							
 			
