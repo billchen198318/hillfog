@@ -340,7 +340,7 @@ function removeArrayByPos(arr, pos) {
 			
 <div class="card border-dark">
   <div class="card-body">		
-			<h4><span class="badge badge-pill badge-success">Plan</span></h4>
+			<h4><span class="badge badge-pill badge-dark">Plan</span></h4>
 			
 			<table v-if=" planList.length > 0 " class="table">			
 	        	<tr v-for="(d, index) in planList">  
@@ -393,7 +393,7 @@ function removeArrayByPos(arr, pos) {
 	        			
 			</table>
 			
-			<button type="button" class="btn btn-primary" id="btnAddPlanItem" title="add Plan item" v-on:click="addPlanItem"><i class="icon fa fa-plus"></i>&nbsp;Add Plan item</button>			
+			<button type="button" class="btn btn-primary" title="add Plan item" v-on:click="addPlanItem"><i class="icon fa fa-plus"></i>&nbsp;Add Plan item</button>			
 	
 	</div>
 </div>		
@@ -416,7 +416,7 @@ function removeArrayByPos(arr, pos) {
 		
 <div class="card border-info">
   <div class="card-body">		
-			<h4><span class="badge badge-pill badge-success">Do</span></h4>
+			<h4><span class="badge badge-pill badge-info">Do</span></h4>
 			
 			<table v-if=" doList.length > 0 " class="table">			
 	        	<tr v-for="(d, index) in doList">  
@@ -477,7 +477,7 @@ function removeArrayByPos(arr, pos) {
 	        			
 			</table>
 			
-			<button type="button" class="btn btn-primary" id="btnAddDoItem" title="add Do item" v-on:click="addDoItem"><i class="icon fa fa-plus"></i>&nbsp;Add Do item</button>			
+			<button type="button" class="btn btn-primary" title="add Do item" v-on:click="addDoItem"><i class="icon fa fa-plus"></i>&nbsp;Add Do item</button>			
 				
 			
 	</div>
@@ -501,7 +501,71 @@ function removeArrayByPos(arr, pos) {
 		
 <div class="card border-warning">
   <div class="card-body">		
-			<h4><span class="badge badge-pill badge-success">Check</span></h4>
+			<h4><span class="badge badge-pill badge-warning">Check</span></h4>
+			
+			<table v-if=" checkList.length > 0 " class="table">			
+	        	<tr v-for="(d, index) in checkList">  
+	        	
+		        	<td width="100%">
+			        	<table border="0" class="table">
+				        	<thead>
+					        	<tr>
+					        		<td colspan="100%">
+										<select v-model="d.parentOid" class="form-control">
+											<option value="all">Select parent Do item</option>
+											<option v-for="(p, index) in doList" value="{{p.oid}}">Do item {{index+1}} - {{p.name}}</option>
+										</select>				        		
+					        		</td>
+					        	</tr>					        	
+				        		<tr>
+				        			<th>#</th>
+				        			<th>Item name</th>
+				        			<th>Start</th>
+				        			<th>End</th>
+				        			<th>Owner</th>
+				        		</tr>
+				        	</thead>		        	
+			        		<tr>
+				        		<td width="10%">
+				        			<button type="button" class="btn btn-dark" title="remove Do item" v-on:click="removeCheckResult(index)"><i class="icon fa fa-remove"></i></button>
+				        		</td>
+				        		<td width="25%"><input type="text" class="form-control" placeholder="Enter name" v-model="d.name"></td>
+				        		<td width="15%"><input type="date" class="form-control" placeholder="Enter start date" v-model="d.startDate"></td>
+				        		<td width="15%"><input type="date" class="form-control" placeholder="Enter end date" v-model="d.endDate"></td>
+				        		<td width="35%">
+								    <select class="form-control" v-model="d.currentSelect" v-on:change="checkOwnerUidChange(index, $event)">
+								    		<option value="all">Please select</option>
+								    	<#list empList as emp>
+											<option value="${emp}">${emp}</option>
+										</#list>
+								    </select>
+				        		</td>	        		
+			        		</tr>
+			        		<tr>
+			        			<td colspan="5">
+			        				Owner list:
+			        				<span v-for="(n, ownerIndex) in d.ownerList">
+			        				<span class="badge badge-secondary"><font size="3">{{n}}</font><span class="badge badge-danger btn" v-on:click="removeCheckOwnerItem(index, ownerIndex)">X</span></span>
+			        				&nbsp;
+			        				</span>
+			        			</td>
+			        		</tr>
+			        		<tr>
+			        			<td colspan="5">
+			        				<textarea class="form-control" rows="3" placeholder="Enter description" v-model="d.description"></textarea>
+			        			</td>
+			        		</tr>
+			        	</table>
+		        	</td>
+
+	        	</tr>	
+	        			
+			</table>
+			
+			<button type="button" class="btn btn-primary" title="add Check item" v-on:click="addCheckItem"><i class="icon fa fa-plus"></i>&nbsp;Add Check item</button>			
+				
+						
+			
 	</div>
 </div>			
 			
@@ -524,7 +588,71 @@ function removeArrayByPos(arr, pos) {
 		
 <div class="card border-danger">
   <div class="card-body">		
-			<h4><span class="badge badge-pill badge-success">Act</span></h4>
+			<h4><span class="badge badge-pill badge-danger">Act</span></h4>
+			
+			<table v-if=" actList.length > 0 " class="table">			
+	        	<tr v-for="(d, index) in actList">  
+	        	
+		        	<td width="100%">
+			        	<table border="0" class="table">
+				        	<thead>
+					        	<tr>
+					        		<td colspan="100%">
+										<select v-model="d.parentOid" class="form-control">
+											<option value="all">Select parent Check item</option>
+											<option v-for="(p, index) in checkList" value="{{p.oid}}">Check item {{index+1}} - {{p.name}}</option>
+										</select>				        		
+					        		</td>
+					        	</tr>					        	
+				        		<tr>
+				        			<th>#</th>
+				        			<th>Item name</th>
+				        			<th>Start</th>
+				        			<th>End</th>
+				        			<th>Owner</th>
+				        		</tr>
+				        	</thead>		        	
+			        		<tr>
+				        		<td width="10%">
+				        			<button type="button" class="btn btn-dark" title="remove Do item" v-on:click="removeActResult(index)"><i class="icon fa fa-remove"></i></button>
+				        		</td>
+				        		<td width="25%"><input type="text" class="form-control" placeholder="Enter name" v-model="d.name"></td>
+				        		<td width="15%"><input type="date" class="form-control" placeholder="Enter start date" v-model="d.startDate"></td>
+				        		<td width="15%"><input type="date" class="form-control" placeholder="Enter end date" v-model="d.endDate"></td>
+				        		<td width="35%">
+								    <select class="form-control" v-model="d.currentSelect" v-on:change="actOwnerUidChange(index, $event)">
+								    		<option value="all">Please select</option>
+								    	<#list empList as emp>
+											<option value="${emp}">${emp}</option>
+										</#list>
+								    </select>
+				        		</td>	        		
+			        		</tr>
+			        		<tr>
+			        			<td colspan="5">
+			        				Owner list:
+			        				<span v-for="(n, ownerIndex) in d.ownerList">
+			        				<span class="badge badge-secondary"><font size="3">{{n}}</font><span class="badge badge-danger btn" v-on:click="removeActOwnerItem(index, ownerIndex)">X</span></span>
+			        				&nbsp;
+			        				</span>
+			        			</td>
+			        		</tr>
+			        		<tr>
+			        			<td colspan="5">
+			        				<textarea class="form-control" rows="3" placeholder="Enter description" v-model="d.description"></textarea>
+			        			</td>
+			        		</tr>
+			        	</table>
+		        	</td>
+
+	        	</tr>	
+	        			
+			</table>
+			
+			<button type="button" class="btn btn-primary" title="add Act item" v-on:click="addActItem"><i class="icon fa fa-plus"></i>&nbsp;Add Act item</button>			
+				
+							
+			
 	</div>
 </div>			
 			
