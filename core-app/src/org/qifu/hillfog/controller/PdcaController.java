@@ -302,7 +302,8 @@ public class PdcaController extends BaseControllerSupport implements IPageNamesp
 		Map<String, List<Map<String, Object>>> actJsonData = (Map<String, List<Map<String, Object>>>) new ObjectMapper().readValue( act, LinkedHashMap.class );
 		List actMapList = actJsonData.get("items");	
 		
-		DefaultResult<HfPdca> iResult = this.pdcaLogicService.create(pdca, check, act, ownerList, uploadOidsList, planMapList, doMapList, checkMapList, actMapList);
+		DefaultResult<HfPdca> iResult = this.pdcaLogicService.create(pdca, request.getParameter("masterType"), request.getParameter("masterOid"), ownerList, uploadOidsList, 
+				planMapList, doMapList, checkMapList, actMapList);
 		this.setDefaultResponseJsonResult(result, iResult);
 	}
 	
