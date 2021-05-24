@@ -1,5 +1,5 @@
 /* 
- * Copyright 2012-2016 bambooCORE, greenstep of copyright Chen Xin Nien
+ * Copyright 2019-2021 qifu of copyright Chen Xin Nien
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,17 +19,18 @@
  * contact: chen.xin.nien@gmail.com
  * 
  */
-package org.qifu.hillfog.model;
+package org.qifu.hillfog.logic;
 
-public class PDCABase {
+import java.util.List;
+import java.util.Map;
+
+import org.qifu.base.exception.ServiceException;
+import org.qifu.base.model.DefaultResult;
+import org.qifu.hillfog.entity.HfPdca;
+
+public interface IPdcaLogicService {
 	
-	public static final String SOURCE_MASTER_KPI_TYPE = "K";
-	
-	public static final String SOURCE_MASTER_OBJECTIVE_TYPE = "O";
-	
-	public static final String TYPE_P = "P";
-	public static final String TYPE_D = "D";
-	public static final String TYPE_C = "C";
-	public static final String TYPE_A = "A";
+	public DefaultResult<HfPdca> create(HfPdca pdca, String masterType, String masterOid, List<String> ownerList, List<String> uploadOidsList,
+			List<Map<String, Object>> planMapList, List<Map<String, Object>> doMapList, List<Map<String, Object>> checkMapList, List<Map<String, Object>> actMapList) throws ServiceException, Exception;
 	
 }

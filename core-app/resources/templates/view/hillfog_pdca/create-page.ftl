@@ -99,6 +99,7 @@
 
 <script type="text/javascript">
 
+var masterType = '${masterType}';
 var empList = [ ${empInputAutocomplete} ];
 var selEmpList = [];
 var uploadAttc = []; // put upload file OID and show-name
@@ -128,12 +129,77 @@ $( document ).ready(function() {
 	
 });
 
+var msgFields = new Object();
+msgFields['name'] 				= 'name';
+msgFields['startDate'] 			= 'startDate';
+msgFields['endDate'] 			= 'endDate';
+msgFields['kpiFrequency'] 		= 'kpiFrequency';
+msgFields['kpiMeasureDate1'] 	= 'kpiMeasureDate1';
+msgFields['kpiMeasureDate2'] 	= 'kpiMeasureDate2';
+
+var formGroups = new Object();
+formGroups['name'] 				= 'form-group1';
+formGroups['startDate'] 		= 'form-group1';
+formGroups['endDate'] 			= 'form-group1';
+formGroups['kpiFrequency'] 		= 'form-group2';
+formGroups['kpiMeasureDate1'] 	= 'form-group2';
+formGroups['kpiMeasureDate2'] 	= 'form-group2';
+
 function btnSave() {
-	
+	clearWarningMessageField(formGroups, msgFields);
+	xhrSendParameter(
+			'./hfPdcaSaveJson', 
+			{ 
+				'masterType'		:	masterType,
+				'masterOid'			:	'${oid}',
+				'name' 				:	$("#name").val(),
+				'startDate'			:	$("#startDate").val(),
+				'endDate'			:	$("#endDate").val(),
+				'description'		:	$("#description").val(),
+				'uploadAttc'		:	JSON.stringify( { 'items' : uploadAttc } ),
+				'owner'				:	JSON.stringify( { 'items' : selEmpList } ),
+				<@qifu.if test=" null != masterType && \"K\" == masterType ">
+				'kpiFrequency' 		:	$("#kpiFrequency").val(),
+				'kpiMeasureDate1'	:	$("#kpiMeasureDate1").val(),
+				'kpiMeasureDate2' 	:	$("#kpiMeasureDate2").val(),
+				</@qifu.if>
+				'planList'			:	JSON.stringify( { 'items' : vm.planList } ),
+				'doList'			:	JSON.stringify( { 'items' : vm.doList } ),
+				'checkList'			:	JSON.stringify( { 'items' : vm.checkList } ),
+				'actList'			:	JSON.stringify( { 'items' : vm.actList } )
+			}, 
+			function(data) {
+				if ( _qifu_success_flag != data.success ) {
+					setWarningMessageField(formGroups, msgFields, data.checkFields);
+					parent.toastrWarning( data.message );
+					return;
+				}
+				parent.toastrInfo( data.message );
+				btnClear();
+			}, 
+			function() {
+				window.location = parent.getProgUrlForOid('HF_PROG004D0001A', '${oid}') + '&masterType=${masterType}';
+			},
+			_qifu_defaultSelfPleaseWaitShow
+	);	
 }
 
 function btnClear() {
-	window.location = parent.getProgUrlForOid('HF_PROG004D0001A', '${oid}') + '&masterType=${masterType}';
+	$("#name").val( '' );
+	$("#startDate").val( '' );
+	$("#endDate").val( '' );
+	$("#ownerUid").val( '' );
+	$("#description").val( '' );
+	if ('K' == masterType) {
+		$("#kpiFrequency").val( _qifu_please_select_id );
+		$("#kpiMeasureDate1").val( '' );
+		$("#kpiMeasureDate2").val( '' );
+	}
+	selEmpList = [];
+	uploadAttc = [];
+	paintEmployee();
+	paintAttc();	
+	vm.clearAllListItem();
 }
 
 function addEmployee() {
@@ -317,7 +383,7 @@ function removeArrayByPos(arr, pos) {
 <div class="form-group" id="form-group2">
 	<div class="row">
 		<div class="col-xs-12 col-md-12 col-lg-12">
-			<@qifu.select dataSource="frequencyMap" name="frequency" id="frequency" value="" label="Frequency" requiredFlag="Y"></@qifu.select>
+			<@qifu.select dataSource="frequencyMap" name="kpiFrequency" id="kpiFrequency" value="" label="Frequency" requiredFlag="Y"></@qifu.select>
 		</div>
 	</div>
 	<div class="row">

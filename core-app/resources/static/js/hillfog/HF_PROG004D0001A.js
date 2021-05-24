@@ -26,7 +26,9 @@ const PageEventHandling = {
 		removeActResult			:	removeAct,
 		addActItem				:	addAct,
 		actOwnerUidChange		:	actOwnerUidSelectChange,
-		removeActOwnerItem		:	removeActOwner
+		removeActOwnerItem		:	removeActOwner,
+		
+		clearAllListItem		:	clearAllList
 		
 	},
 	mounted() {
@@ -232,6 +234,15 @@ function removeActOwner(actIndex, ownerIndex) {
 	removeArrayByPos(this.actList[actIndex].ownerList, ownerIndex);
 }
 /* ----------------------------------------------------------------------- */
+
+
+
+function clearAllList() {
+	this.planList = [];
+	this.doList = [];
+	this.checkList = [];
+	this.actList = [];
+}
 
 
 

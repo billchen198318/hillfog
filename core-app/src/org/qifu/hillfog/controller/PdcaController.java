@@ -21,25 +21,35 @@
  */
 package org.qifu.hillfog.controller;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.joda.time.DateTime;
 import org.qifu.base.controller.BaseControllerSupport;
 import org.qifu.base.controller.IPageNamespaceProvide;
 import org.qifu.base.exception.AuthorityException;
 import org.qifu.base.exception.ControllerException;
 import org.qifu.base.exception.ServiceException;
+import org.qifu.base.model.CheckControllerFieldHandler;
 import org.qifu.base.model.ControllerMethodAuthority;
 import org.qifu.base.model.DefaultControllerJsonResultObj;
+import org.qifu.base.model.DefaultResult;
+import org.qifu.base.model.PleaseSelect;
 import org.qifu.core.entity.TbSysUpload;
 import org.qifu.core.util.UploadSupportUtils;
 import org.qifu.hillfog.entity.HfEmployee;
 import org.qifu.hillfog.entity.HfKpi;
 import org.qifu.hillfog.entity.HfObjective;
 import org.qifu.hillfog.entity.HfPdca;
+import org.qifu.hillfog.logic.IPdcaLogicService;
 import org.qifu.hillfog.model.MeasureDataCode;
 import org.qifu.hillfog.model.PDCABase;
 import org.qifu.hillfog.service.IEmployeeService;
@@ -56,6 +66,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 @Controller
 public class PdcaController extends BaseControllerSupport implements IPageNamespaceProvide {
 
@@ -70,6 +82,9 @@ public class PdcaController extends BaseControllerSupport implements IPageNamesp
 	
 	@Autowired
 	IPdcaService<HfPdca, String> pdcaService;
+	
+	@Autowired
+	IPdcaLogicService pdcaLogicService;
 	
 	@Override
 	public String viewPageNamespace() {
@@ -176,6 +191,137 @@ public class PdcaController extends BaseControllerSupport implements IPageNamesp
 		}
 		return viewName;
 	}
+	
+	private void checkFields(DefaultControllerJsonResultObj<HfPdca> result, HttpServletRequest request, HfPdca pdca) throws ControllerException, ServiceException, Exception {
+		String masterType = request.getParameter("masterType");
+		CheckControllerFieldHandler<HfPdca> checkHandler = this.getCheckControllerFieldHandler(result)
+		.testField("name", pdca, "@org.apache.commons.lang3.StringUtils@isBlank(name)", "Name is blank!")
+		.testField("startDate", !SimpleUtils.isDate(request.getParameter("startDate")), "Please input start date!")
+		.testField("endDate", !SimpleUtils.isDate(request.getParameter("endDate")), "Please input end date!");
+		checkHandler.throwMessage();
+		if (SimpleUtils.getDaysBetween(request.getParameter("startDate"), request.getParameter("endDate")) < 1) {
+			checkHandler.throwMessage("startDate", "Please adjust the start and end date fields!");
+		}
+		if (PDCABase.SOURCE_MASTER_KPI_TYPE.equals(masterType)) {
+			checkHandler
+			.testField("kpiFrequency", PleaseSelect.noSelect(pdca.getKpiFrequency()), "Please select frequency!")
+			.testField("kpiMeasureDate1", !SimpleUtils.isDate(request.getParameter("kpiMeasureDate1")), "Please input KPI measure-data start date!")
+			.testField("kpiMeasureDate2", !SimpleUtils.isDate(request.getParameter("kpiMeasureDate2")), "Please input KPI measure-data end date!")
+			.throwMessage();
+			if (SimpleUtils.getDaysBetween(request.getParameter("kpiMeasureDate1"), request.getParameter("kpiMeasureDate2")) < 1) {
+				checkHandler.throwMessage("startDate", "Please adjust the KPI masure-data start and KPI masure-data end date fields!");
+			}			
+		}
+		
+		String owner = StringUtils.defaultString( request.getParameter("owner") );
+		Map<String, List<Map<String, Object>>> ownerJsonData = (Map<String, List<Map<String, Object>>>) new ObjectMapper().readValue( owner, LinkedHashMap.class );
+		List ownerList = ownerJsonData.get("items");
+		if (ownerList.size() < 1) {
+			checkHandler.throwMessage("owner", "Please add owner employee!");
+		}		
+		
+		String planStr = StringUtils.defaultString( request.getParameter("planList") );
+		Map<String, List<Map<String, Object>>> planJsonData = (Map<String, List<Map<String, Object>>>) new ObjectMapper().readValue( planStr, LinkedHashMap.class );
+		List planMapList = planJsonData.get("items");		
+		if (planMapList.size() < 1) {
+			checkHandler.throwMessage("plan", "At least one Plan item is required!");
+		}
+		
+		String doStr = StringUtils.defaultString( request.getParameter("doList") );
+		Map<String, List<Map<String, Object>>> doJsonData = (Map<String, List<Map<String, Object>>>) new ObjectMapper().readValue( doStr, LinkedHashMap.class );
+		List doMapList = doJsonData.get("items");			
+		
+		String checkStr = StringUtils.defaultString( request.getParameter("checkList") );
+		Map<String, List<Map<String, Object>>> checkJsonData = (Map<String, List<Map<String, Object>>>) new ObjectMapper().readValue( checkStr, LinkedHashMap.class );
+		List checkMapList = checkJsonData.get("items");			
+		
+		String actStr = StringUtils.defaultString( request.getParameter("actList") );
+		Map<String, List<Map<String, Object>>> actJsonData = (Map<String, List<Map<String, Object>>>) new ObjectMapper().readValue( actStr, LinkedHashMap.class );
+		List actMapList = actJsonData.get("items");			
+		
+		// check item name, startDate, endDate, owner, parent
+		this.checkPdcaItem(checkHandler, PDCABase.TYPE_P, request.getParameter("startDate"), request.getParameter("endDate"), planMapList);
+		this.checkPdcaItem(checkHandler, PDCABase.TYPE_D, request.getParameter("startDate"), request.getParameter("endDate"), doMapList);
+		this.checkPdcaItem(checkHandler, PDCABase.TYPE_C, request.getParameter("startDate"), request.getParameter("endDate"), checkMapList);
+		this.checkPdcaItem(checkHandler, PDCABase.TYPE_A, request.getParameter("startDate"), request.getParameter("endDate"), actMapList);
+	}
+	
+	private void checkPdcaItem(CheckControllerFieldHandler<HfPdca> checkHandler, String itemType, String projectStartDate, String projectEndDate, List<Map<String, Object>> itemMapList) throws ControllerException, Exception {
+		for (Map<String, Object> itemDataMap : itemMapList) {
+			if (!PDCABase.TYPE_P.equals(itemType)) {
+				checkHandler.testField("pdcaItemParent", PleaseSelect.noSelect((String)itemDataMap.get("parentOid")), "[" + itemType + "] Please select PDCA item parent!").throwMessage();
+			}
+			checkHandler.testField("pdcaItemName", itemDataMap, "@org.apache.commons.lang3.StringUtils@isBlank(name)", "[" + itemType + "] Name is blank!").throwMessage();
+			checkHandler.testField("pdcaItemStartDate", !SimpleUtils.isDate((String)itemDataMap.get("startDate")), "[" + itemType + "] Please input PDCA item start date!").throwMessage();
+			checkHandler.testField("pdcaItemEndDate", !SimpleUtils.isDate((String)itemDataMap.get("endDate")), "[" + itemType + "] Please input PDCA item end date!").throwMessage();
+			String itemStartDate = (String)itemDataMap.get("startDate");
+			String itemEndDate = (String)itemDataMap.get("endDate");
+			if (SimpleUtils.getDaysBetween(itemStartDate, itemEndDate) < 1) {
+				checkHandler.throwMessage("itemStartDate", "[" + itemType + "] Please adjust the PDCA item start and end date fields!");
+			}			
+			if (SimpleUtils.getDaysBetween(projectStartDate, itemStartDate) < 0) {
+				checkHandler.throwMessage("itemStartDate", "[" + itemType + "] The starting date of PDCA Item shall not be less than the starting date of the project!");
+			}
+			if (SimpleUtils.getDaysBetween(itemEndDate, projectEndDate) < 0) {
+				checkHandler.throwMessage("itemStartDate", "[" + itemType + "] The end date of PDCA Item cannot be greater than the end date of the project!");
+			}			
+			List<String> ownerList = (List<String>) itemDataMap.get("ownerList");
+			checkHandler.testField("pdcaItemOwner", null == ownerList || ownerList.size() < 1, "[" + itemType + "] Please input PDCA item owner!").throwMessage();
+		}
+	}
+	
+	private void save(DefaultControllerJsonResultObj<HfPdca> result, HttpServletRequest request, HfPdca pdca) throws AuthorityException, ControllerException, ServiceException, Exception {
+		this.checkFields(result, request, pdca);
+		
+		String owner = StringUtils.defaultString( request.getParameter("owner") );
+		Map<String, List<Map<String, Object>>> ownerJsonData = (Map<String, List<Map<String, Object>>>) new ObjectMapper().readValue( owner, LinkedHashMap.class );
+		List ownerList = ownerJsonData.get("items");
+		
+		String uploadAttc = StringUtils.defaultString( request.getParameter("uploadAttc") );
+		Map<String, List<Map<String, Object>>> uploadAttcJsonData = (Map<String, List<Map<String, Object>>>) new ObjectMapper().readValue( uploadAttc, LinkedHashMap.class );
+		List uploadAttcJsonList = uploadAttcJsonData.get("items");		
+		List<String> uploadOidsList = new ArrayList<String>();
+		for (int i = 0 ; uploadAttcJsonList != null && i < uploadAttcJsonList.size(); i++) {
+			Map<String, Object> dataMap = (Map<String, Object>) uploadAttcJsonList.get(i);
+			uploadOidsList.add( (String) dataMap.get("oid") );
+		}
+		
+		String plan = StringUtils.defaultString( request.getParameter("planList") );
+		Map<String, List<Map<String, Object>>> planJsonData = (Map<String, List<Map<String, Object>>>) new ObjectMapper().readValue( plan, LinkedHashMap.class );
+		List planMapList = planJsonData.get("items");	
+		
+		String doStr = StringUtils.defaultString( request.getParameter("doList") );
+		Map<String, List<Map<String, Object>>> doJsonData = (Map<String, List<Map<String, Object>>>) new ObjectMapper().readValue( doStr, LinkedHashMap.class );
+		List doMapList = doJsonData.get("items");			
+		
+		String check = StringUtils.defaultString( request.getParameter("checkList") );
+		Map<String, List<Map<String, Object>>> checkJsonData = (Map<String, List<Map<String, Object>>>) new ObjectMapper().readValue( check, LinkedHashMap.class );
+		List checkMapList = checkJsonData.get("items");			
+		
+		String act = StringUtils.defaultString( request.getParameter("actList") );
+		Map<String, List<Map<String, Object>>> actJsonData = (Map<String, List<Map<String, Object>>>) new ObjectMapper().readValue( act, LinkedHashMap.class );
+		List actMapList = actJsonData.get("items");	
+		
+		DefaultResult<HfPdca> iResult = this.pdcaLogicService.create(pdca, check, act, ownerList, uploadOidsList, planMapList, doMapList, checkMapList, actMapList);
+		this.setDefaultResponseJsonResult(result, iResult);
+	}
+	
+	@ControllerMethodAuthority(check = true, programId = "HF_PROG004D0001A")
+	@RequestMapping(value = "/hfPdcaSaveJson", produces = MediaType.APPLICATION_JSON_VALUE)		
+	public @ResponseBody DefaultControllerJsonResultObj<HfPdca> doSave(HttpServletRequest request, HfPdca pdca) {
+		DefaultControllerJsonResultObj<HfPdca> result = this.getDefaultJsonResult(this.currentMethodAuthority());
+		if (!this.isAuthorizeAndLoginFromControllerJsonResult(result)) {
+			return result;
+		}
+		try {
+			this.save(result, request, pdca);
+		} catch (AuthorityException | ServiceException | ControllerException e) {
+			this.baseExceptionResult(result, e);	
+		} catch (Exception e) {
+			this.exceptionResult(result, e);
+		}
+		return result;		
+	}	
 	
 	@ControllerMethodAuthority(check = true, programId = "HF_PROG004D0001E")
 	@RequestMapping("/hfPdcaEditPage")
