@@ -22,6 +22,7 @@
 package org.qifu.hillfog.logic.impl;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -133,14 +134,20 @@ public class PdcaLogicServiceImpl extends BaseLogicService implements IPdcaLogic
 		pdca = mResult.getValueEmptyThrowMessage();
 		this.createPdcaOwner(pdca, ownerList);
 		this.updateUploadType(uploadOidsList);
-		this.createPdcaItem(pdca, PDCABase.TYPE_P, planMapList);
-		this.createPdcaItem(pdca, PDCABase.TYPE_D, doMapList);
-		this.createPdcaItem(pdca, PDCABase.TYPE_C, checkMapList);
-		this.createPdcaItem(pdca, PDCABase.TYPE_A, actMapList);
+		Map<String, HfPdcaItem> planItemMap = new HashMap<String, HfPdcaItem>();
+		Map<String, HfPdcaItem> doItemMap = new HashMap<String, HfPdcaItem>();
+		Map<String, HfPdcaItem> checkItemMap = new HashMap<String, HfPdcaItem>();
+		this.createPdcaItem(pdca, PDCABase.TYPE_P, planMapList, null, planItemMap);
+		this.createPdcaItem(pdca, PDCABase.TYPE_D, doMapList, planItemMap, doItemMap);
+		this.createPdcaItem(pdca, PDCABase.TYPE_C, checkMapList, doItemMap, checkItemMap);
+		this.createPdcaItem(pdca, PDCABase.TYPE_A, actMapList, checkItemMap, null);
+		planItemMap.clear();
+		doItemMap.clear();
+		checkItemMap.clear();
 		return mResult;
 	}
 	
-	private void createPdcaItem(HfPdca pdca, String itemType, List<Map<String, Object>> itemMapList) throws ServiceException, Exception {
+	private void createPdcaItem(HfPdca pdca, String itemType, List<Map<String, Object>> itemMapList, Map<String, HfPdcaItem> parentMap, Map<String, HfPdcaItem> fillMap) throws ServiceException, Exception {
 		int size = 0;
 		for (Map<String, Object> itemDataMap : itemMapList) {
 			HfPdcaItem pdcaItem = new HfPdcaItem();
@@ -149,6 +156,12 @@ public class PdcaLogicServiceImpl extends BaseLogicService implements IPdcaLogic
 			pdcaItem.setPdcaOid(pdca.getOid());
 			if (PDCABase.TYPE_P.equals(itemType)) {
 				pdcaItem.setParentOid(ZeroKeyProvide.OID_KEY);
+			} else {
+				if (parentMap == null || parentMap.get((String)itemDataMap.get("parentOid")) == null) {
+					throw new ServiceException( BaseSystemMessage.dataErrors() );
+				}
+				HfPdcaItem parentItem = parentMap.get((String)itemDataMap.get("parentOid"));
+				pdcaItem.setParentOid( parentItem.getOid() ); // 設定上正確存到DB中的 父 PDCA_ITEM OID 的值
 			}
 			if (PleaseSelect.noSelect(pdcaItem.getParentOid())) {
 				throw new ServiceException("Please select parent item for PDCA item(" + pdcaItem.getName() + ")");
@@ -157,6 +170,9 @@ public class PdcaLogicServiceImpl extends BaseLogicService implements IPdcaLogic
 			pdcaItem.setStartDate( pdcaItem.getStartDate().replaceAll("-", "").replaceAll("/", "") );
 			pdcaItem.setEndDate( pdcaItem.getEndDate().replaceAll("-", "").replaceAll("/", "") );
 			pdcaItem = this.pdcaItemService.insert(pdcaItem).getValueEmptyThrowMessage();
+			if (null != fillMap) {
+				fillMap.put((String)itemDataMap.get("oid"), pdcaItem); // 這邊紀錄的是html畫面上的變數oid
+			}
 			List<String> ownerList = (List<String>) itemDataMap.get("ownerList");
 			this.createPdcaItemOwner(pdca.getOid(), pdcaItem.getOid(), ownerList);
 			size++;
