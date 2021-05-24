@@ -22,7 +22,6 @@
 package org.qifu.hillfog.logic.impl;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -128,6 +127,8 @@ public class PdcaLogicServiceImpl extends BaseLogicService implements IPdcaLogic
 		pdca.setStartDate( this.defaultString(pdca.getStartDate()).replaceAll("-", "").replaceAll("/", "") );
 		pdca.setEndDate( this.defaultString(pdca.getEndDate()).replaceAll("-", "").replaceAll("/", "") );
 		pdca.setPdcaNum( this.pdcaService.selectMaxPdcaNum(head) );
+		pdca.setMstOid(masterOid);
+		pdca.setMstType(masterType);
 		DefaultResult<HfPdca> mResult = this.pdcaService.insert(pdca);
 		pdca = mResult.getValueEmptyThrowMessage();
 		this.createPdcaOwner(pdca, ownerList);
@@ -152,6 +153,9 @@ public class PdcaLogicServiceImpl extends BaseLogicService implements IPdcaLogic
 			if (PleaseSelect.noSelect(pdcaItem.getParentOid())) {
 				throw new ServiceException("Please select parent item for PDCA item(" + pdcaItem.getName() + ")");
 			}
+			this.setStringValueMaxLength(pdcaItem, "description", MAX_LENGTH);
+			pdcaItem.setStartDate( pdcaItem.getStartDate().replaceAll("-", "").replaceAll("/", "") );
+			pdcaItem.setEndDate( pdcaItem.getEndDate().replaceAll("-", "").replaceAll("/", "") );
 			pdcaItem = this.pdcaItemService.insert(pdcaItem).getValueEmptyThrowMessage();
 			List<String> ownerList = (List<String>) itemDataMap.get("ownerList");
 			this.createPdcaItemOwner(pdca.getOid(), pdcaItem.getOid(), ownerList);
