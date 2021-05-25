@@ -338,7 +338,15 @@
 		    <version>0.0.1-SNAPSHOT</version>
 		    <systemPath>${workspaceDir}/core-hillfog/target/core-hillfog-0.0.1-SNAPSHOT.jar</systemPath>
 		</dependency>	
-				        
+				    
+		<dependency>
+		    <groupId>com.highcharts</groupId>
+		    <artifactId>highcharts</artifactId>
+		    <scope>system</scope>
+		    <version>9.1.0</version>
+		    <systemPath>${workspaceDir}/thirdpartylib/highcharts-gantt-9.1.0.jar</systemPath>
+		</dependency>	
+						        
   </dependencies>
   
   	<build>
