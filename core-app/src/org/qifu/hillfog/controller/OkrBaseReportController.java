@@ -21,7 +21,9 @@
  */
 package org.qifu.hillfog.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -34,12 +36,17 @@ import org.qifu.base.exception.ServiceException;
 import org.qifu.base.model.ControllerMethodAuthority;
 import org.qifu.base.model.DefaultControllerJsonResultObj;
 import org.qifu.base.model.DefaultResult;
+import org.qifu.base.model.SortType;
+import org.qifu.base.model.YesNo;
 import org.qifu.hillfog.entity.HfEmployee;
 import org.qifu.hillfog.entity.HfObjective;
 import org.qifu.hillfog.entity.HfOrgDept;
+import org.qifu.hillfog.entity.HfPdca;
+import org.qifu.hillfog.model.PDCABase;
 import org.qifu.hillfog.service.IEmployeeService;
 import org.qifu.hillfog.service.IObjectiveService;
 import org.qifu.hillfog.service.IOrgDeptService;
+import org.qifu.hillfog.service.IPdcaService;
 import org.qifu.hillfog.util.OkrProgressRateUtils;
 import org.qifu.util.SimpleUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,6 +69,9 @@ public class OkrBaseReportController extends BaseControllerSupport implements IP
 	@Autowired
 	IObjectiveService<HfObjective, String> objectiveService;	
 	
+	@Autowired
+	IPdcaService<HfPdca, String> pdcaService;	
+	
 	@Override
 	public String viewPageNamespace() {
 		return "hillfog_obr";
@@ -83,6 +93,13 @@ public class OkrBaseReportController extends BaseControllerSupport implements IP
 		HfObjective objective = this.objectiveService.selectByPrimaryKey(oid).getValueEmptyThrowMessage();
 		OkrProgressRateUtils.build().fromObjective(objective).process().loadInitiatives();
 		mm.put("objective", objective);
+		
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("mstType", PDCABase.SOURCE_MASTER_OBJECTIVE_TYPE);
+		paramMap.put("mstOid", objective.getOid());
+		paramMap.put("isNotConfirm", YesNo.YES);
+		List<HfPdca> pdcaList = this.pdcaService.selectListByParams(paramMap, "START_DATE", SortType.ASC).getValue();
+		mm.put("pdcaList", pdcaList);
 	}
 	
 	@ControllerMethodAuthority(check = true, programId = "HF_PROG003D0001Q")

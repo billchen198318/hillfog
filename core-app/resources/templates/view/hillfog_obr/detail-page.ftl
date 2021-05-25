@@ -153,6 +153,15 @@ function btnCreatePdca() {
 	</table>		
 	</@qifu.if>  
 	
+	
+	<@qifu.if test=" pdcaList != null && pdcaList.size > 0 ">
+	<br>
+	<h3><span class="badge badge-pill badge-warning">PDCA</span></h3>
+	
+	
+	</@qifu.if>
+	
+	
 </div>
 	
 <br/>
