@@ -134,7 +134,8 @@ public class PdcaController extends BaseControllerSupport implements IPageNamesp
 	}
 	
 	private void fetch(ModelMap mm, String oid) throws AuthorityException, ControllerException, ServiceException, Exception {
-		
+		HfPdca pdca = this.pdcaService.selectByPrimaryKey(oid).getValueEmptyThrowMessage();
+		mm.put("pdca", pdca);
 	}
 	
 	@ControllerMethodAuthority(check = true, programId = "HF_PROG004D0001Q")

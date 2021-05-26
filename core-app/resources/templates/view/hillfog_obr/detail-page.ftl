@@ -63,6 +63,9 @@ function btnCreatePdca() {
 	parent.addTab('HF_PROG004D0001A', parent.getProgUrlForOid('HF_PROG004D0001A', '${objective.oid}') + '&masterType=O' );
 }
 
+function viewDetail(pdcaOid) {
+	parent.addTab('HF_PROG004D0001V', parent.getProgUrlForOid('HF_PROG004D0001V', pdcaOid));
+}
 
 
 // ----------------------------------------------------------------------------------
@@ -315,6 +318,10 @@ function pdcaProjectChartFillItems(pdcaItems) {
 			
 		<#list pdcaList as pdca>
 			<div id="gantt_container_${pdca.oid}"></div>
+			
+			<br>
+			<button type="button" class="btn btn-info" title="view" onclick="viewDetail('${pdca.oid}')"><i class="icon fa fa-eye"></i>&nbsp;View detail</button>
+			
 		</#list>
 	</div>
 </div>
