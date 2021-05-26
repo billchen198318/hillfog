@@ -16,17 +16,6 @@
 	border: none;
 }
 
-#container {
-  max-width: 1024px;
-  margin: 1em auto;
-}
-
-.highcharts-treegrid-node-level-1 {
-	font-size: 13px;
-	font-weight: bold;
-	fill: black;
-}
-
 </style>
 
 
@@ -102,14 +91,6 @@ function qeruyPdcaChart(pdcaOid) {
 }
 function pdcaProjectTimeChart(data) {
 	
-	var today = new Date(), day = 1000 * 60 * 60 * 24;
-
-	// Set to 00:00:00:000 today
-	today.setUTCHours(0);
-	today.setUTCMinutes(0);
-	today.setUTCSeconds(0);
-	today.setUTCMilliseconds(0);	
-	
 	var chartId = 'gantt_container_' + data.main.oid;
 	
 	if (!($("#"+chartId).length)) {
@@ -120,8 +101,6 @@ function pdcaProjectTimeChart(data) {
 	}
 	
 	var pdcaItemSeries = pdcaProjectChartFillItems( data );
-	
-	console.log( JSON.stringify( pdcaItemSeries ) );
 	
 	Highcharts.ganttChart(chartId, {
 		
