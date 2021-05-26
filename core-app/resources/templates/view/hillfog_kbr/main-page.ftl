@@ -238,6 +238,10 @@ function queryClear() {
 	$("#frequency").val('3');
 }
 
+function btnCreatePdca(kpiOid) {
+	parent.addTab('HF_PROG004D0001A', parent.getProgUrlForOid('HF_PROG004D0001A', kpiOid) + '&masterType=K' );
+}
+
 </script>
 
 </head>

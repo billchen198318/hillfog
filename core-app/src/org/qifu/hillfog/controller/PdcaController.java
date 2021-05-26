@@ -219,6 +219,7 @@ public class PdcaController extends BaseControllerSupport implements IPageNamesp
 		if (SimpleUtils.getDaysBetween(request.getParameter("startDate"), request.getParameter("endDate")) < 1) {
 			checkHandler.throwMessage("startDate", "Please adjust the start and end date fields!");
 		}
+		/*
 		if (PDCABase.SOURCE_MASTER_KPI_TYPE.equals(masterType)) {
 			checkHandler
 			.testField("kpiFrequency", PleaseSelect.noSelect(pdca.getKpiFrequency()), "Please select frequency!")
@@ -229,7 +230,7 @@ public class PdcaController extends BaseControllerSupport implements IPageNamesp
 				checkHandler.throwMessage("startDate", "Please adjust the KPI masure-data start and KPI masure-data end date fields!");
 			}			
 		}
-		
+		*/
 		String owner = StringUtils.defaultString( request.getParameter("owner") );
 		Map<String, List<Map<String, Object>>> ownerJsonData = (Map<String, List<Map<String, Object>>>) new ObjectMapper().readValue( owner, LinkedHashMap.class );
 		List ownerList = ownerJsonData.get("items");

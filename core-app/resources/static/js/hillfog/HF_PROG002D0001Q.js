@@ -39,7 +39,7 @@ function createContent(scoreData) {
 	</div>
 	
 	<div class="row mx-auto flex-column">
-		<span class="badge badge-info"><h2>${scoreData.kpi.id}&nbsp;-&nbsp;${scoreData.kpi.name}</h2></span>
+		<span class="badge badge-info"><h2>${scoreData.kpi.id}&nbsp;-&nbsp;${scoreData.kpi.name} &nbsp; <span class="btn badge btn-warning" onclick="btnCreatePdca('${scoreData.kpi.oid}');"><h6><i class="icon fa fa-plus"></i>&nbsp;Create PDCA</h6></span></h2></span>
 		<span class="badge badge-secondary"><h2>${scoreData.date1}&nbsp;~&nbsp;${scoreData.date2}</h2></span>
 		<div class="col-12 align-self-center" id="${currGaugeIdHead}" style="width: 97%;height:450px;"></div>
 		${lineContent}

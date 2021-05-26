@@ -159,9 +159,9 @@ function btnSave() {
 				'uploadAttc'		:	JSON.stringify( { 'items' : uploadAttc } ),
 				'owner'				:	JSON.stringify( { 'items' : selEmpList } ),
 				<@qifu.if test=" null != masterType && \"K\" == masterType ">
-				'kpiFrequency' 		:	$("#kpiFrequency").val(),
-				'kpiMeasureDate1'	:	$("#kpiMeasureDate1").val(),
-				'kpiMeasureDate2' 	:	$("#kpiMeasureDate2").val(),
+				//'kpiFrequency' 		:	$("#kpiFrequency").val(),
+				//'kpiMeasureDate1'		:	$("#kpiMeasureDate1").val(),
+				//'kpiMeasureDate2' 	:	$("#kpiMeasureDate2").val(),
 				</@qifu.if>
 				'planList'			:	JSON.stringify( { 'items' : vm.planList } ),
 				'doList'			:	JSON.stringify( { 'items' : vm.doList } ),
@@ -380,6 +380,7 @@ function removeArrayByPos(arr, pos) {
 </div>	
 
 <@qifu.if test=" null != masterType && \"K\" == masterType ">
+<!--  
 <div class="form-group" id="form-group2">
 	<div class="row">
 		<div class="col-xs-12 col-md-12 col-lg-12">
@@ -395,6 +396,7 @@ function removeArrayByPos(arr, pos) {
 		</div>		
 	</div>
 </div>	
+-->
 </@qifu.if>
 
 <div class="form-group" id="form-group3">
