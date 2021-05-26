@@ -54,6 +54,7 @@ import org.qifu.hillfog.service.IEmployeeService;
 import org.qifu.hillfog.service.IKpiService;
 import org.qifu.hillfog.service.IObjectiveService;
 import org.qifu.hillfog.service.IPdcaService;
+import org.qifu.hillfog.vo.PdcaItems;
 import org.qifu.util.SimpleUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -171,6 +172,24 @@ public class PdcaController extends BaseControllerSupport implements IPageNamesp
 		}
 		return result;
 	}
+	
+	@ControllerMethodAuthority(check = false, programId = "HF_PROG004D0001Q")
+	@RequestMapping(value = "/hfPdcaItemsForGanttDataJson", produces = MediaType.APPLICATION_JSON_VALUE)		
+	public @ResponseBody DefaultControllerJsonResultObj<PdcaItems> doQueryPdcaItemsForGanttData(HttpServletRequest request, @RequestParam(name="oid") String oid) {
+		DefaultControllerJsonResultObj<PdcaItems> result = this.getDefaultJsonResult(this.currentMethodAuthority());
+		if (!this.isAuthorizeAndLoginFromControllerJsonResult(result)) {
+			return result;
+		}
+		try {
+			DefaultResult<PdcaItems> itemResult = this.pdcaLogicService.findPdcaItems(oid);
+			this.setDefaultResponseJsonResult(result, itemResult);
+		} catch (AuthorityException | ServiceException | ControllerException e) {
+			this.baseExceptionResult(result, e);	
+		} catch (Exception e) {
+			this.exceptionResult(result, e);
+		}
+		return result;		
+	}		
 	
 	@ControllerMethodAuthority(check = true, programId = "HF_PROG004D0001A")
 	@RequestMapping("/hfPdcaCreatePage")

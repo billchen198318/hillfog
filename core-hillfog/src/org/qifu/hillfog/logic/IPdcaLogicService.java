@@ -27,10 +27,13 @@ import java.util.Map;
 import org.qifu.base.exception.ServiceException;
 import org.qifu.base.model.DefaultResult;
 import org.qifu.hillfog.entity.HfPdca;
+import org.qifu.hillfog.vo.PdcaItems;
 
 public interface IPdcaLogicService {
 	
 	public DefaultResult<HfPdca> create(HfPdca pdca, String masterType, String masterOid, List<String> ownerList, List<String> uploadOidsList,
 			List<Map<String, Object>> planMapList, List<Map<String, Object>> doMapList, List<Map<String, Object>> checkMapList, List<Map<String, Object>> actMapList) throws ServiceException, Exception;
+	
+	public DefaultResult<PdcaItems> findPdcaItems(String pdcaOid) throws ServiceException, Exception;
 	
 }

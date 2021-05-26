@@ -8,6 +8,7 @@ import org.qifu.base.model.EntityPK;
 import org.qifu.base.model.EntityUK;
 import org.qifu.base.model.UpdateDateField;
 import org.qifu.base.model.UpdateUserField;
+import org.qifu.util.SimpleUtils;
 
 public class HfPdca implements java.io.Serializable {
 	private static final long serialVersionUID = -7009235858039916707L;
@@ -29,6 +30,14 @@ public class HfPdca implements java.io.Serializable {
     private Date cdate;
     private String uuserid;
     private Date udate;
+    
+    public String getStartDateShow() {
+    	return SimpleUtils.getStrYMD(this.startDate, "-");
+    }
+    
+    public String getEndDateShow() {
+    	return SimpleUtils.getStrYMD(this.endDate, "-");
+    }
     
     @EntityPK(name = "oid", autoUUID = true)
     public String getOid() {

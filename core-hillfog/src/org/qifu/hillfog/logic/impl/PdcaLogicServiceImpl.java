@@ -37,6 +37,7 @@ import org.qifu.base.model.PleaseSelect;
 import org.qifu.base.model.ServiceAuthority;
 import org.qifu.base.model.ServiceMethodAuthority;
 import org.qifu.base.model.ServiceMethodType;
+import org.qifu.base.model.SortType;
 import org.qifu.base.model.ZeroKeyProvide;
 import org.qifu.base.service.BaseLogicService;
 import org.qifu.core.entity.TbSysUpload;
@@ -60,6 +61,7 @@ import org.qifu.hillfog.service.IPdcaItemOwnerService;
 import org.qifu.hillfog.service.IPdcaItemService;
 import org.qifu.hillfog.service.IPdcaOwnerService;
 import org.qifu.hillfog.service.IPdcaService;
+import org.qifu.hillfog.vo.PdcaItems;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -236,5 +238,32 @@ public class PdcaLogicServiceImpl extends BaseLogicService implements IPdcaLogic
 			throw new ServiceException( BaseSystemMessage.dataErrors() );
 		}
 	}
+	
+	@ServiceMethodAuthority(type = ServiceMethodType.SELECT)
+	@Transactional(
+			propagation=Propagation.REQUIRED, 
+			readOnly=false,
+			rollbackFor={RuntimeException.class, IOException.class, Exception.class} )		
+	@Override
+	public DefaultResult<PdcaItems> findPdcaItems(String pdcaOid) throws ServiceException, Exception {
+		if (this.isBlank(pdcaOid)) {
+			throw new ServiceException( BaseSystemMessage.parameterBlank() ); 
+		}
+		PdcaItems pdcaItems = new PdcaItems( this.pdcaService.selectByPrimaryKey(pdcaOid).getValueEmptyThrowMessage() );
+		DefaultResult<PdcaItems> result = new DefaultResult<PdcaItems>();
+		result.setValue(pdcaItems);
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("pdcaOid", pdcaOid);
+		paramMap.put("type", PDCABase.TYPE_P);
+		pdcaItems.setPlanItemList( this.pdcaItemService.selectListByParams(paramMap, "START_DATE", SortType.ASC).getValue() );
+		paramMap.put("type", PDCABase.TYPE_D);
+		pdcaItems.setDoItemList( this.pdcaItemService.selectListByParams(paramMap, "START_DATE", SortType.ASC).getValue() );
+		paramMap.put("type", PDCABase.TYPE_C);
+		pdcaItems.setCheckItemList( this.pdcaItemService.selectListByParams(paramMap, "START_DATE", SortType.ASC).getValue() );
+		paramMap.put("type", PDCABase.TYPE_A);
+		pdcaItems.setActItemList( this.pdcaItemService.selectListByParams(paramMap, "START_DATE", SortType.ASC).getValue() );
+		paramMap.clear();
+		return result;
+	}	
 	
 }
