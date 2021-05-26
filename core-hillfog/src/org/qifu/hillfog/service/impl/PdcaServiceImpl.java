@@ -78,7 +78,7 @@ public class PdcaServiceImpl extends BaseService<HfPdca, String> implements IPdc
 		if (StringUtils.isBlank(currentMaxNum)) {
 			return pdcaNum + "-001";
 		}
-		String tmp[] = pdcaNum.split("-");
+		String tmp[] = currentMaxNum.split("-");
 		if (tmp == null || tmp.length != 4) {
 			throw new ServiceException(BaseSystemMessage.dataErrors());
 		}
