@@ -249,11 +249,24 @@ public class PdcaLogicServiceImpl extends BaseLogicService implements IPdcaLogic
 		if (this.isBlank(pdcaOid)) {
 			throw new ServiceException( BaseSystemMessage.parameterBlank() ); 
 		}
-		PdcaItems pdcaItems = new PdcaItems( this.pdcaService.selectByPrimaryKey(pdcaOid).getValueEmptyThrowMessage() );
+		return this.findPdcaItems( this.pdcaService.selectByPrimaryKey(pdcaOid).getValueEmptyThrowMessage() );
+	}
+
+	@ServiceMethodAuthority(type = ServiceMethodType.SELECT)
+	@Transactional(
+			propagation=Propagation.REQUIRED, 
+			readOnly=false,
+			rollbackFor={RuntimeException.class, IOException.class, Exception.class} )	
+	@Override
+	public DefaultResult<PdcaItems> findPdcaItems(HfPdca pdca) throws ServiceException, Exception {
+		if (null == pdca || this.isBlank(pdca.getOid()) || this.isBlank(pdca.getName())) {
+			throw new ServiceException( BaseSystemMessage.parameterBlank() ); 
+		}
+		PdcaItems pdcaItems = new PdcaItems( pdca );
 		DefaultResult<PdcaItems> result = new DefaultResult<PdcaItems>();
 		result.setValue(pdcaItems);
 		Map<String, Object> paramMap = new HashMap<String, Object>();
-		paramMap.put("pdcaOid", pdcaOid);
+		paramMap.put("pdcaOid", pdca.getOid());
 		paramMap.put("type", PDCABase.TYPE_P);
 		pdcaItems.setPlanItemList( this.pdcaItemService.selectListByParams(paramMap, "START_DATE", SortType.ASC).getValue() );
 		paramMap.put("type", PDCABase.TYPE_D);

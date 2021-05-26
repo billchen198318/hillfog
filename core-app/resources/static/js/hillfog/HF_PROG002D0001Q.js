@@ -13,12 +13,17 @@ function showContent(data) {
 		var scoreData = data[d];
 		showCharts(scoreData);
 	}
+	for (var d in data) {
+		var scoreData = data[d];
+		showPdcaChartContent(scoreData);
+	}
 }
 
 function createContent(scoreData) {
 	var currGaugeIdHead = _gaugeIdHead + scoreData.kpi.id;
 	var detailContent = '';
 	var lineContent = lineChartContent(scoreData);
+	var pdcaContent = '';
 	var tableStart = `
 	
 	<div class="row">
@@ -64,12 +69,38 @@ function createContent(scoreData) {
 		`;
 	}
 	
+	if (scoreData.pdcaItems != null && scoreData.pdcaItems.length > 0) {
+		var pdcaChartDivStr = '';
+		for (var n in scoreData.pdcaItems) {	
+			var pdca = scoreData.pdcaItems[n].main;
+			pdcaChartDivStr += `<div id="gantt_container_${pdca.oid}"></div>`;
+		}
+		pdcaContent += `
+		<tr>
+			<td class="text-center">
+			
+				<div class="row mx-auto flex-column">
+				
+					<div class="card border-warning">
+					  <div class="card-body">			
+						<h4><span class="badge badge-pill badge-warning">PDCA</span></h4>	  		
+						${pdcaChartDivStr}
+						</div>
+					</div>				
+					
+				</div>
+				
+			</td>
+		</tr>
+		`;						
+	}
+	
 	var tableEnd = `
 	</tbody>
 	</table>
 	`;
 	
-	return `${tableStart}${detailContent}${tableEnd}`;
+	return `${tableStart}${detailContent}${pdcaContent}${tableEnd}`;
 }
 
 function lineChartContent(scoreData) {
@@ -213,4 +244,130 @@ function lineChart(chartId, scoreData) {
 	myChart.setOption(option, true);
 	_chartsArr.push(myChart);
 }
+
+
+
+// ----------------------------------------------------------------------------------
+// PDCA 甘特圖
+// ----------------------------------------------------------------------------------
+function showPdcaChartContent(scoreData) {
+	for (var n in scoreData.pdcaItems) {
+		pdcaProjectTimeChart(scoreData.pdcaItems[n]);
+	}
+}
+function pdcaProjectTimeChart(data) {
+	
+	var chartId = 'gantt_container_' + data.main.oid;
+	
+	if (!($("#"+chartId).length)) {
+		return;
+	}
+	if (data.main.confirmDate != null) { // 結案不顯示
+		return;
+	}
+	
+	var pdcaItemSeries = pdcaProjectChartFillItems( data );
+	
+	Highcharts.ganttChart(chartId, {
+		
+		chart: {
+			styledMode: true
+		},
+		
+	    title: {
+	        text: '<b>' + data.main.name + '</b>',
+	    	style: {
+            	fontSize:'18px'
+            }	        
+	    },
+
+	    subtitle: {
+	        text: '<b>' + data.main.startDateShow + ' ~ ' + data.main.endDateShow + '</b>',
+	    	style: {
+            	fontSize:'14px'
+            }		        
+	    },
+	    
+	    xAxis: {  	
+	    	min: (new Date(data.main.startDateShow + 'T00:00:00Z')).getTime(),
+	    	max: (new Date(data.main.endDateShow + 'T00:00:00Z')).getTime()
+	    },	    
+	    
+	    tooltip: {
+	        xDateFormat: '%a %b %d'
+	    },
+	    
+	    /*
+	    plotOptions: {
+	        series: {
+	            animation: true, // false - Do not animate dependency connectors
+	            dataLabels: {
+	                enabled: true,
+	                format: '{point.name}',
+	                style: {
+	                	fontSize: '13px',
+	                    cursor: 'default',
+	                    pointerEvents: 'none'
+	                }
+	            }
+	        }
+	    },
+	    */
+	    
+	    series: pdcaItemSeries
+	    
+	});	
+	
+}
+function pdcaProjectChartFillItems(pdcaItems) {
+	var series = [{
+		name	:	pdcaItems.main.name,
+		data	:	[]
+	}];
+	for (var n in pdcaItems.planItemList) {
+		var item = pdcaItems.planItemList[n];
+		series[0].data.push({
+			name		: '(P) - ' + item.name,
+			id			: item.oid,
+			start		: (new Date(item.startDateShow + 'T00:00:00Z')).getTime(),
+			end			: (new Date(item.endDateShow + 'T00:00:00Z')).getTime()		
+		});
+	}
+	for (var n in pdcaItems.doItemList) {
+		var item = pdcaItems.doItemList[n];
+		series[0].data.push({
+			name		: '(D) - ' + item.name,
+			id			: item.oid,
+			parent		: item.parentOid,
+			dependency	: item.parentOid,
+			start		: (new Date(item.startDateShow + 'T00:00:00Z')).getTime(),
+			end			: (new Date(item.endDateShow + 'T00:00:00Z')).getTime()		
+		});
+	}
+	for (var n in pdcaItems.checkItemList) {
+		var item = pdcaItems.checkItemList[n];
+		series[0].data.push({
+			name		: '(C) - ' + item.name,
+			id			: item.oid,
+			parent		: item.parentOid,
+			dependency	: item.parentOid,
+			start		: (new Date(item.startDateShow + 'T00:00:00Z')).getTime(),
+			end			: (new Date(item.endDateShow + 'T00:00:00Z')).getTime()		
+		});	
+	}
+	for (var n in pdcaItems.actItemList) {
+		var item = pdcaItems.actItemList[n];
+		series[0].data.push({
+			name		: '(A) - ' + item.name,
+			id			: item.oid,
+			parent		: item.parentOid,
+			dependency	: item.parentOid,
+			start		: (new Date(item.startDateShow + 'T00:00:00Z')).getTime(),
+			end			: (new Date(item.endDateShow + 'T00:00:00Z')).getTime()		
+		});		
+	}
+	return series;
+}
+// ----------------------------------------------------------------------------------
+
 

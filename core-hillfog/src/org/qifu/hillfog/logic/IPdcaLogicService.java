@@ -36,4 +36,6 @@ public interface IPdcaLogicService {
 	
 	public DefaultResult<PdcaItems> findPdcaItems(String pdcaOid) throws ServiceException, Exception;
 	
+	public DefaultResult<PdcaItems> findPdcaItems(HfPdca pdca) throws ServiceException, Exception;
+	
 }

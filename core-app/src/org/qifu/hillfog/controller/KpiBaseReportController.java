@@ -22,7 +22,9 @@
 package org.qifu.hillfog.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -37,13 +39,18 @@ import org.qifu.base.model.ControllerMethodAuthority;
 import org.qifu.base.model.DefaultControllerJsonResultObj;
 import org.qifu.base.model.PleaseSelect;
 import org.qifu.base.model.SortType;
+import org.qifu.base.model.YesNo;
 import org.qifu.hillfog.entity.HfEmployee;
 import org.qifu.hillfog.entity.HfKpi;
 import org.qifu.hillfog.entity.HfOrgDept;
+import org.qifu.hillfog.entity.HfPdca;
+import org.qifu.hillfog.logic.IPdcaLogicService;
 import org.qifu.hillfog.model.MeasureDataCode;
+import org.qifu.hillfog.model.PDCABase;
 import org.qifu.hillfog.service.IEmployeeService;
 import org.qifu.hillfog.service.IKpiService;
 import org.qifu.hillfog.service.IOrgDeptService;
+import org.qifu.hillfog.service.IPdcaService;
 import org.qifu.hillfog.util.KpiScore;
 import org.qifu.hillfog.vo.MeasureDataQueryParam;
 import org.qifu.hillfog.vo.ScoreCalculationData;
@@ -66,6 +73,12 @@ public class KpiBaseReportController extends BaseControllerSupport implements IP
 	
 	@Autowired
 	IOrgDeptService<HfOrgDept, String> orgDeptService;
+	
+	@Autowired
+	IPdcaService<HfPdca, String> pdcaService;
+	
+	@Autowired
+	IPdcaLogicService pdcaLogicService;
 	
 	@Override
 	public String viewPageNamespace() {
@@ -131,11 +144,28 @@ public class KpiBaseReportController extends BaseControllerSupport implements IP
 				queryParam.getAccountId(), 
 				queryParam.getOrgId()).processDefault().processDateRange().reduce().valueThrowMessage();
 		if (scores != null && scores.size() > 0) {
+			this.loadPdca(scores);
 			result.setValue(scores);
 			result.setSuccess(YES);
 			result.setMessage( "success!" );
 		} else {
 			result.setMessage( BaseSystemMessage.dataErrors() );
+		}
+	}
+	
+	private void loadPdca(List<ScoreCalculationData> scores) throws ControllerException, Exception {
+		for (ScoreCalculationData data : scores) {
+			Map<String, Object> paramMap = new HashMap<String, Object>();
+			paramMap.put("mstType", PDCABase.SOURCE_MASTER_KPI_TYPE);
+			paramMap.put("mstOid", data.getKpi().getOid());
+			paramMap.put("isNotConfirm", YesNo.YES);
+			List<HfPdca> pdcaList = this.pdcaService.selectListByParams(paramMap, "START_DATE", SortType.ASC).getValue();
+			if (pdcaList == null || pdcaList.size() < 1) {
+				continue;
+			}
+			for (HfPdca pdca : pdcaList) {
+				data.getPdcaItems().add( this.pdcaLogicService.findPdcaItems(pdca).getValue() );
+			}
 		}
 	}
 	

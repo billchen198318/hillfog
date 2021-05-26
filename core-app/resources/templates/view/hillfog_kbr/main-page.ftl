@@ -9,6 +9,9 @@
 
 <script type="text/javascript" src="${qifu_basePath}js/jquery-ui.min.js?ver=${qifu_jsVerBuild}"></script>
 
+<link rel="stylesheet" href="${qifu_basePath}highcharts-gantt/css/highcharts.css">
+<script src="${qifu_basePath}highcharts-gantt/highcharts-gantt.js"></script>
+
 <style type="text/css">
 
 .ui-autocomplete {

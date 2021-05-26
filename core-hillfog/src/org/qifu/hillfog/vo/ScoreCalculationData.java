@@ -22,6 +22,7 @@
 package org.qifu.hillfog.vo;
 
 import java.math.BigDecimal;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.qifu.base.model.YesNo;
@@ -47,6 +48,7 @@ public class ScoreCalculationData implements java.io.Serializable {
 	private String measureDataOrgId = MeasureDataCode.MEASURE_DATA_ORGANIZATION_FULL;
 	private String aggregationMethodName = "";
 	private String errorMessage = "";
+	private List<PdcaItems> pdcaItems = new LinkedList<PdcaItems>(); // 顯示PDCA用
 	
 	public ScoreCalculationData() {
 		super();
@@ -180,6 +182,14 @@ public class ScoreCalculationData implements java.io.Serializable {
 
 	public void setErrorMessage(String errorMessage) {
 		this.errorMessage = errorMessage;
+	}
+
+	public List<PdcaItems> getPdcaItems() {
+		return pdcaItems;
+	}
+
+	public void setPdcaItems(List<PdcaItems> pdcaItems) {
+		this.pdcaItems = pdcaItems;
 	}
 	
 }
