@@ -308,10 +308,17 @@ function pdcaProjectChartFillItems(pdcaItems) {
 	
 	<@qifu.if test=" pdcaList != null && pdcaList.size > 0 ">
 	<br>
-	<h3><span class="badge badge-pill badge-warning">PDCA</span></h3>
+	
+<div class="card border-warning">
+  <div class="card-body">		
+			<h4><span class="badge badge-pill badge-warning">PDCA</span></h4>	
+			
 		<#list pdcaList as pdca>
 			<div id="gantt_container_${pdca.oid}"></div>
 		</#list>
+	</div>
+</div>
+
 	</@qifu.if>
 	
 	
