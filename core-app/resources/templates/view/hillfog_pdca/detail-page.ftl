@@ -28,6 +28,10 @@ $( document ).ready(function() {
 	
 });
 
+function editPdca(pdcaOid) {
+	parent.addTab('HF_PROG004D0001E', parent.getProgUrlForOid('HF_PROG004D0001E', pdcaOid));
+}
+
 // ----------------------------------------------------------------------------------
 // PDCA 甘特圖
 // ----------------------------------------------------------------------------------
@@ -430,6 +434,8 @@ function replaceAll(str, find, replace) {
 					</tr>
 				</tbody>
 			</table>
+			
+	    	<button type="button" class="btn btn-primary" title="view" onclick="editPdca('${pdca.oid}')"><i class="icon fa fa-edit"></i>&nbsp;Edit</button>
 	    
 		</div>	
 	</div>	

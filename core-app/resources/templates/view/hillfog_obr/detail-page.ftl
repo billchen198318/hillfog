@@ -320,7 +320,7 @@ function pdcaProjectChartFillItems(pdcaItems) {
 			<div id="gantt_container_${pdca.oid}"></div>
 			
 			<br>
-			<button type="button" class="btn btn-info" title="view" onclick="viewDetail('${pdca.oid}')"><i class="icon fa fa-eye"></i>&nbsp;View detail</button>
+			<button type="button" class="btn btn-primary" title="view" onclick="viewDetail('${pdca.oid}')"><i class="icon fa fa-eye"></i>&nbsp;View detail</button>
 			
 		</#list>
 	</div>
