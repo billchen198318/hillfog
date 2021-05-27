@@ -19,7 +19,17 @@ public class HfPdcaAttc implements java.io.Serializable {
     private String uuserid;
     private Date udate;
     
-    @EntityPK(name = "oid", autoUUID = true)
+    private String showName; // PDCA detail檢視用
+    
+    public String getShowName() {
+		return showName;
+	}
+
+	public void setShowName(String showName) {
+		this.showName = showName;
+	}
+
+	@EntityPK(name = "oid", autoUUID = true)
     public String getOid() {
         return oid;
     }

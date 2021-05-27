@@ -409,6 +409,17 @@ function replaceAll(str, find, replace) {
 						
 						</td>
 					</tr>	
+					<@qifu.if test=" null != attcList && attcList.size > 0 ">
+					<tr>
+						<td colspan="3">
+						Attachment:<br>
+						<#list attcList as attc>
+						<span class="badge badge-light"><font size="3"><a href="javascript:commonDownloadFile('${attc.uploadOid}')">${attc.showName}</a></font></span>&nbsp;
+						</#list>
+						
+						</td>
+					</tr>					
+					</@qifu.if>
 					<tr>
 						<td colspan="3">
 						Description:<br>

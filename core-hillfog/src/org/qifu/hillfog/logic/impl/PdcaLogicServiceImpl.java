@@ -140,7 +140,7 @@ public class PdcaLogicServiceImpl extends BaseLogicService implements IPdcaLogic
 		DefaultResult<HfPdca> mResult = this.pdcaService.insert(pdca);
 		pdca = mResult.getValueEmptyThrowMessage();
 		this.createPdcaOwner(pdca, ownerList);
-		this.updateUploadType(uploadOidsList);
+		this.updateUploadType(pdca, uploadOidsList);
 		Map<String, HfPdcaItem> planItemMap = new HashMap<String, HfPdcaItem>();
 		Map<String, HfPdcaItem> doItemMap = new HashMap<String, HfPdcaItem>();
 		Map<String, HfPdcaItem> checkItemMap = new HashMap<String, HfPdcaItem>();
@@ -212,13 +212,30 @@ public class PdcaLogicServiceImpl extends BaseLogicService implements IPdcaLogic
 		}		
 	}
 	
-	private void updateUploadType(List<String> uploadOidsList) throws ServiceException, Exception {
+	private void deleteAttc(HfPdca pdca) throws ServiceException, Exception {
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("pdcaOid", pdca.getOid());
+		List<HfPdcaAttc> attcList = this.pdcaAttcService.selectListByParams(paramMap).getValue();
+		if (null == attcList || attcList.size() < 1) {
+			return;
+		}
+		for (HfPdcaAttc attc : attcList) {
+			this.pdcaAttcService.delete(attc);
+		}
+	}
+	
+	private void updateUploadType(HfPdca pdca, List<String> uploadOidsList) throws ServiceException, Exception {
+		this.deleteAttc(pdca);
 		for (String uploadOid : uploadOidsList) {
 			TbSysUpload upload = UploadSupportUtils.findUploadNoByteContent(uploadOid);
 			if (!UploadTypes.IS_TEMP.equals(upload.getType())) {
 				continue;
 			}
 			UploadSupportUtils.updateType(uploadOid, UploadTypes.IS_COMMON);
+			HfPdcaAttc attc = new HfPdcaAttc(); 
+			attc.setPdcaOid(pdca.getOid());
+			attc.setUploadOid(uploadOid);
+			this.pdcaAttcService.insert(attc);
 		}
 	}
 	

@@ -23,6 +23,7 @@ package org.qifu.hillfog.controller;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -48,12 +49,14 @@ import org.qifu.hillfog.entity.HfEmployee;
 import org.qifu.hillfog.entity.HfKpi;
 import org.qifu.hillfog.entity.HfObjective;
 import org.qifu.hillfog.entity.HfPdca;
+import org.qifu.hillfog.entity.HfPdcaAttc;
 import org.qifu.hillfog.logic.IPdcaLogicService;
 import org.qifu.hillfog.model.MeasureDataCode;
 import org.qifu.hillfog.model.PDCABase;
 import org.qifu.hillfog.service.IEmployeeService;
 import org.qifu.hillfog.service.IKpiService;
 import org.qifu.hillfog.service.IObjectiveService;
+import org.qifu.hillfog.service.IPdcaAttcService;
 import org.qifu.hillfog.service.IPdcaService;
 import org.qifu.hillfog.vo.PdcaItems;
 import org.qifu.util.SimpleUtils;
@@ -85,6 +88,9 @@ public class PdcaController extends BaseControllerSupport implements IPageNamesp
 	
 	@Autowired
 	IPdcaLogicService pdcaLogicService;
+	
+	@Autowired
+	IPdcaAttcService<HfPdcaAttc, String> pdcaAttcService;
 	
 	@Override
 	public String viewPageNamespace() {
@@ -138,6 +144,16 @@ public class PdcaController extends BaseControllerSupport implements IPageNamesp
 		HfPdca pdca = this.pdcaService.selectByPrimaryKey(oid).getValueEmptyThrowMessage();
 		pdca.setOwnerNameList( this.employeeService.findInputAutocompleteByPdcaOid(pdca.getOid()) );
 		mm.put("pdca", pdca);
+		
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("pdcaOid", pdca.getOid());
+		List<HfPdcaAttc> attcList = this.pdcaAttcService.selectListByParams(paramMap).getValue();
+		for (int i = 0; attcList != null && i < attcList.size(); i++) {
+			HfPdcaAttc attc = attcList.get(i);
+			attc.setShowName( UploadSupportUtils.findUploadNoByteContent(attc.getUploadOid()).getShowName() );
+		}
+		mm.put("attcList", attcList);
+		
 	}
 	
 	@ControllerMethodAuthority(check = true, programId = "HF_PROG004D0001Q")
