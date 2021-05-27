@@ -12,7 +12,11 @@
 
 <style type="text/css">
 
-
+pre {
+	text-align: left;
+    white-space: pre-line;
+}
+  
 </style>
 
 
@@ -378,12 +382,52 @@ function replaceAll(str, find, replace) {
 <@cfh.commonFormHeadContent /> 
 
 <div id="main-content" class="col-xs-12">
-
+		
+	<div class="row">
+		<div class="col-xs-12 col-md-12 col-lg-12">
+	
+			<table class="table">
+			 	<thead class="thead-dark">
+					<tr>
+						<th scope="col">PDCA Number</th>
+						<th scope="col">Name</th>
+						<th scope="col">Start/End date</th>			
+			    	</tr>
+				</thead>
+			  	<tbody>
+					<tr>
+						<td><@qifu.out value="pdca.pdcaNum" /></td>
+						<td><@qifu.out value="pdca.name" escapeHtml="Y" /></td>
+						<td><@qifu.out value="pdca.startDateShow" />&nbsp;~&nbsp;<@qifu.out value="pdca.endDateShow" /></td>
+					</tr>
+					<tr>
+						<td colspan="3">
+						Owner:<br>
+						<#list pdca.ownerNameList as owner>
+						<span class="badge badge-secondary"><font size="3">${owner}</font></span>&nbsp;
+						</#list>
+						
+						</td>
+					</tr>	
+					<tr>
+						<td colspan="3">
+						Description:<br>
+						<pre>
+						${pdca.description}
+						</pre>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+	    
+		</div>	
+	</div>	
+	
 	<br>
 
 	<div class="card border-warning">
 	  <div class="card-body">		
-				<h4><span class="badge badge-pill badge-warning">PDCA</span></h4>	
+				<h4><span class="badge badge-pill badge-warning">Task chart</span></h4>	
 				<div id="gantt_container_${pdca.oid}"></div>
 		</div>
 	</div>

@@ -136,6 +136,7 @@ public class PdcaController extends BaseControllerSupport implements IPageNamesp
 	
 	private void fetch(ModelMap mm, String oid) throws AuthorityException, ControllerException, ServiceException, Exception {
 		HfPdca pdca = this.pdcaService.selectByPrimaryKey(oid).getValueEmptyThrowMessage();
+		pdca.setOwnerNameList( this.employeeService.findInputAutocompleteByPdcaOid(pdca.getOid()) );
 		mm.put("pdca", pdca);
 	}
 	
