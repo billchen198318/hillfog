@@ -43,6 +43,7 @@ import org.qifu.base.service.BaseLogicService;
 import org.qifu.core.entity.TbSysUpload;
 import org.qifu.core.model.UploadTypes;
 import org.qifu.core.util.UploadSupportUtils;
+import org.qifu.hillfog.entity.HfEmployee;
 import org.qifu.hillfog.entity.HfKpi;
 import org.qifu.hillfog.entity.HfObjective;
 import org.qifu.hillfog.entity.HfPdca;
@@ -53,6 +54,7 @@ import org.qifu.hillfog.entity.HfPdcaItemOwner;
 import org.qifu.hillfog.entity.HfPdcaOwner;
 import org.qifu.hillfog.logic.IPdcaLogicService;
 import org.qifu.hillfog.model.PDCABase;
+import org.qifu.hillfog.service.IEmployeeService;
 import org.qifu.hillfog.service.IKpiService;
 import org.qifu.hillfog.service.IObjectiveService;
 import org.qifu.hillfog.service.IPdcaAttcService;
@@ -98,6 +100,9 @@ public class PdcaLogicServiceImpl extends BaseLogicService implements IPdcaLogic
 	
 	@Autowired
 	IPdcaCloseReqService<HfPdcaCloseReq, String> pdcaCloseReqService;
+	
+	@Autowired
+	IEmployeeService<HfEmployee, String> employeeService;	
 	
 	@ServiceMethodAuthority(type = ServiceMethodType.INSERT)
 	@Transactional(
@@ -245,11 +250,11 @@ public class PdcaLogicServiceImpl extends BaseLogicService implements IPdcaLogic
 			readOnly=false,
 			rollbackFor={RuntimeException.class, IOException.class, Exception.class} )		
 	@Override
-	public DefaultResult<PdcaItems> findPdcaItems(String pdcaOid) throws ServiceException, Exception {
+	public DefaultResult<PdcaItems> findPdcaItems(String pdcaOid, boolean fetchOwner) throws ServiceException, Exception {
 		if (this.isBlank(pdcaOid)) {
 			throw new ServiceException( BaseSystemMessage.parameterBlank() ); 
 		}
-		return this.findPdcaItems( this.pdcaService.selectByPrimaryKey(pdcaOid).getValueEmptyThrowMessage() );
+		return this.findPdcaItems( this.pdcaService.selectByPrimaryKey(pdcaOid).getValueEmptyThrowMessage(), fetchOwner );
 	}
 
 	@ServiceMethodAuthority(type = ServiceMethodType.SELECT)
@@ -258,7 +263,7 @@ public class PdcaLogicServiceImpl extends BaseLogicService implements IPdcaLogic
 			readOnly=false,
 			rollbackFor={RuntimeException.class, IOException.class, Exception.class} )	
 	@Override
-	public DefaultResult<PdcaItems> findPdcaItems(HfPdca pdca) throws ServiceException, Exception {
+	public DefaultResult<PdcaItems> findPdcaItems(HfPdca pdca, boolean fetchOwner) throws ServiceException, Exception {
 		if (null == pdca || this.isBlank(pdca.getOid()) || this.isBlank(pdca.getName())) {
 			throw new ServiceException( BaseSystemMessage.parameterBlank() ); 
 		}
@@ -276,6 +281,22 @@ public class PdcaLogicServiceImpl extends BaseLogicService implements IPdcaLogic
 		paramMap.put("type", PDCABase.TYPE_A);
 		pdcaItems.setActItemList( this.pdcaItemService.selectListByParams(paramMap, "START_DATE", SortType.ASC).getValue() );
 		paramMap.clear();
+		if (!fetchOwner) {
+			return result;
+		}
+		pdca.setOwnerNameList( this.employeeService.findInputAutocompleteByPdcaOid(pdca.getOid()) );
+		for (HfPdcaItem item : pdcaItems.getPlanItemList()) {
+			item.setOwnerNameList( this.employeeService.findInputAutocompleteByPdcaItemOid(pdca.getOid(), item.getOid()) );
+		}
+		for (HfPdcaItem item : pdcaItems.getDoItemList()) {
+			item.setOwnerNameList( this.employeeService.findInputAutocompleteByPdcaItemOid(pdca.getOid(), item.getOid()) );
+		}
+		for (HfPdcaItem item : pdcaItems.getCheckItemList()) {
+			item.setOwnerNameList( this.employeeService.findInputAutocompleteByPdcaItemOid(pdca.getOid(), item.getOid()) );
+		}
+		for (HfPdcaItem item : pdcaItems.getActItemList()) {
+			item.setOwnerNameList( this.employeeService.findInputAutocompleteByPdcaItemOid(pdca.getOid(), item.getOid()) );
+		}		
 		return result;
 	}	
 	

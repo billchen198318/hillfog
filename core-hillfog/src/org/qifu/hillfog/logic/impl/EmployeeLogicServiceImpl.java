@@ -48,6 +48,8 @@ import org.qifu.hillfog.entity.HfKpiEmpl;
 import org.qifu.hillfog.entity.HfMeasureData;
 import org.qifu.hillfog.entity.HfObjOwner;
 import org.qifu.hillfog.entity.HfOrgDept;
+import org.qifu.hillfog.entity.HfPdcaItemOwner;
+import org.qifu.hillfog.entity.HfPdcaOwner;
 import org.qifu.hillfog.logic.IEmployeeLogicService;
 import org.qifu.hillfog.service.IEmployeeOrgService;
 import org.qifu.hillfog.service.IEmployeeService;
@@ -55,6 +57,8 @@ import org.qifu.hillfog.service.IKpiEmplService;
 import org.qifu.hillfog.service.IMeasureDataService;
 import org.qifu.hillfog.service.IObjOwnerService;
 import org.qifu.hillfog.service.IOrgDeptService;
+import org.qifu.hillfog.service.IPdcaItemOwnerService;
+import org.qifu.hillfog.service.IPdcaOwnerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -95,6 +99,12 @@ public class EmployeeLogicServiceImpl extends BaseLogicService implements IEmplo
 	
     @Autowired
     IRoleLogicService roleLogicService;
+    
+    @Autowired
+    IPdcaOwnerService<HfPdcaOwner, String> pdcaOwnerService;
+    
+    @Autowired
+    IPdcaItemOwnerService<HfPdcaItemOwner, String> pdcaItemOwnerService;
     
 	@ServiceMethodAuthority(type = ServiceMethodType.INSERT)
 	@Transactional(
@@ -219,6 +229,11 @@ public class EmployeeLogicServiceImpl extends BaseLogicService implements IEmplo
 			throw new ServiceException( BaseSystemMessage.dataCannotDelete() );
 		}
 		if (this.objOwnerService.count(paramMap) > 0) {
+			throw new ServiceException( BaseSystemMessage.dataCannotDelete() );
+		}
+		paramMap.clear();
+		paramMap.put("ownerUid", account.getAccount());
+		if (this.pdcaOwnerService.count(paramMap) > 0 || this.pdcaItemOwnerService.count(paramMap) > 0) {
 			throw new ServiceException( BaseSystemMessage.dataCannotDelete() );
 		}
 		this.measureDataService.deleteByAccount(employee.getAccount());

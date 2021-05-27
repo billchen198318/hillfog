@@ -1,6 +1,7 @@
 package org.qifu.hillfog.entity;
 
 import java.util.Date;
+import java.util.List;
 
 import org.qifu.base.model.CreateDateField;
 import org.qifu.base.model.CreateUserField;
@@ -30,6 +31,16 @@ public class HfPdca implements java.io.Serializable {
     private Date cdate;
     private String uuserid;
     private Date udate;
+    
+    private List<String> ownerNameList; // PDCA報表顯示用
+    
+	public List<String> getOwnerNameList() {
+		return ownerNameList;
+	}
+
+	public void setOwnerNameList(List<String> ownerNameList) {
+		this.ownerNameList = ownerNameList;
+	}      
     
     public String getStartDateShow() {
     	return SimpleUtils.getStrYMD(this.startDate, "-");

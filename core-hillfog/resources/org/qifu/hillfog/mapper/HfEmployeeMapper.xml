@@ -211,4 +211,26 @@
 	ORDER BY M.EMP_ID ASC    
   </select>  
   
+  <!-- PDCA的負責人 -->
+  <select id="findPdcaOwner" parameterType="java.util.HashMap" resultMap="BaseResultMap">
+	SELECT M.*
+	FROM 
+	<include refid="org.qifu.hillfog.mapper.DB1Config.schema"/>hf_employee M, 
+	<include refid="org.qifu.hillfog.mapper.DB1Config.schema"/>hf_pdca_owner B
+	WHERE M.ACCOUNT = B.OWNER_UID
+	AND B.PDCA_OID = #{pdcaOid,jdbcType=VARCHAR}
+	ORDER BY M.EMP_ID ASC    
+  </select>  
+  
+  <!-- PDCA-ITEM的負責人 -->
+  <select id="findPdcaItemOwner" parameterType="java.util.HashMap" resultMap="BaseResultMap">
+	SELECT M.*
+	FROM 
+	<include refid="org.qifu.hillfog.mapper.DB1Config.schema"/>hf_employee M, 
+	<include refid="org.qifu.hillfog.mapper.DB1Config.schema"/>hf_pdca_item_owner B
+	WHERE M.ACCOUNT = B.OWNER_UID
+	AND B.PDCA_OID = #{pdcaOid,jdbcType=VARCHAR} AND B.ITEM_OID = #{itemOid,jdbcType=VARCHAR}
+	ORDER BY M.EMP_ID ASC     
+  </select>  
+    
 </mapper>

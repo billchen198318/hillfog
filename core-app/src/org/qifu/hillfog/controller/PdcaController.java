@@ -41,6 +41,7 @@ import org.qifu.base.model.ControllerMethodAuthority;
 import org.qifu.base.model.DefaultControllerJsonResultObj;
 import org.qifu.base.model.DefaultResult;
 import org.qifu.base.model.PleaseSelect;
+import org.qifu.base.model.YesNo;
 import org.qifu.core.entity.TbSysUpload;
 import org.qifu.core.util.UploadSupportUtils;
 import org.qifu.hillfog.entity.HfEmployee;
@@ -182,7 +183,8 @@ public class PdcaController extends BaseControllerSupport implements IPageNamesp
 			return result;
 		}
 		try {
-			DefaultResult<PdcaItems> itemResult = this.pdcaLogicService.findPdcaItems(oid);
+			String fetchOwner = request.getParameter("fetchOwner");
+			DefaultResult<PdcaItems> itemResult = this.pdcaLogicService.findPdcaItems(oid, YesNo.YES.equals(fetchOwner));
 			this.setDefaultResponseJsonResult(result, itemResult);
 		} catch (AuthorityException | ServiceException | ControllerException e) {
 			this.baseExceptionResult(result, e);	

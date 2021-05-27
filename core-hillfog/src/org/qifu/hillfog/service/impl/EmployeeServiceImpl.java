@@ -149,6 +149,101 @@ public class EmployeeServiceImpl extends BaseService<HfEmployee, String> impleme
 			dataList.add( this.getPagefieldValue(employee) );
 		}		
 		return dataList;
+	}
+
+	/**
+	 * PDCA 負責人
+	 * 
+	 * @param pdcaOid
+	 * @return
+	 * @throws ServiceException
+	 * @throws Exception
+	 */	
+	@Override
+	public DefaultResult<List<HfEmployee>> findPdcaOwner(String pdcaOid) throws ServiceException, Exception {
+		if (StringUtils.isBlank(pdcaOid)) {
+			throw new ServiceException( BaseSystemMessage.parameterBlank() );
+		}		
+		DefaultResult<List<HfEmployee>> result = new DefaultResult<List<HfEmployee>>();
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("pdcaOid", pdcaOid);
+		List<HfEmployee> dataList = this.employeeMapper.findPdcaOwner(paramMap);
+		if (dataList != null && dataList.size() > 0) {
+			result.setValue(dataList);
+		} else {
+			result.setMessage( BaseSystemMessage.searchNoData() );
+		}
+		return result;
+	}
+
+	/**
+	 * PDCA-item 負責人
+	 * 
+	 * @param pdcaOid
+	 * @param itemOid
+	 * @return
+	 * @throws ServiceException
+	 * @throws Exception
+	 */	
+	@Override
+	public DefaultResult<List<HfEmployee>> findPdcaItemOwner(String pdcaOid, String itemOid) throws ServiceException, Exception {
+		if (StringUtils.isBlank(pdcaOid) || StringUtils.isBlank(itemOid)) {
+			throw new ServiceException( BaseSystemMessage.parameterBlank() );
+		}		
+		DefaultResult<List<HfEmployee>> result = new DefaultResult<List<HfEmployee>>();
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("pdcaOid", pdcaOid);
+		paramMap.put("itemOid", itemOid);
+		List<HfEmployee> dataList = this.employeeMapper.findPdcaItemOwner(paramMap);
+		if (dataList != null && dataList.size() > 0) {
+			result.setValue(dataList);
+		} else {
+			result.setMessage( BaseSystemMessage.searchNoData() );
+		}
+		return result;
+	}
+
+	/**
+	 * PDCA 負責人
+	 * 
+	 * @param pdcaOid
+	 * @return
+	 * @throws ServiceException
+	 * @throws Exception
+	 */	
+	@Override
+	public List<String> findInputAutocompleteByPdcaOid(String pdcaOid) throws ServiceException, Exception {
+		DefaultResult<List<HfEmployee>> result = this.findPdcaOwner(pdcaOid);
+		List<String> dataList = new ArrayList<String>();
+		if (result.getValue() == null || result.getValue().size() < 1) {
+			return dataList;
+		}
+		for (HfEmployee employee : result.getValue()) {
+			dataList.add( this.getPagefieldValue(employee) );
+		}		
+		return dataList;
+	}
+
+	/**
+	 * PDCA-item 負責人
+	 * 
+	 * @param pdcaOid
+	 * @param itemOid
+	 * @return
+	 * @throws ServiceException
+	 * @throws Exception
+	 */	
+	@Override
+	public List<String> findInputAutocompleteByPdcaItemOid(String pdcaOid, String itemOid) throws ServiceException, Exception {
+		DefaultResult<List<HfEmployee>> result = this.findPdcaItemOwner(pdcaOid, itemOid);
+		List<String> dataList = new ArrayList<String>();
+		if (result.getValue() == null || result.getValue().size() < 1) {
+			return dataList;
+		}
+		for (HfEmployee employee : result.getValue()) {
+			dataList.add( this.getPagefieldValue(employee) );
+		}		
+		return dataList;
 	}	
 	
 }

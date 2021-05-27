@@ -31,7 +31,8 @@ function qeruyPdcaChart(pdcaOid) {
 	xhrSendParameter(
 			'./hfPdcaItemsForGanttDataJson', 
 			{
-				'oid'	:	pdcaOid
+				'oid'			:	pdcaOid,
+				'fetchOwner'	:	'Y'
 			}, 
 			function(data) {
 				if ( _qifu_success_flag != data.success ) {
@@ -40,6 +41,7 @@ function qeruyPdcaChart(pdcaOid) {
 				}
 				if ( _qifu_success_flag == data.success ) {
 					pdcaProjectTimeChart(data.value);
+					paintPdcaProjectTableContent( data.value );
 				}
 			}, 
 			function() {
@@ -163,11 +165,217 @@ function pdcaProjectChartFillItems(pdcaItems) {
 }
 // ----------------------------------------------------------------------------------
 
+
+
+// ----------------------------------------------------------------------------------
+// PDCA 項目 table顯示
+// ----------------------------------------------------------------------------------
+function paintPdcaProjectTableContent(data) {
+	var itemList = [];
+	var str = `
+		<table border="1" width="100%" cellspacing="1" cellpadding="1" style="border:1px #3B3B3B solid; border-radius: 5px; background: #3B3B3B;">
+		<tr>
+		<td width="25%" align="center" bgcolor="#454545"><b><font color="#FBFBFB">Plan</font></b></td>
+		<td width="25%" align="center" bgcolor="#454545"><b><font color="#FBFBFB">Do</font></b></td>
+		<td width="25%" align="center" bgcolor="#454545"><b><font color="#FBFBFB">Check</font></b></td>
+		<td width="25%" align="center" bgcolor="#454545"><b><font color="#FBFBFB">Action</font></b></td>
+		</tr>	
+	`;
+	//str += '<tbody>';
+	for (var p = 0; p < data.planItemList.length; p++) {
+		var pItem = data.planItemList[p];
+		var pChild = [];
+		itemList.push({
+			'type'	:	'P',
+			'data'	:	pItem,
+			'child'	:	pChild
+		});
+		for (var d = 0; d < data.doItemList.length; d++) {
+			var dItem = data.doItemList[d];
+			var dChild = [];
+			if (dItem.parentOid == pItem.oid) {
+				pChild.push({
+					'type'	:	'D',
+					'data'	:	dItem,
+					'child'	:	dChild
+				});
+			}
+			for (var c = 0; c < data.checkItemList.length; c++) {
+				var cItem = data.checkItemList[c];
+				var cChild = [];
+				if (cItem.parentOid == dItem.oid) {
+					dChild.push({
+						'type'	:	'C',
+						'data'	:	cItem,
+						'child'	:	cChild
+					});
+				}
+				for (var a = 0; a < data.actItemList.length; a++) {
+					var aItem = data.actItemList[a];
+					if (aItem.parentOid == cItem.oid) {
+						cChild.push({
+							'type'	:	'A',
+							'data'	:	aItem,
+							'child'	:	[]
+						});
+					}
+				}
+			}
+		}
+	}
+	
+	// 沒有child的, 組出空白的child
+	for (var p = 0; p < itemList.length; p++) {
+		var pItem = itemList[p];
+		if (pItem.child.length == 0) {
+			pItem.child.push({
+				'type'	:	'D',
+				'data'	:	{ 'name' : '' },
+				'child'	:	[]				
+			});
+		}
+		for (var d = 0; d < pItem.child.length; d++) {
+			var dItem = pItem.child[d];
+			if (dItem.child.length == 0) {
+				dItem.child.push({
+					'type'	:	'C',
+					'data'	:	{ 'name' : '' },
+					'child'	:	[]					
+				});
+			}
+			for (var c = 0; c < dItem.child.length; c++) {
+				var cItem = dItem.child[c];
+				if (cItem.child.length == 0) {
+					cItem.child.push({
+						'type'	:	'A',
+						'data'	:	{ 'name' : '' },
+						'child'	:	[]							
+					});
+				}
+			}
+		}
+	}
+	
+	
+	//console.log('itemList = '+JSON.stringify(itemList));
+	
+	for (var p = 0; p < itemList.length; p++) {
+		var pRowspan = 0;
+		var pItem = itemList[p];
+		var dItem = null;
+		var cItem = null;
+		var aItem = null;		
+		// 算出P的 rowspan
+		for (var d = 0; d < pItem.child.length; d++) {
+			dItem = pItem.child[d];
+			if (dItem.child.length > 0) {
+				pRowspan += dItem.child.length;
+			} else {
+				pRowspan += 1;
+			}
+		}
+		if (pRowspan == 0) {
+			pRowspan = 1;
+		}
+		
+		/* --------------------------------------------------------------------------------- */
+		// 組tr, td body
+		dItem = null;
+		cItem = null;
+		aItem = null;
+		
+		str += '<tr>';
+		if ('' == pItem.data.name) { // 空白資料
+			str += '<td rowspan="' + pRowspan + '" bgcolor="#F2F2F2">' + pItem.data.name + '</td>';
+		} else {
+			str += '<td rowspan="' + pRowspan + '" bgcolor="#ffffff">' + paintPdcaProjectTableItemConent(pItem.data) + '</td>';
+		}
+		for (var d = 0; d < pItem.child.length; d++) {
+			if (d > 0) {
+				str += '<tr>';
+			}
+			dItem = pItem.child[d];
+			cItem = null;
+			aItem = null;
+			var dRowspan = dItem.child.length;
+			if (dRowspan < 1) {
+				dRowspan = 1;
+			}
+			if ('' == dItem.data.name) { // 空白資料
+				str += '<td rowspan="' + dRowspan + '" bgcolor="#F2F2F2">' + dItem.data.name + '</td>';
+			} else {
+				str += '<td rowspan="' + dRowspan + '" bgcolor="#ffffff">' + paintPdcaProjectTableItemConent(dItem.data) + '</td>';
+			}
+			for (var c = 0; c < dItem.child.length; c++) {
+				if (c > 0) {
+					str += '<tr>';
+				}				
+				cItem = dItem.child[c];
+				aItem = null;
+				var cRowspan = cItem.child.length;
+				if (cRowspan < 1) {
+					cRowspan = 1;
+				}
+				if ('' == cItem.data.name) { // 空白資料
+					str += '<td rowspan="' + cRowspan + '" bgcolor="#F2F2F2">' + cItem.data.name + '</td>';
+				} else {
+					str += '<td rowspan="' + cRowspan + '" bgcolor="#ffffff">' + paintPdcaProjectTableItemConent(cItem.data) + '</td>';
+				}
+				for (var a = 0; a < cItem.child.length; a++) {
+					if (a > 0) {
+						str += '<tr>';
+					}
+					aItem = cItem.child[a];
+					if ('' == aItem.data.name) { // 空白資料
+						str += '<td bgcolor="#F2F2F2">' + aItem.data.name + '</td>';
+					} else {
+						str += '<td bgcolor="#ffffff">' + paintPdcaProjectTableItemConent(aItem.data) + '</td>';
+					}
+					str += '</tr>';
+				}				
+			}
+		}
+		if (p <= 1) {
+			str += '</tr>';
+		}
+		/* --------------------------------------------------------------------------------- */
+		
+	}
+	
+	//str += '</tbody>';
+	str += '</table>';
+	$("#tableContent").html( str );
+	
+}
+function paintPdcaProjectTableItemConent(itemData) {
+	var str = '';
+	str += '<span class="badge badge-primary"><H6>' + itemData.name + '</h6></span>';
+	str += '<br/>';
+	str += '<b>日期:</b>&nbsp;<span class="badge badge-info"><font size="2">' + itemData.startDateShow + ' ~ ' + itemData.endDateShow + '</font></span>';
+	str += '<br/>';
+	str += '<b>負責人:</b><br/>';
+	for (var i = 0; itemData.ownerNameList != null && i < itemData.ownerNameList.length; i++) {
+		str += '<span class="badge badge-secondary"><font size="2">' + itemData.ownerNameList[i] + '</font></span><br/>';
+	}
+	str += '<b>說明:</b>&nbsp;';
+	str += '<br/>';
+	str += replaceAll(itemData.description, '\n', '<br/>');
+	return str;
+}
+// ----------------------------------------------------------------------------------
+
+function replaceAll(str, find, replace) {
+    return str.replace(new RegExp(find, 'g'), replace);
+}
+
 </script>
 
 </head>
 
 <body>
+
+<#import "../common-f-head.ftl" as cfh />
+<@cfh.commonFormHeadContent /> 
 
 <div id="main-content" class="col-xs-12">
 
@@ -180,6 +388,11 @@ function pdcaProjectChartFillItems(pdcaItems) {
 		</div>
 	</div>
 	
+	
+	<br>
+	
+	<div id="tableContent"></div>
+		
 </div>
 
 <br/>

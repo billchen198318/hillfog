@@ -164,7 +164,7 @@ public class KpiBaseReportController extends BaseControllerSupport implements IP
 				continue;
 			}
 			for (HfPdca pdca : pdcaList) {
-				data.getPdcaItems().add( this.pdcaLogicService.findPdcaItems(pdca).getValue() );
+				data.getPdcaItems().add( this.pdcaLogicService.findPdcaItems(pdca, false).getValue() );
 			}
 		}
 	}

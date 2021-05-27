@@ -47,4 +47,20 @@ public interface HfEmployeeMapper extends IBaseMapper<HfEmployee, String> {
 	 */
 	public List<HfEmployee> findObjectiveOwner(Map<String, Object> paramMap);
 	
+	/**
+	 * PDCA 負責人
+	 * 
+	 * @param paramMap
+	 * @return
+	 */
+	public List<HfEmployee> findPdcaOwner(Map<String, Object> paramMap);
+	
+	/**
+	 * PDCA-item 負責人
+	 * 
+	 * @param paramMap
+	 * @return
+	 */
+	public List<HfEmployee> findPdcaItemOwner(Map<String, Object> paramMap);
+	
 }

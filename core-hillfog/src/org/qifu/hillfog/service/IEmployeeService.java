@@ -62,4 +62,46 @@ public interface IEmployeeService<T, E> extends IBaseService<HfEmployee, String>
 	 */
 	public List<String> findInputAutocompleteByObjectiveOid(String oid) throws ServiceException, Exception;
 	
+	/**
+	 * PDCA 負責人
+	 * 
+	 * @param pdcaOid
+	 * @return
+	 * @throws ServiceException
+	 * @throws Exception
+	 */
+	public DefaultResult<List<HfEmployee>> findPdcaOwner(String pdcaOid) throws ServiceException, Exception;
+	
+	/**
+	 * PDCA-item 負責人
+	 * 
+	 * @param pdcaOid
+	 * @param itemOid
+	 * @return
+	 * @throws ServiceException
+	 * @throws Exception
+	 */
+	public DefaultResult<List<HfEmployee>> findPdcaItemOwner(String pdcaOid, String itemOid) throws ServiceException, Exception;
+	
+	/**
+	 * PDCA 負責人
+	 * 
+	 * @param pdcaOid
+	 * @return
+	 * @throws ServiceException
+	 * @throws Exception
+	 */
+	public List<String> findInputAutocompleteByPdcaOid(String pdcaOid) throws ServiceException, Exception;
+	
+	/**
+	 * PDCA-item 負責人
+	 * 
+	 * @param pdcaOid
+	 * @param itemOid
+	 * @return
+	 * @throws ServiceException
+	 * @throws Exception
+	 */
+	public List<String> findInputAutocompleteByPdcaItemOid(String pdcaOid, String itemOid) throws ServiceException, Exception;
+	
 }
