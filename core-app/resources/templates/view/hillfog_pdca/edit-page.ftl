@@ -194,6 +194,7 @@ function btnUpdate() {
 				}
 				parent.toastrInfo( data.message );
 				btnClear();
+				parent.addTab('HF_PROG004D0001V', parent.getProgUrlForOid('HF_PROG004D0001V', data.value.oid));
 			}, 
 			function() {
 				window.location = parent.getProgUrlForOid('HF_PROG004D0001E', '${pdca.oid}');
