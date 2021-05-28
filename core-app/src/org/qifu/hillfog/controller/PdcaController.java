@@ -126,9 +126,9 @@ public class PdcaController extends BaseControllerSupport implements IPageNamesp
 		mm.put("pdcaNum", this.pdcaService.selectMaxPdcaNum(head));
 	}
 	
-	private void fetchForCreatePage(ModelMap mm, String oid, String masterType) throws AuthorityException, ControllerException, ServiceException, Exception {
+	private void fetchForMasterSource(ModelMap mm, String oid, String masterType) throws AuthorityException, ControllerException, ServiceException, Exception {
 		mm.put("masterType", masterType);
-		mm.put("oid", oid);
+		mm.put("masterOid", oid);
 		if (PDCABase.SOURCE_MASTER_KPI_TYPE.equals(masterType)) {
 			HfKpi kpi = kpiService.selectByPrimaryKey(oid).getValueEmptyThrowMessage();
 			mm.put("kpi", kpi);
@@ -217,7 +217,7 @@ public class PdcaController extends BaseControllerSupport implements IPageNamesp
 		String viewName = this.viewCreatePage();
 		this.getDefaultModelMap(mm, this.currentMethodAuthority());
 		try {
-			this.fetchForCreatePage(mm, sourceMasterOid, masterType);
+			this.fetchForMasterSource(mm, sourceMasterOid, masterType);
 			this.init("createPage", mm);
 		} catch (AuthorityException e) {
 			viewName = this.getAuthorityExceptionPage(e, mm);
@@ -369,6 +369,8 @@ public class PdcaController extends BaseControllerSupport implements IPageNamesp
 		this.getDefaultModelMap(mm, this.currentMethodAuthority());
 		try {
 			this.fetch(mm, oid);
+			HfPdca pdca = (HfPdca) mm.get("pdca");
+			this.fetchForMasterSource(mm, pdca.getMstOid(), pdca.getMstType());
 			this.init("editPage", mm);
 		} catch (AuthorityException e) {
 			viewName = this.getAuthorityExceptionPage(e, mm);
@@ -378,6 +380,24 @@ public class PdcaController extends BaseControllerSupport implements IPageNamesp
 			viewName = this.getExceptionPage(e, mm);
 		}
 		return viewName;
+	}		
+	
+	@ControllerMethodAuthority(check = true, programId = "HF_PROG004D0001E")
+	@RequestMapping(value = "/hfPdcaQueryEditDataJson", produces = MediaType.APPLICATION_JSON_VALUE)		
+	public @ResponseBody DefaultControllerJsonResultObj<PdcaItems> doQueryEditData(HttpServletRequest request, HfPdca pdca) {
+		DefaultControllerJsonResultObj<PdcaItems> result = this.getDefaultJsonResult(this.currentMethodAuthority());
+		if (!this.isAuthorizeAndLoginFromControllerJsonResult(result)) {
+			return result;
+		}
+		try {
+			DefaultResult<PdcaItems> itemResult = this.pdcaLogicService.findPdcaItems(pdca.getOid(), true);
+			this.setDefaultResponseJsonResult(result, itemResult);
+		} catch (AuthorityException | ServiceException | ControllerException e) {
+			this.baseExceptionResult(result, e);	
+		} catch (Exception e) {
+			this.exceptionResult(result, e);
+		}
+		return result;		
 	}		
 	
 	@ControllerMethodAuthority(check = true, programId = "HF_PROG004D0001V")

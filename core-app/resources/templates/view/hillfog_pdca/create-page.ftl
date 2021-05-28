@@ -151,7 +151,7 @@ function btnSave() {
 			'./hfPdcaSaveJson', 
 			{ 
 				'masterType'		:	masterType,
-				'masterOid'			:	'${oid}',
+				'masterOid'			:	'${masterOid}',
 				'name' 				:	$("#name").val(),
 				'startDate'			:	$("#startDate").val(),
 				'endDate'			:	$("#endDate").val(),
@@ -178,7 +178,7 @@ function btnSave() {
 				btnClear();
 			}, 
 			function() {
-				window.location = parent.getProgUrlForOid('HF_PROG004D0001A', '${oid}') + '&masterType=${masterType}';
+				window.location = parent.getProgUrlForOid('HF_PROG004D0001A', '${masterOid}') + '&masterType=${masterType}';
 			},
 			_qifu_defaultSelfPleaseWaitShow
 	);	
