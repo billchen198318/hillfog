@@ -315,6 +315,113 @@ public class PdcaLogicServiceImpl extends BaseLogicService implements IPdcaLogic
 			item.setOwnerNameList( this.employeeService.findInputAutocompleteByPdcaItemOid(pdca.getOid(), item.getOid()) );
 		}		
 		return result;
+	}
+
+	@ServiceMethodAuthority(type = ServiceMethodType.UPDATE)
+	@Transactional(
+			propagation=Propagation.REQUIRED, 
+			readOnly=false,
+			rollbackFor={RuntimeException.class, IOException.class, Exception.class} )	
+	@Override
+	public DefaultResult<HfPdca> update(HfPdca pdca, List<String> ownerList, List<String> uploadOidsList, 
+			List<Map<String, Object>> planMapList, List<Map<String, Object>> doMapList, List<Map<String, Object>> checkMapList, List<Map<String, Object>> actMapList) throws ServiceException, Exception {
+		if (null == pdca || StringUtils.isBlank(pdca.getOid()) || null == ownerList || null == uploadOidsList
+				|| null == planMapList || null == doMapList || null == checkMapList || null == actMapList) {
+			throw new ServiceException( BaseSystemMessage.objectNull() );
+		}
+		if (ownerList.size() < 1) {
+			throw new ServiceException("Need add PDCA owner!");
+		}
+		if (planMapList.size() < 1) {
+			throw new ServiceException("Need add Plan result!");
+		}
+		
+		HfPdca checkPdca = this.pdcaService.selectByPrimaryKey(pdca.getOid()).getValueEmptyThrowMessage();
+		if (checkPdca.getConfirmDate() != null || !this.isBlank(checkPdca.getConfirmUid())) {
+			throw new ServiceException("Cannot update, this PDCA project status is confirm!");
+		}
+		
+		pdca.setMstOid(checkPdca.getMstOid());
+		pdca.setMstType(checkPdca.getMstType());
+		HfPdca checkUkPdca = this.pdcaService.selectByUniqueKey(checkPdca).getValue(); 
+		if (checkUkPdca != null) {
+			if (!pdca.getOid().equals(checkUkPdca.getOid())) {
+				throw new ServiceException("Please change name, has other PDCA project use.");
+			}
+		}
+		
+		this.setStringValueMaxLength(pdca, "description", MAX_LENGTH);
+		pdca.setStartDate( this.defaultString(pdca.getStartDate()).replaceAll("-", "").replaceAll("/", "") );
+		pdca.setEndDate( this.defaultString(pdca.getEndDate()).replaceAll("-", "").replaceAll("/", "") );
+		DefaultResult<HfPdca> mResult = this.pdcaService.update(pdca);
+		pdca = mResult.getValueEmptyThrowMessage();
+		this.deltePdcaOwner(pdca);
+		this.createPdcaOwner(pdca, ownerList);
+		// 取出之前的attc
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("pdcaOid", pdca.getOid());
+		List<HfPdcaAttc> beforeAttcList = this.pdcaAttcService.selectListByParams(paramMap).getValue();
+		this.updateUploadType(pdca, uploadOidsList);
+		this.updateNoNeedAttcUploadTypeForBeforeData(uploadOidsList, beforeAttcList);
+		this.deletePdcaItemAndItemOwner(pdca);
+		Map<String, HfPdcaItem> planItemMap = new HashMap<String, HfPdcaItem>();
+		Map<String, HfPdcaItem> doItemMap = new HashMap<String, HfPdcaItem>();
+		Map<String, HfPdcaItem> checkItemMap = new HashMap<String, HfPdcaItem>();
+		this.createPdcaItem(pdca, PDCABase.TYPE_P, planMapList, null, planItemMap);
+		this.createPdcaItem(pdca, PDCABase.TYPE_D, doMapList, planItemMap, doItemMap);
+		this.createPdcaItem(pdca, PDCABase.TYPE_C, checkMapList, doItemMap, checkItemMap);
+		this.createPdcaItem(pdca, PDCABase.TYPE_A, actMapList, checkItemMap, null);
+		planItemMap.clear();
+		doItemMap.clear();
+		checkItemMap.clear();
+		return mResult;
 	}	
+	
+	private void deletePdcaItemAndItemOwner(HfPdca pdca) throws ServiceException, Exception {
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("pdcaOid", pdca.getOid());
+		List<HfPdcaItem> itemList = this.pdcaItemService.selectListByParams(paramMap).getValue();
+		for (HfPdcaItem item : itemList) {
+			this.pdcaItemService.delete(item);
+		}
+		List<HfPdcaItemOwner> itemOwnerList = this.pdcaItemOwnerService.selectListByParams(paramMap).getValue();
+		for (HfPdcaItemOwner itemOwner : itemOwnerList) {
+			this.pdcaItemOwnerService.delete(itemOwner);
+		}
+	}
+	
+	/**
+	 * 更新時, 也許之前上傳的檔案不需要了, 此時將不需要保留的 TB_SYS_UPLOAD 狀態改為 tmp
+	 * 
+	 * @param uploadOidsList
+	 * @param beforeAttcList
+	 * @throws ServiceException
+	 * @throws Exception
+	 */
+	private void updateNoNeedAttcUploadTypeForBeforeData(List<String> uploadOidsList, List<HfPdcaAttc> beforeAttcList) throws ServiceException, Exception {
+		if (null == uploadOidsList || uploadOidsList.size() < 1 || null == beforeAttcList || beforeAttcList.size() < 1) {
+			return;
+		}
+		for (HfPdcaAttc attc : beforeAttcList) {
+			boolean found = false;
+			for (String currentUploadOid : uploadOidsList) {
+				if (currentUploadOid.equals(attc.getUploadOid())) {
+					found = true;
+				}
+			}
+			if (!found) {
+				UploadSupportUtils.updateType(attc.getUploadOid(), UploadTypes.IS_TEMP);
+			}
+		}
+	}
+	
+	private void deltePdcaOwner(HfPdca pdca) throws ServiceException, Exception {
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("pdcaOid", pdca.getOid());
+		List<HfPdcaOwner> ownerList = this.pdcaOwnerService.selectListByParams(paramMap).getValue();
+		for (HfPdcaOwner owner : ownerList) {
+			this.pdcaOwnerService.delete(owner);
+		}
+	}
 	
 }

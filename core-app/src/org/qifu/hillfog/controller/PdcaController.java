@@ -345,6 +345,42 @@ public class PdcaController extends BaseControllerSupport implements IPageNamesp
 		this.setDefaultResponseJsonResult(result, iResult);
 	}
 	
+	private void update(DefaultControllerJsonResultObj<HfPdca> result, HttpServletRequest request, HfPdca pdca) throws AuthorityException, ControllerException, ServiceException, Exception {
+		this.checkFields(result, request, pdca);
+		
+		String owner = StringUtils.defaultString( request.getParameter("owner") );
+		Map<String, List<Map<String, Object>>> ownerJsonData = (Map<String, List<Map<String, Object>>>) new ObjectMapper().readValue( owner, LinkedHashMap.class );
+		List ownerList = ownerJsonData.get("items");
+		
+		String uploadAttc = StringUtils.defaultString( request.getParameter("uploadAttc") );
+		Map<String, List<Map<String, Object>>> uploadAttcJsonData = (Map<String, List<Map<String, Object>>>) new ObjectMapper().readValue( uploadAttc, LinkedHashMap.class );
+		List uploadAttcJsonList = uploadAttcJsonData.get("items");		
+		List<String> uploadOidsList = new ArrayList<String>();
+		for (int i = 0 ; uploadAttcJsonList != null && i < uploadAttcJsonList.size(); i++) {
+			Map<String, Object> dataMap = (Map<String, Object>) uploadAttcJsonList.get(i);
+			uploadOidsList.add( (String) dataMap.get("oid") );
+		}
+		
+		String plan = StringUtils.defaultString( request.getParameter("planList") );
+		Map<String, List<Map<String, Object>>> planJsonData = (Map<String, List<Map<String, Object>>>) new ObjectMapper().readValue( plan, LinkedHashMap.class );
+		List planMapList = planJsonData.get("items");	
+		
+		String doStr = StringUtils.defaultString( request.getParameter("doList") );
+		Map<String, List<Map<String, Object>>> doJsonData = (Map<String, List<Map<String, Object>>>) new ObjectMapper().readValue( doStr, LinkedHashMap.class );
+		List doMapList = doJsonData.get("items");			
+		
+		String check = StringUtils.defaultString( request.getParameter("checkList") );
+		Map<String, List<Map<String, Object>>> checkJsonData = (Map<String, List<Map<String, Object>>>) new ObjectMapper().readValue( check, LinkedHashMap.class );
+		List checkMapList = checkJsonData.get("items");			
+		
+		String act = StringUtils.defaultString( request.getParameter("actList") );
+		Map<String, List<Map<String, Object>>> actJsonData = (Map<String, List<Map<String, Object>>>) new ObjectMapper().readValue( act, LinkedHashMap.class );
+		List actMapList = actJsonData.get("items");	
+		
+		DefaultResult<HfPdca> uResult = this.pdcaLogicService.update(pdca, ownerList, uploadOidsList, planMapList, doMapList, checkMapList, actMapList);
+		this.setDefaultResponseJsonResult(result, uResult);
+	}	
+	
 	@ControllerMethodAuthority(check = true, programId = "HF_PROG004D0001A")
 	@RequestMapping(value = "/hfPdcaSaveJson", produces = MediaType.APPLICATION_JSON_VALUE)		
 	public @ResponseBody DefaultControllerJsonResultObj<HfPdca> doSave(HttpServletRequest request, HfPdca pdca) {
@@ -399,6 +435,23 @@ public class PdcaController extends BaseControllerSupport implements IPageNamesp
 		}
 		return result;		
 	}		
+	
+	@ControllerMethodAuthority(check = true, programId = "HF_PROG004D0001E")
+	@RequestMapping(value = "/hfPdcaUpdateJson", produces = MediaType.APPLICATION_JSON_VALUE)		
+	public @ResponseBody DefaultControllerJsonResultObj<HfPdca> doUpdate(HttpServletRequest request, HfPdca pdca) {
+		DefaultControllerJsonResultObj<HfPdca> result = this.getDefaultJsonResult(this.currentMethodAuthority());
+		if (!this.isAuthorizeAndLoginFromControllerJsonResult(result)) {
+			return result;
+		}
+		try {
+			this.update(result, request, pdca);
+		} catch (AuthorityException | ServiceException | ControllerException e) {
+			this.baseExceptionResult(result, e);	
+		} catch (Exception e) {
+			this.exceptionResult(result, e);
+		}
+		return result;		
+	}	
 	
 	@ControllerMethodAuthority(check = true, programId = "HF_PROG004D0001V")
 	@RequestMapping("/hfPdcaViewDetailPage")
