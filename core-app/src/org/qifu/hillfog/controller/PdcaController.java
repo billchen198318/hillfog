@@ -154,6 +154,7 @@ public class PdcaController extends BaseControllerSupport implements IPageNamesp
 		}
 		mm.put("attcList", attcList);
 		
+		this.fetchForMasterSource(mm, pdca.getMstOid(), pdca.getMstType());				
 	}
 	
 	@ControllerMethodAuthority(check = true, programId = "HF_PROG004D0001Q")
@@ -405,8 +406,6 @@ public class PdcaController extends BaseControllerSupport implements IPageNamesp
 		this.getDefaultModelMap(mm, this.currentMethodAuthority());
 		try {
 			this.fetch(mm, oid);
-			HfPdca pdca = (HfPdca) mm.get("pdca");
-			this.fetchForMasterSource(mm, pdca.getMstOid(), pdca.getMstType());
 			this.init("editPage", mm);
 		} catch (AuthorityException e) {
 			viewName = this.getAuthorityExceptionPage(e, mm);
