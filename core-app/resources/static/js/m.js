@@ -121,7 +121,7 @@ function closeTab(tabId) {
 	var currIframe = $("#" + tabId).find('iframe');
 	if (currIframe.length > 0) {
 		var currIframeWin = currIframe[currIframe.length-1].contentWindow;
-		if (!(currIframeWin === undefined) && !(currIframeWin.vm === undefined) && !(currIframeWin.appUnmount === undefined)) {
+		if (!(currIframeWin === undefined) && !(currIframeWin.appUnmount === undefined)) {
 			currIframeWin.appUnmount();
 		}
 	}
