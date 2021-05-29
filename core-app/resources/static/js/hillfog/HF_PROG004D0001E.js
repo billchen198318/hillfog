@@ -112,6 +112,7 @@ function setEditData(data) {
 	}			
 }
 function clearEditPage() {
+	appUnmount();
 	window.location = parent.getProgUrlForOid('HF_PROG004D0001E', pdcaOid);
 }
 /* ----------------------------------------------------------------------- */
@@ -319,7 +320,10 @@ function clearAllList() {
 	this.actList = [];
 }
 
-
+function appUnmount() {
+	app.unmount();
+	console.log('HF_PROG003D0001E appUnmount');
+}
 
 const app = Vue.createApp(PageEventHandling);
 var vm = app.mount('#main-content');

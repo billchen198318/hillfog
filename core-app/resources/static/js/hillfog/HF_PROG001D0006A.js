@@ -53,5 +53,10 @@ function clearInitiativeItem() {
 	this.initiativesList = [];
 }
 
+function appUnmount() {
+	app.unmount();
+	console.log('HF_PROG001D0006A appUnmount');
+}
+
 const app = Vue.createApp(PageEventHandling);
 var vm = app.mount('#main-content');

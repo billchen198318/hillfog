@@ -62,7 +62,13 @@ function queryObjectiveList() {
 }
 
 function viewDetailItem(oid) {
+	appUnmount();
 	window.location = parent.getProgUrlForOid('HF_PROG003D0001Q01D', oid);
+}
+
+function appUnmount() {
+	app.unmount();
+	console.log('HF_PROG003D0001Q appUnmount');
 }
 
 const app = Vue.createApp(PageEventHandling);

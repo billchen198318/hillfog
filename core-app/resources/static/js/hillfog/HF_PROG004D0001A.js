@@ -244,7 +244,10 @@ function clearAllList() {
 	this.actList = [];
 }
 
-
+function appUnmount() {
+	app.unmount();
+	console.log('HF_PROG003D0001A appUnmount');
+}
 
 const app = Vue.createApp(PageEventHandling);
 var vm = app.mount('#main-content');

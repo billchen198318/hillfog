@@ -179,6 +179,7 @@ function btnSave() {
 				parent.addTab('HF_PROG004D0001V', parent.getProgUrlForOid('HF_PROG004D0001V', data.value.oid));
 			}, 
 			function() {
+				appUnmount();
 				window.location = parent.getProgUrlForOid('HF_PROG004D0001A', '${masterOid}') + '&masterType=${masterType}';
 			},
 			_qifu_defaultSelfPleaseWaitShow

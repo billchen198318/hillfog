@@ -109,6 +109,7 @@ $( document ).ready(function() {
 });
 
 function btnObjectiveList() {
+	appUnmount();
 	window.location = parent.getProgUrl('HF_PROG001D0006Q');
 }
 
@@ -155,6 +156,7 @@ function btnSave() {
 }
 
 function btnClear() {
+	appUnmount();
 	window.location = parent.getProgUrlForOid('HF_PROG001D0006E', _oid);
 }
 

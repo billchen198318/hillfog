@@ -115,6 +115,18 @@ function closeTab(tab_li, tabId) {
 
 function closeTab(tabId) {
 	
+	// --------------------------------------------------------------------------
+	// 2021-05-29 add
+	// --------------------------------------------------------------------------
+	var currIframe = $("#" + tabId).find('iframe');
+	if (currIframe.length > 0) {
+		var currIframeWin = currIframe[currIframe.length-1].contentWindow;
+		if (!(currIframeWin === undefined) && !(currIframeWin.vm == undefined) && !(currIframeWin.appUnmount == undefined)) {
+			currIframeWin.appUnmount();
+		}
+	}
+	// --------------------------------------------------------------------------
+	
 	$("#_tab_" + tabId).remove();
 	$("#" + tabId).remove();
 	

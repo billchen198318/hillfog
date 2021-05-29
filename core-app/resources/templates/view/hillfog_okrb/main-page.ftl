@@ -96,7 +96,9 @@ $( document ).ready(function() {
 });
 
 function btnAdd() {
-	window.location = parent.getProgUrl('HF_PROG001D0006A');
+	appUnmount(function(){
+		window.location = parent.getProgUrl('HF_PROG001D0006A');
+	});
 }
 
 </script>

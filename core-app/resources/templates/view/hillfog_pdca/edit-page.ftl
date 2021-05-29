@@ -197,6 +197,7 @@ function btnUpdate() {
 				parent.addTab('HF_PROG004D0001V', parent.getProgUrlForOid('HF_PROG004D0001V', data.value.oid));
 			}, 
 			function() {
+				appUnmount();
 				window.location = parent.getProgUrlForOid('HF_PROG004D0001E', '${pdca.oid}');
 			},
 			_qifu_defaultSelfPleaseWaitShow
@@ -204,6 +205,7 @@ function btnUpdate() {
 }
 
 function btnClear() {
+	appUnmount();
 	window.location = parent.getProgUrlForOid('HF_PROG004D0001E', '${pdca.oid}');
 }
 

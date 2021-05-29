@@ -44,6 +44,7 @@ function setObjectiveAndInitiatives(data) {
 }
 
 function clearEditPage() {
+	appUnmount();
 	window.location = parent.getProgUrlForOid('HF_PROG001D0006E', _oid);
 }
 
@@ -80,5 +81,10 @@ function clearInitiativeItem() {
 	this.initiativesList = [];
 }
 
+function appUnmount() {
+	app.unmount();
+	console.log('HF_PROG001D0006E appUnmount');
+}
+
 const app = Vue.createApp(PageEventHandling);
-const vm = app.mount('#main-content');
+var vm = app.mount('#main-content');

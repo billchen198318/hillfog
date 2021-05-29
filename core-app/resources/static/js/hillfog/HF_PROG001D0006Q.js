@@ -47,10 +47,12 @@ function deleteObjectiveItem(oid) {
 }
 
 function enterMeasure4ObjectiveItem(oid) {
+	appUnmount();
 	window.location = parent.getProgUrlForOid('HF_PROG001D0006M', oid);
 }
 
 function editObjectiveItem(oid)	{
+	appUnmount();
 	window.location = parent.getProgUrlForOid('HF_PROG001D0006E', oid);
 }
 
@@ -88,6 +90,11 @@ function queryObjectiveList() {
 		this.clearObjectives,
 		_qifu_defaultSelfPleaseWaitShow
 	);		
+}
+
+function appUnmount() {
+	app.unmount();
+	console.log('HF_PROG001D0006Q appUnmount');
 }
 
 const app = Vue.createApp(PageEventHandling);

@@ -101,6 +101,7 @@ $( document ).ready(function() {
 });
 
 function btnObjectiveList() {
+	appUnmount();
 	window.location = parent.getProgUrl('HF_PROG001D0006Q');
 }
 
@@ -140,6 +141,7 @@ function btnSave() {
 				btnClear();
 			}, 
 			function() {
+				appUnmount();
 				window.location = parent.getProgUrl('HF_PROG001D0006A');
 			},
 			_qifu_defaultSelfPleaseWaitShow
