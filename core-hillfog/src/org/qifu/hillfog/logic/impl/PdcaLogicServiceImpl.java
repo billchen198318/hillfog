@@ -220,12 +220,22 @@ public class PdcaLogicServiceImpl extends BaseLogicService implements IPdcaLogic
 			return;
 		}
 		for (HfPdcaAttc attc : attcList) {
+			UploadSupportUtils.updateType(attc.getUploadOid(), UploadTypes.IS_TEMP);
+		}
+		for (HfPdcaAttc attc : attcList) {
 			this.pdcaAttcService.delete(attc);
 		}
 	}
 	
 	private void updateUploadType(HfPdca pdca, List<String> uploadOidsList) throws ServiceException, Exception {
-		this.deleteAttc(pdca);
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("pdcaOid", pdca.getOid());
+		List<HfPdcaAttc> attcList = this.pdcaAttcService.selectListByParams(paramMap).getValue();
+		if (null != attcList && attcList.size() > 0) {
+			for (HfPdcaAttc attc : attcList) {
+				this.pdcaAttcService.delete(attc);
+			}			
+		}
 		for (String uploadOid : uploadOidsList) {
 			TbSysUpload upload = UploadSupportUtils.findUploadNoByteContent(uploadOid);
 			if (!UploadTypes.IS_TEMP.equals(upload.getType())) {
@@ -422,6 +432,26 @@ public class PdcaLogicServiceImpl extends BaseLogicService implements IPdcaLogic
 		for (HfPdcaOwner owner : ownerList) {
 			this.pdcaOwnerService.delete(owner);
 		}
+	}
+
+	@ServiceMethodAuthority(type = ServiceMethodType.DELETE)
+	@Transactional(
+			propagation=Propagation.REQUIRED, 
+			readOnly=false,
+			rollbackFor={RuntimeException.class, IOException.class, Exception.class} )		
+	@Override
+	public DefaultResult<Boolean> delete(HfPdca pdca) throws ServiceException, Exception {
+		if (null == pdca || this.isBlank(pdca.getOid())) {
+			throw new ServiceException( BaseSystemMessage.parameterBlank() ); 
+		}
+		pdca = this.pdcaService.selectByEntityPrimaryKey(pdca).getValueEmptyThrowMessage();
+		if (pdca.getConfirmDate() != null || !this.isBlank(pdca.getConfirmUid())) {
+			throw new ServiceException("Cannot delete, this PDCA project status is confirm!");
+		}
+		this.deltePdcaOwner(pdca);
+		this.deletePdcaItemAndItemOwner(pdca);
+		this.deleteAttc(pdca);
+		return this.pdcaService.delete(pdca);
 	}
 	
 }

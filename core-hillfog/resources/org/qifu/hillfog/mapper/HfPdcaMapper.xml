@@ -44,9 +44,24 @@
 	<if test="mstOid != null and mstOid != ''.toString() ">
 		AND MST_OID = #{mstOid,jdbcType=CHAR}
 	</if>		
+	<if test="isConfirm != null and isConfirm == 'Y'.toString() ">
+		AND (CONFIRM_UID is not NULL or CONFIRM_DATE is not NULL)
+	</if>			
 	<if test="isNotConfirm != null and isNotConfirm == 'Y'.toString() ">
 		AND (CONFIRM_UID is NULL or CONFIRM_DATE is NULL)
 	</if>
+	<if test="startDate != null and startDate != ''.toString() ">
+		AND START_DATE <![CDATA[ >= ]]> #{startDate,jdbcType=VARCHAR}
+	</if>
+	<if test="endDate != null and endDate != ''.toString() ">
+		AND END_DATE <![CDATA[ <= ]]> #{endDate,jdbcType=VARCHAR}
+	</if>	
+	<if test="pdcaNum != null and pdcaNum != ''.toString() ">
+		AND PDCA_NUM = #{name,jdbcType=VARCHAR}
+	</if>			
+	<if test="pdcaNumLike != null and pdcaNumLike != ''.toString() ">
+		AND PDCA_NUM like #{pdcaNumLike,jdbcType=VARCHAR}
+	</if>		
 	<if test="orderBy != null and orderBy != ''.toString() and sortType != null and sortType != ''.toString() ">
 		ORDER BY  ${orderBy} ${sortType}
 	</if>	
@@ -69,11 +84,26 @@
 	</if>			
 	<if test="mstOid != null and mstOid != ''.toString() ">
 		AND MST_OID = #{mstOid,jdbcType=CHAR}
-	</if>					
+	</if>
+	<if test="isConfirm != null and isConfirm == 'Y'.toString() ">
+		AND (CONFIRM_UID is not NULL or CONFIRM_DATE is not NULL)
+	</if>						
 	<if test="isNotConfirm != null and isNotConfirm == 'Y'.toString() ">
 		AND (CONFIRM_UID is NULL or CONFIRM_DATE is NULL)
 	</if>
-		
+	<if test="startDate != null and startDate != ''.toString() ">
+		AND START_DATE <![CDATA[ >= ]]> #{startDate,jdbcType=VARCHAR}
+	</if>
+	<if test="endDate != null and endDate != ''.toString() ">
+		AND END_DATE <![CDATA[ <= ]]> #{endDate,jdbcType=VARCHAR}
+	</if>
+	<if test="pdcaNum != null and pdcaNum != ''.toString() ">
+		AND PDCA_NUM = #{name,jdbcType=VARCHAR}
+	</if>			
+	<if test="pdcaNumLike != null and pdcaNumLike != ''.toString() ">
+		AND PDCA_NUM like #{pdcaNumLike,jdbcType=VARCHAR}
+	</if>			
+			
 	<include refid="org.qifu.hillfog.mapper.DB1Config.sql2"/>
   </select>  
   
@@ -92,9 +122,24 @@
 	<if test="mstOid != null and mstOid != ''.toString() ">
 		AND MST_OID = #{mstOid,jdbcType=CHAR}
 	</if>		
+	<if test="isConfirm != null and isConfirm == 'Y'.toString() ">
+		AND (CONFIRM_UID is not NULL or CONFIRM_DATE is not NULL)
+	</if>			
 	<if test="isNotConfirm != null and isNotConfirm == 'Y'.toString() ">
 		AND (CONFIRM_UID is NULL or CONFIRM_DATE is NULL)
-	</if>						
+	</if>	
+	<if test="startDate != null and startDate != ''.toString() ">
+		AND START_DATE <![CDATA[ >= ]]> #{startDate,jdbcType=VARCHAR}
+	</if>
+	<if test="endDate != null and endDate != ''.toString() ">
+		AND END_DATE <![CDATA[ <= ]]> #{endDate,jdbcType=VARCHAR}
+	</if>			
+	<if test="pdcaNum != null and pdcaNum != ''.toString() ">
+		AND PDCA_NUM = #{name,jdbcType=VARCHAR}
+	</if>			
+	<if test="pdcaNumLike != null and pdcaNumLike != ''.toString() ">
+		AND PDCA_NUM like #{pdcaNumLike,jdbcType=VARCHAR}
+	</if>					
   </select>  
   
   <insert id="insert" parameterType="org.qifu.hillfog.entity.HfPdca"> 

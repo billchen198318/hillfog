@@ -39,6 +39,19 @@ function getProgUrlForOid(progId, oid) {
 function addTab( tabId, srcUrl ) {
 	for (var i=0; _tabData != null && i< _tabData.length; i++) {
 		if ( _tabData[i].tabId == tabId ) {
+		
+			// --------------------------------------------------------------------------
+			// 2021-05-29 add
+			// --------------------------------------------------------------------------
+			var currIframe = $("#" + tabId).find('iframe');
+			if (currIframe.length > 0) {
+				var currIframeWin = currIframe[currIframe.length-1].contentWindow;
+				if (!(currIframeWin === undefined) && !(currIframeWin.appUnmount === undefined)) {
+					currIframeWin.appUnmount();
+				}
+			}
+			// --------------------------------------------------------------------------		
+			
 			activaTab(tabId);
 			
 			/**

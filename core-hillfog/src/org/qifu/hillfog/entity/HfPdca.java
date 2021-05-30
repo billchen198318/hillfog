@@ -3,12 +3,14 @@ package org.qifu.hillfog.entity;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.qifu.base.model.CreateDateField;
 import org.qifu.base.model.CreateUserField;
 import org.qifu.base.model.EntityPK;
 import org.qifu.base.model.EntityUK;
 import org.qifu.base.model.UpdateDateField;
 import org.qifu.base.model.UpdateUserField;
+import org.qifu.base.model.YesNo;
 import org.qifu.util.SimpleUtils;
 
 public class HfPdca implements java.io.Serializable {
@@ -41,6 +43,17 @@ public class HfPdca implements java.io.Serializable {
 	public void setOwnerNameList(List<String> ownerNameList) {
 		this.ownerNameList = ownerNameList;
 	}      
+	
+	public String getConfirm() { // Query gird 顯示用
+		if (!StringUtils.isBlank(this.confirmUid)) {
+			return YesNo.YES;
+		}
+		return YesNo.NO;
+	}
+	
+	public String getStartEndDateShow() { // Query gird 顯示用
+		return getStartDateShow() + " - " + getEndDateShow();
+	}
     
     public String getStartDateShow() {
     	return SimpleUtils.getStrYMD(this.startDate, "-");

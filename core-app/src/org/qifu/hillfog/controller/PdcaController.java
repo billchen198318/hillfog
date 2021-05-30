@@ -41,7 +41,11 @@ import org.qifu.base.model.CheckControllerFieldHandler;
 import org.qifu.base.model.ControllerMethodAuthority;
 import org.qifu.base.model.DefaultControllerJsonResultObj;
 import org.qifu.base.model.DefaultResult;
+import org.qifu.base.model.PageOf;
 import org.qifu.base.model.PleaseSelect;
+import org.qifu.base.model.QueryControllerJsonResultObj;
+import org.qifu.base.model.QueryResult;
+import org.qifu.base.model.SearchValue;
 import org.qifu.base.model.YesNo;
 import org.qifu.core.entity.TbSysUpload;
 import org.qifu.core.util.UploadSupportUtils;
@@ -173,6 +177,36 @@ public class PdcaController extends BaseControllerSupport implements IPageNamesp
 		}
 		return viewName;
 	}			
+	
+	@ControllerMethodAuthority(check = true, programId = "HF_PROG004D0001Q")
+	@RequestMapping(value = "/hfPdcaQueryGridJson", produces = MediaType.APPLICATION_JSON_VALUE)	
+	public @ResponseBody QueryControllerJsonResultObj<List<HfPdca>> queryGrid(SearchValue searchValue, PageOf pageOf) {
+		QueryControllerJsonResultObj<List<HfPdca>> result = this.getQueryJsonResult(this.currentMethodAuthority());
+		if (!this.isAuthorizeAndLoginFromControllerJsonResult(result)) {
+			return result;
+		}
+		try {
+			String confirm = searchValue.getParameter().get("confirm");
+			if (YES.equals(confirm)) {
+				searchValue.getParameter().put("isConfirm", YES);
+			}
+			if (NO.equals(confirm)) {
+				searchValue.getParameter().put("isNotConfirm", YES);
+			}
+			QueryResult<List<HfPdca>> queryResult = this.pdcaService.findPage(
+					this.queryParameter(searchValue)
+						.fullEquals("mstType").fullEquals("isConfirm").fullEquals("isNotConfirm")
+						.fullLink("pdcaNumLike").fullLink("nameLike")
+						.fullEquals("startDate").fullEquals("endDate").value(), 
+					pageOf.orderBy("CDATE,PDCA_NUM").sortTypeAsc());
+			this.setQueryGridJsonResult(result, queryResult, pageOf);
+		} catch (AuthorityException | ServiceException | ControllerException e) {
+			this.baseExceptionResult(result, e);
+		} catch (Exception e) {
+			this.exceptionResult(result, e);
+		}
+		return result;
+	}	
 	
 	@ControllerMethodAuthority(check = true, programId = "HF_PROG004D0001Q")
 	@RequestMapping(value = "/hfPdcaLoadUploadFileShowName", produces = MediaType.APPLICATION_JSON_VALUE, method = {RequestMethod.POST, RequestMethod.GET})		
@@ -469,5 +503,27 @@ public class PdcaController extends BaseControllerSupport implements IPageNamesp
 		}
 		return viewName;
 	}
+	
+	private void delete(DefaultControllerJsonResultObj<Boolean> result, HfPdca pdca) throws AuthorityException, ControllerException, ServiceException, Exception {
+		DefaultResult<Boolean> dResult = this.pdcaLogicService.delete(pdca);
+		this.setDefaultResponseJsonResult(result, dResult);
+	}
+	
+	@ControllerMethodAuthority(check = true, programId = "HF_PROG004D0001D")
+	@RequestMapping(value = "/hfPdcaDeleteJson", produces = MediaType.APPLICATION_JSON_VALUE)			
+	public @ResponseBody DefaultControllerJsonResultObj<Boolean> doDelete(HfPdca pdca) {
+		DefaultControllerJsonResultObj<Boolean> result = this.getDefaultJsonResult(this.currentMethodAuthority());
+		if (!this.isAuthorizeAndLoginFromControllerJsonResult(result)) {
+			return result;
+		}
+		try {
+			this.delete(result, pdca);
+		} catch (AuthorityException | ServiceException | ControllerException e) {
+			this.baseExceptionResult(result, e);
+		} catch (Exception e) {
+			this.exceptionResult(result, e);
+		}
+		return result;
+	}	
 	
 }
