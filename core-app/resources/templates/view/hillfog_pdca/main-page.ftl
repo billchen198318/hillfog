@@ -35,7 +35,7 @@ function getQueryGridHeader() {
 		{ name: "Number", 			field: "pdcaNum"			},
 		{ name: "Name", 			field: "name"				},
 		{ name: "Start/End date",	field: "startEndDateShow"	},
-		{ name: "Confirm",			field: "confirm"			}
+		{ name: "Close",			field: "confirm"			}
 	];
 }
 
@@ -154,11 +154,11 @@ function replaceAll(str, find, replace) {
 			</div>
 			<div class="form-check form-check-inline">
 			  <input class="form-check-input" type="radio" name="confirmRadioOptions" id="confirmRadio2" value="Y">
-			  <label class="form-check-label" for="confirmRadio2">Confirmed</label>
+			  <label class="form-check-label" for="confirmRadio2">Closed</label>
 			</div>
  			<div class="form-check form-check-inline">
 			  <input class="form-check-input" type="radio" name="confirmRadioOptions" id="confirmRadio3" value="N">
-			  <label class="form-check-label" for="confirmRadio3">No-confirm</label>
+			  <label class="form-check-label" for="confirmRadio3">Open-case</label>
 			</div>        	
        </div>
       </div> 
