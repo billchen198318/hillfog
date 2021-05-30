@@ -32,6 +32,37 @@ function editPdca(pdcaOid) {
 	parent.addTab('HF_PROG004D0001E', parent.getProgUrlForOid('HF_PROG004D0001E', pdcaOid));
 }
 
+function confirmPdca(pdcaOid) {
+	parent.bootbox.confirm(
+			"Close this PDCA project?", 
+			function(result) { 
+				if (!result) {
+					return;
+				}
+				xhrSendParameter(
+						'./hfPdcaConfirmJson', 
+						{ 
+							'pdcaOid' 		: 	pdcaOid,
+							'description'	:	$("#description").val()
+						}, 
+						function(data) {
+							if ( _qifu_success_flag != data.success ) {
+								parent.toastrWarning( data.message );
+							}
+							if ( _qifu_success_flag == data.success ) {
+								parent.toastrInfo( data.message );
+								window.location = parent.getProgUrlForOid('HF_PROG004D0001V', pdcaOid);
+							}
+						}, 
+						function() {
+							
+						},
+						_qifu_defaultSelfPleaseWaitShow
+				);
+			}
+	);		
+}
+
 // ----------------------------------------------------------------------------------
 // PDCA 甘特圖
 // ----------------------------------------------------------------------------------
@@ -65,10 +96,12 @@ function pdcaProjectTimeChart(data) {
 	if (!($("#"+chartId).length)) {
 		return;
 	}
+	// detail view頁面要顯示
+	/*
 	if (data.main.confirmDate != null) { // 結案不顯示
 		return;
 	}
-	
+	*/
 	var pdcaItemSeries = pdcaProjectChartFillItems( data );
 	
 	Highcharts.ganttChart(chartId, {
@@ -466,8 +499,10 @@ function replaceAll(str, find, replace) {
 				</tbody>
 			</table>
 			
+			<@qifu.if test=" null == pdca.confirmDate ">
 	    	<button type="button" class="btn btn-primary" title="view" onclick="editPdca('${pdca.oid}')"><i class="icon fa fa-edit"></i>&nbsp;Edit</button>
-	    
+	    	</@qifu.if>
+	    	
 		</div>	
 	</div>	
 	
@@ -485,6 +520,47 @@ function replaceAll(str, find, replace) {
 	
 	<div id="tableContent"></div>
 		
+</div>
+
+<br>
+
+<div class="row">
+	<div class="col-xs-12 col-md-12 col-lg-12">
+	
+	<@qifu.if test=" null == pdca.confirmDate ">
+	  <div class="form-group">
+	    <label for="description">Close description</label>
+	    <textarea class="form-control" id="description" rows="3" placeholder="Enter PDCA project close description"></textarea>
+	    <button type="button" class="btn btn-warning" title="Close" onclick="confirmPdca('${pdca.oid}')"><i class="icon fa fa-check"></i>&nbsp;Close</button>
+	  </div>	
+	</div>
+	</@qifu.if>
+	
+	
+	<@qifu.if test=" null != closeReqList && closeReqList.size > 0 ">
+			<table class="table">
+			 	<thead class="thead-dark">
+					<tr>
+						<th scope="col">Confirm User / date</th>
+						<th scope="col">Description</th>			
+			    	</tr>
+				</thead>
+			  	<tbody>	
+				
+				<#list closeReqList as closeReq>
+				
+					<tr>
+						<td width="30%">${closeReq.applyText}</td>
+						<td width="70%"><pre>${closeReq.description}</pre></td>
+					</tr>
+									
+				</#list>
+				
+				</tbody>
+			</table>	
+	</@qifu.if>
+	
+	
 </div>
 
 <br/>

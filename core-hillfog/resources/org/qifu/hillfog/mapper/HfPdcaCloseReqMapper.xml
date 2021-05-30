@@ -9,7 +9,7 @@
     <result column="CONFIRM_UID" jdbcType="VARCHAR" property="confirmUid" />
     <result column="CONFIRM_DATE" jdbcType="TIMESTAMP" property="confirmDate" />
     <result column="APPLY_FLAG" jdbcType="VARCHAR" property="applyFlag" />
-    <result column="ALLPY_TEXT" jdbcType="VARCHAR" property="allpyText" />
+    <result column="APPLY_TEXT" jdbcType="VARCHAR" property="applyText" />
     <result column="CUSERID" jdbcType="VARCHAR" property="cuserid" />
     <result column="CDATE" jdbcType="TIMESTAMP" property="cdate" />
     <result column="UUSERID" jdbcType="VARCHAR" property="uuserid" />
@@ -85,8 +85,8 @@
       <if test="applyFlag != null">
         APPLY_FLAG,
       </if>
-      <if test="allpyText != null">
-        ALLPY_TEXT,
+      <if test="applyText != null">
+        APPLY_TEXT,
       </if>
       <if test="cuserid != null">
         CUSERID,
@@ -120,8 +120,8 @@
       <if test="applyFlag != null">
         #{applyFlag,jdbcType=VARCHAR},
       </if>
-      <if test="allpyText != null">
-        #{allpyText,jdbcType=VARCHAR},
+      <if test="applyText != null">
+        #{applyText,jdbcType=VARCHAR},
       </if>
       <if test="cuserid != null">
         #{cuserid,jdbcType=VARCHAR},
@@ -156,8 +156,8 @@
       <if test="applyFlag != null">
         APPLY_FLAG = #{applyFlag,jdbcType=VARCHAR},
       </if>
-      <if test="allpyText != null">
-        ALLPY_TEXT = #{allpyText,jdbcType=VARCHAR},
+      <if test="applyText != null">
+        APPLY_TEXT = #{applyText,jdbcType=VARCHAR},
       </if>
       <!--  
       <if test="cuserid != null">

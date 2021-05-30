@@ -17,7 +17,7 @@ public class HfPdcaCloseReq implements java.io.Serializable {
     private String confirmUid;
     private Date confirmDate;
     private String applyFlag;
-    private String allpyText;
+    private String applyText;
     private String cuserid;
     private Date cdate;
     private String uuserid;
@@ -72,15 +72,15 @@ public class HfPdcaCloseReq implements java.io.Serializable {
         this.applyFlag = applyFlag;
     }
     
-    public String getAllpyText() {
-        return allpyText;
-    }
-    
-    public void setAllpyText(String allpyText) {
-        this.allpyText = allpyText;
-    }
-    
-    @CreateUserField(name = "cuserid")
+    public String getApplyText() {
+		return applyText;
+	}
+
+	public void setApplyText(String applyText) {
+		this.applyText = applyText;
+	}
+
+	@CreateUserField(name = "cuserid")
     public String getCuserid() {
         return cuserid;
     }

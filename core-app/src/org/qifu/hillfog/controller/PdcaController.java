@@ -54,6 +54,7 @@ import org.qifu.hillfog.entity.HfKpi;
 import org.qifu.hillfog.entity.HfObjective;
 import org.qifu.hillfog.entity.HfPdca;
 import org.qifu.hillfog.entity.HfPdcaAttc;
+import org.qifu.hillfog.entity.HfPdcaCloseReq;
 import org.qifu.hillfog.logic.IPdcaLogicService;
 import org.qifu.hillfog.model.MeasureDataCode;
 import org.qifu.hillfog.model.PDCABase;
@@ -61,6 +62,7 @@ import org.qifu.hillfog.service.IEmployeeService;
 import org.qifu.hillfog.service.IKpiService;
 import org.qifu.hillfog.service.IObjectiveService;
 import org.qifu.hillfog.service.IPdcaAttcService;
+import org.qifu.hillfog.service.IPdcaCloseReqService;
 import org.qifu.hillfog.service.IPdcaService;
 import org.qifu.hillfog.vo.PdcaItems;
 import org.qifu.util.SimpleUtils;
@@ -96,6 +98,9 @@ public class PdcaController extends BaseControllerSupport implements IPageNamesp
 	@Autowired
 	IPdcaAttcService<HfPdcaAttc, String> pdcaAttcService;
 	
+	@Autowired
+	IPdcaCloseReqService<HfPdcaCloseReq, String> pdcaCloseReqService;
+	
 	@Override
 	public String viewPageNamespace() {
 		return "hillfog_pdca";
@@ -119,6 +124,14 @@ public class PdcaController extends BaseControllerSupport implements IPageNamesp
 			mm.put("empInputAutocomplete", pageAutocompleteContent(empList));	
 			mm.put("frequencyMap", MeasureDataCode.getFrequencyMap(true));
 		}		
+		if ("detailPage".equals(type)) {
+			HfPdca pdca = (HfPdca) mm.get("pdca");
+			Map<String, Object> paramMap = new HashMap<String, Object>();
+			paramMap.put("pdcaOid", pdca.getOid());
+			paramMap.put("applyFlag", YES);
+			List<HfPdcaCloseReq> closeReqList = this.pdcaCloseReqService.selectListByParams(paramMap).getValue();
+			mm.put("closeReqList", closeReqList);
+		}
 	}
 	
 	private void generatePdcaNumber(ModelMap mm) throws ServiceException, Exception {
@@ -518,6 +531,31 @@ public class PdcaController extends BaseControllerSupport implements IPageNamesp
 		}
 		try {
 			this.delete(result, pdca);
+		} catch (AuthorityException | ServiceException | ControllerException e) {
+			this.baseExceptionResult(result, e);
+		} catch (Exception e) {
+			this.exceptionResult(result, e);
+		}
+		return result;
+	}	
+	
+	private void confirm(DefaultControllerJsonResultObj<HfPdcaCloseReq> result, HfPdcaCloseReq closeReq) throws AuthorityException, ControllerException, ServiceException, Exception {
+		if (StringUtils.isBlank(closeReq.getDescription())) {
+			throw new ControllerException("Please input close description!");
+		}
+		DefaultResult<HfPdcaCloseReq> uResult = this.pdcaLogicService.confirm(closeReq);
+		this.setDefaultResponseJsonResult(result, uResult);
+	}
+	
+	@ControllerMethodAuthority(check = true, programId = "HF_PROG004D0001E")
+	@RequestMapping(value = "/hfPdcaConfirmJson", produces = MediaType.APPLICATION_JSON_VALUE)			
+	public @ResponseBody DefaultControllerJsonResultObj<HfPdcaCloseReq> doConfirm(HfPdcaCloseReq closeReq) {
+		DefaultControllerJsonResultObj<HfPdcaCloseReq> result = this.getDefaultJsonResult(this.currentMethodAuthority());
+		if (!this.isAuthorizeAndLoginFromControllerJsonResult(result)) {
+			return result;
+		}
+		try {
+			this.confirm(result, closeReq);
 		} catch (AuthorityException | ServiceException | ControllerException e) {
 			this.baseExceptionResult(result, e);
 		} catch (Exception e) {

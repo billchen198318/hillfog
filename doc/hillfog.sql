@@ -585,7 +585,7 @@ CREATE TABLE `hf_pdca_close_req` (
   `CONFIRM_UID` varchar(24) DEFAULT NULL,
   `CONFIRM_DATE` datetime DEFAULT NULL,
   `APPLY_FLAG` varchar(1) NOT NULL DEFAULT 'A',
-  `ALLPY_TEXT` varchar(4000) DEFAULT NULL,
+  `APPLY_TEXT` varchar(4000) DEFAULT NULL,
   `CUSERID` varchar(24) NOT NULL,
   `CDATE` datetime NOT NULL,
   `UUSERID` varchar(24) DEFAULT NULL,

@@ -27,6 +27,7 @@ import java.util.Map;
 import org.qifu.base.exception.ServiceException;
 import org.qifu.base.model.DefaultResult;
 import org.qifu.hillfog.entity.HfPdca;
+import org.qifu.hillfog.entity.HfPdcaCloseReq;
 import org.qifu.hillfog.vo.PdcaItems;
 
 public interface IPdcaLogicService {
@@ -38,6 +39,8 @@ public interface IPdcaLogicService {
 			List<Map<String, Object>> planMapList, List<Map<String, Object>> doMapList, List<Map<String, Object>> checkMapList, List<Map<String, Object>> actMapList) throws ServiceException, Exception;
 	
 	public DefaultResult<Boolean> delete(HfPdca pdca) throws ServiceException, Exception;
+	
+	public DefaultResult<HfPdcaCloseReq> confirm(HfPdcaCloseReq closeReq) throws ServiceException, Exception;
 	
 	public DefaultResult<PdcaItems> findPdcaItems(String pdcaOid, boolean fetchOwner) throws ServiceException, Exception;
 	

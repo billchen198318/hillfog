@@ -22,6 +22,7 @@
 package org.qifu.hillfog.logic.impl;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,6 +39,7 @@ import org.qifu.base.model.ServiceAuthority;
 import org.qifu.base.model.ServiceMethodAuthority;
 import org.qifu.base.model.ServiceMethodType;
 import org.qifu.base.model.SortType;
+import org.qifu.base.model.YesNo;
 import org.qifu.base.model.ZeroKeyProvide;
 import org.qifu.base.service.BaseLogicService;
 import org.qifu.core.entity.TbSysUpload;
@@ -64,6 +66,7 @@ import org.qifu.hillfog.service.IPdcaItemService;
 import org.qifu.hillfog.service.IPdcaOwnerService;
 import org.qifu.hillfog.service.IPdcaService;
 import org.qifu.hillfog.vo.PdcaItems;
+import org.qifu.util.SimpleUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -347,9 +350,7 @@ public class PdcaLogicServiceImpl extends BaseLogicService implements IPdcaLogic
 		}
 		
 		HfPdca checkPdca = this.pdcaService.selectByPrimaryKey(pdca.getOid()).getValueEmptyThrowMessage();
-		if (checkPdca.getConfirmDate() != null || !this.isBlank(checkPdca.getConfirmUid())) {
-			throw new ServiceException("Cannot update, this PDCA project status is confirm!");
-		}
+		this.checkConfirmThrowsException(checkPdca);
 		
 		pdca.setMstOid(checkPdca.getMstOid());
 		pdca.setMstType(checkPdca.getMstType());
@@ -445,13 +446,39 @@ public class PdcaLogicServiceImpl extends BaseLogicService implements IPdcaLogic
 			throw new ServiceException( BaseSystemMessage.parameterBlank() ); 
 		}
 		pdca = this.pdcaService.selectByEntityPrimaryKey(pdca).getValueEmptyThrowMessage();
-		if (pdca.getConfirmDate() != null || !this.isBlank(pdca.getConfirmUid())) {
-			throw new ServiceException("Cannot delete, this PDCA project status is confirm!");
-		}
+		this.checkConfirmThrowsException(pdca);
 		this.deltePdcaOwner(pdca);
 		this.deletePdcaItemAndItemOwner(pdca);
 		this.deleteAttc(pdca);
 		return this.pdcaService.delete(pdca);
+	}
+
+	@ServiceMethodAuthority(type = ServiceMethodType.UPDATE)
+	@Transactional(
+			propagation=Propagation.REQUIRED, 
+			readOnly=false,
+			rollbackFor={RuntimeException.class, IOException.class, Exception.class} )		
+	@Override
+	public DefaultResult<HfPdcaCloseReq> confirm(HfPdcaCloseReq closeReq) throws ServiceException, Exception {
+		if (null == closeReq || this.isBlank(closeReq.getPdcaOid()) || this.isBlank(closeReq.getDescription())) {
+			throw new ServiceException( BaseSystemMessage.parameterBlank() ); 
+		}
+		HfPdca pdca = this.pdcaService.selectByPrimaryKey(closeReq.getPdcaOid()).getValueEmptyThrowMessage();
+		this.checkConfirmThrowsException(pdca);
+		Date sysDate = new Date();
+		pdca.setConfirmDate(sysDate);
+		pdca.setConfirmUid(this.getAccountId());
+		this.pdcaService.update(pdca);
+		this.setStringValueMaxLength(closeReq, "description", MAX_LENGTH);
+		closeReq.setApplyFlag(YesNo.YES);
+		closeReq.setApplyText(this.getAccountId() + " - " + SimpleUtils.getDateFormat_yyyyMMddHHmmss(sysDate));
+		return this.pdcaCloseReqService.insert(closeReq);
+	}
+	
+	private void checkConfirmThrowsException(HfPdca pdca) throws ServiceException, Exception {
+		if (pdca.getConfirmDate() != null || !this.isBlank(pdca.getConfirmUid())) {
+			throw new ServiceException("Cannot delete, this PDCA project status is confirm!");
+		}		
 	}
 	
 }
