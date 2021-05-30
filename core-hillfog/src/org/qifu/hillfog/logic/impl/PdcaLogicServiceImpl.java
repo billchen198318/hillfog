@@ -465,6 +465,12 @@ public class PdcaLogicServiceImpl extends BaseLogicService implements IPdcaLogic
 		}
 		HfPdca pdca = this.pdcaService.selectByPrimaryKey(closeReq.getPdcaOid()).getValueEmptyThrowMessage();
 		this.checkConfirmThrowsException(pdca);
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("pdcaOid", pdca.getOid());
+		paramMap.put("type", PDCABase.TYPE_A);
+		if (this.pdcaItemService.count(paramMap) < 1) {
+			throw new ServiceException("Cannot confirm, At least one Act item is required!");
+		}
 		Date sysDate = new Date();
 		pdca.setConfirmDate(sysDate);
 		pdca.setConfirmUid(this.getAccountId());
