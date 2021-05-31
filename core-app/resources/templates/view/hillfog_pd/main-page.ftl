@@ -338,7 +338,8 @@ function pdcaProjectChartFillItems(pdcaItems) {
 		
 			<div class="card border-info">
 			  <div class="card-body">		
-						<h4><span class="badge badge-pill badge-info">KPIs</span></h4>	
+					<h4><span class="badge badge-pill badge-info">KPIs</span></h4>	
+					
 						
 				</div>
 			</div>
@@ -353,7 +354,7 @@ function pdcaProjectChartFillItems(pdcaItems) {
 		
 			<div class="card border-warning">
 			  <div class="card-body">		
-					<h4><span class="badge badge-pill badge-warning">PDCA</span></h4>	
+					<h4><span class="badge badge-pill badge-warning">Personal related PDCA projects</span></h4>	
 						
 					<div v-if=" pdcaOids == null || pdcaOids.length < 1 ">
 					<h4><span class="badge badge-secondary">No your PDCA project can display.</span></h4>
