@@ -137,10 +137,10 @@ function gaugeChart(chartId, seriesName, dataValue, dataName) {
 	        {
 				title:{
 					show:true,
-					offsetCenter:[0,-190],
-					color:'#888',
-					fontWeight:'bold',
-					fontSize:24 
+					offsetCenter:[0,-120],
+					color:'#1C1C1C',
+					//fontWeight:'bold',
+					fontSize:14
 				},  
 				clockwise:true,
 				startAngle:180,
@@ -151,10 +151,10 @@ function gaugeChart(chartId, seriesName, dataValue, dataName) {
 	            name: seriesName,
 	            type: 'gauge',
 	            detail: {
-	            	offsetCenter:[5,-40],
+	            	offsetCenter:[5,30],
 	            	formatter: '{value}%'
 	            },
-	            data: [{value: dataValue, name: dataName}]
+	            data: [{value: dataValue, name: seriesName}] // [{value: dataValue, name: dataName}]
 	        }
 	    ]
 	};
@@ -352,7 +352,7 @@ function pdcaProjectChartFillItems(pdcaItems) {
 		
 			<div class="card border-info">
 			  <div class="card-body">		
-						<h4><span class="badge badge-pill badge-info">OKRs</span></h4>	
+						<h4><span class="badge badge-pill badge-info">Personal's OKRs</span></h4>	
 		
 		<div v-if=" objectives == null || objectives.length < 1 ">	
 		<h4><span class="badge badge-secondary">No your OKR can display.</span></h4>
@@ -411,7 +411,9 @@ function pdcaProjectChartFillItems(pdcaItems) {
 
 					<div v-for="d in kpis">
 						
-						<div class="row mx-auto flex-column"><div class="col-6 align-self-center" v-bind:id="'gauge_'+d.kpi.oid" style="width: 400px;height:350px;"></div></div>
+						<div class="row mx-auto flex-column"><div class="col-6 align-self-center" v-bind:id="'gauge_'+d.kpi.oid" style="width: 100%;height:350px;"></div></div>
+						
+						<button v-if=" d.measureDatas == null || d.measureDatas.length < 1 " type="button" class="btn btn-primary" title="view" v-on:click="toMeasureDataInput(d)"><i class="icon fa fa-plus"></i>&nbsp;Current frequency measure-data no input</button>
 							
 						<br>
 							

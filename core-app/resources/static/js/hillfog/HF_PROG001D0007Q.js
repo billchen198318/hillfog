@@ -152,7 +152,21 @@ function clearKpiScoreData() {
 }
 function paintGaugeChart() {
 	for (var n in this.kpis) {
-		gaugeChart('gauge_' + this.kpis[n].kpi.oid, this.kpis[n].kpi.name, this.kpis[n].score, 'The completion rate');
+		var name = this.kpis[n].kpi.name;
+		var freq = this.kpis[n].frequency;
+		if ('6' == freq) {
+			name += ' (Current Year)';
+		}
+		if ('5' == freq) {
+			name += ' (Current Half of year)';
+		}
+		if ('4' == freq) {
+			name += ' (Current Quarter)';
+		}
+		if ('3' == freq) {
+			name += ' (Current Month)';
+		}						
+		gaugeChart('gauge_' + this.kpis[n].kpi.oid, name, this.kpis[n].score, 'The completion rate');
 	}
 }
 
