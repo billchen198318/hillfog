@@ -25,10 +25,10 @@
     from <include refid="org.qifu.hillfog.mapper.DB1Config.schema"/>hf_employee
     WHERE 1=1
 	<if test="account != null and account != ''.toString() ">
-		AND ACCOUNT = #{orgId,jdbcType=VARCHAR}
+		AND ACCOUNT = #{account,jdbcType=VARCHAR}
 	</if>		
 	<if test="empId != null and empId != ''.toString() ">
-		AND EMP_ID = #{orgId,jdbcType=VARCHAR}
+		AND EMP_ID = #{empId,jdbcType=VARCHAR}
 	</if>		
 	<if test="empIdLike != null and empIdLike != ''.toString() ">
 		AND EMP_ID like #{empIdLike,jdbcType=VARCHAR}
@@ -51,10 +51,10 @@
     from <include refid="org.qifu.hillfog.mapper.DB1Config.schema"/>hf_employee
     WHERE 1=1
 	<if test="account != null and account != ''.toString() ">
-		AND ACCOUNT = #{orgId,jdbcType=VARCHAR}
+		AND ACCOUNT = #{account,jdbcType=VARCHAR}
 	</if>		
 	<if test="empId != null and empId != ''.toString() ">
-		AND EMP_ID = #{orgId,jdbcType=VARCHAR}
+		AND EMP_ID = #{empId,jdbcType=VARCHAR}
 	</if>		
 	<if test="empIdLike != null and empIdLike != ''.toString() ">
 		AND EMP_ID like #{empIdLike,jdbcType=VARCHAR}
@@ -73,11 +73,11 @@
     select count(*) from <include refid="org.qifu.hillfog.mapper.DB1Config.schema"/>hf_employee
     WHERE 1=1
 	<if test="account != null and account != ''.toString() ">
-		AND ACCOUNT = #{orgId,jdbcType=VARCHAR}
+		AND ACCOUNT = #{account,jdbcType=VARCHAR}
 	</if>		
 	<if test="empId != null and empId != ''.toString() ">
-		AND EMP_ID = #{orgId,jdbcType=VARCHAR}
-	</if>		
+		AND EMP_ID = #{empId,jdbcType=VARCHAR}
+	</if>	
 	<if test="empIdLike != null and empIdLike != ''.toString() ">
 		AND EMP_ID like #{empIdLike,jdbcType=VARCHAR}
 	</if>			

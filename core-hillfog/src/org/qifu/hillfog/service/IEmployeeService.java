@@ -104,4 +104,6 @@ public interface IEmployeeService<T, E> extends IBaseService<HfEmployee, String>
 	 */
 	public List<String> findInputAutocompleteByPdcaItemOid(String pdcaOid, String itemOid) throws ServiceException, Exception;
 	
+	public String getPagefieldValue(HfEmployee employee);
+	
 }
