@@ -8,6 +8,7 @@
 <@cfi.commonFormHeadResource /> 
 
 <script type="text/javascript" src="${qifu_basePath}js/jquery-ui.min.js?ver=${qifu_jsVerBuild}"></script>
+<script type="text/javascript" src="${qifu_basePath}js/vue.global.js"></script>
 
 <style type="text/css">
 
@@ -99,8 +100,6 @@ $( document ).ready(function() {
 		
 	});
 	
-	$("#accountId").trigger('change');
-	
 });
 
 function refreshPage() {
@@ -147,13 +146,44 @@ function refreshPage() {
 
 <br>
 
-<div class="col-xs-12">
+<div class="col-xs-12" id="main-content">
 	<div class="row">
 		<div class="col-xs-6 col-md-6 col-lg-6">
 		
 			<div class="card border-info">
 			  <div class="card-body">		
 						<h4><span class="badge badge-pill badge-info">OKRs</span></h4>	
+		
+		<div v-if=" objectives == null || objectives.length < 1 ">	
+		<h4><span class="badge badge-secondary">No your OKR can display.</span></h4>
+		</div>
+		
+		<div v-for="d in objectives">			
+			  <div class="card border-dark">
+			    <div class="card-body">
+			      <h5 class="card-title">{{ d.name }}</h5>
+			      
+				Progress:&nbsp;{{ d.progressPercentage }}%
+				<div v-html=" progressDiv(d.progressPercentage) "></div>		
+				<br>	      
+			      
+			      <h5><span class="badge badge-secondary">Objective:&nbsp;<span class="badge badge-info">{{ d.objectiveSize }}</span></span></h5>
+			      <h5><span class="badge badge-secondary">Initiative:&nbsp;<span class="badge badge-info">{{ d.initiativeSize }}</span></span></h5>
+			      
+			      <p class="card-text"><pre>{{ d.description }}</pre></p>
+			      
+			      <br>
+			      
+<button type="button" class="btn btn-info" title="view" v-on:click="viewObjectiveDetail(d.oid)"><i class="icon fa fa-eye"></i></button>
+&nbsp;      
+
+			    </div>
+			  </div>	
+			  
+			  <br>
+			  
+		</div>		  		
+					
 						
 				</div>
 			</div>
@@ -190,6 +220,8 @@ function refreshPage() {
 <br/>
 <br/>
 <br/>
+
+<script type="text/javascript" src="${qifu_basePath}js/hillfog/HF_PROG001D0007Q.js?ver=${qifu_jsVerBuild}"></script>
 
 </body>
 </html>
