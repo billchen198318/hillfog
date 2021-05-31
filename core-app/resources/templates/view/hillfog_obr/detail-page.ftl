@@ -31,7 +31,7 @@ $( document ).ready(function() {
 	
 	<@qifu.if test=" pdcaList != null && pdcaList.size > 0 ">
 		<#list pdcaList as pdca>
-		qeruyPdcaChart('${pdca.oid}');
+		queryPdcaChart('${pdca.oid}');
 		</#list>
 	</@qifu.if>
 	
@@ -71,7 +71,7 @@ function viewDetail(pdcaOid) {
 // ----------------------------------------------------------------------------------
 // PDCA 甘特圖
 // ----------------------------------------------------------------------------------
-function qeruyPdcaChart(pdcaOid) {
+function queryPdcaChart(pdcaOid) {
 	xhrSendParameter(
 			'./hfPdcaItemsForGanttDataJson', 
 			{

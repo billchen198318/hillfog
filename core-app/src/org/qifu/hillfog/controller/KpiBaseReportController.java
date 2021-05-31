@@ -123,11 +123,17 @@ public class KpiBaseReportController extends BaseControllerSupport implements IP
 	
 	private void queryContent(DefaultControllerJsonResultObj<List<ScoreCalculationData>> result, HttpServletRequest request) throws ControllerException, Exception {
 		this.checkFields(result, request);
+		String noPdca = request.getParameter("noPdca"); // Personal board 取 KPIs 用 , noPdca = Y時 - 不需要再抓 PDCA 資料
+		String checkKpiOwner = request.getParameter("checkKpiOwner");
 		List<HfKpi> kpis = null;
 		String kpiOid = request.getParameter("kpiOid");
 		if (PleaseSelect.noSelect(kpiOid)) {
-			kpis = this.kpiService.selectList("ID", SortType.ASC).getValue();
-		} else {
+			if (YES.equals(checkKpiOwner)) { // checkKpiOwner = Y, Personal board 取 KPIs 用
+				kpis = this.kpiService.findKpisByOwnerAccount( request.getParameter("kpiEmpl") ).getValue();
+			} else { // KPI base report 取 KPIs 用
+				kpis = this.kpiService.selectList("ID", SortType.ASC).getValue();
+			}
+		} else { // KPI base report 取 KPIs 用 , 有取下拉 KPI 項目
 			HfKpi kpi = this.kpiService.selectByPrimaryKey(kpiOid).getValueEmptyThrowMessage();
 			kpis = new ArrayList<HfKpi>();
 			kpis.add(kpi);
@@ -144,7 +150,9 @@ public class KpiBaseReportController extends BaseControllerSupport implements IP
 				queryParam.getAccountId(), 
 				queryParam.getOrgId()).processDefault().processDateRange().reduce().valueThrowMessage();
 		if (scores != null && scores.size() > 0) {
-			this.loadPdca(scores);
+			if (!YES.equals(noPdca)) {
+				this.loadPdca(scores);
+			}
 			result.setValue(scores);
 			result.setSuccess(YES);
 			result.setMessage( "success!" );

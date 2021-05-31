@@ -99,8 +99,8 @@ public class ScoreCalculationCallable implements Callable<ScoreCalculationData> 
 			return dateRange;
 		} 
 		if (MeasureDataCode.FREQUENCY_QUARTER.equals(frequency)) {
-			DateTime dt1 = new DateTime( date1 + "-01-01" ); 
-			DateTime dt2 = new DateTime( date2 + "-01-01" );
+			DateTime dt1 = new DateTime( date1.substring(0, 4) + "-01-01" ); 
+			DateTime dt2 = new DateTime( date2.substring(0, 4) + "-01-01" );
 			int betweenYears = Years.yearsBetween(dt1, dt2).getYears();
 			Date nowDate = dt1.toDate();
 			for (int i=0; i<=betweenYears; i++) {
@@ -114,8 +114,8 @@ public class ScoreCalculationCallable implements Callable<ScoreCalculationData> 
 			return dateRange;
 		}
 		if (MeasureDataCode.FREQUENCY_HALF_OF_YEAR.equals(frequency)) {
-			DateTime dt1 = new DateTime( date1 + "-01-01" ); 
-			DateTime dt2 = new DateTime( date2 + "-01-01" );
+			DateTime dt1 = new DateTime( date1.substring(0, 4) + "-01-01" ); 
+			DateTime dt2 = new DateTime( date2.substring(0, 4) + "-01-01" );
 			int betweenYears = Years.yearsBetween(dt1, dt2).getYears();
 			Date nowDate = dt1.toDate();
 			for (int i=0; i<=betweenYears; i++) {

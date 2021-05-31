@@ -48,7 +48,7 @@
 		AND (CONFIRM_UID is not NULL or CONFIRM_DATE is not NULL)
 	</if>			
 	<if test="isNotConfirm != null and isNotConfirm == 'Y'.toString() ">
-		AND (CONFIRM_UID is NULL or CONFIRM_DATE is NULL)
+		AND (CONFIRM_UID is NULL and CONFIRM_DATE is NULL)
 	</if>
 	<if test="startDate != null and startDate != ''.toString() ">
 		AND START_DATE <![CDATA[ >= ]]> #{startDate,jdbcType=VARCHAR}
@@ -89,7 +89,7 @@
 		AND (CONFIRM_UID is not NULL or CONFIRM_DATE is not NULL)
 	</if>						
 	<if test="isNotConfirm != null and isNotConfirm == 'Y'.toString() ">
-		AND (CONFIRM_UID is NULL or CONFIRM_DATE is NULL)
+		AND (CONFIRM_UID is NULL and CONFIRM_DATE is NULL)
 	</if>
 	<if test="startDate != null and startDate != ''.toString() ">
 		AND START_DATE <![CDATA[ >= ]]> #{startDate,jdbcType=VARCHAR}
@@ -126,7 +126,7 @@
 		AND (CONFIRM_UID is not NULL or CONFIRM_DATE is not NULL)
 	</if>			
 	<if test="isNotConfirm != null and isNotConfirm == 'Y'.toString() ">
-		AND (CONFIRM_UID is NULL or CONFIRM_DATE is NULL)
+		AND (CONFIRM_UID is NULL and CONFIRM_DATE is NULL)
 	</if>	
 	<if test="startDate != null and startDate != ''.toString() ">
 		AND START_DATE <![CDATA[ >= ]]> #{startDate,jdbcType=VARCHAR}
@@ -325,7 +325,9 @@
 		FROM 
 		<include refid="org.qifu.hillfog.mapper.DB1Config.schema"/>hf_pdca M, 
 		<include refid="org.qifu.hillfog.mapper.DB1Config.schema"/>hf_pdca_owner B
-		WHERE M.OID = B.PDCA_OID AND B.OWNER_UID = #{ownerUid,jdbcType=VARCHAR}
+		WHERE M.OID = B.PDCA_OID 
+		AND B.OWNER_UID = #{ownerUid,jdbcType=VARCHAR} 
+		AND (M.CONFIRM_UID is NULL and M.CONFIRM_DATE is NULL)
 		
 		UNION 
 		
@@ -334,7 +336,11 @@
 		<include refid="org.qifu.hillfog.mapper.DB1Config.schema"/>hf_pdca M, 
 		<include refid="org.qifu.hillfog.mapper.DB1Config.schema"/>hf_pdca_item B, 
 		<include refid="org.qifu.hillfog.mapper.DB1Config.schema"/>hf_pdca_item_owner C
-		WHERE M.OID = B.PDCA_OID AND B.OID = C.ITEM_OID AND C.PDCA_OID = M.OID AND C.OWNER_UID = #{ownerUid,jdbcType=VARCHAR}
+		WHERE M.OID = B.PDCA_OID 
+		AND B.OID = C.ITEM_OID 
+		AND C.PDCA_OID = M.OID 
+		AND C.OWNER_UID = #{ownerUid,jdbcType=VARCHAR} 
+		AND (M.CONFIRM_UID is NULL and M.CONFIRM_DATE is NULL)
 	) A				
   </select> 
         

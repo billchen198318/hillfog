@@ -23,6 +23,7 @@ package org.qifu.hillfog.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -37,6 +38,7 @@ import org.qifu.core.util.UserUtils;
 import org.qifu.hillfog.entity.HfEmployee;
 import org.qifu.hillfog.model.MeasureDataCode;
 import org.qifu.hillfog.service.IEmployeeService;
+import org.qifu.util.SimpleUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -71,7 +73,33 @@ public class PersonalDashboardController extends BaseControllerSupport implement
 		mm.put("employee", employee);
 		mm.put("employeeSelect", this.employeeService.getPagefieldValue(employee));
 		mm.put("empList", empList);
-		mm.put("empInputAutocomplete", pageAutocompleteContent(empList));			
+		mm.put("empInputAutocomplete", pageAutocompleteContent(empList));		
+		
+		String currentYear = SimpleUtils.getStrYMD(SimpleUtils.IS_YEAR);
+		String currentMonth = SimpleUtils.getStrYMD(SimpleUtils.IS_MONTH);
+		
+		// Year
+		mm.put("startDateY", currentYear + "-01-01");
+		mm.put("endDateY", currentYear + "-12-" + SimpleUtils.getMaxDayOfMonth(Integer.parseInt(currentYear), Integer.parseInt("12")));
+		
+		// Half of year
+		if (Integer.parseInt(currentMonth) > 6) { // 下半年
+			mm.put("startDateH", currentYear + "-07-01");
+			mm.put("endDateH", currentYear + "-12-" + SimpleUtils.getMaxDayOfMonth(Integer.parseInt(currentYear), Integer.parseInt("12")));			
+		} else { // 上半年
+			mm.put("startDateH", currentYear + "-01-01");
+			mm.put("endDateH", currentYear + "-06-" + SimpleUtils.getMaxDayOfMonth(Integer.parseInt(currentYear), Integer.parseInt("6")));
+		}
+		
+		// Quarter
+		Map<String, String> quarterMap = SimpleUtils.getQuarterlyStartEnd(SimpleUtils.getStrYMD(""));
+		mm.put("startDateQ", quarterMap.get("date1").replaceAll("/", "-"));
+		mm.put("endDateQ", quarterMap.get("date2").replaceAll("/", "-"));		
+		
+		// Month
+		mm.put("startDateM", currentYear + "-" + currentMonth + "-01");
+		mm.put("endDateM", currentYear + "-" + currentMonth + "-" + SimpleUtils.getMaxDayOfMonth(Integer.parseInt(currentYear), Integer.parseInt(currentMonth)));		
+		
 	}
 	
 	@ControllerMethodAuthority(check = true, programId = "HF_PROG001D0007Q")

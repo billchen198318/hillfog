@@ -24,7 +24,7 @@ pre {
 
 $( document ).ready(function() {
 	
-	qeruyPdcaChart('${pdca.oid}');
+	queryPdcaChart('${pdca.oid}');
 	
 });
 
@@ -66,7 +66,7 @@ function confirmPdca(pdcaOid) {
 // ----------------------------------------------------------------------------------
 // PDCA 甘特圖
 // ----------------------------------------------------------------------------------
-function qeruyPdcaChart(pdcaOid) {
+function queryPdcaChart(pdcaOid) {
 	xhrSendParameter(
 			'./hfPdcaItemsForGanttDataJson', 
 			{

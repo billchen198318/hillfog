@@ -289,4 +289,14 @@
     where OID = #{oid,jdbcType=CHAR}
   </delete>
   
+  <select id="selectKpisByOwnerAccount" parameterType="java.util.HashMap" resultMap="BaseResultMap">
+	SELECT DISTINCT M.* 
+	FROM 
+	<include refid="org.qifu.hillfog.mapper.DB1Config.schema"/>hf_kpi M, 
+	<include refid="org.qifu.hillfog.mapper.DB1Config.schema"/>hf_kpi_empl B
+	WHERE M.ID = B.KPI_ID 
+	AND B.ACCOUNT = #{account,jdbcType=VARCHAR}
+	ORDER BY M.ID ASC  
+  </select>
+  
 </mapper>

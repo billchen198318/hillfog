@@ -21,11 +21,16 @@
  */
 package org.qifu.hillfog.mapper;
 
+import java.util.List;
+import java.util.Map;
+
 import org.apache.ibatis.annotations.Mapper;
 import org.qifu.base.mapper.IBaseMapper;
 import org.qifu.hillfog.entity.HfKpi;
 
 @Mapper
 public interface HfKpiMapper extends IBaseMapper<HfKpi, String> {
+	
+	public List<HfKpi> selectKpisByOwnerAccount(Map<String, Object> paramMap);
 	
 }

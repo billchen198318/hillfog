@@ -21,11 +21,15 @@
  */
 package org.qifu.hillfog.service.impl;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.qifu.base.exception.ServiceException;
 import org.qifu.base.mapper.IBaseMapper;
+import org.qifu.base.message.BaseSystemMessage;
+import org.qifu.base.model.DefaultResult;
 import org.qifu.base.model.PleaseSelect;
 import org.qifu.base.model.SortType;
 import org.qifu.base.service.BaseService;
@@ -62,6 +66,27 @@ public class KpiServiceImpl extends BaseService<HfKpi, String> implements IKpiSe
 			dataMap.put(kpi.getOid(), kpi.getId() + " - " + kpi.getName());
 		}
 		return dataMap;
+	}
+
+	@Override
+	public DefaultResult<List<HfKpi>> findKpisByOwnerAccount(String ownerAccount) throws ServiceException, Exception {
+		if (StringUtils.isBlank(ownerAccount)) {
+			throw new ServiceException( BaseSystemMessage.parameterBlank() );
+		}
+		String tmp[] = ownerAccount.split("/");
+		if (tmp != null && tmp.length >= 3) {
+			ownerAccount = StringUtils.deleteWhitespace(tmp[1]);
+		}
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("account", ownerAccount);
+		DefaultResult<List<HfKpi>> result = new DefaultResult<List<HfKpi>>();
+		List<HfKpi> searchList = this.kpiMapper.selectKpisByOwnerAccount(paramMap);
+		if (null != searchList && searchList.size() > 0) {
+			result.setValue(searchList);
+		} else {
+			result.setMessage(BaseSystemMessage.searchNoData());
+		}
+		return result;
 	}
 	
 }

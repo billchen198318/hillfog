@@ -42,14 +42,17 @@ import org.qifu.hillfog.entity.HfKpi;
 import org.qifu.hillfog.entity.HfKpiEmpl;
 import org.qifu.hillfog.entity.HfKpiOrga;
 import org.qifu.hillfog.entity.HfMeasureData;
+import org.qifu.hillfog.entity.HfPdca;
 import org.qifu.hillfog.logic.IKpiLogicService;
 import org.qifu.hillfog.model.KpiBasicCode;
+import org.qifu.hillfog.model.PDCABase;
 import org.qifu.hillfog.service.IAggregationMethodService;
 import org.qifu.hillfog.service.IFormulaService;
 import org.qifu.hillfog.service.IKpiEmplService;
 import org.qifu.hillfog.service.IKpiOrgaService;
 import org.qifu.hillfog.service.IKpiService;
 import org.qifu.hillfog.service.IMeasureDataService;
+import org.qifu.hillfog.service.IPdcaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -80,6 +83,9 @@ public class KpiLogicServiceImpl extends BaseLogicService implements IKpiLogicSe
 	
 	@Autowired
 	IMeasureDataService<HfMeasureData, String> measureDataService;
+	
+	@Autowired
+	IPdcaService<HfPdca, String> pdcaService;	
 	
 	@ServiceMethodAuthority(type = ServiceMethodType.INSERT)
 	@Transactional(
@@ -163,6 +169,12 @@ public class KpiLogicServiceImpl extends BaseLogicService implements IKpiLogicSe
 			throw new ServiceException( BaseSystemMessage.parameterBlank() );
 		}
 		kpi = this.kpiService.selectByEntityPrimaryKey(kpi).getValueEmptyThrowMessage();
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("mstOid", kpi.getOid());
+		paramMap.put("mstType", PDCABase.SOURCE_MASTER_KPI_TYPE);
+		if (this.pdcaService.count(paramMap) > 0) {
+			throw new ServiceException("Cannot delete, data related PDCA project.");
+		}		
 		this.deleteKpiDepartment(kpi);
 		this.deleteKpiOwner(kpi);
 		this.measureDataService.deleteByKpiId(kpi.getId());

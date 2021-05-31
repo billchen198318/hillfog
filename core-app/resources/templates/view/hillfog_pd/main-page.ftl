@@ -74,6 +74,15 @@
 
 var empList = [ ${empInputAutocomplete} ];
 var currUserId = '${employeeSelect}';
+var currKpiFrequency = '3'; // 6 - Year, 5 - Half-of-year, 4 - Quarter, 3 - Month
+var startDateY = '${startDateY}';
+var endDateY = '${endDateY}';
+var startDateH = '${startDateH}';
+var endDateH = '${endDateH}';
+var startDateQ = '${startDateQ}';
+var endDateQ = '${endDateQ}';
+var startDateM = '${startDateM}';
+var endDateM = '${endDateM}';
 
 $( document ).ready(function() {
 	
@@ -103,6 +112,8 @@ $( document ).ready(function() {
 		if (currUserId != inputEmployee) {
 			currUserId = inputEmployee;
 			vm.queryObjectives();
+			vm.queryPdcaProjects();
+			vm.queryKpiChart(currKpiFrequency);
 		}
 	});
 	
@@ -110,10 +121,54 @@ $( document ).ready(function() {
 
 
 
+function gaugeChart(chartId, seriesName, dataValue, dataName) {
+	var myChart = echarts.init(document.getElementById( chartId ));
+	var option = {
+	    tooltip: {
+	        formatter: '{a} <br/>{b} : {c}%'
+	    },
+	    toolbox: {
+	        feature: {
+	            restore: {},
+	            saveAsImage: {}
+	        }
+	    },
+	    series: [
+	        {
+				title:{
+					show:true,
+					offsetCenter:[0,-190],
+					color:'#888',
+					fontWeight:'bold',
+					fontSize:24 
+				},  
+				clockwise:true,
+				startAngle:180,
+				endAngle:0,			      
+				pointer:{show:true},
+				axisTick:{show:true},
+				splitLine:{show:false},        
+	            name: seriesName,
+	            type: 'gauge',
+	            detail: {
+	            	offsetCenter:[5,-40],
+	            	formatter: '{value}%'
+	            },
+	            data: [{value: dataValue, name: dataName}]
+	        }
+	    ]
+	};
+	
+	myChart.setOption(option, true);
+	myChart.resize();
+}
+
+
+
 // ----------------------------------------------------------------------------------
 // PDCA 甘特圖
 // ----------------------------------------------------------------------------------
-function qeruyPdcaChart(pdcaOid) {
+function queryPdcaChart(pdcaOid) {
 	xhrSendParameter(
 			'./hfPdcaItemsForGanttDataJson', 
 			{
@@ -338,9 +393,31 @@ function pdcaProjectChartFillItems(pdcaItems) {
 		
 			<div class="card border-info">
 			  <div class="card-body">		
-					<h4><span class="badge badge-pill badge-info">KPIs</span></h4>	
+					<h4><span class="badge badge-pill badge-info">Personal owner KPIs</span></h4>	
 					
+					<div v-if=" kpis == null || kpis.length < 1 ">
+					<h4><span class="badge badge-secondary">No your KPIs can display.</span></h4>
+					</div>
+										
+					<div class="row" v-if=" kpis != null && kpis.length > 0 " >
+						<button type="button" class="btn btn-success" title="Current year" v-on:click="queryKpiChart('6')">Y</button>
+						&nbsp;
+						<button type="button" class="btn btn-success" title="Current half-of-year" v-on:click="queryKpiChart('5')">H</button>
+						&nbsp;
+						<button type="button" class="btn btn-success" title="Current quarter" v-on:click="queryKpiChart('4')">Q</button>
+						&nbsp;
+						<button type="button" class="btn btn-success" title="Current month" v-on:click="queryKpiChart('3')">M</button>
+					</div>
+
+					<div v-for="d in kpis">
 						
+						<div class="row mx-auto flex-column"><div class="col-6 align-self-center" v-bind:id="'gauge_'+d.kpi.oid" style="width: 400px;height:350px;"></div></div>
+							
+						<br>
+							
+					</div>
+				
+										
 				</div>
 			</div>
 			
@@ -385,6 +462,7 @@ function pdcaProjectChartFillItems(pdcaItems) {
 <br/>
 <br/>
 
+<script src="${qifu_basePath}echarts/echarts.min.js"></script>
 <script type="text/javascript" src="${qifu_basePath}js/hillfog/HF_PROG001D0007Q.js?ver=${qifu_jsVerBuild}"></script>
 
 </body>

@@ -46,7 +46,9 @@ import org.qifu.hillfog.entity.HfObjDept;
 import org.qifu.hillfog.entity.HfObjOwner;
 import org.qifu.hillfog.entity.HfObjective;
 import org.qifu.hillfog.entity.HfOrgDept;
+import org.qifu.hillfog.entity.HfPdca;
 import org.qifu.hillfog.logic.IOkrBaseLogicService;
+import org.qifu.hillfog.model.PDCABase;
 import org.qifu.hillfog.service.IEmployeeService;
 import org.qifu.hillfog.service.IInitiativesService;
 import org.qifu.hillfog.service.IKeyResService;
@@ -55,6 +57,7 @@ import org.qifu.hillfog.service.IObjDeptService;
 import org.qifu.hillfog.service.IObjOwnerService;
 import org.qifu.hillfog.service.IObjectiveService;
 import org.qifu.hillfog.service.IOrgDeptService;
+import org.qifu.hillfog.service.IPdcaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -92,6 +95,9 @@ public class OkrBaseLogicServiceImpl extends BaseLogicService implements IOkrBas
 	
 	@Autowired
 	IOrgDeptService<HfOrgDept, String> orgDeptService;	
+	
+	@Autowired
+	IPdcaService<HfPdca, String> pdcaService;
 	
 	@ServiceMethodAuthority(type = ServiceMethodType.INSERT)
 	@Transactional(
@@ -168,11 +174,17 @@ public class OkrBaseLogicServiceImpl extends BaseLogicService implements IOkrBas
 		if (null == objective || this.isBlank(objective.getOid())) {
 			throw new ServiceException( BaseSystemMessage.objectNull() );
 		}
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("mstOid", objective.getOid());
+		paramMap.put("mstType", PDCABase.SOURCE_MASTER_OBJECTIVE_TYPE);
+		if (this.pdcaService.count(paramMap) > 0) {
+			throw new ServiceException("Cannot delete, data related PDCA project.");
+		}
 		this.removeInitiative(objective);
 		this.removeObjectiveDept(objective);
 		this.removeObjectiveOwner(objective);
 		// remove key result & key result measure data.
-		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.clear();
 		paramMap.put("objOid", objective.getOid());		
 		List<HfKeyRes> keyResList = this.keyResService.selectListByParams(paramMap).getValue();
 		for (HfKeyRes keyRes : keyResList) {

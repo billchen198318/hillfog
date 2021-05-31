@@ -2,7 +2,8 @@ const PageEventHandling = {
 	data() {
 		return {
 			objectives	:	[],
-			pdcaOids	:	[]
+			pdcaOids	:	[],
+			kpis		:	[]
 		}
 	},
 	methods: {
@@ -16,11 +17,18 @@ const PageEventHandling = {
 		setPdcaProjects			:	setPdcaProjectList,
 		clearPdcaProjects		:	clearPdcaProjectList,
 		viewPdcaDetail			:	viewPdcaDetailItem,
-		paintCurrentPdcaChart	:	qeruyPdcaChart
+		paintCurrentPdcaChart	:	queryPdcaChart,
+		
+		queryKpiChart			:	queryKpiScoreData,
+		setKpiChartScoreData	:	setKpiScoreData,
+		clearKpiChartScoreData	:	clearKpiScoreData,
+		paintCurrentGaugeChart	:	paintGaugeChart
+		
 	},
 	mounted() {
 		this.queryObjectives();
 		this.queryPdcaProjects();
+		this.queryKpiChart('3');
 	}
 }
 
@@ -94,6 +102,58 @@ function queryPdcaProjectList() {
 
 function viewPdcaDetailItem(pdcaOid) {
 	parent.addTab('HF_PROG004D0001V', parent.getProgUrlForOid('HF_PROG004D0001V', pdcaOid));
+}
+
+
+
+function queryKpiScoreData(freq) {
+	var startDate = startDateM;
+	var endDate = endDateM;
+	if ('6' == freq) {
+		startDate = startDateY;
+		endDate = endDateY;
+	}
+	if ('5' == freq) {
+		startDate = startDateH;
+		endDate = endDateH;		
+	}
+	if ('4' == freq) {
+		startDate = startDateQ;
+		endDate = endDateQ;		
+	}		
+	currKpiFrequency = freq;
+	xhrSendParameter(
+		'./hfKpiReportContentDataJson', 
+		{
+			'noPdca'		:	_qifu_success_flag,
+			'checkKpiOwner'	:	_qifu_success_flag,
+			'kpiOid'		:	'',
+			'date1'			:	startDate,
+			'date2'			:	endDate,
+			'frequency'		:	freq,
+			'kpiEmpl'		:	currUserId
+		}, 
+		this.setKpiChartScoreData, 
+		this.clearKpiChartScoreData,
+		_qifu_defaultSelfPleaseWaitShow
+	);	
+	
+}
+function setKpiScoreData(data) {
+	this.kpis = data.value;
+	var ths = this;
+	setTimeout(function(){  
+		console.log('setTimeout, because document.getElementById will miss!');
+		ths.paintCurrentGaugeChart();
+	}, 50);
+}
+function clearKpiScoreData() {
+	this.kpis = [];
+}
+function paintGaugeChart() {
+	for (var n in this.kpis) {
+		gaugeChart('gauge_' + this.kpis[n].kpi.oid, this.kpis[n].kpi.name, this.kpis[n].score, 'The completion rate');
+	}
 }
 
 
