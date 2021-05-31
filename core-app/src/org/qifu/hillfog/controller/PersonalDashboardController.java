@@ -69,6 +69,7 @@ public class PersonalDashboardController extends BaseControllerSupport implement
 			throw new ControllerException( BaseSystemMessage.dataErrors() );
 		}
 		mm.put("employee", employee);
+		mm.put("employeeSelect", this.employeeService.getPagefieldValue(employee));
 		mm.put("empList", empList);
 		mm.put("empInputAutocomplete", pageAutocompleteContent(empList));			
 	}

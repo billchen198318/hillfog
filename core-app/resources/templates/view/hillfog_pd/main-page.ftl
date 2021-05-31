@@ -68,8 +68,38 @@
 
 <script type="text/javascript">
 
+var empList = [ ${empInputAutocomplete} ];
+var currUserId = '${employeeSelect}';
+
 $( document ).ready(function() {
 	
+	$("#accountId").autocomplete({
+		source: empList,
+		select: function( event, ui ) {
+			$("#accountId").val( ui.item.label );
+			$("#accountId").trigger('change');
+		}
+	}).focus(function() {
+		$(this).autocomplete("search", " ");
+	});		
+	
+	$("#accountId").change(function(){
+		var inputEmployee = $("#accountId").val();
+		var checkInEmployee = false;
+		for (var n in empList) {
+			if ( empList[n] == inputEmployee ) {
+				checkInEmployee = true;
+			}
+		}
+		if (!checkInEmployee) {
+			inputEmployee = currUserId;
+		}
+		$("#accountId").val( inputEmployee );
+		currUserId = inputEmployee;
+		
+	});
+	
+	$("#accountId").trigger('change');
 	
 });
 
@@ -92,12 +122,22 @@ function refreshPage() {
 		<div class="col p-2 bg-secondary rounded">
 			<div class="row">
 				<div class="col-xs-12 col-md-12 col-lg-12 text-white">
+				<@qifu.if test=" null == empList || empList.size <= 1 ">
+				
 					<h4>
-					<span class="badge badge-success"><@qifu.out value="employee.empId" escapeHtml="Y" />&nbsp;-&nbsp;<@qifu.out value="employee.name" escapeHtml="Y" /></span>
-					&nbsp;
-					&nbsp;
-					<span class="btn badge btn-info" onclick="refreshPage();"><h6><i class="icon fa fa-refresh"></i>&nbsp;Refresh</h6></span>		
-				</div>
+					<span class="badge badge-success"><@qifu.out value="employeeSelect" escapeHtml="Y" /></span>
+					</h4>
+					
+					<input type="hidden" name="accountId" id="accountId" value="${employeeSelect}"/>
+									
+				</@qifu.if>
+				<@qifu.else>
+					
+					<@qifu.textbox name="accountId" value="employeeSelect" id="accountId" label="Employee" requiredFlag="N" maxlength="100" placeholder="Select employee" />
+					
+				</@qifu.else>
+					
+				</div>	
 			</div>	
 		</div>	
 	</div>
