@@ -22,7 +22,8 @@ const PageEventHandling = {
 		queryKpiChart			:	queryKpiScoreData,
 		setKpiChartScoreData	:	setKpiScoreData,
 		clearKpiChartScoreData	:	clearKpiScoreData,
-		paintCurrentGaugeChart	:	paintGaugeChart
+		paintCurrentGaugeChart	:	paintGaugeChart,
+		toMeasureDataInput		:	toMeasureDataInputTab
 		
 	},
 	mounted() {
@@ -169,7 +170,9 @@ function paintGaugeChart() {
 		gaugeChart('gauge_' + this.kpis[n].kpi.oid, name, this.kpis[n].score, 'The completion rate');
 	}
 }
-
+function toMeasureDataInputTab(oid) {
+	parent.addTab('HF_PROG001D0005M', parent.getProgUrlForOid('HF_PROG001D0005M', oid) );
+}
 
 
 function appUnmount() {
