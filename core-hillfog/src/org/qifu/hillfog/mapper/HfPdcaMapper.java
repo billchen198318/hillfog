@@ -21,6 +21,7 @@
  */
 package org.qifu.hillfog.mapper;
 
+import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
@@ -31,5 +32,7 @@ import org.qifu.hillfog.entity.HfPdca;
 public interface HfPdcaMapper extends IBaseMapper<HfPdca, String> {
 	
 	public String selectMaxPdcaNum(Map<String, Object> paramMap);
+	
+	public List<String> selectPdcaOidListForOwnerBeRelated(Map<String, Object> paramMap);
 	
 }

@@ -21,6 +21,8 @@
  */
 package org.qifu.hillfog.service;
 
+import java.util.List;
+
 import org.qifu.base.exception.ServiceException;
 import org.qifu.base.service.IBaseService;
 import org.qifu.hillfog.entity.HfPdca;
@@ -28,5 +30,7 @@ import org.qifu.hillfog.entity.HfPdca;
 public interface IPdcaService<T, E> extends IBaseService<HfPdca, String> {
 	
 	public String selectMaxPdcaNum(String head) throws ServiceException, Exception;
+	
+	public List<String> selectPdcaOidListForOwnerBeRelated(String ownerUid) throws ServiceException, Exception;
 	
 }

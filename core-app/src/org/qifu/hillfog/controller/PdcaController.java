@@ -37,6 +37,7 @@ import org.qifu.base.controller.IPageNamespaceProvide;
 import org.qifu.base.exception.AuthorityException;
 import org.qifu.base.exception.ControllerException;
 import org.qifu.base.exception.ServiceException;
+import org.qifu.base.message.BaseSystemMessage;
 import org.qifu.base.model.CheckControllerFieldHandler;
 import org.qifu.base.model.ControllerMethodAuthority;
 import org.qifu.base.model.DefaultControllerJsonResultObj;
@@ -258,6 +259,31 @@ public class PdcaController extends BaseControllerSupport implements IPageNamesp
 		}
 		return result;		
 	}		
+	
+	@ControllerMethodAuthority(check = false, programId = "HF_PROG004D0001Q")
+	@RequestMapping(value = "/hfPdcaOidListForOwnerDataJson", produces = MediaType.APPLICATION_JSON_VALUE)		
+	public @ResponseBody DefaultControllerJsonResultObj<List<String>> doQueryPdcaOidListForOwner(HttpServletRequest request, @RequestParam(name="ownerAccount") String accountId) {
+		DefaultControllerJsonResultObj<List<String>> result = this.getDefaultJsonResult(this.currentMethodAuthority());
+		if (!this.isAuthorizeAndLoginFromControllerJsonResult(result)) {
+			return result;
+		}
+		try {
+			String tmp[] = accountId.split("/");
+			if (tmp != null && tmp.length >= 3) {
+				accountId = StringUtils.deleteWhitespace(tmp[1]);
+			}
+			result.setValue( this.pdcaService.selectPdcaOidListForOwnerBeRelated(accountId) );
+			result.setSuccess( YES );
+			if ( result.getValue() == null || result.getValue().size() < 1 ) {
+				result.setMessage( BaseSystemMessage.searchNoData() );
+			}
+		} catch (AuthorityException | ServiceException | ControllerException e) {
+			this.baseExceptionResult(result, e);	
+		} catch (Exception e) {
+			this.exceptionResult(result, e);
+		}
+		return result;		
+	}			
 	
 	@ControllerMethodAuthority(check = true, programId = "HF_PROG004D0001A")
 	@RequestMapping("/hfPdcaCreatePage")

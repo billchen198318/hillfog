@@ -318,5 +318,24 @@
     select MAX(PDCA_NUM) from <include refid="org.qifu.hillfog.mapper.DB1Config.schema"/>hf_pdca
     WHERE PDCA_NUM LIKE #{pdcaNum,jdbcType=VARCHAR}					
   </select> 
-      
+  
+  <select id="selectPdcaOidListForOwnerBeRelated" parameterType="java.util.HashMap" resultType="java.lang.String">
+	SELECT DISTINCT * FROM (
+		SELECT M.OID 
+		FROM 
+		<include refid="org.qifu.hillfog.mapper.DB1Config.schema"/>hf_pdca M, 
+		<include refid="org.qifu.hillfog.mapper.DB1Config.schema"/>hf_pdca_owner B
+		WHERE M.OID = B.PDCA_OID AND B.OWNER_UID = #{ownerUid,jdbcType=VARCHAR}
+		
+		UNION 
+		
+		SELECT M.OID 
+		FROM 
+		<include refid="org.qifu.hillfog.mapper.DB1Config.schema"/>hf_pdca M, 
+		<include refid="org.qifu.hillfog.mapper.DB1Config.schema"/>hf_pdca_item B, 
+		<include refid="org.qifu.hillfog.mapper.DB1Config.schema"/>hf_pdca_item_owner C
+		WHERE M.OID = B.PDCA_OID AND B.OID = C.ITEM_OID AND C.PDCA_OID = M.OID AND C.OWNER_UID = #{ownerUid,jdbcType=VARCHAR}
+	) A				
+  </select> 
+        
 </mapper>

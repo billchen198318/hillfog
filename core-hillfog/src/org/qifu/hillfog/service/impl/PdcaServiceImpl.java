@@ -24,6 +24,7 @@ package org.qifu.hillfog.service.impl;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -87,6 +88,16 @@ public class PdcaServiceImpl extends BaseService<HfPdca, String> implements IPdc
 			throw new ServiceException(BaseSystemMessage.dataErrors());
 		}
 		return pdcaNum + "-" + StringUtils.leftPad((Integer.parseInt(num)+1)+"", 3, "0");
+	}
+
+	@Override
+	public List<String> selectPdcaOidListForOwnerBeRelated(String ownerUid) throws ServiceException, Exception {
+		if (StringUtils.isBlank(ownerUid)) {
+			throw new ServiceException(BaseSystemMessage.parameterBlank());
+		}
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("ownerUid", ownerUid);
+		return this.hfPdcaMapper.selectPdcaOidListForOwnerBeRelated(paramMap);
 	}
 	
 }
