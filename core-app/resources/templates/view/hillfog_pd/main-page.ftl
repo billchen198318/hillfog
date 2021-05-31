@@ -94,17 +94,16 @@ $( document ).ready(function() {
 		}
 		if (!checkInEmployee) {
 			inputEmployee = currUserId;
+			$("#accountId").val( currUserId );
+			return;
 		}
-		$("#accountId").val( inputEmployee );
-		currUserId = inputEmployee;
-		
+		if (currUserId != inputEmployee) {
+			currUserId = inputEmployee;
+			vm.queryObjectives();
+		}
 	});
 	
 });
-
-function refreshPage() {
-	
-}
 
 </script>
 
