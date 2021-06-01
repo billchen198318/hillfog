@@ -396,7 +396,7 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
 					<includeSystemScope>true</includeSystemScope>
-					<skip>true</skip>
+					<skip>true</skip><!-- export full jar file, remark this option -->
 				</configuration>
                 <executions>
                     <execution>
