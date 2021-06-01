@@ -413,7 +413,9 @@ function pdcaProjectChartFillItems(pdcaItems) {
 					
 					<div v-for="d in kpis">
 						
-						<div class="col-6 align-self-center" v-bind:id="'gauge_'+d.kpi.oid" style="min-width: 350px;width: 400px;height:350px;"></div>
+						<div class="row mx-auto flex-column">
+							<div class="col-6 align-self-center" v-bind:id="'gauge_'+d.kpi.oid" style="min-width: 350px;width: 400px;height:350px;"></div>
+						</div>
 						
 						<button v-if=" d.measureDatas == null || d.measureDatas.length < 1 " type="button" class="btn btn-primary" title="view" v-on:click="toMeasureDataInput(d.kpi.oid)"><i class="icon fa fa-plus"></i>&nbsp;Current frequency measure-data no input</button>
 							
