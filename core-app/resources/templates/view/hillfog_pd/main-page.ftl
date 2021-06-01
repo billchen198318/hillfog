@@ -137,7 +137,7 @@ function gaugeChart(chartId, seriesName, dataValue, dataName) {
 	        {
 				title:{
 					show:true,
-					offsetCenter:[0,-120],
+					offsetCenter:[0,-110],
 					color:'#1C1C1C',
 					//fontWeight:'bold',
 					fontSize:14
@@ -408,10 +408,12 @@ function pdcaProjectChartFillItems(pdcaItems) {
 						&nbsp;
 						<button type="button" class="btn btn-success" title="Current month" v-on:click="queryKpiChart('3')">M</button>
 					</div>
-
+					
+					<br>
+					
 					<div v-for="d in kpis">
 						
-						<div class="row mx-auto flex-column"><div class="col-6 align-self-center" v-bind:id="'gauge_'+d.kpi.oid" style="width: 100%;height:350px;"></div></div>
+						<div class="col-6 align-self-center" v-bind:id="'gauge_'+d.kpi.oid" style="width: 400px;height:300px;"></div>
 						
 						<button v-if=" d.measureDatas == null || d.measureDatas.length < 1 " type="button" class="btn btn-primary" title="view" v-on:click="toMeasureDataInput(d.kpi.oid)"><i class="icon fa fa-plus"></i>&nbsp;Current frequency measure-data no input</button>
 							
