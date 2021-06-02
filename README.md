@@ -1,9 +1,18 @@
 [![Build Status](https://travis-ci.org/billchen198318/hillfog.svg?branch=master)](https://travis-ci.org/billchen198318/hillfog)
 
-# hillfog
+# hillfog - KPI, OKR(Objectives and Key Results), PDCA, BSC web platform.
+<img alt="logo" src="https://raw.githubusercontent.com/billchen198318/hillfog/master/core-app/resources/static/images/logo.png">
 hillfog is an KPI, OKR, PDCA, BSC web platform. replace old version bambooBSC(https://github.com/billchen198318/bamboobsc)
 <br>
 current in developing, not yet completed.
+<br>
+<br>
+Features:<br>
+1. KPI<br>
+2. OKR<br>
+3. PDCA<br>
+4. BSC<br>
+<br>
 
 Item  | Status
 ------------- | -------------
