@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
 import org.qifu.base.model.CreateDateField;
 import org.qifu.base.model.CreateUserField;
 import org.qifu.base.model.EntityPK;
@@ -28,20 +27,20 @@ public class HfObjective implements java.io.Serializable {
     
     // =====================================================================
     // 查詢顯示用
-    private int objectiveSize = 0;
+    private int keyResultSize = 0;
     private int initiativeSize = 0;
     
     // 顯示用 - 達成率
     private BigDecimal progressPercentage = BigDecimal.ZERO;
     
-    public int getObjectiveSize() {
-		return objectiveSize;
+	public int getKeyResultSize() {
+		return keyResultSize;
 	}
 
-	public void setObjectiveSize(int objectiveSize) {
-		this.objectiveSize = objectiveSize;
+	public void setKeyResultSize(int keyResultSize) {
+		this.keyResultSize = keyResultSize;
 	}
-
+	
 	public int getInitiativeSize() {
 		return initiativeSize;
 	}

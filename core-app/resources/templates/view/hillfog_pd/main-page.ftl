@@ -367,7 +367,7 @@ function pdcaProjectChartFillItems(pdcaItems) {
 				<div v-html=" progressDiv(d.progressPercentage) "></div>		
 				<br>	      
 			      
-			      <h5><span class="badge badge-secondary">Objective:&nbsp;<span class="badge badge-info">{{ d.objectiveSize }}</span></span></h5>
+			      <h5><span class="badge badge-secondary">Key Result:&nbsp;<span class="badge badge-info">{{ d.keyResultSize }}</span></span></h5>
 			      <h5><span class="badge badge-secondary">Initiative:&nbsp;<span class="badge badge-info">{{ d.initiativeSize }}</span></span></h5>
 			      
 			      <p class="card-text"><pre>{{ d.description }}</pre></p>

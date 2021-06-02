@@ -162,7 +162,7 @@ function btnAdd() {
 			    <div class="card-body">
 			      <h5 class="card-title">{{ d.name }}</h5>
 			      
-			      <h5><span class="badge badge-secondary">Objective:&nbsp;<span class="badge badge-info">{{ d.objectiveSize }}</span></span></h5>
+			      <h5><span class="badge badge-secondary">Key Result:&nbsp;<span class="badge badge-info">{{ d.keyResultSize }}</span></span></h5>
 			      <h5><span class="badge badge-secondary">Initiative:&nbsp;<span class="badge badge-info">{{ d.initiativeSize }}</span></span></h5>
 			      
 			      <p class="card-text"><pre>{{ d.description }}</pre></p>

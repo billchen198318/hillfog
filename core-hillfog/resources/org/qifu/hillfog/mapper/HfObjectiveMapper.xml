@@ -20,7 +20,7 @@
     <result column="START_DATE" jdbcType="VARCHAR" property="startDate" />
     <result column="END_DATE" jdbcType="VARCHAR" property="endDate" />
     <result column="DESCRIPTION" jdbcType="VARCHAR" property="description" />
-    <result column="OBJECTIVE_SIZE" jdbcType="INTEGER" property="objectiveSize" />
+    <result column="KEY_RESULT_SIZE" jdbcType="INTEGER" property="keyResultSize" />
     <result column="INITIATIVE_SIZE" jdbcType="INTEGER" property="initiativeSize" />
   </resultMap>  
   
@@ -200,7 +200,7 @@
 		m.START_DATE, 
 		m.END_DATE, 
 		m.DESCRIPTION,
-		(SELECT count(*) FROM <include refid="org.qifu.hillfog.mapper.DB1Config.schema"/>HF_KEY_RES k WHERE k.OBJ_OID = m.OID) as OBJECTIVE_SIZE,
+		(SELECT count(*) FROM <include refid="org.qifu.hillfog.mapper.DB1Config.schema"/>HF_KEY_RES k WHERE k.OBJ_OID = m.OID) as KEY_RESULT_SIZE,
 		(SELECT count(*) FROM <include refid="org.qifu.hillfog.mapper.DB1Config.schema"/>HF_INITIATIVES i WHERE i.OBJ_OID = m.OID) as INITIATIVE_SIZE
 	FROM	<include refid="org.qifu.hillfog.mapper.DB1Config.schema"/>HF_OBJECTIVE m
 	WHERE 1 = 1
