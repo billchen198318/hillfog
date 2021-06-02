@@ -18,8 +18,8 @@ Item  | Status
 ------------- | -------------
 KPI  | in developing
 OKR  | in developing
-PDCA  | Not yet in progress
-BSC  | in developing
+PDCA  | in developing
+BSC  | Not yet in progress
 
 
 ### how to run hillfog (require JAVA11)
