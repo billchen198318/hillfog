@@ -16,7 +16,7 @@
     <section class="login-content">
 
       <div class="logo">
-        <h1>hillfog</h1>
+        <img alt="hillfog" src="./images/logo.png" border="0" />
       </div>
       <div class="login-box">
         <form class="login-form" method="post" action="/login">

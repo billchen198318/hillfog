@@ -57,7 +57,7 @@ ${menuResult.modalHtmlData}
   
   
     <!-- Navbar-->
-    <header class="app-header"><a class="app-header__logo" href="${qifu_basePath}index">hillfog</a>
+    <header class="app-header"><a class="app-header__logo" href="${qifu_basePath}index"><img alt="hillfog" src="./images/logo3.png" border="0"/></a>
       <!-- Sidebar toggle button--><a class="app-sidebar__toggle" href="#" data-toggle="sidebar" aria-label="Hide Sidebar"></a>
       <!-- Navbar Right Menu-->
       <ul class="app-nav">
