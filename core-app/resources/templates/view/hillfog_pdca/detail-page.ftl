@@ -219,7 +219,7 @@ function paintPdcaProjectTableContent(data) {
 		<td width="25%" align="center" bgcolor="#454545"><b><font color="#FBFBFB">Plan</font></b></td>
 		<td width="25%" align="center" bgcolor="#454545"><b><font color="#FBFBFB">Do</font></b></td>
 		<td width="25%" align="center" bgcolor="#454545"><b><font color="#FBFBFB">Check</font></b></td>
-		<td width="25%" align="center" bgcolor="#454545"><b><font color="#FBFBFB">Action</font></b></td>
+		<td width="25%" align="center" bgcolor="#454545"><b><font color="#FBFBFB">Act</font></b></td>
 		</tr>	
 	`;
 	//str += '<tbody>';
@@ -392,13 +392,13 @@ function paintPdcaProjectTableItemConent(itemData) {
 	var str = '';
 	str += '<span class="badge badge-primary"><H6>' + itemData.name + '</h6></span>';
 	str += '<br/>';
-	str += '<b>日期:</b>&nbsp;<span class="badge badge-info"><font size="2">' + itemData.startDateShow + ' ~ ' + itemData.endDateShow + '</font></span>';
+	str += '<b>Date:</b>&nbsp;<span class="badge badge-info"><font size="2">' + itemData.startDateShow + ' ~ ' + itemData.endDateShow + '</font></span>';
 	str += '<br/>';
-	str += '<b>負責人:</b><br/>';
+	str += '<b>Item owner:</b><br/>';
 	for (var i = 0; itemData.ownerNameList != null && i < itemData.ownerNameList.length; i++) {
 		str += '<span class="badge badge-secondary"><font size="2">' + itemData.ownerNameList[i] + '</font></span><br/>';
 	}
-	str += '<b>說明:</b>&nbsp;';
+	str += '<b>Description:</b>&nbsp;';
 	str += '<br/>';
 	str += replaceAll(itemData.description, '\n', '<br/>');
 	return str;
