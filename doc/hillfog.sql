@@ -69,7 +69,8 @@ CREATE TABLE `hf_employee` (
   `UDATE` datetime DEFAULT NULL,
   PRIMARY KEY (`OID`),
   UNIQUE KEY `UK_1` (`ACCOUNT`),
-  FULLTEXT KEY `IDX_1` (`EMP_ID`,`NAME`)
+  UNIQUE KEY `UK_2` (`EMP_ID`),
+  FULLTEXT KEY `IDX_1` (`NAME`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
