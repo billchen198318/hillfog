@@ -1,0 +1,7 @@
+*.htm linguist-vendored=false
+*.html linguist-vendored=false
+*.css linguist-vendored=false
+*.txt linguist-vendored=false
+*.bak linguist-vendored=false
+*.png linguist-vendored=false
+*.jpg linguist-vendored=false
