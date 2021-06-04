@@ -700,6 +700,156 @@ LOCK TABLES `hf_pdca_owner` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `hf_perspective`
+--
+
+DROP TABLE IF EXISTS `hf_perspective`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `hf_perspective` (
+  `OID` char(36) NOT NULL,
+  `SC_OID` char(36) NOT NULL,
+  `NAME` varchar(100) NOT NULL,
+  `WEIGHT` decimal(5,2) NOT NULL DEFAULT 0.00,
+  `TAB_NUM` varchar(5) NOT NULL,
+  `CUSERID` varchar(24) NOT NULL,
+  `CDATE` datetime NOT NULL,
+  `UUSERID` varchar(24) DEFAULT NULL,
+  `UDATE` datetime DEFAULT NULL,
+  PRIMARY KEY (`OID`),
+  UNIQUE KEY `UK_1` (`SC_OID`,`NAME`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `hf_perspective`
+--
+
+LOCK TABLES `hf_perspective` WRITE;
+/*!40000 ALTER TABLE `hf_perspective` DISABLE KEYS */;
+/*!40000 ALTER TABLE `hf_perspective` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `hf_scorecard`
+--
+
+DROP TABLE IF EXISTS `hf_scorecard`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `hf_scorecard` (
+  `OID` char(36) NOT NULL,
+  `NAME` varchar(100) NOT NULL,
+  `CONTENT` varchar(8000) NOT NULL,
+  `MISSION` varchar(8000) NOT NULL,
+  `CUSERID` varchar(24) NOT NULL,
+  `CDATE` datetime NOT NULL,
+  `UUSERID` varchar(24) DEFAULT NULL,
+  `UDATE` datetime DEFAULT NULL,
+  PRIMARY KEY (`OID`),
+  UNIQUE KEY `UK_1` (`NAME`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `hf_scorecard`
+--
+
+LOCK TABLES `hf_scorecard` WRITE;
+/*!40000 ALTER TABLE `hf_scorecard` DISABLE KEYS */;
+/*!40000 ALTER TABLE `hf_scorecard` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `hf_so_owner_kpis`
+--
+
+DROP TABLE IF EXISTS `hf_so_owner_kpis`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `hf_so_owner_kpis` (
+  `OID` char(36) NOT NULL,
+  `SO_OID` char(36) NOT NULL,
+  `KPI_OID` char(36) NOT NULL,
+  `CARD_WEIGHT` decimal(5,2) NOT NULL DEFAULT 0.00,
+  `CUSERID` varchar(24) NOT NULL,
+  `CDATE` datetime NOT NULL,
+  `UUSERID` varchar(24) DEFAULT NULL,
+  `UDATE` datetime DEFAULT NULL,
+  PRIMARY KEY (`OID`),
+  UNIQUE KEY `UK_1` (`SO_OID`,`KPI_OID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `hf_so_owner_kpis`
+--
+
+LOCK TABLES `hf_so_owner_kpis` WRITE;
+/*!40000 ALTER TABLE `hf_so_owner_kpis` DISABLE KEYS */;
+/*!40000 ALTER TABLE `hf_so_owner_kpis` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `hf_so_owner_okrs`
+--
+
+DROP TABLE IF EXISTS `hf_so_owner_okrs`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `hf_so_owner_okrs` (
+  `OID` char(36) NOT NULL,
+  `SO_OID` char(36) NOT NULL,
+  `OKR_OID` char(36) NOT NULL,
+  `CUSERID` varchar(24) NOT NULL,
+  `CDATE` datetime NOT NULL,
+  `UUSERID` varchar(24) DEFAULT NULL,
+  `UDATE` datetime DEFAULT NULL,
+  PRIMARY KEY (`OID`),
+  UNIQUE KEY `UK_1` (`SO_OID`,`OKR_OID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `hf_so_owner_okrs`
+--
+
+LOCK TABLES `hf_so_owner_okrs` WRITE;
+/*!40000 ALTER TABLE `hf_so_owner_okrs` DISABLE KEYS */;
+/*!40000 ALTER TABLE `hf_so_owner_okrs` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `hf_strategy_objective`
+--
+
+DROP TABLE IF EXISTS `hf_strategy_objective`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `hf_strategy_objective` (
+  `OID` char(36) NOT NULL,
+  `PER_OID` char(36) NOT NULL,
+  `NAME` varchar(100) NOT NULL,
+  `WEIGHT` decimal(5,2) NOT NULL DEFAULT 0.00,
+  `CUSERID` varchar(24) NOT NULL,
+  `CDATE` datetime NOT NULL,
+  `UUSERID` varchar(24) DEFAULT NULL,
+  `UDATE` datetime DEFAULT NULL,
+  PRIMARY KEY (`OID`),
+  UNIQUE KEY `UK_1` (`PER_OID`,`NAME`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `hf_strategy_objective`
+--
+
+LOCK TABLES `hf_strategy_objective` WRITE;
+/*!40000 ALTER TABLE `hf_strategy_objective` DISABLE KEYS */;
+/*!40000 ALTER TABLE `hf_strategy_objective` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `tb_account`
 --
 
@@ -1559,4 +1709,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-06-01 14:21:22
+-- Dump completed on 2021-06-04 16:31:03
