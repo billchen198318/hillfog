@@ -111,35 +111,26 @@ $( document ).ready(function() {
 <#import "../common-f-head.ftl" as cfh />
 <@cfh.commonFormHeadContent /> 
 
+<div id="main-content">
 
-<ul class="nav nav-tabs" id="subMyTab" role="tablist">
-	<li class="nav-item">
-		<a class="nav-link" id="test1-tab" data-toggle="tab" href="#test1" role="tab" aria-controls="test1" aria-selected="true"><h6>配置-test1</h6></a>
-	</li>
-	<li class="nav-item">
-		<a class="nav-link" id="test2-tab" data-toggle="tab" href="#test2" role="tab" aria-controls="test2" aria-selected="false"><h6>配置-test2</h6></a>
-	</li>
-	<li class="nav-item">
-		<a class="nav-link" id="test3-tab" data-toggle="tab" href="#test3" role="tab" aria-controls="test3" aria-selected="false"><h6>配置-test3</h6></a>
-	</li>
-</ul>
+	<ul class="nav nav-tabs" id="subMyTab" role="tablist">
+		<li class="nav-item" v-for="(d, index) in perspectives">
+			<a v-bind:class="'nav-link' + (index <= 0 ? ' active ' : ' ')" v-bind:id="'tab'+d.numTab" data-toggle="tab" v-bind:href="'#tabContent'+d.numTab" role="tab" v-bind:aria-controls="'tab'+d.numTab" v-bind:aria-selected="(index <= 0 ? 'true' : 'false')"><h6>{{d.name}}</h6></a>
+		</li>
+	</ul>
+	
+	<div class="tab-content" id="subMyTabContent">
+		
+	<template v-for="(d, index) in perspectives">
+		<div v-bind:class="'tab-pane fade ' + (index <= 0 ? 'true active show' : 'false')" v-bind:id="'tabContent'+d.numTab" role="tabpanel" v-bind:aria-labelledby="'tab'+d.numTab">
+			<div class="row">
+			Test - {{d.name}}
+			</div>
+		</div>
+	</template>
+		
+	</div>
 
-<div class="tab-content" id="subMyTabContent">
-	<div class="tab-pane fade true" id="test1" role="tabpanel" aria-labelledby="test1-tab">
-		<div class="row">
-		aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-		</div>
-	</div>
-	<div class="tab-pane fade false" id="test2" role="tabpanel" aria-labelledby="test2-tab">
-		<div class="row">
-		bbbbbbbbbbbbbbbbbbbbbbbbb
-		</div>
-	</div>
-	<div class="tab-pane fade false" id="test3" role="tabpanel" aria-labelledby="test3-tab">
-		<div class="row">
-		ccccccccccccccccccccccccccccccc
-		</div>
-	</div>
 </div>
 
 <br/>
