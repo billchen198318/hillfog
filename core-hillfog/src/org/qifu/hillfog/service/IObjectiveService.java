@@ -22,6 +22,7 @@
 package org.qifu.hillfog.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.qifu.base.exception.ServiceException;
 import org.qifu.base.model.DefaultResult;
@@ -31,5 +32,7 @@ import org.qifu.hillfog.entity.HfObjective;
 public interface IObjectiveService<T, E> extends IBaseService<HfObjective, String> {
 	
 	public DefaultResult<List<HfObjective>> selectQueryObjectiveList(String ownerAccount, String departmentId, String startDate, String endDate, String name) throws ServiceException, Exception;
+	
+	public Map<String, String> findMap(boolean pleaseSelect) throws ServiceException, Exception;
 	
 }

@@ -3,5 +3,8 @@
 *.css linguist-vendored=false
 *.txt linguist-vendored=false
 *.bak linguist-vendored=false
-*.png linguist-vendored=false
-*.jpg linguist-vendored=false
+*.htm linguist-language=Java
+*.html linguist-language=Java
+*.css linguist-language=Java
+*.txt linguist-language=Java
+*.bak linguist-language=Java

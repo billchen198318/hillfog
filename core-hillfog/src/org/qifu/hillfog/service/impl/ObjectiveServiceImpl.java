@@ -30,6 +30,8 @@ import org.qifu.base.exception.ServiceException;
 import org.qifu.base.mapper.IBaseMapper;
 import org.qifu.base.message.BaseSystemMessage;
 import org.qifu.base.model.DefaultResult;
+import org.qifu.base.model.PleaseSelect;
+import org.qifu.base.model.SortType;
 import org.qifu.base.model.YesNo;
 import org.qifu.base.service.BaseService;
 import org.qifu.hillfog.entity.HfObjective;
@@ -81,6 +83,19 @@ public class ObjectiveServiceImpl extends BaseService<HfObjective, String> imple
 		}
 		result.setSuccess( YesNo.YES );
 		return result;
+	}
+	
+	@Override
+	public Map<String, String> findMap(boolean pleaseSelect) throws ServiceException, Exception {
+		Map<String, String> dataMap = PleaseSelect.pageSelectMap(pleaseSelect);
+		List<HfObjective> objs = this.selectList("NAME", SortType.ASC).getValue();
+		if (null == objs) {
+			return dataMap;
+		}
+		for (HfObjective obj : objs) {
+			dataMap.put(obj.getOid(), obj.getName());
+		}
+		return dataMap;
 	}
 	
 }
