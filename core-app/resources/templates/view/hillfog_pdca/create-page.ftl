@@ -451,7 +451,7 @@ function removeArrayByPos(arr, pos) {
 				        		<td width="10%">
 				        			<button type="button" class="btn btn-dark" title="remove Plan item" v-on:click="removePlanResult(index)"><i class="icon fa fa-remove"></i></button>
 				        		</td>
-				        		<td width="25%"><input type="text" class="form-control" placeholder="Enter name" v-model="d.name"></td>
+				        		<td width="25%"><input type="text" class="form-control" placeholder="Enter name" v-model="d.name" maxlength="100"></td>
 				        		<td width="15%"><input type="date" class="form-control" placeholder="Enter start date" v-model="d.startDate"></td>
 				        		<td width="15%"><input type="date" class="form-control" placeholder="Enter end date" v-model="d.endDate"></td>
 				        		<td width="35%">
@@ -535,7 +535,7 @@ function removeArrayByPos(arr, pos) {
 				        		<td width="10%">
 				        			<button type="button" class="btn btn-dark" title="remove Do item" v-on:click="removeDoResult(index)"><i class="icon fa fa-remove"></i></button>
 				        		</td>
-				        		<td width="25%"><input type="text" class="form-control" placeholder="Enter name" v-model="d.name"></td>
+				        		<td width="25%"><input type="text" class="form-control" placeholder="Enter name" v-model="d.name" maxlength="100"></td>
 				        		<td width="15%"><input type="date" class="form-control" placeholder="Enter start date" v-model="d.startDate"></td>
 				        		<td width="15%"><input type="date" class="form-control" placeholder="Enter end date" v-model="d.endDate"></td>
 				        		<td width="35%">
@@ -620,7 +620,7 @@ function removeArrayByPos(arr, pos) {
 				        		<td width="10%">
 				        			<button type="button" class="btn btn-dark" title="remove Do item" v-on:click="removeCheckResult(index)"><i class="icon fa fa-remove"></i></button>
 				        		</td>
-				        		<td width="25%"><input type="text" class="form-control" placeholder="Enter name" v-model="d.name"></td>
+				        		<td width="25%"><input type="text" class="form-control" placeholder="Enter name" v-model="d.name" maxlength="100"></td>
 				        		<td width="15%"><input type="date" class="form-control" placeholder="Enter start date" v-model="d.startDate"></td>
 				        		<td width="15%"><input type="date" class="form-control" placeholder="Enter end date" v-model="d.endDate"></td>
 				        		<td width="35%">
@@ -707,7 +707,7 @@ function removeArrayByPos(arr, pos) {
 				        		<td width="10%">
 				        			<button type="button" class="btn btn-dark" title="remove Do item" v-on:click="removeActResult(index)"><i class="icon fa fa-remove"></i></button>
 				        		</td>
-				        		<td width="25%"><input type="text" class="form-control" placeholder="Enter name" v-model="d.name"></td>
+				        		<td width="25%"><input type="text" class="form-control" placeholder="Enter name" v-model="d.name" maxlength="100"></td>
 				        		<td width="15%"><input type="date" class="form-control" placeholder="Enter start date" v-model="d.startDate"></td>
 				        		<td width="15%"><input type="date" class="form-control" placeholder="Enter end date" v-model="d.endDate"></td>
 				        		<td width="35%">

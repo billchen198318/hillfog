@@ -342,8 +342,8 @@ function removeArrayByPos(arr, pos) {
 	        		<td width="10%">
 	        			<button type="button" class="btn btn-dark" id="btnRemoveKeyRes" title="remove key result" v-on:click="removeKeyResult(index)"><i class="icon fa fa-remove"></i></button>
 	        		</td>
-	        		<td width="25%"><input type="text" class="form-control" placeholder="Enter name" v-model="d.name"></td>
-	        		<td width="15%"><input type="number" class="form-control" placeholder="Enter target" v-model="d.target"></td>
+	        		<td width="25%"><input type="text" class="form-control" placeholder="Enter name" v-model="d.name" maxlength="100"></td>
+	        		<td width="15%"><input type="number" class="form-control" placeholder="Enter target" v-model="d.target" min="-9999999999" max="9999999999"></td>
 	        		<td width="15%">
 	        			<select class="form-control" v-model="d.gpType">
 	        				<option value="1">1 - Sum</option>

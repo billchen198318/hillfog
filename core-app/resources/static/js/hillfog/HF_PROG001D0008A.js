@@ -7,8 +7,12 @@ const PageEventHandling = {
 		}
 	},
 	methods: {
-		init			:	initPerspectives,
-		setCurrSelTab	:	setCurrentSelectTabNum
+		init					:	initPerspectives,
+		setCurrSelTab			:	setCurrentSelectTabNum,
+		addPerspective			:	addPerspectiveItem,
+		removeStrategyObjective	:	removeStrategyObjectiveItem,
+		addStrategyObjective	:	addStrategyObjectiveItem,
+		removePerspective		:	removePerspectiveItem
 	},
 	mounted() {
 		this.init();
@@ -18,10 +22,19 @@ const PageEventHandling = {
 function initPerspectives() {
 	var p = ['Financial', 'Customer', 'Internal business processes', 'Learning and growth'];
 	for (var n in p) {
+		var so = [];
+		so.push({
+			'oid'		:	'',
+			'name'		:	'',
+			'weight'	:	0,
+			'kpis'		:	[],
+			'okrs'		:	[]
+		});
 		this.perspectives.push({
+			'oid'					:	'',
 			'name'					:	p[n],
-			'strategyObjectives'	:	[],
-			'weight'				:	'0',
+			'strategyObjectives'	:	so,
+			'weight'				:	25,
 			'numTab'				:	n+''
 		});		
 	}
@@ -31,6 +44,57 @@ function initPerspectives() {
 function setCurrentSelectTabNum(index) {
 	this.currSelTabNum = index;
 }
+
+function addPerspectiveItem() {
+	this.tabs = this.tabs + 1;
+	var so = [];
+	so.push({
+		'oid'	:	'',
+		'name'	:	'',
+		'weight':	0,
+		'kpis'	:	[],
+		'okrs'	:	[]
+	});
+	this.perspectives.push({
+		'oid'				:	'',
+		'name'				:	'New perspective-' + this.tabs,
+		'strategyObjectives':	so,
+		'weight'			:	0,
+		'numTab'			:	this.tabs + ''
+	});
+}
+
+function removeStrategyObjectiveItem(perspectiveIndex, strategyObjectiveIndex) {
+	var per = this.perspectives[perspectiveIndex];
+	removeArrayByPos(per.strategyObjectives, strategyObjectiveIndex);
+}
+
+function addStrategyObjectiveItem(perspectiveIndex) {
+	var per = this.perspectives[perspectiveIndex];
+	var so = per.strategyObjectives;
+	so.push({
+		'oid'	:	'',
+		'name'	:	'',
+		'weight':	0,
+		'kpis'	:	[],
+		'okrs'	:	[]
+	});	
+}
+
+function removePerspectiveItem(perspectiveIndex) {
+	var that = this;
+	parent.bootbox.confirm(
+		"Delete?", 
+		function(result) { 
+			if (!result) {
+				return;
+			}
+			removeArrayByPos(that.perspectives, perspectiveIndex);
+		}
+	);	
+}
+
+
 
 function appUnmount() {
 	app.unmount();

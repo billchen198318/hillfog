@@ -64,6 +64,27 @@
   width: 1px;
 }
 
+
+
+.btn-circle.btn-xl {
+    width: 70px;
+    height: 70px;
+    padding: 10px 16px;
+    border-radius: 35px;
+    font-size: 24px;
+    line-height: 1.33;
+}
+
+.btn-circle {
+    width: 35px;
+    height: 30px;
+    padding: 6px 0px;
+    border-radius: 15px;
+    text-align: center;
+    font-size: 12px;
+    line-height: 1.42857;
+}
+
 </style>
 
 
@@ -116,6 +137,16 @@ function saveSuccess(data) {
 function clearSave() {
 }
 
+// ====================================================================
+
+function removeArrayByPos(arr, pos) {
+    for (var i = arr.length; i--;) {
+    	if (pos == i) {
+    		arr.splice(pos, 1);
+    	}
+    }
+}
+
 </script>
 
 </head>
@@ -147,31 +178,25 @@ function clearSave() {
 		</div>
 	</div>
 	<div class="row">
-		<div class="col-xs-12 col-md-12 col-lg-12">
+		<div class="col-xs-6 col-md-6 col-lg-6">
 			<@qifu.textarea name="content" value="" id="content" requiredFlag="Y" label="Vision content" rows="3" placeholder="Enter vision content"></@qifu.textarea>
 		</div>
-	</div>		
-	<div class="row">
-		<div class="col-xs-12 col-md-12 col-lg-12">
+		<div class="col-xs-6 col-md-6 col-lg-6">
 			<@qifu.textarea name="mission" value="" id="mission" requiredFlag="Y" label="Vision mission" rows="3" placeholder="Enter vision mission"></@qifu.textarea>
-		</div>
-	</div>	
+		</div>		
+	</div>			
 </div>
 <div class="form-group" id="form-group2">
 	<div class="row">
 		<div class="col-xs-12 col-md-12 col-lg-12">
 		
-		<@qifu.button id="btnSave" label="<i class=\"icon fa fa-floppy-o\"></i>&nbsp;Save"
-			xhrUrl="./hfScorecardSaveJson"
-			xhrParameter="
-			{
-			}
-			"
-			onclick="btnSave();"
-			loadFunction="saveSuccess(data);"
-			errorFunction="clearSave();" />
-		&nbsp;	
-		<@qifu.button id="btnClear" label="<i class=\"icon fa fa-hand-paper-o\"></i>&nbsp;Clear" onclick="clearSave();" />	
+		<button type="button" class="btn btn-primary" id="btnSave" ><i class='icon fa fa-floppy-o'></i>&nbsp;Save</button>
+		&nbsp;
+		<button type="button" class="btn btn-primary" id="btnClear" ><i class='icon fa fa-hand-paper-o'></i>&nbsp;Clear</button>	
+		&nbsp;
+		&nbsp;
+		
+		<button type="button" class="btn btn-info" id="btnAddPerspective" title="Add perspective" v-on:click="addPerspective"><i class="icon fa fa-plus"></i>&nbsp;Add perspective</button>
 		
 		</div>
 	</div>		
@@ -179,7 +204,7 @@ function clearSave() {
 <div class="form-group" id="form-group3">
 	<ul class="nav nav-tabs" id="subMyTab" role="tablist">
 		<li class="nav-item" v-for="(d, index) in perspectives">
-			<a v-on:click="setCurrSelTab(index)" v-bind:class="'nav-link' + (index == currSelTabNum ? ' active ' : ' ')" v-bind:id="'tab'+d.numTab" data-toggle="tab" v-bind:href="'#tabContent'+d.numTab" role="tab" v-bind:aria-controls="'tab'+d.numTab" v-bind:aria-selected="(index == currSelTabNum ? 'true' : 'false')"><h6>{{d.name}}</h6></a>
+			<a v-on:click="setCurrSelTab(index)" v-bind:class="'nav-link' + (index == currSelTabNum ? ' active ' : ' ')" v-bind:id="'tab'+d.numTab" data-toggle="tab" v-bind:href="'#tabContent'+d.numTab" role="tab" v-bind:aria-controls="'tab'+d.numTab" v-bind:aria-selected="(index == currSelTabNum ? 'true' : 'false')"><h6>{{d.name != '' ? d.name : '?'}}</h6></a>
 		</li>
 	</ul>
 	
@@ -187,14 +212,66 @@ function clearSave() {
 		
 	<template v-for="(d, index) in perspectives">
 		<div v-bind:class="'tab-pane fade ' + (index == currSelTabNum ? 'true active show' : 'false')" v-bind:id="'tabContent'+d.numTab" role="tabpanel" v-bind:aria-labelledby="'tab'+d.numTab">
+
 			<div class="row">
-			Test - {{d.name}}
+				<div class="col-xs-6 col-md-6 col-lg-6">
+					<label v-bind:for="'perName'+index" id="weightLabel">Perspective name&nbsp;<font color="RED">*</font></label>
+					<input type="text" v-bind:id="'perName'+index" class="form-control" placeholder="Enter perspective name" v-model="d.name" maxlength="100">
+				</div>
+				<div class="col-xs-6 col-md-6 col-lg-6">
+					<label v-bind:for="'weight'+index">Perspective weight&nbsp;<font color="RED">*</font>&nbsp;({{d.weight}})</label>
+					<input type="range" class="custom-range" min="0" max="100" v-bind:id="'weight'+index" name="weight" v-model="d.weight">							
+				</div>
+			</div>	
+			
+			<p style="margin-bottom: 10px"></p>
+			
+			<div class="row">
+				<div class="col-xs-12 col-md-12 col-lg-12">
+					<button type="button" class="btn btn-warning" id="btnRemovePerspective" title="Remove perspective" v-on:click="removePerspective(index)"><i class="icon fa fa-plus"></i>&nbsp;Remove perspective</button>
+				<div class="col-xs-12 col-md-12 col-lg-12">
 			</div>
+			
+			<p style="margin-bottom: 10px"></p>
+			
+			<div class="row">
+				<div class="col-xs-12 col-md-12 col-lg-12">
+				<table border="0" class="table">
+					<thead class="thead-dark">
+						<tr>
+							<th>Strategy objective name</th>
+							<th>weight</th>
+							<th>#</th>
+						</tr>
+					</thead>
+					<tr v-for="(p, pIndex) in d.strategyObjectives">
+						<td width="45%">
+							<input type="text" class="form-control" placeholder="Enter strategy objective name" v-model="p.name" maxlength="100">
+						</td>
+						<td width="35%">
+							<label>weight value&nbsp;({{p.weight}})</label>
+							<input type="range" class="custom-range" min="0" max="100" v-model="p.weight">
+						</td>
+						<td width="10%">
+							<button type="button" class="btn btn-dark" title="remove strategy objective item" v-on:click="removeStrategyObjective(index, pIndex)"><i class="icon fa fa-remove"></i></button>
+						</td>
+					</tr>
+				</table>	
+				
+				<button type="button" class="btn btn-primary btn-circle" title="add Strategy objective item" v-on:click="addStrategyObjective(index)"><i class="icon fa fa-plus"></i></button>
+				</div>
+								
+			</div>
+
 		</div>
 	</template>
 		
 	</div>
+	
 </div>
+
+
+
 
 </div>
 
