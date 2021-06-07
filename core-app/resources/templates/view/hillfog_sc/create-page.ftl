@@ -81,13 +81,40 @@ kpis.push({'oid' : '${k}', 'name' : '${kpiMap[k]?js_string?html}'});
 </#list>
 // ==========================================================================================
 
+var msgFields = new Object();
+msgFields['empId'] 					= 'empId';
+msgFields['account'] 				= 'account';
+msgFields['password1'] 				= 'password1';
+msgFields['password2'] 				= 'password2';
+msgFields['name'] 					= 'name';
+msgFields['employeeOrganization']	= 'employeeOrganization';
 
+var formGroups = new Object();
+formGroups['empId'] 				= 'form-group1';
+formGroups['account'] 				= 'form-group1';
+formGroups['password1'] 			= 'form-group1';
+formGroups['password2'] 			= 'form-group1';
+formGroups['name'] 					= 'form-group1';
+formGroups['employeeOrganization']	= 'form-group1';
 
 $( document ).ready(function() {
 	
 	
 });
 
+function saveSuccess(data) {
+	clearWarningMessageField(formGroups, msgFields);
+	if ( _qifu_success_flag != data.success ) {
+		parent.toastrWarning( data.message );
+		setWarningMessageField(formGroups, msgFields, data.checkFields);
+		return;
+	}
+	parent.toastrInfo( data.message );
+	clearSave();
+}
+
+function clearSave() {
+}
 
 </script>
 
@@ -113,16 +140,53 @@ $( document ).ready(function() {
 
 <div id="main-content">
 
+<div class="form-group" id="form-group1">
+	<div class="row">
+		<div class="col-xs-12 col-md-12 col-lg-12">
+			<@qifu.textbox name="name" value="" id="name" requiredFlag="Y" label="Vision name" placeholder="Enter vision name" maxlength="100" />
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-xs-12 col-md-12 col-lg-12">
+			<@qifu.textarea name="content" value="" id="content" requiredFlag="Y" label="Vision content" rows="3" placeholder="Enter vision content"></@qifu.textarea>
+		</div>
+	</div>		
+	<div class="row">
+		<div class="col-xs-12 col-md-12 col-lg-12">
+			<@qifu.textarea name="mission" value="" id="mission" requiredFlag="Y" label="Vision mission" rows="3" placeholder="Enter vision mission"></@qifu.textarea>
+		</div>
+	</div>	
+</div>
+<div class="form-group" id="form-group2">
+	<div class="row">
+		<div class="col-xs-12 col-md-12 col-lg-12">
+		
+		<@qifu.button id="btnSave" label="<i class=\"icon fa fa-floppy-o\"></i>&nbsp;Save"
+			xhrUrl="./hfScorecardSaveJson"
+			xhrParameter="
+			{
+			}
+			"
+			onclick="btnSave();"
+			loadFunction="saveSuccess(data);"
+			errorFunction="clearSave();" />
+		&nbsp;	
+		<@qifu.button id="btnClear" label="<i class=\"icon fa fa-hand-paper-o\"></i>&nbsp;Clear" onclick="clearSave();" />	
+		
+		</div>
+	</div>		
+</div>
+<div class="form-group" id="form-group3">
 	<ul class="nav nav-tabs" id="subMyTab" role="tablist">
 		<li class="nav-item" v-for="(d, index) in perspectives">
-			<a v-bind:class="'nav-link' + (index <= 0 ? ' active ' : ' ')" v-bind:id="'tab'+d.numTab" data-toggle="tab" v-bind:href="'#tabContent'+d.numTab" role="tab" v-bind:aria-controls="'tab'+d.numTab" v-bind:aria-selected="(index <= 0 ? 'true' : 'false')"><h6>{{d.name}}</h6></a>
+			<a v-on:click="setCurrSelTab(index)" v-bind:class="'nav-link' + (index == currSelTabNum ? ' active ' : ' ')" v-bind:id="'tab'+d.numTab" data-toggle="tab" v-bind:href="'#tabContent'+d.numTab" role="tab" v-bind:aria-controls="'tab'+d.numTab" v-bind:aria-selected="(index == currSelTabNum ? 'true' : 'false')"><h6>{{d.name}}</h6></a>
 		</li>
 	</ul>
 	
 	<div class="tab-content" id="subMyTabContent">
 		
 	<template v-for="(d, index) in perspectives">
-		<div v-bind:class="'tab-pane fade ' + (index <= 0 ? 'true active show' : 'false')" v-bind:id="'tabContent'+d.numTab" role="tabpanel" v-bind:aria-labelledby="'tab'+d.numTab">
+		<div v-bind:class="'tab-pane fade ' + (index == currSelTabNum ? 'true active show' : 'false')" v-bind:id="'tabContent'+d.numTab" role="tabpanel" v-bind:aria-labelledby="'tab'+d.numTab">
 			<div class="row">
 			Test - {{d.name}}
 			</div>
@@ -130,6 +194,7 @@ $( document ).ready(function() {
 	</template>
 		
 	</div>
+</div>
 
 </div>
 

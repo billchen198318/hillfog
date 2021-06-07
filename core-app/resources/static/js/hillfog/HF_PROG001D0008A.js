@@ -2,11 +2,13 @@ const PageEventHandling = {
 	data() {
 		return {
 			perspectives	:	[],
-			tabs			:	0
+			tabs			:	0,
+			currSelTabNum	:	0
 		}
 	},
 	methods: {
-		init	:	initPerspectives
+		init			:	initPerspectives,
+		setCurrSelTab	:	setCurrentSelectTabNum
 	},
 	mounted() {
 		this.init();
@@ -24,7 +26,10 @@ function initPerspectives() {
 		});		
 	}
 	this.tabs += p.length;
-	console.log( JSON.stringify(this.perspectives) );
+}
+
+function setCurrentSelectTabNum(index) {
+	this.currSelTabNum = index;
 }
 
 function appUnmount() {
