@@ -150,6 +150,11 @@ function removeArrayByPos(arr, pos) {
 		&nbsp;
 		
 		<button type="button" class="btn btn-info" id="btnAddPerspective" title="Add perspective" v-on:click="addPerspective"><i class="icon fa fa-plus"></i>&nbsp;Add perspective</button>
+		&nbsp;
+		&nbsp;
+		<input type="checkbox" id="autoAllocationCheckbox" v-model="autoAllocationWeightFlag" v-on:click="autoAllocationWeight">
+		<label class="form-check-label" for="autoAllocationCheckbox">Auto allocation weight</label>
+		&nbsp;
 		
 		</div>
 	</div>		
