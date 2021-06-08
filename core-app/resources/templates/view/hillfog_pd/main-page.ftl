@@ -74,7 +74,6 @@
 
 var empList = [ ${empInputAutocomplete} ];
 var currUserId = '${employeeSelect}';
-var currKpiFrequency = '3'; // 6 - Year, 5 - Half-of-year, 4 - Quarter, 3 - Month
 var startDateY = '${startDateY}';
 var endDateY = '${endDateY}';
 var startDateH = '${startDateH}';
@@ -113,7 +112,7 @@ $( document ).ready(function() {
 			currUserId = inputEmployee;
 			vm.queryObjectives();
 			vm.queryPdcaProjects();
-			vm.queryKpiChart(currKpiFrequency);
+			vm.queryKpiChart(vm.currKpiFrequency);
 		}
 	});
 	
@@ -400,13 +399,13 @@ function pdcaProjectChartFillItems(pdcaItems) {
 					</div>
 										
 					<div class="row" v-if=" kpis != null && kpis.length > 0 " >
-						<button type="button" class="btn btn-success" title="Current year" v-on:click="queryKpiChart('6')">Y</button>
+						<button type="button" v-bind:class="'btn btn-' + ('6' == currKpiFrequency ? 'warning' : 'success' )" title="Current year" v-on:click="queryKpiChart('6')">Y</button>
 						&nbsp;
-						<button type="button" class="btn btn-success" title="Current half-of-year" v-on:click="queryKpiChart('5')">H</button>
+						<button type="button" v-bind:class="'btn btn-' + ('5' == currKpiFrequency ? 'warning' : 'success' )" title="Current half-of-year" v-on:click="queryKpiChart('5')">H</button>
 						&nbsp;
-						<button type="button" class="btn btn-success" title="Current quarter" v-on:click="queryKpiChart('4')">Q</button>
+						<button type="button" v-bind:class="'btn btn-' + ('4' == currKpiFrequency ? 'warning' : 'success' )" title="Current quarter" v-on:click="queryKpiChart('4')">Q</button>
 						&nbsp;
-						<button type="button" class="btn btn-success" title="Current month" v-on:click="queryKpiChart('3')">M</button>
+						<button type="button" v-bind:class="'btn btn-' + ('3' == currKpiFrequency ? 'warning' : 'success' )" title="Current month" v-on:click="queryKpiChart('3')">M</button>
 					</div>
 					
 					<br>

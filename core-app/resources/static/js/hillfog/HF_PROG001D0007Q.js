@@ -1,9 +1,10 @@
 const PageEventHandling = {
 	data() {
 		return {
-			objectives	:	[],
-			pdcaOids	:	[],
-			kpis		:	[]
+			objectives			:	[],
+			pdcaOids			:	[],
+			kpis				:	[],
+			currKpiFrequency	:	'3' // 6 - Year, 5 - Half-of-year, 4 - Quarter, 3 - Month
 		}
 	},
 	methods: {
@@ -122,7 +123,7 @@ function queryKpiScoreData(freq) {
 		startDate = startDateQ;
 		endDate = endDateQ;		
 	}		
-	currKpiFrequency = freq;
+	this.currKpiFrequency = freq;
 	xhrSendParameter(
 		'./hfKpiReportContentDataJson', 
 		{

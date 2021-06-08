@@ -11,6 +11,15 @@
 
 <style type="text/css">
 
+.hrDash{
+  border: 0 none;
+  border-top: 2px dashed #979797;
+  background: none;
+  height:0;
+}
+
+
+
 .btn-circle.btn-xl {
     width: 70px;
     height: 70px;
@@ -219,7 +228,7 @@ function removeArrayByPos(arr, pos) {
 					<tr>
 						<td colspan="3">
 							<select class="form-control" v-model="p.currentSelect1" v-on:change="kpisSelChange(index, pIndex, $event)">
-								<option value="all"> - Please  select  a  KPI - </option>
+								<option value="all">[&nbsp;&nbsp;&nbsp;Please&nbsp;&nbsp;select&nbsp;&nbsp;a&nbsp;&nbsp;KPI&nbsp;&nbsp;&nbsp;]</option>
 								<#list kpiMap?keys as k>
 								<option value="${k}">${kpiMap[k]}</option>
 								</#list>
@@ -254,7 +263,7 @@ function removeArrayByPos(arr, pos) {
 					<tr>
 						<td colspan="3">
 							<select class="form-control" v-model="p.currentSelect2" v-on:change="okrsSelChange(index, pIndex, $event)">
-								<option value="all"> - Please  select  a  OKR - </option>
+								<option value="all">[&nbsp;&nbsp;&nbsp;Please&nbsp;&nbsp;select&nbsp;&nbsp;a&nbsp;&nbsp;OKR&nbsp;&nbsp;&nbsp;]</option>
 								<#list okrMap?keys as k>
 								<option value="${k}">${okrMap[k]}</option>
 								</#list>
@@ -265,6 +274,8 @@ function removeArrayByPos(arr, pos) {
 			        		<span class="badge badge-secondary"><font size="3">{{n.name}}</font><span class="badge badge-danger btn" v-on:click="removeStrategyObjectiveOwnerOkr(index, pIndex, ownerIndex)">X</span></span>
 			        		&nbsp;
 			        		</span>
+			        		
+			        		<hr class="hrDash">
 			        									
 						</td>
 					</tr>										
