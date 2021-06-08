@@ -7,64 +7,9 @@
 <#import "../common-f-inc.ftl" as cfi />
 <@cfi.commonFormHeadResource /> 
 
-<script type="text/javascript" src="${qifu_basePath}js/jquery-ui.min.js?ver=${qifu_jsVerBuild}"></script>
 <script type="text/javascript" src="${qifu_basePath}js/vue.global.js"></script>
 
 <style type="text/css">
-
-.ui-autocomplete {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  z-index: 1000;
-  display: none;
-  float: left;
-  min-width: 160px;
-  padding: 5px 0;
-  margin: 2px 0 0;
-  list-style: none;
-  font-size: 14px;
-  text-align: left;
-  background-color: #ffffff;
-  border: 1px solid #cccccc;
-  border: 1px solid rgba(0, 0, 0, 0.15);
-  border-radius: 4px;
-  -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
-  background-clip: padding-box;
-}
-
-.ui-autocomplete > li > div {
-  display: block;
-  padding: 3px 20px;
-  clear: both;
-  font-weight: normal;
-  line-height: 1.42857143;
-  color: #333333;
-  white-space: nowrap;
-}
-
-.ui-state-hover,
-.ui-state-active,
-.ui-state-focus {
-  text-decoration: none;
-  color: #262626;
-  background-color: #f5f5f5;
-  cursor: pointer;
-}
-
-.ui-helper-hidden-accessible {
-  border: 0;
-  clip: rect(0 0 0 0);
-  height: 1px;
-  margin: -1px;
-  overflow: hidden;
-  padding: 0;
-  position: absolute;
-  width: 1px;
-}
-
-
 
 .btn-circle.btn-xl {
     width: 70px;
@@ -244,7 +189,9 @@ function removeArrayByPos(arr, pos) {
 							<th>#</th>
 						</tr>
 					</thead>
-					<tr v-for="(p, pIndex) in d.strategyObjectives">
+					
+					<template v-for="(p, pIndex) in d.strategyObjectives">
+					<tr>
 						<td width="45%">
 							<input type="text" class="form-control" placeholder="Enter strategy objective name" v-model="p.name" maxlength="100">
 						</td>
@@ -256,6 +203,42 @@ function removeArrayByPos(arr, pos) {
 							<button type="button" class="btn btn-dark" title="remove strategy objective item" v-on:click="removeStrategyObjective(index, pIndex)"><i class="icon fa fa-remove"></i></button>
 						</td>
 					</tr>
+					<tr>
+						<td colspan="3">
+							<select class="form-control" v-model="p.currentSelect1" v-on:change="kpisSelChange(index, pIndex, $event)">
+								<option value="all"> - Please  select  a  KPI - </option>
+								<#list kpiMap?keys as k>
+								<option value="${k}">${kpiMap[k]}</option>
+								</#list>
+							</select>
+							Owner KPIs:&nbsp;
+							
+			        		<span v-for="(n, ownerIndex) in p.kpis">
+			        		<span class="badge badge-secondary"><font size="3">{{n.name}}</font><span class="badge badge-danger btn" v-on:click="removeStrategyObjectiveOwnerKpi(index, pIndex, ownerIndex)">X</span></span>
+			        		&nbsp;
+			        		</span>
+			        											
+						</td>
+					</tr>
+					<tr>
+						<td colspan="3">
+							<select class="form-control" v-model="p.currentSelect2" v-on:change="okrsSelChange(index, pIndex, $event)">
+								<option value="all"> - Please  select  a  OKR - </option>
+								<#list okrMap?keys as k>
+								<option value="${k}">${okrMap[k]}</option>
+								</#list>
+							</select>
+							Owner OKRs:&nbsp;
+							
+			        		<span v-for="(n, ownerIndex) in p.okrs">
+			        		<span class="badge badge-secondary"><font size="3">{{n.name}}</font><span class="badge badge-danger btn" v-on:click="removeStrategyObjectiveOwnerOkr(index, pIndex, ownerIndex)">X</span></span>
+			        		&nbsp;
+			        		</span>
+			        									
+						</td>
+					</tr>										
+					</template>
+					
 				</table>	
 				
 				<button type="button" class="btn btn-primary btn-circle" title="add Strategy objective item" v-on:click="addStrategyObjective(index)"><i class="icon fa fa-plus"></i></button>

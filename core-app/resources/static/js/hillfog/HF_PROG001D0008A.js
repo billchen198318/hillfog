@@ -12,7 +12,12 @@ const PageEventHandling = {
 		addPerspective			:	addPerspectiveItem,
 		removeStrategyObjective	:	removeStrategyObjectiveItem,
 		addStrategyObjective	:	addStrategyObjectiveItem,
-		removePerspective		:	removePerspectiveItem
+		removePerspective		:	removePerspectiveItem,
+		kpisSelChange			:	kpisSelChangeEvent,
+		okrsSelChange			:	okrsSelChangeEvent,
+		
+		removeStrategyObjectiveOwnerKpi	:	removeStrategyObjectiveOwnerKpiItem,
+		removeStrategyObjectiveOwnerOkr	:	removeStrategyObjectiveOwnerOkrItem
 	},
 	mounted() {
 		this.init();
@@ -24,11 +29,13 @@ function initPerspectives() {
 	for (var n in p) {
 		var so = [];
 		so.push({
-			'oid'		:	'',
-			'name'		:	'',
-			'weight'	:	0,
-			'kpis'		:	[],
-			'okrs'		:	[]
+			'oid'			:	'',
+			'name'			:	'',
+			'weight'		:	0,
+			'kpis'			:	[],
+			'okrs'			:	[],
+			'currentSelect1':	_qifu_please_select_id,
+			'currentSelect2':	_qifu_please_select_id
 		});
 		this.perspectives.push({
 			'oid'					:	'',
@@ -49,11 +56,13 @@ function addPerspectiveItem() {
 	this.tabs = this.tabs + 1;
 	var so = [];
 	so.push({
-		'oid'	:	'',
-		'name'	:	'',
-		'weight':	0,
-		'kpis'	:	[],
-		'okrs'	:	[]
+		'oid'			:	'',
+		'name'			:	'',
+		'weight'		:	0,
+		'kpis'			:	[],
+		'okrs'			:	[],
+		'currentSelect1':	_qifu_please_select_id,
+		'currentSelect2':	_qifu_please_select_id
 	});
 	this.perspectives.push({
 		'oid'				:	'',
@@ -73,11 +82,13 @@ function addStrategyObjectiveItem(perspectiveIndex) {
 	var per = this.perspectives[perspectiveIndex];
 	var so = per.strategyObjectives;
 	so.push({
-		'oid'	:	'',
-		'name'	:	'',
-		'weight':	0,
-		'kpis'	:	[],
-		'okrs'	:	[]
+		'oid'			:	'',
+		'name'			:	'',
+		'weight'		:	0,
+		'kpis'			:	[],
+		'okrs'			:	[],
+		'currentSelect1':	_qifu_please_select_id,
+		'currentSelect2':	_qifu_please_select_id
 	});	
 }
 
@@ -90,8 +101,69 @@ function removePerspectiveItem(perspectiveIndex) {
 				return;
 			}
 			removeArrayByPos(that.perspectives, perspectiveIndex);
+			that.currSelTabNum = 0;
 		}
 	);	
+}
+
+function kpisSelChangeEvent(perspectiveIndex, strategyObjectiveIndex, event) {
+	var selVal = event.target.value;
+	if ( _qifu_please_select_id == selVal ) {
+		return;
+	}	
+	var per = this.perspectives[perspectiveIndex];
+	var so = per.strategyObjectives[strategyObjectiveIndex];
+	var found = false;
+	for (var n in so.kpis) {
+		if ( so.kpis[n].oid == selVal) {
+			found = true;
+		}
+	}
+	if (!found) {
+		for (var d in kpis) {
+			if (kpis[d].oid == selVal) {
+				so.kpis.push({'oid' : selVal, 'name' : kpis[d].name});
+			}
+		}
+	}
+	so.currentSelect1 = _qifu_please_select_id;
+	//console.log(JSON.stringify(so));
+}
+
+function okrsSelChangeEvent(perspectiveIndex, strategyObjectiveIndex, event) {
+	var selVal = event.target.value;
+	if ( _qifu_please_select_id == selVal ) {
+		return;
+	}	
+	var per = this.perspectives[perspectiveIndex];
+	var so = per.strategyObjectives[strategyObjectiveIndex];
+	var found = false;
+	for (var n in so.okrs) {
+		if ( so.okrs[n].oid == selVal) {
+			found = true;
+		}
+	}
+	if (!found) {
+		for (var d in okrs) {
+			if (okrs[d].oid == selVal) {
+				so.okrs.push({'oid' : selVal, 'name' : okrs[d].name});
+			}
+		}
+	}
+	so.currentSelect2 = _qifu_please_select_id;
+	//console.log(JSON.stringify(so));
+}
+
+function removeStrategyObjectiveOwnerKpiItem(perspectiveIndex, strategyObjectiveIndex, ownerIndex) {
+	var per = this.perspectives[perspectiveIndex];
+	var so = per.strategyObjectives[strategyObjectiveIndex];
+	removeArrayByPos(so.kpis, ownerIndex);
+}
+
+function removeStrategyObjectiveOwnerOkrItem(perspectiveIndex, strategyObjectiveIndex, ownerIndex) {
+	var per = this.perspectives[perspectiveIndex];
+	var so = per.strategyObjectives[strategyObjectiveIndex];
+	removeArrayByPos(so.okrs, ownerIndex);
 }
 
 
