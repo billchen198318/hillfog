@@ -72,6 +72,9 @@ public class FormulaUtils {
 			parameter.put(FormulaVariable.PARAM_KPI_MAX, kpi.getMax());
 			parameter.put(FormulaVariable.PARAM_KPI_MIN, kpi.getMin());
 			parameter.put(FormulaVariable.PARAM_KPI_TARGET, kpi.getTarget());
+			/**
+			 * FIXME : 改為填入 HfSoOwnerKpis.cardWeight
+			 */
 			parameter.put(FormulaVariable.PARAM_KPI_WEIGHT, kpi.getWeight());
 		}
 		return parameter;

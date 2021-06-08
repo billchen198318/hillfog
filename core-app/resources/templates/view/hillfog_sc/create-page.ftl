@@ -68,6 +68,10 @@ $( document ).ready(function() {
 	
 });
 
+function btnSave() {
+	
+}
+
 function saveSuccess(data) {
 	clearWarningMessageField(formGroups, msgFields);
 	if ( _qifu_success_flag != data.success ) {
@@ -76,6 +80,10 @@ function saveSuccess(data) {
 		return;
 	}
 	parent.toastrInfo( data.message );
+	clearSave();
+}
+
+function btnClear() {
 	clearSave();
 }
 
@@ -135,9 +143,9 @@ function removeArrayByPos(arr, pos) {
 	<div class="row">
 		<div class="col-xs-12 col-md-12 col-lg-12">
 		
-		<button type="button" class="btn btn-primary" id="btnSave" ><i class='icon fa fa-floppy-o'></i>&nbsp;Save</button>
+		<button type="button" class="btn btn-primary" id="btnSave" ><i class='icon fa fa-floppy-o' onclick="btnSave();"></i>&nbsp;Save</button>
 		&nbsp;
-		<button type="button" class="btn btn-primary" id="btnClear" ><i class='icon fa fa-hand-paper-o'></i>&nbsp;Clear</button>	
+		<button type="button" class="btn btn-primary" id="btnClear" ><i class='icon fa fa-hand-paper-o' onclick="btnClear();"></i>&nbsp;Clear</button>	
 		&nbsp;
 		&nbsp;
 		
@@ -165,7 +173,7 @@ function removeArrayByPos(arr, pos) {
 				</div>
 				<div class="col-xs-6 col-md-6 col-lg-6">
 					<label v-bind:for="'weight'+index">Perspective weight&nbsp;<font color="RED">*</font>&nbsp;({{d.weight}})</label>
-					<input type="range" class="custom-range" min="0" max="100" v-bind:id="'weight'+index" name="weight" v-model="d.weight">							
+					<input type="range" class="custom-range" min="0" max="100" step="0.25" v-bind:id="'weight'+index" name="weight" v-model="d.weight">							
 				</div>
 			</div>	
 			
@@ -197,7 +205,7 @@ function removeArrayByPos(arr, pos) {
 						</td>
 						<td width="35%">
 							<label>weight value&nbsp;({{p.weight}})</label>
-							<input type="range" class="custom-range" min="0" max="100" v-model="p.weight">
+							<input type="range" class="custom-range" min="0" max="100" step="0.25" v-model="p.weight">
 						</td>
 						<td width="10%">
 							<button type="button" class="btn btn-dark" title="remove strategy objective item" v-on:click="removeStrategyObjective(index, pIndex)"><i class="icon fa fa-remove"></i></button>
@@ -211,13 +219,31 @@ function removeArrayByPos(arr, pos) {
 								<option value="${k}">${kpiMap[k]}</option>
 								</#list>
 							</select>
-							Owner KPIs:&nbsp;
 							
-			        		<span v-for="(n, ownerIndex) in p.kpis">
-			        		<span class="badge badge-secondary"><font size="3">{{n.name}}</font><span class="badge badge-danger btn" v-on:click="removeStrategyObjectiveOwnerKpi(index, pIndex, ownerIndex)">X</span></span>
-			        		&nbsp;
-			        		</span>
-			        											
+							<br>
+							
+							<table class="table">
+								<thead>
+									<tr>
+										<th>Owner KPI</th>
+										<th>KPI weight</th>
+										<th>#</th>
+									</tr>
+								</thead>
+								<tr v-for="(n, ownerIndex) in p.kpis">
+									<td width="45%">
+										{{n.name}}
+									</td>
+									<td width="35%">
+										<label>weight value&nbsp;({{n.weight}})</label>
+										<input type="range" class="custom-range" min="0" max="100" step="0.25" v-model="n.weight">
+									</td>
+									<td width="10%">
+										<button type="button" class="btn btn-secondary btn-circle" title="remove strategy objective owner KPI item" v-on:click="removeStrategyObjectiveOwnerKpi(index, pIndex, ownerIndex)"><i class="icon fa fa-remove"></i></button>
+									</td>
+								</tr>							
+							</table>
+																
 						</td>
 					</tr>
 					<tr>

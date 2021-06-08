@@ -7,15 +7,14 @@ const PageEventHandling = {
 		}
 	},
 	methods: {
-		init					:	initPerspectives,
-		setCurrSelTab			:	setCurrentSelectTabNum,
-		addPerspective			:	addPerspectiveItem,
-		removeStrategyObjective	:	removeStrategyObjectiveItem,
-		addStrategyObjective	:	addStrategyObjectiveItem,
-		removePerspective		:	removePerspectiveItem,
-		kpisSelChange			:	kpisSelChangeEvent,
-		okrsSelChange			:	okrsSelChangeEvent,
-		
+		init							:	initPerspectives,
+		setCurrSelTab					:	setCurrentSelectTabNum,
+		addPerspective					:	addPerspectiveItem,
+		removeStrategyObjective			:	removeStrategyObjectiveItem,
+		addStrategyObjective			:	addStrategyObjectiveItem,
+		removePerspective				:	removePerspectiveItem,
+		kpisSelChange					:	kpisSelChangeEvent,
+		okrsSelChange					:	okrsSelChangeEvent,		
 		removeStrategyObjectiveOwnerKpi	:	removeStrategyObjectiveOwnerKpiItem,
 		removeStrategyObjectiveOwnerOkr	:	removeStrategyObjectiveOwnerOkrItem
 	},
@@ -28,15 +27,7 @@ function initPerspectives() {
 	var p = ['Financial', 'Customer', 'Internal business processes', 'Learning and growth'];
 	for (var n in p) {
 		var so = [];
-		so.push({
-			'oid'			:	'',
-			'name'			:	'',
-			'weight'		:	0,
-			'kpis'			:	[],
-			'okrs'			:	[],
-			'currentSelect1':	_qifu_please_select_id,
-			'currentSelect2':	_qifu_please_select_id
-		});
+		fillInitStrategyObjectiveData(so);
 		this.perspectives.push({
 			'oid'					:	'',
 			'name'					:	p[n],
@@ -48,13 +39,7 @@ function initPerspectives() {
 	this.tabs += p.length;
 }
 
-function setCurrentSelectTabNum(index) {
-	this.currSelTabNum = index;
-}
-
-function addPerspectiveItem() {
-	this.tabs = this.tabs + 1;
-	var so = [];
+function fillInitStrategyObjectiveData(so) {
 	so.push({
 		'oid'			:	'',
 		'name'			:	'',
@@ -63,7 +48,17 @@ function addPerspectiveItem() {
 		'okrs'			:	[],
 		'currentSelect1':	_qifu_please_select_id,
 		'currentSelect2':	_qifu_please_select_id
-	});
+	});	
+}
+
+function setCurrentSelectTabNum(index) {
+	this.currSelTabNum = index;
+}
+
+function addPerspectiveItem() {
+	this.tabs = this.tabs + 1;
+	var so = [];
+	fillInitStrategyObjectiveData(so);
 	this.perspectives.push({
 		'oid'				:	'',
 		'name'				:	'New perspective-' + this.tabs,
@@ -81,15 +76,7 @@ function removeStrategyObjectiveItem(perspectiveIndex, strategyObjectiveIndex) {
 function addStrategyObjectiveItem(perspectiveIndex) {
 	var per = this.perspectives[perspectiveIndex];
 	var so = per.strategyObjectives;
-	so.push({
-		'oid'			:	'',
-		'name'			:	'',
-		'weight'		:	0,
-		'kpis'			:	[],
-		'okrs'			:	[],
-		'currentSelect1':	_qifu_please_select_id,
-		'currentSelect2':	_qifu_please_select_id
-	});	
+	fillInitStrategyObjectiveData(so);
 }
 
 function removePerspectiveItem(perspectiveIndex) {
@@ -122,7 +109,7 @@ function kpisSelChangeEvent(perspectiveIndex, strategyObjectiveIndex, event) {
 	if (!found) {
 		for (var d in kpis) {
 			if (kpis[d].oid == selVal) {
-				so.kpis.push({'oid' : selVal, 'name' : kpis[d].name});
+				so.kpis.push({'oid' : selVal, 'name' : kpis[d].name, 'weight' : 0});
 			}
 		}
 	}

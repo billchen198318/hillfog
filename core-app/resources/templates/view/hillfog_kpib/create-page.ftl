@@ -75,12 +75,14 @@ var selEmpList = [];
 
 $( document ).ready(function() {
 	
+	/*
 	$("#weight").change(function(){
 		var valStr = $("#weight").val();
 		$("#weightLabel").text('Weight: ' + valStr);
 	});
 	
 	$("#weight").trigger('change');
+	*/
 	
 	$("#management").change(function(){
 		var valStr = $("#management").val();
@@ -315,8 +317,8 @@ function removeArrayByPos(arr, pos) {
 	</div>
 	<div class="row">
 		<div class="col-xs-6 col-md-6 col-lg-6">
-			<label for="weight" id="weightLabel">Weight: </label>
-			<input type="range" class="custom-range" min="0" max="100" value="50" id="weight" name="weight">								
+			<label for="weight" id="weightLabel">Weight&nbsp;(deprecated): </label>
+			<input type="range" class="custom-range" min="0" max="100" value="50" id="weight" name="weight" readonly="readonly">								
 		</div>
 		<div class="col-xs-6 col-md-6 col-lg-6">
 			<@qifu.textbox name="unit" value="" id="unit" label="Unit" requiredFlag="Y" maxlength="20" placeholder="Enter unit" />

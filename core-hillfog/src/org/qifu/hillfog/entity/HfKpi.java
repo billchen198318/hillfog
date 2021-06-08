@@ -18,6 +18,9 @@ public class HfKpi implements java.io.Serializable {
     private String id;
     private String name;
     private String description;
+    /**
+     * FIXME : 改為填入 HfSoOwnerKpis.cardWeight
+     */
     private BigDecimal weight;
     private String unit;
     private String forId;
@@ -77,10 +80,18 @@ public class HfKpi implements java.io.Serializable {
         this.description = description;
     }
     
+    /**
+     * FIXME : 改為填入 HfSoOwnerKpis.cardWeight
+     * @return
+     */
     public BigDecimal getWeight() {
         return weight;
     }
     
+    /**
+     * FIXME : FIXME : 改為填入 HfSoOwnerKpis.cardWeight
+     * @param weight
+     */
     public void setWeight(BigDecimal weight) {
         this.weight = weight;
     }

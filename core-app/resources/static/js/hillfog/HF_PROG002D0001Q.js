@@ -34,7 +34,7 @@ function createContent(scoreData) {
 						<span class="badge badge-info"><h6>${scoreData.kpi.id}&nbsp;-&nbsp;${scoreData.kpi.name}</h6></span>
 						<span class="badge badge-danger"><h6>${scoreData.kpi.managementName}</h6></span>			
 						<span class="badge badge-warning"><h6>Target:&nbsp;${scoreData.kpi.target}&nbsp;，Maximum:&nbsp;${scoreData.kpi.max}&nbsp;，Minimum:&nbsp;${scoreData.kpi.min}</h6></span>
-						<span class="badge badge-dark"><h6>Weight:&nbsp;${scoreData.kpi.weight}&nbsp;，Unit:&nbsp;${scoreData.kpi.unit}</h6></span>
+						<span class="badge badge-dark"><h6>Unit:&nbsp;${scoreData.kpi.unit}</h6></span>
 						<span class="badge badge-dark"><h6>Formula:&nbsp;${scoreData.formula.forId}-${scoreData.formula.name}</h6></span>
 						<span class="badge badge-dark"><h6>Aggregation:&nbsp;${scoreData.kpi.aggrId}-${scoreData.aggregationMethodName}</h6></span>
 					</div>
