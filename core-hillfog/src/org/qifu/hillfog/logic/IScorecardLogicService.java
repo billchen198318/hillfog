@@ -32,4 +32,8 @@ public interface IScorecardLogicService {
 	
 	public DefaultResult<HfScorecard> create(HfScorecard scorecard, List<Map<String, Object>> perspectivesDataMapList) throws ServiceException, Exception;
 	
+	public DefaultResult<HfScorecard> update(HfScorecard scorecard, List<Map<String, Object>> perspectivesDataMapList) throws ServiceException, Exception;
+	
+	public DefaultResult<Boolean> delete(HfScorecard scorecard) throws ServiceException, Exception;
+	
 }

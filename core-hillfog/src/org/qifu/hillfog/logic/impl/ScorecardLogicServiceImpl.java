@@ -108,6 +108,47 @@ public class ScorecardLogicServiceImpl extends BaseLogicService implements IScor
 		return result;
 	}
 	
+	@ServiceMethodAuthority(type = ServiceMethodType.UPDATE)
+	@Transactional(
+			propagation=Propagation.REQUIRED, 
+			readOnly=false,
+			rollbackFor={RuntimeException.class, IOException.class, Exception.class} )		
+	@Override
+	public DefaultResult<HfScorecard> update(HfScorecard scorecard, List<Map<String, Object>> perspectivesDataMapList) throws ServiceException, Exception {
+		if (null == scorecard || this.isBlank(scorecard.getOid()) || null == perspectivesDataMapList || perspectivesDataMapList.size() < 1) {
+			throw new ServiceException( BaseSystemMessage.parameterBlank() );
+		}
+		this.checkPerspectivesDataParam(perspectivesDataMapList);
+		HfScorecard checkUkScorecard = this.scorecardService.selectByUniqueKey(scorecard).getValue();
+		if (checkUkScorecard != null) {
+			if (!checkUkScorecard.getOid().equals(scorecard.getOid())) {
+				throw new ServiceException("Please change name, has other Scorecard use.");
+			}
+		}
+		this.setStringValueMaxLength(scorecard, "content", MAX_CONTENT_LENGTH);
+		this.setStringValueMaxLength(scorecard, "mission", MAX_CONTENT_LENGTH);
+		DefaultResult<HfScorecard> mResult = this.scorecardService.update(scorecard);
+		scorecard = mResult.getValueEmptyThrowMessage();
+		this.deletePerspectiveAndAllDetail(checkUkScorecard);
+		this.createPerspectives(scorecard, perspectivesDataMapList);
+		this.resetUpdateTabNum(scorecard);		
+		return mResult;
+	}	
+	
+	@ServiceMethodAuthority(type = ServiceMethodType.DELETE)
+	@Transactional(
+			propagation=Propagation.REQUIRED, 
+			readOnly=false,
+			rollbackFor={RuntimeException.class, IOException.class, Exception.class} )		
+	@Override
+	public DefaultResult<Boolean> delete(HfScorecard scorecard) throws ServiceException, Exception {
+		if (null == scorecard || this.isBlank(scorecard.getOid())) {
+			throw new ServiceException( BaseSystemMessage.parameterBlank() );
+		}
+		this.deletePerspectiveAndAllDetail(scorecard);
+		return this.scorecardService.delete(scorecard);
+	}	
+	
 	private void resetUpdateTabNum(HfScorecard scorecard) throws ServiceException, Exception {
 		Map<String, Object> paramMap = new HashMap<String, Object>();
 		paramMap.put("scOid", scorecard.getOid());
@@ -174,6 +215,49 @@ public class ScorecardLogicServiceImpl extends BaseLogicService implements IScor
 			ownerOkr.setSoOid(so.getOid());
 			ownerOkr.setOkrOid(oid);
 			this.soOwnerOkrsService.insert(ownerOkr);
+		}
+		paramMap.clear();
+	}
+	
+	private void deletePerspectiveAndAllDetail(HfScorecard scorecard) throws ServiceException, Exception {
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("scOid", scorecard.getOid());
+		List<HfPerspective> perspectivesList = this.perspectiveService.selectListByParams(paramMap, "TAB_NUM", SortType.ASC).getValueEmptyThrowMessage();
+		for (HfPerspective perspective : perspectivesList) {
+			this.perspectiveService.delete(perspective);
+			this.deleteStrategyObjective(perspective);
+		}
+		paramMap.clear();
+	}
+	
+	private void deleteStrategyObjective(HfPerspective perspective) throws ServiceException, Exception {
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("perOid", perspective.getOid());
+		List<HfStrategyObjective> strategyObjectivesList = this.strategyObjectiveService.selectListByParams(paramMap).getValueEmptyThrowMessage();
+		for (HfStrategyObjective so : strategyObjectivesList) {
+			this.strategyObjectiveService.delete(so);
+			this.deleteOwnerKpis(so);
+			this.deleteOwnerOkrs(so);
+		}
+		paramMap.clear();
+	}
+	
+	private void deleteOwnerKpis(HfStrategyObjective so) throws ServiceException, Exception {
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("soOid", so.getOid());
+		List<HfSoOwnerKpis> ownerKpisList = this.soOwnerKpisService.selectListByParams(paramMap).getValueEmptyThrowMessage();
+		for (HfSoOwnerKpis ownerKpi : ownerKpisList) {
+			this.soOwnerKpisService.delete(ownerKpi);
+		}
+		paramMap.clear();
+	}
+	
+	private void deleteOwnerOkrs(HfStrategyObjective so) throws ServiceException, Exception {
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("soOid", so.getOid());
+		List<HfSoOwnerOkrs> ownerOkrsList = this.soOwnerOkrsService.selectListByParams(paramMap).getValue();
+		for (HfSoOwnerOkrs ownerOkr : ownerOkrsList) {
+			this.soOwnerOkrsService.delete(ownerOkr);
 		}
 		paramMap.clear();
 	}
