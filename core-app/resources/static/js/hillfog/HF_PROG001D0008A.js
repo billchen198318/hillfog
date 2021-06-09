@@ -35,7 +35,7 @@ function initPerspectives() {
 			'name'					:	p[n],
 			'strategyObjectives'	:	so,
 			'weight'				:	25.00,
-			'numTab'				:	n+''
+			'tabNum'				:	n+''
 		});		
 	}
 	this.tabs += p.length;
@@ -69,7 +69,7 @@ function addPerspectiveItem() {
 		'name'				:	'New perspective-' + this.tabs,
 		'strategyObjectives':	so,
 		'weight'			:	0.00,
-		'numTab'			:	this.tabs + ''
+		'tabNum'			:	this.tabs + ''
 	});
 	if (this.autoAllocationWeightFlag) {
 		this.autoAllocationWeight();

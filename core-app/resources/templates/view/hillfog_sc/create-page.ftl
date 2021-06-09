@@ -45,7 +45,7 @@
 <script type="text/javascript">
 
 
-// ==========================================================================================
+// ====================================================================
 var okrs = [];
 var kpis = [];
 <#list okrMap?keys as k>
@@ -54,23 +54,18 @@ okrs.push({'oid' : '${k}', 'name' : '${okrMap[k]?js_string?html}'});
 <#list kpiMap?keys as k>
 kpis.push({'oid' : '${k}', 'name' : '${kpiMap[k]?js_string?html}'});
 </#list>
-// ==========================================================================================
+// ====================================================================
+
 
 var msgFields = new Object();
-msgFields['empId'] 					= 'empId';
-msgFields['account'] 				= 'account';
-msgFields['password1'] 				= 'password1';
-msgFields['password2'] 				= 'password2';
-msgFields['name'] 					= 'name';
-msgFields['employeeOrganization']	= 'employeeOrganization';
+msgFields['name']		= 'name';
+msgFields['content']	= 'content';
+msgFields['mission']	= 'mission';
 
 var formGroups = new Object();
-formGroups['empId'] 				= 'form-group1';
-formGroups['account'] 				= 'form-group1';
-formGroups['password1'] 			= 'form-group1';
-formGroups['password2'] 			= 'form-group1';
-formGroups['name'] 					= 'form-group1';
-formGroups['employeeOrganization']	= 'form-group1';
+formGroups['name']		= 'form-group1';
+formGroups['content']	= 'form-group1';
+formGroups['mission']	= 'form-group1';
 
 $( document ).ready(function() {
 	
@@ -78,7 +73,25 @@ $( document ).ready(function() {
 });
 
 function btnSave() {
-	
+	if (vm.autoAllocationWeightFlag) {
+		vm.autoAllocationWeight();
+	}
+	xhrSendParameter(
+		'./hfScorecardSaveJson', 
+		{ 
+			'name' 			:	$("#name").val(),
+			'content'		:	$("#content").val(),
+			'mission'		:	$("#mission").val(),
+			'perspectives'	:	JSON.stringify( { 'items' : vm.perspectives } )
+		},
+		function(data) {
+			saveSuccess(data);
+		}, 
+		function() {
+			clearSave();
+		},
+		_qifu_defaultSelfPleaseWaitShow
+	);	
 }
 
 function saveSuccess(data) {
@@ -89,6 +102,7 @@ function saveSuccess(data) {
 		return;
 	}
 	parent.toastrInfo( data.message );
+	
 	clearSave();
 }
 

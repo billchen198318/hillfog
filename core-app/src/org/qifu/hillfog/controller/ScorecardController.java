@@ -21,18 +21,22 @@
  */
 package org.qifu.hillfog.controller;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang3.StringUtils;
 import org.qifu.base.controller.BaseControllerSupport;
 import org.qifu.base.controller.IPageNamespaceProvide;
 import org.qifu.base.exception.AuthorityException;
 import org.qifu.base.exception.ControllerException;
 import org.qifu.base.exception.ServiceException;
+import org.qifu.base.model.CheckControllerFieldHandler;
 import org.qifu.base.model.ControllerMethodAuthority;
 import org.qifu.base.model.DefaultControllerJsonResultObj;
+import org.qifu.base.model.DefaultResult;
 import org.qifu.base.model.PageOf;
 import org.qifu.base.model.QueryControllerJsonResultObj;
 import org.qifu.base.model.QueryResult;
@@ -51,6 +55,8 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Controller
 public class ScorecardController extends BaseControllerSupport implements IPageNamespaceProvide {
@@ -155,6 +161,69 @@ public class ScorecardController extends BaseControllerSupport implements IPageN
 			viewName = this.getExceptionPage(e, mm);
 		}	
 		return viewName;
+	}
+	
+	private void checkFields(DefaultControllerJsonResultObj<HfScorecard> result, HttpServletRequest request, HfScorecard scorecard) throws ControllerException, ServiceException, Exception {
+		CheckControllerFieldHandler<HfScorecard> checkHandler = this.getCheckControllerFieldHandler(result)
+		.testField("name", scorecard, "@org.apache.commons.lang3.StringUtils@isBlank(name)", "Name is blank!")
+		.testField("content", scorecard, "@org.apache.commons.lang3.StringUtils@isBlank(content)", "Content is blank!")
+		.testField("mission", scorecard, "@org.apache.commons.lang3.StringUtils@isBlank(mission)", "Mission is blank!");
+		checkHandler.throwMessage();
+		
+		String perspectivesItemJsonStr = StringUtils.defaultString( request.getParameter("perspectives") );
+		Map<String, List<Map<String, Object>>> perspectivesJsonData = 
+				(Map<String, List<Map<String, Object>>>) new ObjectMapper().readValue( perspectivesItemJsonStr, LinkedHashMap.class );
+		List<Map<String, Object>> perspectivesDataMapList = perspectivesJsonData.get("items");
+		if (null == perspectivesDataMapList || perspectivesDataMapList.size() < 1) {
+			checkHandler.throwMessage("perspective", "At least one Perspective item is required!");
+		}
+		for (Map<String, Object> perDataMap : perspectivesDataMapList) {
+			String perName = this.defaultString( (String)perDataMap.get("name") );
+			if (StringUtils.isBlank(perName)) {
+				checkHandler.throwMessage("perspective", "Perspective item name is blank!");
+			}
+			List<Map<String, Object>> strategyObjectivesDataMapList = (List<Map<String, Object>>) perDataMap.get("strategyObjectives");
+			if (null == strategyObjectivesDataMapList || strategyObjectivesDataMapList.size() < 1) {
+				checkHandler.throwMessage("strategyObjective", "Perspective (" + perName + ") At least one Strategy-objective item is required!");
+			}
+			for (Map<String, Object> soDataMap : strategyObjectivesDataMapList) {
+				String soName = this.defaultString( (String)soDataMap.get("name") );
+				if (StringUtils.isBlank(soName)) {
+					checkHandler.throwMessage("strategyObjective", "Perspective (" + perName + ") 's Strategy-objective item name is blank!");
+				}
+				List<Map<String, Object>> kpisDataMapList = (List<Map<String, Object>>) soDataMap.get("kpis");
+				if (null == kpisDataMapList || kpisDataMapList.size() < 1) {
+					checkHandler.throwMessage("strategyObjective", "Perspective (" + perName + ") 's Strategy-objective (" + soName + ") At least one KPI item is required!");
+				}
+			}
+		}		
+	}
+	
+	private void save(DefaultControllerJsonResultObj<HfScorecard> result, HttpServletRequest request, HfScorecard scorecard) throws AuthorityException, ControllerException, ServiceException, Exception {
+		this.checkFields(result, request, scorecard);
+		String perspectivesItemJsonStr = StringUtils.defaultString( request.getParameter("perspectives") );
+		Map<String, List<Map<String, Object>>> perspectivesJsonData = 
+				(Map<String, List<Map<String, Object>>>) new ObjectMapper().readValue( perspectivesItemJsonStr, LinkedHashMap.class );
+		List<Map<String, Object>> perspectivesDataMapList = perspectivesJsonData.get("items");
+		DefaultResult<HfScorecard> iResult = this.scorecardLogicService.create(scorecard, perspectivesDataMapList);
+		this.setDefaultResponseJsonResult(result, iResult);
+	}
+	
+	@ControllerMethodAuthority(check = true, programId = "HF_PROG001D0008A")
+	@RequestMapping(value = "/hfScorecardSaveJson", produces = MediaType.APPLICATION_JSON_VALUE)		
+	public @ResponseBody DefaultControllerJsonResultObj<HfScorecard> doSave(HttpServletRequest request, HfScorecard scorecard) {
+		DefaultControllerJsonResultObj<HfScorecard> result = this.getDefaultJsonResult(this.currentMethodAuthority());
+		if (!this.isAuthorizeAndLoginFromControllerJsonResult(result)) {
+			return result;
+		}
+		try {
+			this.save(result, request, scorecard);
+		} catch (AuthorityException | ServiceException | ControllerException e) {
+			this.baseExceptionResult(result, e);	
+		} catch (Exception e) {
+			this.exceptionResult(result, e);
+		}
+		return result;		
 	}	
 	
 	private void delete(DefaultControllerJsonResultObj<Boolean> result, HfScorecard scorecard) throws AuthorityException, ControllerException, ServiceException, Exception {
