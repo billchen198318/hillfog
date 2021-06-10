@@ -33,4 +33,6 @@ public interface HfScorecardMapper extends IBaseMapper<HfScorecard, String> {
 	
 	public List<HfScorecard> findPageNoContent(Map<String, Object> paramMap);
 	
+	public List<HfScorecard> findListByParamsNoContent(Map<String, Object> paramMap);
+	
 }

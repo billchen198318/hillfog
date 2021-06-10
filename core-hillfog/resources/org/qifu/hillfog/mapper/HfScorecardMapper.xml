@@ -175,5 +175,27 @@
 				
 	<include refid="org.qifu.hillfog.mapper.DB1Config.sql2"/>
   </select>   
+  
+  <select id="findListByParamsNoContent" parameterType="java.util.HashMap" resultMap="BaseResultMap">
+    select 
+		OID,
+		NAME,
+		' ' as CONTENT,
+		' ' as MISSION,
+		CUSERID,
+		CDATE,
+		UUSERID,
+		UDATE      
+    from <include refid="org.qifu.hillfog.mapper.DB1Config.schema"/>hf_scorecard
+    WHERE 1=1
+	<if test="name != null and name != ''.toString() ">
+		AND NAME = #{name,jdbcType=VARCHAR}
+	</if>	
+	<if test="nameLike != null and nameLike != ''.toString() ">
+		AND NAME like #{nameLike,jdbcType=VARCHAR}
+	</if>		
+	
+	ORDER BY NAME ASC	
+  </select>   
         
 </mapper>

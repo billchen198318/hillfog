@@ -21,7 +21,14 @@
  */
 package org.qifu.hillfog.service.impl;
 
+import java.util.List;
+import java.util.Map;
+
+import org.qifu.base.exception.ServiceException;
 import org.qifu.base.mapper.IBaseMapper;
+import org.qifu.base.message.BaseSystemMessage;
+import org.qifu.base.model.DefaultResult;
+import org.qifu.base.model.PleaseSelect;
 import org.qifu.base.service.BaseService;
 import org.qifu.hillfog.entity.HfScorecard;
 import org.qifu.hillfog.mapper.HfScorecardMapper;
@@ -43,6 +50,31 @@ public class ScorecardServiceImpl extends BaseService<HfScorecard, String> imple
 	@Override
 	protected IBaseMapper<HfScorecard, String> getBaseMapper() {
 		return this.hfScorecardMapper;
+	}
+
+	@Override
+	public DefaultResult<List<HfScorecard>> findListByParamsNoContent(Map<String, Object> paramMap) throws ServiceException, Exception {
+		DefaultResult<List<HfScorecard>> result = new DefaultResult<List<HfScorecard>>();
+		List<HfScorecard> searchList = this.hfScorecardMapper.findListByParamsNoContent(paramMap);
+		if (searchList != null && searchList.size() > 0) {
+			result.setValue(searchList);
+		} else {
+			result.setMessage( BaseSystemMessage.searchNoData() );
+		}
+		return result;
+	}
+
+	@Override
+	public Map<String, String> findMap(boolean pleaseSelect) throws ServiceException, Exception {
+		Map<String, String> dataMap = PleaseSelect.pageSelectMap(pleaseSelect);
+		List<HfScorecard> scorecards = this.findListByParamsNoContent(null).getValue();
+		if (null == scorecards) {
+			return dataMap;
+		}
+		for (HfScorecard sc : scorecards) {
+			dataMap.put(sc.getOid(), sc.getName());
+		}
+		return dataMap;
 	}
 	
 }

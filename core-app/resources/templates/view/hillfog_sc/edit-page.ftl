@@ -139,7 +139,7 @@ function removeArrayByPos(arr, pos) {
 	cancelJsMethod="parent.closeTab('HF_PROG001D0008E');"
 	programName="${programName}"
 	programId="${programId}"
-	description="Edit scorecard item." />		
+	description="Modify scorecard item." />		
 <#import "../common-f-head.ftl" as cfh />
 <@cfh.commonFormHeadContent /> 
 
@@ -173,8 +173,14 @@ function removeArrayByPos(arr, pos) {
 		<button type="button" class="btn btn-info" id="btnAddPerspective" title="Add perspective" v-on:click="addPerspective"><i class="icon fa fa-plus"></i>&nbsp;Add perspective</button>
 		&nbsp;
 		&nbsp;
-		<input type="checkbox" id="autoAllocationCheckbox" v-model="autoAllocationWeightFlag" v-on:click="autoAllocationWeight">
-		<label class="form-check-label" for="autoAllocationCheckbox">Auto allocation weight</label>
+		
+		<p style="margin-bottom: 10px"></p>
+		
+		<div class="custom-control custom-checkbox">
+			&nbsp;
+			<input type="checkbox" class="custom-control-input" id="autoAllocationCheckbox" v-model="autoAllocationWeightFlag" v-on:click="autoAllocationWeight">
+			<label class="custom-control-label" for="autoAllocationCheckbox">Auto allocation weight</label>
+		</div>
 		&nbsp;
 		
 		</div>
@@ -207,7 +213,7 @@ function removeArrayByPos(arr, pos) {
 			
 			<div class="row">
 				<div class="col-xs-12 col-md-12 col-lg-12">
-					<button type="button" class="btn btn-warning" id="btnRemovePerspective" title="Remove perspective" v-on:click="removePerspective(index)"><i class="icon fa fa-plus"></i>&nbsp;Remove perspective</button>
+					<button type="button" class="btn btn-warning" id="btnRemovePerspective" title="Remove perspective" v-on:click="removePerspective(index)"><i class="icon fa fa-remove"></i>&nbsp;Remove perspective</button>
 				<div class="col-xs-12 col-md-12 col-lg-12">
 			</div>
 			

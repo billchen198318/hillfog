@@ -102,6 +102,23 @@ $( document ).ready(function() {
 		$(this).autocomplete("search", " ");
 	});		
 	
+	$("#noDistinction").change(function(){
+		if($(this).is(":checked")) {
+			$("#kpiEmpl").val( '' );
+			$("#kpiOrga").val( '' );			
+			$("#kpiOrga").prop("readonly", true);
+			$("#kpiEmpl").prop("readonly", true);
+			$("#orgaOrEmplDiv").hide();
+		} else {
+			$("#kpiEmpl").val( '' );
+			$("#kpiOrga").val( '' );			
+			$("#kpiOrga").prop("readonly", false);
+			$("#kpiEmpl").prop("readonly", false);
+			$("#orgaOrEmplDiv").show();
+		}
+		changeQueryButtonStatus();
+	});	
+	
 	$("#kpiOrga").change(function(){
 		var inputOrgDept = $(this).val();
 		var checkInOrgDept = false;
@@ -179,7 +196,7 @@ function changeQueryButtonStatus() {
 	var freq = $("#frequency").val();
 	var kpiEmpl = $("#kpiEmpl").val();
 	var kpiOrga = $("#kpiOrga").val();
-	if ( _qifu_please_select_id == freq || ('' == kpiEmpl && '' == kpiOrga) ) {
+	if ( _qifu_please_select_id == freq || (!$('#noDistinction').is(':checked') && ( kpiEmpl == '' && kpiOrga == '' )) ) {
 		$("#content").html('<br><span class="badge badge-warning"><h6>Please select Frequency and Organization or Employee!</h6></span><br>');
 		$("#btnQuery").attr('disabled', 'disabled');
 		$("#btnClear").attr('disabled', 'disabled');
@@ -239,6 +256,8 @@ function queryClear() {
 	$("#date2").val('');
 	$("#kpiOid").val( _qifu_please_select_id );
 	$("#frequency").val('3');
+	$('#noDistinction').prop('checked', false);
+	$('#noDistinction').trigger( 'change' );	
 }
 
 function btnCreatePdca(kpiOid) {
@@ -289,7 +308,7 @@ function viewDetail(pdcaOid) {
 					<@qifu.textbox type="date" name="date2" value="date2" id="date2" label="End" requiredFlag="Y" maxlength="10" placeholder="Enter end date" />
 				</div>		
 			</div>						
-			<div class="row">
+			<div class="row" id="orgaOrEmplDiv">
 				<div class="col-xs-6 col-md-6 col-lg-6">
 					<@qifu.textbox name="kpiOrga" value="" id="kpiOrga" label="Organization" requiredFlag="Y" maxlength="100" placeholder="Enter organization" />
 				</div>
@@ -299,6 +318,14 @@ function viewDetail(pdcaOid) {
 			</div>	
 			<div class="row">
 				<div class="col-xs-6 col-md-6 col-lg-6">
+					
+					<p style="margin-bottom: 10px"></p>
+					
+					<div class="custom-control custom-checkbox">
+						&nbsp;
+						<input type="checkbox" class="custom-control-input" id="noDistinction" name="noDistinction">
+						<label class="custom-control-label" for="noDistinction">No distinction between employee or department measure-data.</label>
+					</div>					
 					
 					<p style="margin-bottom: 10px"></p>
 				

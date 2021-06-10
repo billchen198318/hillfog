@@ -155,8 +155,8 @@ public class MeasureDataController extends BaseControllerSupport implements IPag
 		String dataFor = KpiBasicCode.DATA_TYPE_BOTH;
 		String kpiOrga = StringUtils.defaultString(request.getParameter("kpiOrga"));
 		String kpiEmpl = StringUtils.defaultString(request.getParameter("kpiEmpl"));
-		String orgId = "";
-		String account = "";
+		String orgId = MeasureDataCode.MEASURE_DATA_EMPLOYEE_OR_ORGANIZATION_FULL;
+		String account = MeasureDataCode.MEASURE_DATA_EMPLOYEE_OR_ORGANIZATION_FULL;
 		if (!StringUtils.isBlank(dateStatus) && SimpleUtils.isDate(dateStr) && !PleaseSelect.noSelect(frequency)
 				&& ("1".equals(dateStatus) || "-1".equals(dateStatus)) ) {
 			DateTime dateTime = new DateTime(dateStr);
@@ -297,11 +297,9 @@ public class MeasureDataController extends BaseControllerSupport implements IPag
 		parameter.put("frequency", frequency);
 		parameter.put("dataFor", dataFor);
 		parameter.put("kpi", kpi);
-		parameter.put("orgId", MeasureDataCode.MEASURE_DATA_ORGANIZATION_FULL);
-		parameter.put("empId", MeasureDataCode.MEASURE_DATA_EMPLOYEE_FULL);
 		parameter.put("orgId", orgId);
 		parameter.put("account", account);
-		parameter.put("masureDatas", findMeasureData(kpi, date, frequency, dataFor, (String)parameter.get("orgId"), (String)parameter.get("account")) );
+		parameter.put("masureDatas", findMeasureData(kpi, date, frequency, dataFor, orgId, account) );
 		return parameter;
 	}	
 	

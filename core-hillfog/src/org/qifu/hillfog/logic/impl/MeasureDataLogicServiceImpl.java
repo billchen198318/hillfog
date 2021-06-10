@@ -93,14 +93,14 @@ public class MeasureDataLogicServiceImpl extends BaseLogicService implements IMe
 			throw new ServiceException( BaseSystemMessage.parameterBlank() );
 		}
 		if (KpiBasicCode.DATA_TYPE_BOTH.equals(dataFor)) {
-			account = MeasureDataCode.MEASURE_DATA_EMPLOYEE_FULL;
-			orgId = MeasureDataCode.MEASURE_DATA_ORGANIZATION_FULL;
+			account = MeasureDataCode.MEASURE_DATA_EMPLOYEE_OR_ORGANIZATION_FULL;
+			orgId = MeasureDataCode.MEASURE_DATA_EMPLOYEE_OR_ORGANIZATION_FULL;
 		}
 		if (KpiBasicCode.DATA_TYPE_DEPARTMENT.equals(dataFor)) {
-			account = MeasureDataCode.MEASURE_DATA_EMPLOYEE_FULL;
+			account = MeasureDataCode.MEASURE_DATA_EMPLOYEE_OR_ORGANIZATION_FULL;
 		}
 		if (KpiBasicCode.DATA_TYPE_PERSONAL.equals(dataFor)) {
-			orgId = MeasureDataCode.MEASURE_DATA_ORGANIZATION_FULL;
+			orgId = MeasureDataCode.MEASURE_DATA_EMPLOYEE_OR_ORGANIZATION_FULL;
 		}
 		HfKpi kpi = this.kpiService.selectByPrimaryKey(kpiOid).getValueEmptyThrowMessage();
 		DefaultResult<Boolean> result = new DefaultResult<Boolean>();

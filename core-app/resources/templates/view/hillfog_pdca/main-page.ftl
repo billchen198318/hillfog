@@ -133,32 +133,32 @@ function replaceAll(str, find, replace) {
 
       <div class="row">
         <div class="col-xs-6 col-md-6 col-lg-6">     	
-			<div class="form-check form-check-inline">
-			  <input class="form-check-input" type="radio" name="masterTypeRadioOptions" id="masterTypeRadio1" value="all" checked>
-			  <label class="form-check-label" for="masterTypeRadio1">All</label>
+			<div class="custom-control custom-radio custom-control-inline">
+			  <input class="custom-control-input" type="radio" name="masterTypeRadioOptions" id="masterTypeRadio1" value="all" checked>
+			  <label class="custom-control-label" for="masterTypeRadio1">All</label>
 			</div>
-			<div class="form-check form-check-inline">
-			  <input class="form-check-input" type="radio" name="masterTypeRadioOptions" id="masterTypeRadio2" value="O">
-			  <label class="form-check-label" for="masterTypeRadio2">Objectives</label>
+			<div class="custom-control custom-radio custom-control-inline">
+			  <input class="custom-control-input" type="radio" name="masterTypeRadioOptions" id="masterTypeRadio2" value="O">
+			  <label class="custom-control-label" for="masterTypeRadio2">Objectives</label>
 			</div>
- 			<div class="form-check form-check-inline">
-			  <input class="form-check-input" type="radio" name="masterTypeRadioOptions" id="masterTypeRadio3" value="K">
-			  <label class="form-check-label" for="masterTypeRadio3">KPI</label>
+ 			<div class="custom-control custom-radio custom-control-inline">
+			  <input class="custom-control-input" type="radio" name="masterTypeRadioOptions" id="masterTypeRadio3" value="K">
+			  <label class="custom-control-label" for="masterTypeRadio3">KPI</label>
 			</div>       	
         </div>
 
         <div class="col-xs-6 col-md-6 col-lg-6">
-			<div class="form-check form-check-inline">
-			  <input class="form-check-input" type="radio" name="confirmRadioOptions" id="confirmRadio1" value="all" checked>
-			  <label class="form-check-label" for="confirmRadio1">All</label>
+			<div class="custom-control custom-radio custom-control-inline">
+			  <input class="custom-control-input" type="radio" name="confirmRadioOptions" id="confirmRadio1" value="all" checked>
+			  <label class="custom-control-label" for="confirmRadio1">All</label>
 			</div>
-			<div class="form-check form-check-inline">
-			  <input class="form-check-input" type="radio" name="confirmRadioOptions" id="confirmRadio2" value="Y">
-			  <label class="form-check-label" for="confirmRadio2">Closed</label>
+			<div class="custom-control custom-radio custom-control-inline">
+			  <input class="custom-control-input" type="radio" name="confirmRadioOptions" id="confirmRadio2" value="Y">
+			  <label class="custom-control-label" for="confirmRadio2">Closed</label>
 			</div>
- 			<div class="form-check form-check-inline">
-			  <input class="form-check-input" type="radio" name="confirmRadioOptions" id="confirmRadio3" value="N">
-			  <label class="form-check-label" for="confirmRadio3">Open-case</label>
+ 			<div class="custom-control custom-radio custom-control-inline">
+			  <input class="custom-control-input" type="radio" name="confirmRadioOptions" id="confirmRadio3" value="N">
+			  <label class="custom-control-label" for="confirmRadio3">Open-case</label>
 			</div>        	
        </div>
       </div> 

@@ -44,8 +44,8 @@ public class ScoreCalculationData implements java.io.Serializable {
 	private List<DateRangeScore> dataRangeScores; // 之後由ScoreCalculationCallable填入
 	private String fontColor; // 之後由ScoreCalculationCallable填入
 	private String bgColor; // 之後由ScoreCalculationCallable填入
-	private String measureDataAccount = MeasureDataCode.MEASURE_DATA_EMPLOYEE_FULL;
-	private String measureDataOrgId = MeasureDataCode.MEASURE_DATA_ORGANIZATION_FULL;
+	private String measureDataAccount = MeasureDataCode.MEASURE_DATA_EMPLOYEE_OR_ORGANIZATION_FULL;
+	private String measureDataOrgId = MeasureDataCode.MEASURE_DATA_EMPLOYEE_OR_ORGANIZATION_FULL;
 	private String aggregationMethodName = "";
 	private String errorMessage = "";
 	private List<PdcaItems> pdcaItems = new LinkedList<PdcaItems>(); // 顯示PDCA用

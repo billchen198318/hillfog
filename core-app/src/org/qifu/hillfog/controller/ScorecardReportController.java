@@ -29,7 +29,12 @@ import org.qifu.base.exception.AuthorityException;
 import org.qifu.base.exception.ControllerException;
 import org.qifu.base.exception.ServiceException;
 import org.qifu.base.model.ControllerMethodAuthority;
+import org.qifu.hillfog.entity.HfEmployee;
+import org.qifu.hillfog.entity.HfOrgDept;
 import org.qifu.hillfog.entity.HfScorecard;
+import org.qifu.hillfog.model.MeasureDataCode;
+import org.qifu.hillfog.service.IEmployeeService;
+import org.qifu.hillfog.service.IOrgDeptService;
 import org.qifu.hillfog.service.IScorecardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -42,13 +47,24 @@ public class ScorecardReportController extends BaseControllerSupport implements 
 	@Autowired
 	IScorecardService<HfScorecard, String> scorecardService;
 	
+	@Autowired
+	IEmployeeService<HfEmployee, String> employeeService;
+	
+	@Autowired
+	IOrgDeptService<HfOrgDept, String> orgDeptService;	
+	
 	@Override
 	public String viewPageNamespace() {
 		return "hillfog_scr";
 	}
 	
 	private void init(String type, ModelMap mm) throws AuthorityException, ControllerException, ServiceException, Exception {
-		
+		mm.put("scorecardMap", this.scorecardService.findMap(true));
+		mm.put("frequencyMap", MeasureDataCode.getFrequencyMap(true));
+		mm.put("orgInputAutocomplete", pageAutocompleteContent(this.orgDeptService.findInputAutocomplete()));
+		mm.put("empInputAutocomplete", pageAutocompleteContent(this.employeeService.findInputAutocomplete()));	
+		mm.put("date1", this.getNowDate2());
+		mm.put("date2", this.getNowDate2());		
 	}
 	
 	@ControllerMethodAuthority(check = true, programId = "HF_PROG005D0001Q")

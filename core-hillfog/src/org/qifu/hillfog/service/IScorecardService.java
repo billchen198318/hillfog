@@ -21,9 +21,18 @@
  */
 package org.qifu.hillfog.service;
 
+import java.util.List;
+import java.util.Map;
+
+import org.qifu.base.exception.ServiceException;
+import org.qifu.base.model.DefaultResult;
 import org.qifu.base.service.IBaseService;
 import org.qifu.hillfog.entity.HfScorecard;
 
 public interface IScorecardService<T, E> extends IBaseService<HfScorecard, String> {
+	
+	public DefaultResult<List<HfScorecard>> findListByParamsNoContent(Map<String, Object> paramMap) throws ServiceException, Exception;
+	
+	public Map<String, String> findMap(boolean pleaseSelect) throws ServiceException, Exception; 
 	
 }

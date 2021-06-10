@@ -78,7 +78,6 @@ $( document ).ready(function() {
 		paintContent();
 	});
 	$("#frequency").val('3'); // default month
-	$("#frequency").trigger('change');
 	
 	$("#kpiOrga").autocomplete({
 		source: orgDeptList,
@@ -98,6 +97,23 @@ $( document ).ready(function() {
 	}).focus(function() {
 		$(this).autocomplete("search", " ");
 	});		
+	
+	$("#noDistinction").change(function(){
+		if($(this).is(":checked")) {
+			$("#kpiEmpl").val( '' );
+			$("#kpiOrga").val( '' );			
+			$("#kpiOrga").prop("readonly", true);
+			$("#kpiEmpl").prop("readonly", true);
+			$("#orgaOrEmplDiv").hide();
+		} else {
+			$("#kpiEmpl").val( '' );
+			$("#kpiOrga").val( '' );			
+			$("#kpiOrga").prop("readonly", false);
+			$("#kpiEmpl").prop("readonly", false);
+			$("#orgaOrEmplDiv").show();
+		}
+		paintContent();
+	});
 	
 	$("#kpiOrga").change(function(){
 		var inputOrgDept = $(this).val();
@@ -130,6 +146,8 @@ $( document ).ready(function() {
 		paintContent();
 	});
 	
+	$('#noDistinction').trigger( 'change' );
+	
 });
 
 function updateSuccess(data) {
@@ -147,6 +165,8 @@ function clearUpdate() {
 	$("#frequency").val( _qifu_please_select_id );
 	$("#kpiEmpl").val( '' );
 	$("#kpiOrga").val( '' );
+	$('#noDistinction').prop('checked', false);
+	$('#noDistinction').trigger( 'change' );
 	paintContent();
 }
 
@@ -172,7 +192,7 @@ function paintContent() {
 	var freq = $("#frequency").val();
 	var kpiEmpl = $("#kpiEmpl").val();
 	var kpiOrga = $("#kpiOrga").val();
-	if ( _qifu_please_select_id == freq || ('' == kpiEmpl && '' == kpiOrga) ) {
+	if ( _qifu_please_select_id == freq || (!$('#noDistinction').is(':checked') && ( kpiEmpl == '' && kpiOrga == '' )) ) {
 		$("#content").html('<br><span class="badge badge-warning"><h6>Please select Frequency and Organization or Employee!</h6></span><br>');
 		$("#btnUpdate").attr('disabled', 'disabled');
 		$("#btnClear").attr('disabled', 'disabled');
@@ -241,17 +261,27 @@ function paintContent() {
 						<h6>${kpi.managementName}</h6>
 					</span>			
 					<span class="badge badge-warning"><h6>Target:&nbsp;${kpi.target}&nbsp;，Maximum:&nbsp;${kpi.max}&nbsp;，Minimum:&nbsp;${kpi.min}</h6></span>
-					<span class="badge badge-dark"><h6>Weight:&nbsp;${kpi.weight}&nbsp;，Unit:&nbsp;${kpi.unit}</h6></span>
+					<span class="badge badge-dark"><h6>Unit:&nbsp;${kpi.unit}</h6></span>
 					<span class="badge badge-dark"><h6>Formula:&nbsp;${formula.forId}-${formula.name}</h6></span>
 					<span class="badge badge-dark"><h6>Aggregation:&nbsp;${aggrMethod.aggrId}-${aggrMethod.name}</h6></span>
 				</div>
 			</div>
 			<div class="row">
-				<div class="col-xs-12 col-md-12 col-lg-12 text-white">
+				<div class="col-xs-6 col-md-6 col-lg-6 text-white">
 					<@qifu.select dataSource="frequencyMap" name="frequency" id="frequency" value="" label="Frequency" requiredFlag="Y"></@qifu.select>
 				</div>
+				<div class="col-xs-6 col-md-6 col-lg-6 text-white">
+					
+					<p style="margin-bottom: 10px"></p>
+					<div class="custom-control custom-checkbox">
+						&nbsp;
+						<input type="checkbox" class="custom-control-input" id="noDistinction" name="noDistinction">
+						<label class="custom-control-label" for="noDistinction">No distinction between employee or department measure-data.</label>
+					</div>
+					
+				</div>
 			</div>
-			<div class="row">
+			<div class="row" id="orgaOrEmplDiv">
 				<div class="col-xs-6 col-md-6 col-lg-6 text-white">
 					<@qifu.textbox name="kpiOrga" value="" id="kpiOrga" label="Organization" requiredFlag="Y" maxlength="100" placeholder="Enter organization" />
 				</div>
@@ -259,6 +289,7 @@ function paintContent() {
 					<@qifu.textbox name="kpiEmpl" value="" id="kpiEmpl" label="Employee" requiredFlag="Y" maxlength="100" placeholder="Enter employee" />
 				</div>			
 			</div>
+			
 		</div>
 	</div>
 

@@ -76,14 +76,9 @@ public class MeasureDataCode {
 	}		
 	
 	/**
-	 * 不區分員工的衡量資料
+	 * 不區分員工/部門的衡量資料
 	 */
-	public final static String MEASURE_DATA_EMPLOYEE_FULL = "*";
-	
-	/**
-	 * 不區分部門的衡量資料
-	 */
-	public final static String MEASURE_DATA_ORGANIZATION_FULL = "*";
+	public final static String MEASURE_DATA_EMPLOYEE_OR_ORGANIZATION_FULL = "*";
 	
 	/**
 	 * 衡量數據(TARGET)輸入欄位的開頭
@@ -208,8 +203,8 @@ public class MeasureDataCode {
 	}	
 	
 	public static MeasureDataQueryParam queryParam(HttpServletRequest request) throws ServiceException, Exception {
-		String accountId = MEASURE_DATA_EMPLOYEE_FULL;
-		String orgId = MEASURE_DATA_ORGANIZATION_FULL;
+		String accountId = MEASURE_DATA_EMPLOYEE_OR_ORGANIZATION_FULL;
+		String orgId = MEASURE_DATA_EMPLOYEE_OR_ORGANIZATION_FULL;
 		if (!StringUtils.isBlank(request.getParameter("kpiEmpl"))) {
 			accountId = request.getParameter("kpiEmpl");
 			String tmp[] = accountId.split("/");

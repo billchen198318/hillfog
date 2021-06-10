@@ -35,6 +35,7 @@ import org.qifu.base.exception.AuthorityException;
 import org.qifu.base.exception.ControllerException;
 import org.qifu.base.exception.ServiceException;
 import org.qifu.base.message.BaseSystemMessage;
+import org.qifu.base.model.CheckControllerFieldHandler;
 import org.qifu.base.model.ControllerMethodAuthority;
 import org.qifu.base.model.DefaultControllerJsonResultObj;
 import org.qifu.base.model.PleaseSelect;
@@ -112,13 +113,14 @@ public class KpiBaseReportController extends BaseControllerSupport implements IP
 	}	
 	
 	private void checkFields(DefaultControllerJsonResultObj<List<ScoreCalculationData>> result, HttpServletRequest request) throws ControllerException, Exception {
-		this.getCheckControllerFieldHandler(result)
+		CheckControllerFieldHandler<List<ScoreCalculationData>> checkHandler = this.getCheckControllerFieldHandler(result);
+		checkHandler
 		.testField("date1", ( !SimpleUtils.isDate(request.getParameter("date1")) ), "Please input start date!")
 		.testField("date2", ( !SimpleUtils.isDate(request.getParameter("date2")) ), "Please input end date!")
 		.testField("frequency", PleaseSelect.noSelect(request.getParameter("frequency")), "Please select frequency!")
-		.testField("kpiEmpl", ( StringUtils.isBlank(request.getParameter("kpiEmpl")) && StringUtils.isBlank(request.getParameter("kpiOrga")) ), "Please input Organization or Employee!")
-		.testField("kpiOrga", ( StringUtils.isBlank(request.getParameter("kpiEmpl")) && StringUtils.isBlank(request.getParameter("kpiOrga")) ), "Please input Organization or Employee!")		
 		.throwMessage();
+		//.testField("kpiEmpl", ( StringUtils.isBlank(request.getParameter("kpiEmpl")) && StringUtils.isBlank(request.getParameter("kpiOrga")) ), "Please input Organization or Employee!")
+		//.testField("kpiOrga", ( StringUtils.isBlank(request.getParameter("kpiEmpl")) && StringUtils.isBlank(request.getParameter("kpiOrga")) ), "Please input Organization or Employee!")		
 	}
 	
 	private void queryContent(DefaultControllerJsonResultObj<List<ScoreCalculationData>> result, HttpServletRequest request) throws ControllerException, Exception {

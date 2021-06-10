@@ -21,12 +21,13 @@
  */
 package org.qifu.hillfog.vo;
 
+import org.apache.commons.lang3.StringUtils;
 import org.qifu.hillfog.model.MeasureDataCode;
 
 public class MeasureDataQueryParam {
 	
-	private String accountId = MeasureDataCode.MEASURE_DATA_EMPLOYEE_FULL;
-	private String orgId = MeasureDataCode.MEASURE_DATA_ORGANIZATION_FULL;
+	private String accountId = MeasureDataCode.MEASURE_DATA_EMPLOYEE_OR_ORGANIZATION_FULL;
+	private String orgId = MeasureDataCode.MEASURE_DATA_EMPLOYEE_OR_ORGANIZATION_FULL;
 	
 	public MeasureDataQueryParam() {
 		super();
@@ -34,8 +35,12 @@ public class MeasureDataQueryParam {
 
 	public MeasureDataQueryParam(String accountId, String orgId) {
 		super();
-		this.accountId = accountId;
-		this.orgId = orgId;
+		if (!StringUtils.isBlank(accountId)) {
+			this.accountId = accountId;
+		}
+		if (!StringUtils.isBlank(orgId)) {
+			this.orgId = orgId;
+		}
 	}
 	
 	public String getAccountId() {
