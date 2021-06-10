@@ -47,6 +47,7 @@ import org.qifu.hillfog.entity.HfObjOwner;
 import org.qifu.hillfog.entity.HfObjective;
 import org.qifu.hillfog.entity.HfOrgDept;
 import org.qifu.hillfog.entity.HfPdca;
+import org.qifu.hillfog.entity.HfSoOwnerOkrs;
 import org.qifu.hillfog.logic.IOkrBaseLogicService;
 import org.qifu.hillfog.model.PDCABase;
 import org.qifu.hillfog.service.IEmployeeService;
@@ -58,6 +59,7 @@ import org.qifu.hillfog.service.IObjOwnerService;
 import org.qifu.hillfog.service.IObjectiveService;
 import org.qifu.hillfog.service.IOrgDeptService;
 import org.qifu.hillfog.service.IPdcaService;
+import org.qifu.hillfog.service.ISoOwnerOkrsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -98,6 +100,9 @@ public class OkrBaseLogicServiceImpl extends BaseLogicService implements IOkrBas
 	
 	@Autowired
 	IPdcaService<HfPdca, String> pdcaService;
+	
+	@Autowired
+	ISoOwnerOkrsService<HfSoOwnerOkrs, String> soOwnerOkrsService;	
 	
 	@ServiceMethodAuthority(type = ServiceMethodType.INSERT)
 	@Transactional(
@@ -179,6 +184,11 @@ public class OkrBaseLogicServiceImpl extends BaseLogicService implements IOkrBas
 		paramMap.put("mstType", PDCABase.SOURCE_MASTER_OBJECTIVE_TYPE);
 		if (this.pdcaService.count(paramMap) > 0) {
 			throw new ServiceException("Cannot delete, data related PDCA project.");
+		}
+		paramMap.clear();
+		paramMap.put("okrOid", objective.getOid());
+		if (this.soOwnerOkrsService.count(paramMap) > 0) {
+			throw new ServiceException("Cannot delete, data related OKR project.");
 		}
 		this.removeInitiative(objective);
 		this.removeObjectiveDept(objective);

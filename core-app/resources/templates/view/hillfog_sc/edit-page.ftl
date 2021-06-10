@@ -44,6 +44,7 @@
 
 <script type="text/javascript">
 
+var _oid = '${scorecard.oid}';
 
 // ====================================================================
 var okrs = [];
@@ -72,29 +73,30 @@ $( document ).ready(function() {
 	
 });
 
-function btnSave() {
+function btnUpdate() {
 	if (vm.autoAllocationWeightFlag) {
 		vm.autoAllocationWeight();
 	}
 	xhrSendParameter(
-		'./hfScorecardSaveJson', 
+		'./hfScorecardUpdateJson', 
 		{ 
+			'oid'			:	'${scorecard.oid}',
 			'name' 			:	$("#name").val(),
 			'content'		:	$("#content").val(),
 			'mission'		:	$("#mission").val(),
 			'perspectives'	:	JSON.stringify( { 'items' : vm.perspectives } )
 		},
 		function(data) {
-			saveSuccess(data);
+			updateSuccess(data);
 		}, 
 		function() {
-			clearSave();
+			clearUpdate();
 		},
 		_qifu_defaultSelfPleaseWaitShow
 	);	
 }
 
-function saveSuccess(data) {
+function updateSuccess(data) {
 	clearWarningMessageField(formGroups, msgFields);
 	if ( _qifu_success_flag != data.success ) {
 		parent.toastrWarning( data.message );
@@ -102,15 +104,11 @@ function saveSuccess(data) {
 		return;
 	}
 	parent.toastrInfo( data.message );
-	
-	clearSave();
 }
 
-function btnClear() {
-	clearSave();
-}
-
-function clearSave() {
+function clearUpdate() {
+	appUnmount();
+	window.location = parent.getProgUrlForOid('HF_PROG001D0008E', '${scorecard.oid}');	
 }
 
 // ====================================================================
@@ -130,18 +128,18 @@ function removeArrayByPos(arr, pos) {
 <body>
 
 <@qifu.toolBar 
-	id="HF_PROG001D0008A_toolbar" 
+	id="HF_PROG001D0008E_toolbar" 
 	refreshEnable="Y"
-	refreshJsMethod="window.location=parent.getProgUrl('HF_PROG001D0008A');" 
+	refreshJsMethod="window.location=parent.getProgUrlForOid('HF_PROG001D0008E', '${scorecard.oid}')" 
 	createNewEnable="N"
 	createNewJsMethod=""
 	saveEnabel="Y" 
-	saveJsMethod="btnSave();" 	
+	saveJsMethod="btnUpdate();" 	
 	cancelEnable="Y" 
-	cancelJsMethod="parent.closeTab('HF_PROG001D0008A');"
+	cancelJsMethod="parent.closeTab('HF_PROG001D0008E');"
 	programName="${programName}"
 	programId="${programId}"
-	description="Create scorecard item." />		
+	description="Edit scorecard item." />		
 <#import "../common-f-head.ftl" as cfh />
 <@cfh.commonFormHeadContent /> 
 
@@ -150,15 +148,15 @@ function removeArrayByPos(arr, pos) {
 <div class="form-group" id="form-group1">
 	<div class="row">
 		<div class="col-xs-12 col-md-12 col-lg-12">
-			<@qifu.textbox name="name" value="" id="name" requiredFlag="Y" label="Vision name" placeholder="Enter vision name" maxlength="100" />
+			<@qifu.textbox name="name" value="scorecard.name" id="name" requiredFlag="Y" label="Vision name" placeholder="Enter vision name" maxlength="100" />
 		</div>
 	</div>
 	<div class="row">
 		<div class="col-xs-6 col-md-6 col-lg-6">
-			<@qifu.textarea name="content" value="" id="content" requiredFlag="Y" label="Vision content" rows="3" placeholder="Enter vision content"></@qifu.textarea>
+			<@qifu.textarea name="content" value="scorecard.content" id="content" requiredFlag="Y" label="Vision content" rows="3" placeholder="Enter vision content"></@qifu.textarea>
 		</div>
 		<div class="col-xs-6 col-md-6 col-lg-6">
-			<@qifu.textarea name="mission" value="" id="mission" requiredFlag="Y" label="Vision mission" rows="3" placeholder="Enter vision mission"></@qifu.textarea>
+			<@qifu.textarea name="mission" value="scorecard.mission" id="mission" requiredFlag="Y" label="Vision mission" rows="3" placeholder="Enter vision mission"></@qifu.textarea>
 		</div>		
 	</div>			
 </div>
@@ -166,9 +164,9 @@ function removeArrayByPos(arr, pos) {
 	<div class="row">
 		<div class="col-xs-12 col-md-12 col-lg-12">
 		
-		<button type="button" class="btn btn-primary" id="btnSave" ><i class='icon fa fa-floppy-o' onclick="btnSave();"></i>&nbsp;Save</button>
+		<button type="button" class="btn btn-primary" id="btnUpdate" ><i class='icon fa fa-floppy-o' onclick="btnUpdate();"></i>&nbsp;Save</button>
 		&nbsp;
-		<button type="button" class="btn btn-primary" id="btnClear" ><i class='icon fa fa-hand-paper-o' onclick="btnClear();"></i>&nbsp;Clear</button>	
+		<button type="button" class="btn btn-primary" id="btnClear" ><i class='icon fa fa-hand-paper-o' onclick="clearUpdate();"></i>&nbsp;Clear</button>	
 		&nbsp;
 		&nbsp;
 		
@@ -318,7 +316,7 @@ function removeArrayByPos(arr, pos) {
 <br/>
 <br/>
 
-<script type="text/javascript" src="${qifu_basePath}js/hillfog/HF_PROG001D0008A.js?ver=${qifu_jsVerBuild}"></script>
+<script type="text/javascript" src="${qifu_basePath}js/hillfog/HF_PROG001D0008E.js?ver=${qifu_jsVerBuild}"></script>
 
 </body>
 </html>

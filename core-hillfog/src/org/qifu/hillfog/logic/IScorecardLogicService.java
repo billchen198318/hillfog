@@ -36,4 +36,6 @@ public interface IScorecardLogicService {
 	
 	public DefaultResult<Boolean> delete(HfScorecard scorecard) throws ServiceException, Exception;
 	
+	public DefaultResult<List<Map<String, Object>>> findPerspectivesItemForEditPage(String scorecardOid) throws ServiceException, Exception;
+	
 }

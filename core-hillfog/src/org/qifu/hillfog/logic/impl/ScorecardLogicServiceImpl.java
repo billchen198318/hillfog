@@ -23,7 +23,9 @@ package org.qifu.hillfog.logic.impl;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -31,6 +33,7 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.qifu.base.Constants;
 import org.qifu.base.exception.ServiceException;
 import org.qifu.base.message.BaseSystemMessage;
 import org.qifu.base.model.DefaultResult;
@@ -38,6 +41,7 @@ import org.qifu.base.model.ServiceAuthority;
 import org.qifu.base.model.ServiceMethodAuthority;
 import org.qifu.base.model.ServiceMethodType;
 import org.qifu.base.model.SortType;
+import org.qifu.base.model.YesNo;
 import org.qifu.base.service.BaseLogicService;
 import org.qifu.hillfog.entity.HfKpi;
 import org.qifu.hillfog.entity.HfObjective;
@@ -129,7 +133,7 @@ public class ScorecardLogicServiceImpl extends BaseLogicService implements IScor
 		this.setStringValueMaxLength(scorecard, "mission", MAX_CONTENT_LENGTH);
 		DefaultResult<HfScorecard> mResult = this.scorecardService.update(scorecard);
 		scorecard = mResult.getValueEmptyThrowMessage();
-		this.deletePerspectiveAndAllDetail(checkUkScorecard);
+		this.deletePerspectiveAndAllDetail(scorecard);
 		this.createPerspectives(scorecard, perspectivesDataMapList);
 		this.resetUpdateTabNum(scorecard);		
 		return mResult;
@@ -283,6 +287,79 @@ public class ScorecardLogicServiceImpl extends BaseLogicService implements IScor
 				}
 			}
 		}		
+	}
+
+	@ServiceMethodAuthority(type = ServiceMethodType.SELECT)
+	@Transactional(
+			propagation=Propagation.REQUIRED, 
+			readOnly=false,
+			rollbackFor={RuntimeException.class, IOException.class, Exception.class} )		
+	@Override
+	public DefaultResult<List<Map<String, Object>>> findPerspectivesItemForEditPage(String scorecardOid) throws ServiceException, Exception {
+		if (this.isBlank(scorecardOid)) {
+			throw new ServiceException( BaseSystemMessage.parameterBlank() );
+		}
+		DefaultResult<List<Map<String, Object>>> result = new DefaultResult<List<Map<String, Object>>>();
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("scOid", scorecardOid);
+		List<HfPerspective> perspectivesList = this.perspectiveService.selectListByParams(paramMap, "TAB_NUM", SortType.ASC).getValue();
+		List<Map<String, Object>> perspectivesDataMapList = new LinkedList<Map<String, Object>>();
+		for (HfPerspective perspective : perspectivesList) {
+			paramMap.clear();
+			paramMap.put("perOid", perspective.getOid());
+			List<HfStrategyObjective> strategyObjectiveList = this.strategyObjectiveService.selectListByParams(paramMap).getValue();
+			
+			Map<String, Object> perspectiveDataMap = new HashMap<String, Object>();
+			List<Map<String, Object>> strategyObjectiveDataMapList = new ArrayList<Map<String, Object>>();
+			perspectiveDataMap.put("strategyObjectives", strategyObjectiveDataMapList);
+			perspectiveDataMap.put("oid", perspective.getOid());
+			perspectiveDataMap.put("name", perspective.getName());
+			perspectiveDataMap.put("weight", perspective.getWeight().floatValue());
+			perspectiveDataMap.put("tabNum", perspective.getTabNum());
+			perspectivesDataMapList.add(perspectiveDataMap);
+			
+			for (HfStrategyObjective strategyObjective : strategyObjectiveList) {
+				Map<String, Object> strategyObjectiveDataMap = new HashMap<String, Object>();
+				List<Map<String, Object>> kpis = new ArrayList<Map<String, Object>>();
+				List<Map<String, Object>> okrs = new ArrayList<Map<String, Object>>();
+				strategyObjectiveDataMap.put("kpis", kpis);
+				strategyObjectiveDataMap.put("okrs", okrs);
+				strategyObjectiveDataMap.put("currentSelect1", Constants.HTML_SELECT_NO_SELECT_ID);
+				strategyObjectiveDataMap.put("currentSelect2", Constants.HTML_SELECT_NO_SELECT_ID);
+				strategyObjectiveDataMap.put("oid", strategyObjective.getOid());
+				strategyObjectiveDataMap.put("name", strategyObjective.getName());
+				strategyObjectiveDataMap.put("weight", strategyObjective.getWeight().floatValue());
+				strategyObjectiveDataMapList.add(strategyObjectiveDataMap);
+				
+				paramMap.clear();
+				paramMap.put("soOid", strategyObjective.getOid());
+				List<HfSoOwnerKpis> ownerKpisList = this.soOwnerKpisService.selectListByParams(paramMap).getValue();
+				for (HfSoOwnerKpis ownerKpi : ownerKpisList) {
+					HfKpi kpi = this.kpiService.selectByPrimaryKey(ownerKpi.getKpiOid()).getValueEmptyThrowMessage();
+					Map<String, Object> kpiData = new HashMap<String, Object>();
+					kpiData.put("oid", kpi.getOid());
+					kpiData.put("name", kpi.getName());
+					kpiData.put("weight", ownerKpi.getCardWeight().floatValue());
+					kpis.add(kpiData);
+				}
+				
+				List<HfSoOwnerOkrs> ownerOkrsList = this.soOwnerOkrsService.selectListByParams(paramMap).getValue();
+				for (HfSoOwnerOkrs ownerOkr : ownerOkrsList) {
+					HfObjective objective = this.objectiveService.selectByPrimaryKey(ownerOkr.getOkrOid()).getValueEmptyThrowMessage();
+					Map<String, Object> okrData = new HashMap<String, Object>();
+					okrData.put("oid", objective.getOid());
+					okrData.put("name", objective.getName());
+					okrs.add(okrData);
+				}
+				
+			}
+			
+		}
+		paramMap.clear();
+		result.setValue(perspectivesDataMapList);
+		result.setSuccess( YesNo.YES );
+		result.setMessage( "success!" );
+		return result;
 	}
 	
 }

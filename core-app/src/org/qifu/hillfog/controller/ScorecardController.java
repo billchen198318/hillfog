@@ -163,6 +163,28 @@ public class ScorecardController extends BaseControllerSupport implements IPageN
 		return viewName;
 	}
 	
+	private void queryPerspectivesAndDetailForEdit(DefaultControllerJsonResultObj<List<Map<String, Object>>> result, HfScorecard scorecard) throws AuthorityException, ControllerException, ServiceException, Exception {
+		DefaultResult<List<Map<String, Object>>> qResult = this.scorecardLogicService.findPerspectivesItemForEditPage(scorecard.getOid());
+		this.setDefaultResponseJsonResult(result, qResult);
+	}
+	
+	@ControllerMethodAuthority(check = true, programId = "HF_PROG001D0008E")
+	@RequestMapping(value = "/hfScorecardQueryEditDataJson", produces = MediaType.APPLICATION_JSON_VALUE)		
+	public @ResponseBody DefaultControllerJsonResultObj<List<Map<String, Object>>> doQueryEditData(HttpServletRequest request, HfScorecard scorecard) {
+		DefaultControllerJsonResultObj<List<Map<String, Object>>> result = this.getDefaultJsonResult(this.currentMethodAuthority());
+		if (!this.isAuthorizeAndLoginFromControllerJsonResult(result)) {
+			return result;
+		}
+		try {
+			this.queryPerspectivesAndDetailForEdit(result, scorecard);
+		} catch (AuthorityException | ServiceException | ControllerException e) {
+			this.baseExceptionResult(result, e);	
+		} catch (Exception e) {
+			this.exceptionResult(result, e);
+		}
+		return result;		
+	}	
+	
 	private void checkFields(DefaultControllerJsonResultObj<HfScorecard> result, HttpServletRequest request, HfScorecard scorecard) throws ControllerException, ServiceException, Exception {
 		CheckControllerFieldHandler<HfScorecard> checkHandler = this.getCheckControllerFieldHandler(result)
 		.testField("name", scorecard, "@org.apache.commons.lang3.StringUtils@isBlank(name)", "Name is blank!")
@@ -226,8 +248,36 @@ public class ScorecardController extends BaseControllerSupport implements IPageN
 		return result;		
 	}	
 	
+	private void update(DefaultControllerJsonResultObj<HfScorecard> result, HttpServletRequest request, HfScorecard scorecard) throws AuthorityException, ControllerException, ServiceException, Exception {
+		this.checkFields(result, request, scorecard);
+		String perspectivesItemJsonStr = StringUtils.defaultString( request.getParameter("perspectives") );
+		Map<String, List<Map<String, Object>>> perspectivesJsonData = 
+				(Map<String, List<Map<String, Object>>>) new ObjectMapper().readValue( perspectivesItemJsonStr, LinkedHashMap.class );
+		List<Map<String, Object>> perspectivesDataMapList = perspectivesJsonData.get("items");
+		DefaultResult<HfScorecard> uResult = this.scorecardLogicService.update(scorecard, perspectivesDataMapList);
+		this.setDefaultResponseJsonResult(result, uResult);
+	}
+	
+	@ControllerMethodAuthority(check = true, programId = "HF_PROG001D0008E")
+	@RequestMapping(value = "/hfScorecardUpdateJson", produces = MediaType.APPLICATION_JSON_VALUE)		
+	public @ResponseBody DefaultControllerJsonResultObj<HfScorecard> doUpdate(HttpServletRequest request, HfScorecard scorecard) {
+		DefaultControllerJsonResultObj<HfScorecard> result = this.getDefaultJsonResult(this.currentMethodAuthority());
+		if (!this.isAuthorizeAndLoginFromControllerJsonResult(result)) {
+			return result;
+		}
+		try {
+			this.update(result, request, scorecard);
+		} catch (AuthorityException | ServiceException | ControllerException e) {
+			this.baseExceptionResult(result, e);	
+		} catch (Exception e) {
+			this.exceptionResult(result, e);
+		}
+		return result;		
+	}		
+	
 	private void delete(DefaultControllerJsonResultObj<Boolean> result, HfScorecard scorecard) throws AuthorityException, ControllerException, ServiceException, Exception {
-		
+		DefaultResult<Boolean> dResult = this.scorecardLogicService.delete(scorecard);
+		this.setDefaultResponseJsonResult(result, dResult);
 	}
 	
 	@ControllerMethodAuthority(check = true, programId = "HF_PROG001D0008D")

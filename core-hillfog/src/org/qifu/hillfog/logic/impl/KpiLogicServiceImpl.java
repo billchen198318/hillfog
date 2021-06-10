@@ -43,6 +43,7 @@ import org.qifu.hillfog.entity.HfKpiEmpl;
 import org.qifu.hillfog.entity.HfKpiOrga;
 import org.qifu.hillfog.entity.HfMeasureData;
 import org.qifu.hillfog.entity.HfPdca;
+import org.qifu.hillfog.entity.HfSoOwnerKpis;
 import org.qifu.hillfog.logic.IKpiLogicService;
 import org.qifu.hillfog.model.KpiBasicCode;
 import org.qifu.hillfog.model.PDCABase;
@@ -53,6 +54,7 @@ import org.qifu.hillfog.service.IKpiOrgaService;
 import org.qifu.hillfog.service.IKpiService;
 import org.qifu.hillfog.service.IMeasureDataService;
 import org.qifu.hillfog.service.IPdcaService;
+import org.qifu.hillfog.service.ISoOwnerKpisService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -86,6 +88,9 @@ public class KpiLogicServiceImpl extends BaseLogicService implements IKpiLogicSe
 	
 	@Autowired
 	IPdcaService<HfPdca, String> pdcaService;	
+	
+	@Autowired
+	ISoOwnerKpisService<HfSoOwnerKpis, String> soOwnerKpisService;	
 	
 	@ServiceMethodAuthority(type = ServiceMethodType.INSERT)
 	@Transactional(
@@ -175,6 +180,11 @@ public class KpiLogicServiceImpl extends BaseLogicService implements IKpiLogicSe
 		if (this.pdcaService.count(paramMap) > 0) {
 			throw new ServiceException("Cannot delete, data related PDCA project.");
 		}		
+		paramMap.clear();
+		paramMap.put("kpiOid", kpi.getOid());
+		if (this.soOwnerKpisService.count(paramMap) > 0) {
+			throw new ServiceException("Cannot delete, data related Scorecard.");
+		}
 		this.deleteKpiDepartment(kpi);
 		this.deleteKpiOwner(kpi);
 		this.measureDataService.deleteByKpiId(kpi.getId());

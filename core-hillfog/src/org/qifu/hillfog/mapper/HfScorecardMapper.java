@@ -21,11 +21,16 @@
  */
 package org.qifu.hillfog.mapper;
 
+import java.util.List;
+import java.util.Map;
+
 import org.apache.ibatis.annotations.Mapper;
 import org.qifu.base.mapper.IBaseMapper;
 import org.qifu.hillfog.entity.HfScorecard;
 
 @Mapper
 public interface HfScorecardMapper extends IBaseMapper<HfScorecard, String> {
+	
+	public List<HfScorecard> findPageNoContent(Map<String, Object> paramMap);
 	
 }

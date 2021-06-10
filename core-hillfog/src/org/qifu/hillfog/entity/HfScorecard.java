@@ -8,6 +8,7 @@ import org.qifu.base.model.EntityPK;
 import org.qifu.base.model.EntityUK;
 import org.qifu.base.model.UpdateDateField;
 import org.qifu.base.model.UpdateUserField;
+import org.qifu.util.SimpleUtils;
 
 public class HfScorecard implements java.io.Serializable {
 	private static final long serialVersionUID = -4605482629931842976L;
@@ -20,6 +21,10 @@ public class HfScorecard implements java.io.Serializable {
     private Date cdate;
     private String uuserid;
     private Date udate;
+    
+    public String getCdateString() {
+    	return SimpleUtils.getDateFormat_yyyyMMddHHmmss(this.cdate);
+    }
     
     @EntityPK(name = "oid", autoUUID = true)
     public String getOid() {

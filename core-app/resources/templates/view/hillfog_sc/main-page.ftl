@@ -31,7 +31,7 @@ function getQueryGridHeader() {
 	return [
 		{ name: "#", 			field: "oid", 	formatter: getQueryGridFormatter },
 		{ name: "Name",			field: "name"			},
-		{ name: "Create",		field: "cdate"			}
+		{ name: "Create time",	field: "cdateString"	}
 	];
 }
 
