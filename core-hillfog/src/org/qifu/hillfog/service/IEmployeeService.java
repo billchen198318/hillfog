@@ -106,4 +106,24 @@ public interface IEmployeeService<T, E> extends IBaseService<HfEmployee, String>
 	
 	public String getPagefieldValue(HfEmployee employee);
 	
+	/**
+	 * Scorecard擁有的KPI的負責人
+	 * 
+	 * @param scorecardOid
+	 * @return
+	 * @throws ServiceException
+	 * @throws Exception
+	 */
+	public DefaultResult<List<HfEmployee>> findScorecardKpisOwner(String scorecardOid) throws ServiceException, Exception;
+	
+	/**
+	 * Scorecard擁有的KPI的負責人
+	 * 
+	 * @param scorecardOid
+	 * @return
+	 * @throws ServiceException
+	 * @throws Exception
+	 */
+	public List<String> findInputAutocompleteByScorecard(String scorecardOid) throws ServiceException, Exception;
+	
 }

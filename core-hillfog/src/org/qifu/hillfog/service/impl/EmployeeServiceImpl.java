@@ -244,6 +244,52 @@ public class EmployeeServiceImpl extends BaseService<HfEmployee, String> impleme
 			dataList.add( this.getPagefieldValue(employee) );
 		}		
 		return dataList;
+	}
+
+	/**
+	 * Scorecard擁有的KPI的負責人
+	 * 
+	 * @param scorecardOid
+	 * @return
+	 * @throws ServiceException
+	 * @throws Exception
+	 */	
+	@Override
+	public DefaultResult<List<HfEmployee>> findScorecardKpisOwner(String scorecardOid) throws ServiceException, Exception {
+		if (StringUtils.isBlank(scorecardOid)) {
+			throw new ServiceException( BaseSystemMessage.parameterBlank() );
+		}
+		DefaultResult<List<HfEmployee>> result = new DefaultResult<List<HfEmployee>>();
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("oid", scorecardOid);
+		List<HfEmployee> dataList = this.employeeMapper.findScorecardKpisOwner(paramMap);
+		if (dataList != null && dataList.size() > 0) {
+			result.setValue(dataList);
+		} else {
+			result.setMessage( BaseSystemMessage.searchNoData() );
+		}
+		return result;
+	}
+
+	/**
+	 * Scorecard擁有的KPI的負責人
+	 * 
+	 * @param scorecardOid
+	 * @return
+	 * @throws ServiceException
+	 * @throws Exception
+	 */	
+	@Override
+	public List<String> findInputAutocompleteByScorecard(String scorecardOid) throws ServiceException, Exception {
+		DefaultResult<List<HfEmployee>> result = this.findScorecardKpisOwner(scorecardOid);
+		List<String> dataList = new ArrayList<String>();
+		if (result.getValue() == null || result.getValue().size() < 1) {
+			return dataList;
+		}
+		for (HfEmployee employee : result.getValue()) {
+			dataList.add( this.getPagefieldValue(employee) );
+		}
+		return dataList;
 	}	
 	
 }

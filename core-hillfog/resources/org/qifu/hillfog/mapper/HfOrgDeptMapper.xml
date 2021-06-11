@@ -192,5 +192,28 @@
 	AND B.OBJ_OID = #{objOid,jdbcType=VARCHAR}
 	ORDER BY M.ORG_ID ASC
   </select>  
+  
+  <!-- Scorecard擁有的KPI的負責部門 -->
+  <select id="findScorecardKpisDepartment" parameterType="java.util.HashMap" resultMap="BaseResultMap">
+	SELECT distinct M.*
+	FROM 
+	<include refid="org.qifu.hillfog.mapper.DB1Config.schema"/>hf_org_dept M, 
+	<include refid="org.qifu.hillfog.mapper.DB1Config.schema"/>hf_kpi_orga KO,
+	<include refid="org.qifu.hillfog.mapper.DB1Config.schema"/>hf_kpi K,
+	<include refid="org.qifu.hillfog.mapper.DB1Config.schema"/>hf_so_owner_kpis SOK,
+	<include refid="org.qifu.hillfog.mapper.DB1Config.schema"/>hf_strategy_objective SO,
+	<include refid="org.qifu.hillfog.mapper.DB1Config.schema"/>hf_perspective PER,
+	<include refid="org.qifu.hillfog.mapper.DB1Config.schema"/>hf_scorecard SC
+
+	WHERE M.ORG_ID = KO.ORG_ID
+	AND KO.KPI_ID = K.ID
+	AND K.OID = SOK.KPI_OID
+	AND SOK.SO_OID = SO.OID
+	AND SO.PER_OID = PER.OID
+	AND PER.SC_OID = SC.OID
+	AND SC.OID = #{oid,jdbcType=VARCHAR}	
+	
+	ORDER BY M.ORG_ID ASC
+  </select>   
     
 </mapper>

@@ -99,6 +99,23 @@ $( document ).ready(function() {
 		$(this).autocomplete("search", " ");
 	});		
 	
+	$("#noDistinction").change(function(){
+		if($(this).is(":checked")) {
+			$("#kpiEmpl").val( '' );
+			$("#kpiOrga").val( '' );			
+			$("#kpiOrga").prop("readonly", true);
+			$("#kpiEmpl").prop("readonly", true);
+			$("#orgaOrEmplDiv").hide();
+		} else {
+			$("#kpiEmpl").val( '' );
+			$("#kpiOrga").val( '' );			
+			$("#kpiOrga").prop("readonly", false);
+			$("#kpiEmpl").prop("readonly", false);
+			$("#orgaOrEmplDiv").show();
+		}
+		changeQueryButtonStatus();
+	});		
+	
 	$("#kpiOrga").change(function(){
 		var inputOrgDept = $(this).val();
 		var checkInOrgDept = false;
@@ -130,7 +147,56 @@ $( document ).ready(function() {
 		changeQueryButtonStatus();
 	});
 	
+	$("#scorecardOid").change(function(){
+		orgDeptList.splice(0);
+		empList.splice(0);
+		$("#kpiEmpl").val('');
+		$("#kpiOrga").val('');
+		$("#kpiEmpl").trigger('change');
+		xhrSendParameter(
+				'./hfCommonScorecardInputAutocompleteJson', 
+				{
+					'oid'	:	$("#scorecardOid").val()
+				}, 
+				function(data) {
+					if ( _qifu_success_flag != data.success ) {
+						parent.toastrWarning( data.message );
+						return;
+					}
+					if ( _qifu_success_flag == data.success ) {
+						parent.toastrInfo( data.message );
+						for (var d in data.value.org) {
+							orgDeptList.push( data.value.org[d] );
+						}
+						for (var d in data.value.emp) {
+							empList.push( data.value.emp[d] );
+						}
+					}
+				}, 
+				function() {
+					
+				},
+				_qifu_defaultSelfPleaseWaitShow
+		);		
+	});	
+	
 });
+
+function changeQueryButtonStatus() {
+	var scorecardOid = $("#scorecardOid").val();
+	var freq = $("#frequency").val();
+	var kpiEmpl = $("#kpiEmpl").val();
+	var kpiOrga = $("#kpiOrga").val();
+	if ( _qifu_please_select_id == scorecardOid || _qifu_please_select_id == freq || (!$('#noDistinction').is(':checked') && ( kpiEmpl == '' && kpiOrga == '' )) ) {
+		$("#content").html('<br><span class="badge badge-warning"><h6>Please select Scorecard(Vision) and Frequency and Organization or Employee!</h6></span><br>');
+		$("#btnQuery").attr('disabled', 'disabled');
+		$("#btnClear").attr('disabled', 'disabled');
+		return;
+	}
+	$("#btnQuery").removeAttr('disabled');
+	$("#btnClear").removeAttr('disabled');
+	$("#content").html('&nbsp;');
+}
 
 function queryReport() {
 	if ($("#btnQuery").is(':disabled')) {
@@ -180,7 +246,9 @@ function queryClear() {
 	$("#date1").val('');
 	$("#date2").val('');
 	$("#frequency").val('3');
-	$("#scorecardOid").val( _qifu_please_select_id );
+	$('#noDistinction').prop('checked', false);
+	$('#noDistinction').trigger( 'change' );		
+	$("#scorecardOid").val( _qifu_please_select_id );	
 }
 
 </script>
@@ -188,6 +256,22 @@ function queryClear() {
 </head>
 
 <body>
+
+<@qifu.toolBar 
+	id="HF_PROG005D0001Q_toolbar" 
+	refreshEnable="Y"
+	refreshJsMethod="window.location=parent.getProgUrlForOid('HF_PROG005D0001Q');" 
+	createNewEnable="N"
+	createNewJsMethod=""
+	saveEnabel="N" 
+	saveJsMethod="" 	
+	cancelEnable="Y" 
+	cancelJsMethod="parent.closeTab('HF_PROG005D0001Q');"
+	programName="${programName}"
+	programId="${programId}"
+	description="Query Scorecard report." />	
+<#import "../common-f-head.ftl" as cfh />
+<@cfh.commonFormHeadContent />
 
 	<div class="row">
 		<div class="col p-2"> <!-- bg-secondary rounded -->
@@ -207,7 +291,7 @@ function queryClear() {
 					<@qifu.textbox type="date" name="date2" value="date2" id="date2" label="End" requiredFlag="Y" maxlength="10" placeholder="Enter end date" />
 				</div>		
 			</div>						
-			<div class="row">
+			<div class="row" id="orgaOrEmplDiv">
 				<div class="col-xs-6 col-md-6 col-lg-6">
 					<@qifu.textbox name="kpiOrga" value="" id="kpiOrga" label="Organization" requiredFlag="Y" maxlength="100" placeholder="Enter organization" />
 				</div>
@@ -218,7 +302,16 @@ function queryClear() {
 			<div class="row">
 				<div class="col-xs-6 col-md-6 col-lg-6">
 					
+					
 					<p style="margin-bottom: 10px"></p>
+					
+					<div class="custom-control custom-checkbox">
+						&nbsp;
+						<input type="checkbox" class="custom-control-input" id="noDistinction" name="noDistinction">
+						<label class="custom-control-label" for="noDistinction">No distinction between employee or department measure-data.</label>
+					</div>					
+					
+					<p style="margin-bottom: 10px"></p>				
 				
 					<button type="button" class="btn btn-success" id="btnQuery" onclick="queryReport();"><i class="icon fa fa-search"></i>&nbsp;Query</button>
 					&nbsp;

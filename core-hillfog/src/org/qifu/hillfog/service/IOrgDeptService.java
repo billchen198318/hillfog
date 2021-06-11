@@ -64,4 +64,24 @@ public interface IOrgDeptService<T, E> extends IBaseService<HfOrgDept, String> {
 	 */
 	public List<String> findInputAutocompleteByObjectiveOid(String oid) throws ServiceException, Exception;
 	
+	/**
+	 * Scorecard擁有的KPI的負責部門
+	 * 
+	 * @param scorecardOid
+	 * @return
+	 * @throws ServiceException
+	 * @throws Exception
+	 */
+	public DefaultResult<List<HfOrgDept>> findScorecardDepartment(String scorecardOid) throws ServiceException, Exception;
+	
+	/**
+	 * Scorecard擁有的KPI的負責部門
+	 * 
+	 * @param scorecardOid
+	 * @return
+	 * @throws ServiceException
+	 * @throws Exception
+	 */
+	public List<String> findInputAutocompleteByScorecard(String scorecardOid) throws ServiceException, Exception;
+	
 }

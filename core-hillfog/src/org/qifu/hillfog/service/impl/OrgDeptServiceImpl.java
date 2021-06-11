@@ -164,6 +164,52 @@ public class OrgDeptServiceImpl extends BaseService<HfOrgDept, String> implement
 			dataList.add( this.getPagefieldValue(orgDept) );
 		}
 		return dataList;
+	}
+
+	/**
+	 * Scorecard擁有的KPI的負責部門
+	 * 
+	 * @param scorecardOid
+	 * @return
+	 * @throws ServiceException
+	 * @throws Exception
+	 */
+	@Override
+	public DefaultResult<List<HfOrgDept>> findScorecardDepartment(String scorecardOid) throws ServiceException, Exception {
+		if (StringUtils.isBlank(scorecardOid)) {
+			throw new ServiceException( BaseSystemMessage.parameterBlank() );
+		}
+		DefaultResult<List<HfOrgDept>> result = new DefaultResult<List<HfOrgDept>>();
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("oid", scorecardOid);
+		List<HfOrgDept> dataList = this.orgDeptMapper.findScorecardDepartment(paramMap);
+		if (dataList != null && dataList.size() > 0) {
+			result.setValue(dataList);
+		} else {
+			result.setMessage( BaseSystemMessage.searchNoData() );
+		}
+		return result;
+	}
+
+	/**
+	 * Scorecard擁有的KPI的負責部門
+	 * 
+	 * @param scorecardOid
+	 * @return
+	 * @throws ServiceException
+	 * @throws Exception
+	 */	
+	@Override
+	public List<String> findInputAutocompleteByScorecard(String scorecardOid) throws ServiceException, Exception {
+		DefaultResult<List<HfOrgDept>> result = this.findScorecardDepartment(scorecardOid);
+		List<String> dataList = new ArrayList<String>();
+		if (result.getValue() == null || result.getValue().size() < 1) {
+			return dataList;
+		}		
+		for (HfOrgDept orgDept : result.getValue()) {
+			dataList.add( this.getPagefieldValue(orgDept) );
+		}
+		return dataList;
 	}	
 	
 }

@@ -91,6 +91,18 @@ public class CommonQueryController extends BaseControllerSupport {
 		result.setValue(dataMap);
 	}	
 	
+	private void queryScorecardInputAutocompleteBoth(DefaultControllerJsonResultObj<Map<String, List<String>>> result, String scorecardOid) throws ServiceException, ControllerException, Exception {
+		Map<String, List<String>> dataMap = new HashMap<String, List<String>>();
+		if (PleaseSelect.noSelect(scorecardOid)) {
+			dataMap.put(TYPE_EMPLOYEE, this.employeeService.findInputAutocomplete());
+			dataMap.put(TYPE_ORGANIZATION, this.orgDeptService.findInputAutocomplete());
+		} else {
+			dataMap.put(TYPE_EMPLOYEE, this.employeeService.findInputAutocompleteByScorecard(scorecardOid));
+			dataMap.put(TYPE_ORGANIZATION, this.orgDeptService.findInputAutocompleteByScorecard(scorecardOid));
+		}
+		result.setValue(dataMap);
+	}	
+	
 	@ControllerMethodAuthority(check = true, programId = "HF_PROGCOMM0001Q")
 	@RequestMapping(value = "/hfCommonKpiInputAutocompleteJson")	
 	public @ResponseBody DefaultControllerJsonResultObj<Map<String, List<String>>> doQueryKpiInputAutocomplete(HttpServletRequest request, @RequestParam(name="oid") String oid) {
@@ -138,6 +150,25 @@ public class CommonQueryController extends BaseControllerSupport {
 		}		
 		try {
 			this.queryKpiInputAutocomplete(result, TYPE_ORGANIZATION, oid);
+			result.setSuccess(YES);
+			result.setMessage( "success!" );
+		} catch (AuthorityException | ServiceException | ControllerException e) {
+			baseExceptionResult(result, e);		
+		} catch (Exception e) {
+			exceptionResult(result, e);
+		}
+		return result;
+	}	
+	
+	@ControllerMethodAuthority(check = true, programId = "HF_PROGCOMM0001Q")
+	@RequestMapping(value = "/hfCommonScorecardInputAutocompleteJson")	
+	public @ResponseBody DefaultControllerJsonResultObj<Map<String, List<String>>> doQueryScorecardInputAutocomplete(HttpServletRequest request, @RequestParam(name="oid") String oid) {
+		DefaultControllerJsonResultObj<Map<String, List<String>>> result = this.getDefaultJsonResult(this.currentMethodAuthority());
+		if (!this.isAuthorizeAndLoginFromControllerJsonResult(result)) {
+			return result;
+		}		
+		try {
+			this.queryScorecardInputAutocompleteBoth(result, oid);
 			result.setSuccess(YES);
 			result.setMessage( "success!" );
 		} catch (AuthorityException | ServiceException | ControllerException e) {

@@ -63,4 +63,12 @@ public interface HfEmployeeMapper extends IBaseMapper<HfEmployee, String> {
 	 */
 	public List<HfEmployee> findPdcaItemOwner(Map<String, Object> paramMap);
 	
+	/**
+	 * Scorecard擁有的KPI的負責人
+	 * 
+	 * @param paramMap
+	 * @return
+	 */
+	public List<HfEmployee> findScorecardKpisOwner(Map<String, Object> paramMap);
+	
 }

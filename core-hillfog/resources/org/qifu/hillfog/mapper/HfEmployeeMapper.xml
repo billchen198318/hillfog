@@ -232,5 +232,28 @@
 	AND B.PDCA_OID = #{pdcaOid,jdbcType=VARCHAR} AND B.ITEM_OID = #{itemOid,jdbcType=VARCHAR}
 	ORDER BY M.EMP_ID ASC     
   </select>  
-    
+
+  <!-- Scorecard擁有的KPI的負責人 -->
+  <select id="findScorecardKpisOwner" parameterType="java.util.HashMap" resultMap="BaseResultMap">
+	SELECT distinct M.*
+	FROM 
+	<include refid="org.qifu.hillfog.mapper.DB1Config.schema"/>hf_employee M, 
+	<include refid="org.qifu.hillfog.mapper.DB1Config.schema"/>hf_kpi_empl B,
+	<include refid="org.qifu.hillfog.mapper.DB1Config.schema"/>hf_kpi K,
+	<include refid="org.qifu.hillfog.mapper.DB1Config.schema"/>hf_so_owner_kpis SOK,
+	<include refid="org.qifu.hillfog.mapper.DB1Config.schema"/>hf_strategy_objective SO,
+	<include refid="org.qifu.hillfog.mapper.DB1Config.schema"/>hf_perspective PER,
+	<include refid="org.qifu.hillfog.mapper.DB1Config.schema"/>hf_scorecard SC
+	
+	WHERE M.ACCOUNT = B.ACCOUNT
+	AND B.KPI_ID = K.ID
+	AND K.OID = SOK.KPI_OID
+	AND SOK.SO_OID = SO.OID
+	AND SO.PER_OID = PER.OID
+	AND PER.SC_OID = SC.OID
+	AND SC.OID = #{oid,jdbcType=VARCHAR}
+	
+	ORDER BY M.EMP_ID ASC    
+  </select> 
+      
 </mapper>
