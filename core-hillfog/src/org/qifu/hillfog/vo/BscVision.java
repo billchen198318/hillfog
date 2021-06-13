@@ -34,6 +34,11 @@ public class BscVision extends BalancedScorecardData implements java.io.Serializ
     private String content;
     private String mission;
     private int row = 0;
+	private String frequencyName;
+	private String startDate;
+	private String endDate;
+	private String measureDataEmployee;
+	private String measureDataOrganization;    
     
     private List<BscPerspective> perspectives = new ArrayList<BscPerspective>();
     
@@ -83,6 +88,46 @@ public class BscVision extends BalancedScorecardData implements java.io.Serializ
 
 	public void setPerspectives(List<BscPerspective> perspectives) {
 		this.perspectives = perspectives;
+	}
+
+	public String getFrequencyName() {
+		return frequencyName;
+	}
+
+	public void setFrequencyName(String frequencyName) {
+		this.frequencyName = frequencyName;
+	}
+
+	public String getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(String startDate) {
+		this.startDate = startDate;
+	}
+
+	public String getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(String endDate) {
+		this.endDate = endDate;
+	}
+
+	public String getMeasureDataEmployee() {
+		return measureDataEmployee;
+	}
+
+	public void setMeasureDataEmployee(String measureDataEmployee) {
+		this.measureDataEmployee = measureDataEmployee;
+	}
+
+	public String getMeasureDataOrganization() {
+		return measureDataOrganization;
+	}
+
+	public void setMeasureDataOrganization(String measureDataOrganization) {
+		this.measureDataOrganization = measureDataOrganization;
 	}
 	
 }

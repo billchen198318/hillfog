@@ -57,6 +57,7 @@ public class BscKpi extends BalancedScorecardData implements java.io.Serializabl
     
     private List<String> employees;
     private List<String> organizations;
+    private List<DateRangeScore> dataRangeScores;
     
     public String getManagementName() {
     	return KpiBasicCode.getManagementMap(false).get(this.management);
@@ -226,6 +227,14 @@ public class BscKpi extends BalancedScorecardData implements java.io.Serializabl
 
 	public void setOrganizations(List<String> organizations) {
 		this.organizations = organizations;
+	}
+
+	public List<DateRangeScore> getDataRangeScores() {
+		return dataRangeScores;
+	}
+
+	public void setDataRangeScores(List<DateRangeScore> dataRangeScores) {
+		this.dataRangeScores = dataRangeScores;
 	}
     
 }

@@ -45,6 +45,7 @@ import org.qifu.hillfog.entity.HfScorecard;
 import org.qifu.hillfog.entity.HfSoOwnerKpis;
 import org.qifu.hillfog.entity.HfSoOwnerOkrs;
 import org.qifu.hillfog.entity.HfStrategyObjective;
+import org.qifu.hillfog.model.MeasureDataCode;
 import org.qifu.hillfog.model.OkrProgressRateData;
 import org.qifu.hillfog.model.ScoreColor;
 import org.qifu.hillfog.service.IEmployeeService;
@@ -131,6 +132,14 @@ public class BalancedScorecard {
 		HfScorecard scorecard = scorecardService.selectByPrimaryKey(scorecardOid).getValueEmptyThrowMessage();
 		this.vision = new BscVision();
 		BeanUtils.copyProperties(this.vision, scorecard);
+		// ---------------------------------------------------------------------------------
+		// for Show need only.
+		this.vision.setFrequencyName( MeasureDataCode.getFrequencyMap(false).get(this.frequency) );
+		this.vision.setStartDate( this.date1 );
+		this.vision.setEndDate( this.date2 );
+		this.vision.setMeasureDataEmployee( this.measureDataAccount );
+		this.vision.setMeasureDataOrganization( this.measureDataOrgId );
+		// ---------------------------------------------------------------------------------
 		Map<String, Object> paramMap = new HashMap<String, Object>();
 		paramMap.put("scOid", scorecardOid);
 		List<HfPerspective> perspectiveList = perspectiveService.selectListByParams(paramMap, "TAB_NUM", SortType.ASC).getValueEmptyThrowMessage();
@@ -197,6 +206,7 @@ public class BalancedScorecard {
 					kpi.setScore( scd.getScore() );
 					kpi.setFontColor( scd.getFontColor() );
 					kpi.setBgColor( scd.getBgColor() );
+					kpi.setDataRangeScores( scd.getDataRangeScores() );
 					soScore = soScore.add( kpi.getScore().multiply(this.getWeightPercentage(kpi.getWeight())) );
 				}
 				soScore = soScore.setScale(SCALE, ROUND_MODE);
@@ -244,14 +254,9 @@ public class BalancedScorecard {
 		for (BscPerspective perspective : this.vision.getPerspectives()) {
 			int pRow = 0;
 			for (BscStrategyObjective so : perspective.getStrategyObjectives()) {
-				/*
 				vRow += so.getKpis().size() + so.getOkrs().size();
 				pRow += so.getKpis().size() + so.getOkrs().size();
-				so.setRow( so.getKpis().size() + so.getOkrs().size() );
-				*/
-				vRow += so.getKpis().size() ;
-				pRow += so.getKpis().size() ;
-				so.setRow( so.getKpis().size() );				
+				so.setRow( so.getKpis().size() + so.getOkrs().size() );			
 			}
 			perspective.setRow(pRow);
 		}
