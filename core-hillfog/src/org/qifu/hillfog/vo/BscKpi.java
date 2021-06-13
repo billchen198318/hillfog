@@ -22,9 +22,14 @@
 package org.qifu.hillfog.vo;
 
 import java.math.BigDecimal;
+import java.util.List;
 
+import org.qifu.base.exception.ServiceException;
 import org.qifu.hillfog.entity.HfKpi;
 import org.qifu.hillfog.model.BalancedScorecardData;
+import org.qifu.hillfog.model.KpiBasicCode;
+import org.qifu.hillfog.util.AggregationMethodUtils;
+import org.qifu.hillfog.util.FormulaUtils;
 
 public class BscKpi extends BalancedScorecardData implements java.io.Serializable {
 	private static final long serialVersionUID = -2001910516656052720L;
@@ -49,6 +54,35 @@ public class BscKpi extends BalancedScorecardData implements java.io.Serializabl
     private String aggrId;
     private String dataType;
     private Integer quasiRange;
+    
+    private List<String> employees;
+    private List<String> organizations;
+    
+    public String getManagementName() {
+    	return KpiBasicCode.getManagementMap(false).get(this.management);
+    }    
+    
+    public String getCalculationName() {
+    	try {
+			return AggregationMethodUtils.findAggregationMethodById(this.aggrId).getName();
+		} catch (ServiceException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+    	return this.aggrId;
+    }
+    
+    public String getFormulaName() {
+    	try {
+			return FormulaUtils.getFormulaById(this.forId).getName();
+		} catch (ServiceException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+    	return this.forId;
+    }
     
 	public HfKpi getSource() {
 		return source;
@@ -176,6 +210,22 @@ public class BscKpi extends BalancedScorecardData implements java.io.Serializabl
 	
 	public void setQuasiRange(Integer quasiRange) {
 		this.quasiRange = quasiRange;
+	}
+
+	public List<String> getEmployees() {
+		return employees;
+	}
+
+	public void setEmployees(List<String> employees) {
+		this.employees = employees;
+	}
+
+	public List<String> getOrganizations() {
+		return organizations;
+	}
+
+	public void setOrganizations(List<String> organizations) {
+		this.organizations = organizations;
 	}
     
 }

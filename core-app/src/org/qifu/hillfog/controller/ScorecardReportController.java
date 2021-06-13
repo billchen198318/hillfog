@@ -28,6 +28,7 @@ import org.qifu.base.controller.IPageNamespaceProvide;
 import org.qifu.base.exception.AuthorityException;
 import org.qifu.base.exception.ControllerException;
 import org.qifu.base.exception.ServiceException;
+import org.qifu.base.message.BaseSystemMessage;
 import org.qifu.base.model.ControllerMethodAuthority;
 import org.qifu.base.model.DefaultControllerJsonResultObj;
 import org.qifu.base.model.PleaseSelect;
@@ -111,8 +112,12 @@ public class ScorecardReportController extends BaseControllerSupport implements 
 		BscVision bv = BalancedScorecard.build()
 				.from(scorecardOid, frequency, date1, date2, queryParam.getAccountId(), queryParam.getOrgId())
 				.process().value();
-		result.setValue(bv);
-		result.setMessage("success!");
+		result.setMessage( BaseSystemMessage.searchNoData() );
+		if (bv != null && bv.getPerspectives() != null && bv.getPerspectives().size() > 0) {
+			result.setValue(bv);
+			result.setSuccess( YES );
+			result.setMessage("success!");	
+		}
 	}
 	
 	@ControllerMethodAuthority(check = true, programId = "HF_PROG005D0001Q")

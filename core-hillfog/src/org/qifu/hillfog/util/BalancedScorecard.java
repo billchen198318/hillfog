@@ -36,8 +36,10 @@ import org.qifu.base.AppContext;
 import org.qifu.base.exception.ServiceException;
 import org.qifu.base.message.BaseSystemMessage;
 import org.qifu.base.model.SortType;
+import org.qifu.hillfog.entity.HfEmployee;
 import org.qifu.hillfog.entity.HfKpi;
 import org.qifu.hillfog.entity.HfObjective;
+import org.qifu.hillfog.entity.HfOrgDept;
 import org.qifu.hillfog.entity.HfPerspective;
 import org.qifu.hillfog.entity.HfScorecard;
 import org.qifu.hillfog.entity.HfSoOwnerKpis;
@@ -45,8 +47,10 @@ import org.qifu.hillfog.entity.HfSoOwnerOkrs;
 import org.qifu.hillfog.entity.HfStrategyObjective;
 import org.qifu.hillfog.model.OkrProgressRateData;
 import org.qifu.hillfog.model.ScoreColor;
+import org.qifu.hillfog.service.IEmployeeService;
 import org.qifu.hillfog.service.IKpiService;
 import org.qifu.hillfog.service.IObjectiveService;
+import org.qifu.hillfog.service.IOrgDeptService;
 import org.qifu.hillfog.service.IPerspectiveService;
 import org.qifu.hillfog.service.IScorecardService;
 import org.qifu.hillfog.service.ISoOwnerKpisService;
@@ -64,6 +68,16 @@ public class BalancedScorecard {
 	
 	private static int SCALE = 2;
 	private static RoundingMode ROUND_MODE = RoundingMode.HALF_UP;
+	
+	private IScorecardService<HfScorecard, String> scorecardService = null;
+	private IPerspectiveService<HfPerspective, String> perspectiveService = null;
+	private IStrategyObjectiveService<HfStrategyObjective, String> strategyObjectiveService = null;
+	private IKpiService<HfKpi, String> kpiService = null;
+	private IObjectiveService<HfObjective, String> objectiveService = null;
+	private ISoOwnerKpisService<HfSoOwnerKpis, String> soOwnerKpisService = null;
+	private ISoOwnerOkrsService<HfSoOwnerOkrs, String> soOwnerOkrsService = null;
+	private IEmployeeService<HfEmployee, String> employeeService = null;
+	private IOrgDeptService<HfOrgDept, String> orgDeptService = null;	
 	
 	private BscVision vision = null;
 	private String frequency;
@@ -97,13 +111,6 @@ public class BalancedScorecard {
 		this.date2 = date2;
 		this.measureDataAccount = measureDataAccount;
 		this.measureDataOrgId = measureDataOrgId;
-		IScorecardService<HfScorecard, String> scorecardService = null;
-		IPerspectiveService<HfPerspective, String> perspectiveService = null;
-		IStrategyObjectiveService<HfStrategyObjective, String> strategyObjectiveService = null;
-		IKpiService<HfKpi, String> kpiService = null;
-		IObjectiveService<HfObjective, String> objectiveService = null;
-		ISoOwnerKpisService<HfSoOwnerKpis, String> soOwnerKpisService = null;
-		ISoOwnerOkrsService<HfSoOwnerOkrs, String> soOwnerOkrsService = null;
 		try {
 			scorecardService = (IScorecardService<HfScorecard, String>) AppContext.getBean(IScorecardService.class);
 			perspectiveService = (IPerspectiveService<HfPerspective, String>) AppContext.getBean(IPerspectiveService.class);
@@ -112,6 +119,8 @@ public class BalancedScorecard {
 			objectiveService = (IObjectiveService<HfObjective, String>) AppContext.getBean(IObjectiveService.class);
 			soOwnerKpisService = (ISoOwnerKpisService<HfSoOwnerKpis, String>) AppContext.getBean(ISoOwnerKpisService.class);
 			soOwnerOkrsService = (ISoOwnerOkrsService<HfSoOwnerOkrs, String>) AppContext.getBean(ISoOwnerOkrsService.class);
+			employeeService = (IEmployeeService<HfEmployee, String>) AppContext.getBean(IEmployeeService.class);
+			orgDeptService = (IOrgDeptService<HfOrgDept, String>) AppContext.getBean(IOrgDeptService.class);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -149,6 +158,7 @@ public class BalancedScorecard {
 					bscKpi.setWeight( ownerKpi.getCardWeight() );
 					bscKpi.setSource(kpi);
 					bscStrategyObjective.getKpis().add(bscKpi);
+					this.fillKpiEmployeesAndDepartments(bscKpi);
 				}
 				
 				// OKR
@@ -166,6 +176,7 @@ public class BalancedScorecard {
 		if (this.vision != null) {
 			this.setRowSize();
 		}
+		AggregationMethodUtils.clearThreadLocal();
 		return this;
 	}
 	
@@ -223,14 +234,24 @@ public class BalancedScorecard {
 		return this;
 	}
 	
+	private void fillKpiEmployeesAndDepartments(BscKpi kpi) throws ServiceException, Exception {
+		kpi.setEmployees( this.employeeService.findInputAutocompleteByKpiId(kpi.getId()) );
+		kpi.setOrganizations( this.orgDeptService.findInputAutocompleteByKpiId(kpi.getId()) );
+	}
+	
 	private void setRowSize() {
 		int vRow = 0;
 		for (BscPerspective perspective : this.vision.getPerspectives()) {
 			int pRow = 0;
 			for (BscStrategyObjective so : perspective.getStrategyObjectives()) {
+				/*
 				vRow += so.getKpis().size() + so.getOkrs().size();
 				pRow += so.getKpis().size() + so.getOkrs().size();
 				so.setRow( so.getKpis().size() + so.getOkrs().size() );
+				*/
+				vRow += so.getKpis().size() ;
+				pRow += so.getKpis().size() ;
+				so.setRow( so.getKpis().size() );				
 			}
 			perspective.setRow(pRow);
 		}
@@ -252,5 +273,16 @@ public class BalancedScorecard {
 	public BscVision value() {
 		return this.vision;
 	}
+	
+	public BscVision valueCleanOkrSource() {
+		for (BscPerspective perspective : this.vision.getPerspectives()) {
+			for (BscStrategyObjective so : perspective.getStrategyObjectives()) {
+				for (BscOkr okr : so.getOkrs()) {
+					okr.setSource(null);
+				}
+			}
+		}
+		return this.vision;
+	}	
 	
 }

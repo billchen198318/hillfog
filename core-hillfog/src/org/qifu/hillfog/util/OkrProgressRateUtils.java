@@ -241,6 +241,7 @@ public class OkrProgressRateUtils {
 		if (this.progressRateData.getObjective().getProgressPercentage().compareTo(fullPercentage) > 0) {
 			this.progressRateData.getObjective().setProgressPercentage( fullPercentage );
 		}
+		this.progressRateData.setValue( this.progressRateData.getObjective().getProgressPercentage() );
 		return this;
 	}
 	

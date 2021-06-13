@@ -218,6 +218,7 @@ function queryReport() {
 		parent.toastrWarning( 'Please input start & end date!' );
 		return;		
 	}
+	$("#content").html( '&nbsp;' );
 	xhrSendParameter(
 			'./hfKpiReportContentDataJson', 
 			{

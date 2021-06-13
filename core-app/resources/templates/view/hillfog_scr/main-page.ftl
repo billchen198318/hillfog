@@ -164,7 +164,7 @@ $( document ).ready(function() {
 						return;
 					}
 					if ( _qifu_success_flag == data.success ) {
-						parent.toastrInfo( data.message );
+						//parent.toastrInfo( data.message );
 						for (var d in data.value.org) {
 							orgDeptList.push( data.value.org[d] );
 						}
@@ -209,6 +209,7 @@ function queryReport() {
 		parent.toastrWarning( 'Please input start & end date!' );
 		return;		
 	}
+	$("#content").html( '&nbsp;' );
 	xhrSendParameter(
 			'./hfScorecardReportContentDataJson', 
 			{
@@ -227,11 +228,7 @@ function queryReport() {
 				}
 				if ( _qifu_success_flag == data.success ) {
 					parent.toastrInfo( data.message );
-					
-					console.log( '---------------------------------------------' );
-					console.log( data.value );
-					
-					//showContent( data.value );
+					showContent( data.value );
 				}
 			}, 
 			function() {
@@ -332,6 +329,7 @@ function queryClear() {
 <br/>
 <br/>
 <br/>
+<script type="text/javascript" src="${qifu_basePath}js/hillfog/HF_PROG005D0001Q.js?ver=${qifu_jsVerBuild}"></script>
 
 </body>
 </html>
