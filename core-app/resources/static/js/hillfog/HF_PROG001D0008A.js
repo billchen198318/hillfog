@@ -18,11 +18,20 @@ const PageEventHandling = {
 		okrsSelChange					:	okrsSelChangeEvent,		
 		removeStrategyObjectiveOwnerKpi	:	removeStrategyObjectiveOwnerKpiItem,
 		removeStrategyObjectiveOwnerOkr	:	removeStrategyObjectiveOwnerOkrItem,
-		autoAllocationWeight			:	autoAllocationWeightItem
+		autoAllocationWeight			:	autoAllocationWeightItem,
+		resetData						:	resetDataItem
 	},
 	mounted() {
 		this.init();
 	}
+}
+
+function resetDataItem() {
+	this.perspectives = [];
+	this.tabs = 0;
+	this.currSelTabNum = 0;
+	this.autoAllocationWeightFlag = true;
+	this.init();
 }
 
 function initPerspectives() {

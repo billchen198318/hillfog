@@ -55,6 +55,6 @@ public interface HfOrgDeptMapper extends IBaseMapper<HfOrgDept, String> {
 	 * @param paramMap
 	 * @return
 	 */
-	public List<HfOrgDept> findScorecardDepartment(Map<String, Object> paramMap);
+	public List<HfOrgDept> findScorecardKpisDepartment(Map<String, Object> paramMap);
 	
 }

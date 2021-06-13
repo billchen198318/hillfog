@@ -111,6 +111,10 @@ function btnClear() {
 }
 
 function clearSave() {
+	$("#name").val( '' );
+	$("#content").val( '' );
+	$("#mission").val( '' );
+	vm.resetData();
 }
 
 // ====================================================================

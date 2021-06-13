@@ -104,6 +104,7 @@ function updateSuccess(data) {
 		return;
 	}
 	parent.toastrInfo( data.message );
+	clearUpdate();
 }
 
 function clearUpdate() {

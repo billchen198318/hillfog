@@ -182,7 +182,7 @@ public class OrgDeptServiceImpl extends BaseService<HfOrgDept, String> implement
 		DefaultResult<List<HfOrgDept>> result = new DefaultResult<List<HfOrgDept>>();
 		Map<String, Object> paramMap = new HashMap<String, Object>();
 		paramMap.put("oid", scorecardOid);
-		List<HfOrgDept> dataList = this.orgDeptMapper.findScorecardDepartment(paramMap);
+		List<HfOrgDept> dataList = this.orgDeptMapper.findScorecardKpisDepartment(paramMap);
 		if (dataList != null && dataList.size() > 0) {
 			result.setValue(dataList);
 		} else {

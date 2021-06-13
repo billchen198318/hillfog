@@ -29,6 +29,8 @@ import org.qifu.base.exception.AuthorityException;
 import org.qifu.base.exception.ControllerException;
 import org.qifu.base.exception.ServiceException;
 import org.qifu.base.model.ControllerMethodAuthority;
+import org.qifu.base.model.DefaultControllerJsonResultObj;
+import org.qifu.base.model.PleaseSelect;
 import org.qifu.hillfog.entity.HfEmployee;
 import org.qifu.hillfog.entity.HfOrgDept;
 import org.qifu.hillfog.entity.HfScorecard;
@@ -36,10 +38,16 @@ import org.qifu.hillfog.model.MeasureDataCode;
 import org.qifu.hillfog.service.IEmployeeService;
 import org.qifu.hillfog.service.IOrgDeptService;
 import org.qifu.hillfog.service.IScorecardService;
+import org.qifu.hillfog.util.BalancedScorecard;
+import org.qifu.hillfog.vo.BscVision;
+import org.qifu.hillfog.vo.MeasureDataQueryParam;
+import org.qifu.util.SimpleUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class ScorecardReportController extends BaseControllerSupport implements IPageNamespaceProvide {
@@ -83,5 +91,45 @@ public class ScorecardReportController extends BaseControllerSupport implements 
 		}
 		return viewName;
 	}
+	
+	private void checkFields(DefaultControllerJsonResultObj<BscVision> result, HttpServletRequest request) throws ControllerException, Exception {
+		this.getCheckControllerFieldHandler(result)
+		.testField("scorecardOid", PleaseSelect.noSelect(request.getParameter("scorecardOid")), "Please select Scorecard(Vision)!")
+		.testField("date1", ( !SimpleUtils.isDate(request.getParameter("date1")) ), "Please input start date!")
+		.testField("date2", ( !SimpleUtils.isDate(request.getParameter("date2")) ), "Please input end date!")
+		.testField("frequency", PleaseSelect.noSelect(request.getParameter("frequency")), "Please select frequency!")
+		.throwMessage();		
+	}
+	
+	private void queryContent(DefaultControllerJsonResultObj<BscVision> result, HttpServletRequest request) throws ControllerException, Exception {
+		this.checkFields(result, request);
+		String scorecardOid = request.getParameter("scorecardOid");
+		String frequency = request.getParameter("frequency");
+		String date1 = request.getParameter("date1");
+		String date2 = request.getParameter("date2");
+		MeasureDataQueryParam queryParam = MeasureDataCode.queryParam(request);
+		BscVision bv = BalancedScorecard.build()
+				.from(scorecardOid, frequency, date1, date2, queryParam.getAccountId(), queryParam.getOrgId())
+				.process().value();
+		result.setValue(bv);
+		result.setMessage("success!");
+	}
+	
+	@ControllerMethodAuthority(check = true, programId = "HF_PROG005D0001Q")
+	@RequestMapping(value = "/hfScorecardReportContentDataJson", produces = MediaType.APPLICATION_JSON_VALUE)		
+	public @ResponseBody DefaultControllerJsonResultObj<BscVision> doQueryContent(HttpServletRequest request) {
+		DefaultControllerJsonResultObj<BscVision> result = this.getDefaultJsonResult(this.currentMethodAuthority());
+		if (!this.isAuthorizeAndLoginFromControllerJsonResult(result)) {
+			return result;
+		}
+		try {
+			this.queryContent(result, request);
+		} catch (AuthorityException | ServiceException | ControllerException e) {
+			this.baseExceptionResult(result, e);	
+		} catch (Exception e) {
+			this.exceptionResult(result, e);
+		}
+		return result;		
+	}	
 	
 }

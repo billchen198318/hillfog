@@ -227,7 +227,11 @@ function queryReport() {
 				}
 				if ( _qifu_success_flag == data.success ) {
 					parent.toastrInfo( data.message );
-					showContent( data.value );
+					
+					console.log( '---------------------------------------------' );
+					console.log( data.value );
+					
+					//showContent( data.value );
 				}
 			}, 
 			function() {
