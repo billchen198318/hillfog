@@ -31,6 +31,7 @@ import org.qifu.base.exception.ServiceException;
 import org.qifu.base.message.BaseSystemMessage;
 import org.qifu.base.model.ControllerMethodAuthority;
 import org.qifu.base.model.DefaultControllerJsonResultObj;
+import org.qifu.base.model.DefaultResult;
 import org.qifu.base.model.PleaseSelect;
 import org.qifu.hillfog.entity.HfEmployee;
 import org.qifu.hillfog.entity.HfOrgDept;
@@ -40,6 +41,7 @@ import org.qifu.hillfog.service.IEmployeeService;
 import org.qifu.hillfog.service.IOrgDeptService;
 import org.qifu.hillfog.service.IScorecardService;
 import org.qifu.hillfog.util.BalancedScorecard;
+import org.qifu.hillfog.util.KpiScoreDataDateRangeInitUtils;
 import org.qifu.hillfog.vo.BscVision;
 import org.qifu.hillfog.vo.MeasureDataQueryParam;
 import org.qifu.util.SimpleUtils;
@@ -99,7 +101,19 @@ public class ScorecardReportController extends BaseControllerSupport implements 
 		.testField("date1", ( !SimpleUtils.isDate(request.getParameter("date1")) ), "Please input start date!")
 		.testField("date2", ( !SimpleUtils.isDate(request.getParameter("date2")) ), "Please input end date!")
 		.testField("frequency", PleaseSelect.noSelect(request.getParameter("frequency")), "Please select frequency!")
-		.throwMessage();		
+		.throwMessage();	
+		
+		int days = SimpleUtils.getDaysBetween(request.getParameter("date1"), request.getParameter("date2"));
+		if (days < 0) {
+			throw new ControllerException( "Please change input start/end date range!" );
+		}
+		
+		DefaultResult<Boolean> checkRangeResult = KpiScoreDataDateRangeInitUtils.checkDateRangeSize(
+				request.getParameter("frequency"), request.getParameter("date1"), request.getParameter("date2"));
+		if (checkRangeResult != null && !checkRangeResult.getValue()) {
+			throw new ControllerException( checkRangeResult.getMessage() );
+		}
+		
 	}
 	
 	private void queryContent(DefaultControllerJsonResultObj<BscVision> result, HttpServletRequest request) throws ControllerException, Exception {

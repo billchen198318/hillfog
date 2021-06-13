@@ -37,6 +37,7 @@ import org.qifu.base.message.BaseSystemMessage;
 import org.qifu.base.model.CheckControllerFieldHandler;
 import org.qifu.base.model.ControllerMethodAuthority;
 import org.qifu.base.model.DefaultControllerJsonResultObj;
+import org.qifu.base.model.DefaultResult;
 import org.qifu.base.model.PleaseSelect;
 import org.qifu.base.model.SortType;
 import org.qifu.base.model.YesNo;
@@ -52,6 +53,7 @@ import org.qifu.hillfog.service.IKpiService;
 import org.qifu.hillfog.service.IOrgDeptService;
 import org.qifu.hillfog.service.IPdcaService;
 import org.qifu.hillfog.util.KpiScore;
+import org.qifu.hillfog.util.KpiScoreDataDateRangeInitUtils;
 import org.qifu.hillfog.vo.MeasureDataQueryParam;
 import org.qifu.hillfog.vo.ScoreCalculationData;
 import org.qifu.util.SimpleUtils;
@@ -119,7 +121,19 @@ public class KpiBaseReportController extends BaseControllerSupport implements IP
 		.testField("frequency", PleaseSelect.noSelect(request.getParameter("frequency")), "Please select frequency!")
 		.throwMessage();
 		//.testField("kpiEmpl", ( StringUtils.isBlank(request.getParameter("kpiEmpl")) && StringUtils.isBlank(request.getParameter("kpiOrga")) ), "Please input Organization or Employee!")
-		//.testField("kpiOrga", ( StringUtils.isBlank(request.getParameter("kpiEmpl")) && StringUtils.isBlank(request.getParameter("kpiOrga")) ), "Please input Organization or Employee!")		
+		//.testField("kpiOrga", ( StringUtils.isBlank(request.getParameter("kpiEmpl")) && StringUtils.isBlank(request.getParameter("kpiOrga")) ), "Please input Organization or Employee!")
+		
+		int days = SimpleUtils.getDaysBetween(request.getParameter("date1"), request.getParameter("date2"));
+		if (days < 0) {
+			throw new ControllerException( "Please change input start/end date range!" );
+		}		
+		
+		DefaultResult<Boolean> checkRangeResult = KpiScoreDataDateRangeInitUtils.checkDateRangeSize(
+				request.getParameter("frequency"), request.getParameter("date1"), request.getParameter("date2"));
+		if (checkRangeResult != null && !checkRangeResult.getValue()) {
+			throw new ControllerException( checkRangeResult.getMessage() );
+		}
+		
 	}
 	
 	private void queryContent(DefaultControllerJsonResultObj<List<ScoreCalculationData>> result, HttpServletRequest request) throws ControllerException, Exception {
