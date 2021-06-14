@@ -200,7 +200,6 @@ public class BalancedScorecard {
 				BigDecimal soScore = BigDecimal.ZERO;
 				KpiScore kpiScore = KpiScore.build();
 				for (BscKpi kpi : so.getKpis()) {
-					BeanUtils.copyProperties(kpi, kpi.getSource());
 					ScoreCalculationData scd = kpiScore.add(kpi.getSource(), frequency, date1, date2, measureDataAccount, measureDataOrgId)
 							.processDefault().processDateRange().reduce().valueThrowMessage().get(0);
 					kpi.setScore( scd.getScore() );
