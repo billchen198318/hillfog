@@ -198,9 +198,8 @@ public class BalancedScorecard {
 			BigDecimal perScore = BigDecimal.ZERO;
 			for (BscStrategyObjective so : perspective.getStrategyObjectives()) {
 				BigDecimal soScore = BigDecimal.ZERO;
-				KpiScore kpiScore = KpiScore.build();
 				for (BscKpi kpi : so.getKpis()) {
-					ScoreCalculationData scd = kpiScore.add(kpi.getSource(), frequency, date1, date2, measureDataAccount, measureDataOrgId)
+					ScoreCalculationData scd = KpiScore.build().add(kpi.getSource(), frequency, date1, date2, measureDataAccount, measureDataOrgId)
 							.processDefault().processDateRange().reduce().valueThrowMessage().get(0);
 					kpi.setScore( scd.getScore() );
 					kpi.setFontColor( scd.getFontColor() );
@@ -221,7 +220,7 @@ public class BalancedScorecard {
 				so.setScore(soScore);
 				ScoreColor sc = ScoreColorUtils.get(soScore);
 				so.setBgColor( sc.getBackgroundColor() );
-				sc.setFontColor( sc.getFontColor() );
+				so.setFontColor( sc.getFontColor() );
 				
 				perScore = perScore.add( soScore.multiply(this.getWeightPercentage(so.getWeight())) );
 				

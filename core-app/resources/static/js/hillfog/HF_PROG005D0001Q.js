@@ -175,7 +175,6 @@ function bodyContent(perspectives) {
 							<font color="${strategyObjective.fontColor}" >
 							<b>${strategyObjective.name}</b>
 							</font>
-							${strategyObjective.imgIcon}
 						</td>						
 					</tr>
 					<tr>
