@@ -105,7 +105,7 @@ function addStrategyObjectiveItem(perspectiveIndex) {
 function removePerspectiveItem(perspectiveIndex) {
 	var that = this;
 	parent.bootbox.confirm(
-		"Delete?", 
+		"Remove this perspective tab?", 
 		function(result) { 
 			if (!result) {
 				return;

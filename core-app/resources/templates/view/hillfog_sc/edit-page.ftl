@@ -171,7 +171,7 @@ function removeArrayByPos(arr, pos) {
 		&nbsp;
 		&nbsp;
 		
-		<button type="button" class="btn btn-info" id="btnAddPerspective" title="Add perspective" v-on:click="addPerspective"><i class="icon fa fa-plus"></i>&nbsp;Add perspective</button>
+		<button type="button" class="btn btn-info" id="btnAddPerspective" title="Add perspective" v-on:click="addPerspective"><i class="icon fa fa-plus-circle"></i>&nbsp;Add perspective</button>
 		&nbsp;
 		&nbsp;
 		
@@ -214,7 +214,7 @@ function removeArrayByPos(arr, pos) {
 			
 			<div class="row">
 				<div class="col-xs-12 col-md-12 col-lg-12">
-					<button type="button" class="btn btn-warning" id="btnRemovePerspective" title="Remove perspective" v-on:click="removePerspective(index)"><i class="icon fa fa-remove"></i>&nbsp;Remove perspective</button>
+					<button type="button" class="btn btn-warning" id="btnRemovePerspective" title="Remove perspective" v-on:click="removePerspective(index)"><i class="icon fa fa-trash-o"></i>&nbsp;Remove perspective</button>
 				<div class="col-xs-12 col-md-12 col-lg-12">
 			</div>
 			
