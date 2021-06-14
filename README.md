@@ -14,16 +14,10 @@ Features:<br>
 4. BSC<br>
 <br>
 
-Item  | Status
-------------- | -------------
-KPI  | in developing
-OKR  | in developing
-PDCA  | in developing
-BSC  | Not yet in progress
 
 
 ### how to run hillfog (require JAVA11)
-`java -Xmx512M -jar hillfog-0.2.jar`
+`java -Xmx512M -jar hillfog-0.3.jar`
 
 use browser(Chrome or Firefox) open http://127.0.0.1:8088
 
@@ -43,3 +37,6 @@ use browser(Chrome or Firefox) open http://127.0.0.1:8088
 
 ### PDCA report
 <img alt="demo5" src="https://raw.githubusercontent.com/billchen198318/hillfog/master/doc/P05.png">
+
+### Scorecard report
+<img alt="demo6" src="https://raw.githubusercontent.com/billchen198318/hillfog/master/doc/P06.png">
