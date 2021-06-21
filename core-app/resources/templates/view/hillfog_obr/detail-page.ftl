@@ -275,10 +275,15 @@ function pdcaProjectChartFillItems(pdcaItems) {
 	  <tbody>
 		<#list objective.keyResList as keyRes >
 		    <tr>
-		      <td>
+		      <td width="50%">
 		      	<h4><span class="badge badge-pill badge-secondary">${keyRes.name}</span></h4>
+		      	
+			    <#if keyRes.description?has_content>
+			    <pre>${keyRes.description}</pre>
+			    </#if>		      	
+		      	
 		      </td>
-		      <td>
+		      <td width="50%">
 				Progress:&nbsp;${keyRes.progressPercentage}%
 				<div class="progress">
 					<div class="progress-bar bg-info" role="progressbar" style="width: ${keyRes.progressPercentage}%" aria-valuenow="${keyRes.progressPercentage}" aria-valuemin="0" aria-valuemax="100"></div>
