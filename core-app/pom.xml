@@ -100,17 +100,20 @@
             <artifactId>spring-security-messaging</artifactId>
         </dependency>	    	    
         
+        <!-- 2021-06-21 remove -->
+        <!-- 
 		<dependency>
 		  <groupId>org.springframework.security</groupId>
 		  <artifactId>spring-security-jwt</artifactId>
 		  <version>1.0.10.RELEASE</version>
 		</dependency>        
+		-->
 		
 		<dependency>
 		    <groupId>org.springframework.security.oauth</groupId>
 		    <artifactId>spring-security-oauth2</artifactId>
 		    <version>2.3.6.RELEASE</version>
-		</dependency>		
+		</dependency>				
 		
 		<dependency>
 		    <groupId>org.mybatis</groupId>
@@ -165,6 +168,8 @@
 		    <version>2.9.2</version>
 		</dependency>
 		
+		<!-- 2021-06-21 remove -->
+		<!-- 
 		<dependency>
 		    <groupId>net.sf.jasperreports</groupId>
 		    <artifactId>jasperreports</artifactId>
@@ -176,6 +181,7 @@
 		    <artifactId>jasperreports-fonts</artifactId>
 		    <version>6.17.0</version>
 		</dependency>
+		-->
 		
 		<dependency>
 		    <groupId>org.codehaus.groovy</groupId>
@@ -189,11 +195,14 @@
 		    <version>3.2.21</version>
 		</dependency>	
 		
+		<!-- 2021-06-21 remove -->
+		<!-- 
 		<dependency>
 		    <groupId>com.auth0</groupId>
 		    <artifactId>java-jwt</artifactId>
 		    <version>3.8.2</version>
 		</dependency>
+		-->
 		
         <dependency>
             <groupId>org.ehcache</groupId>
@@ -213,6 +222,8 @@
 		    <version>2.10.5</version>
 		</dependency>		
 		
+		<!-- 2021-06-21 remove -->
+		<!-- 
 		<dependency>
 		    <groupId>org.apache.poi</groupId>
 		    <artifactId>poi</artifactId>
@@ -224,6 +235,7 @@
 		    <artifactId>poi-ooxml</artifactId>
 		    <version>3.17</version>
 		</dependency>	
+		-->
 		
 		<dependency>
 		    <groupId>com.fasterxml.uuid</groupId>
@@ -231,11 +243,14 @@
 		    <version>4.0.1</version>
 		</dependency>
 		
+		<!-- 2021-06-21 remove -->
+		<!-- 
 		<dependency>
 		    <groupId>commons-net</groupId>
 		    <artifactId>commons-net</artifactId>
 		    <version>3.6</version>
 		</dependency>
+		-->
 		
 		<dependency>
 		    <groupId>org.apache.logging.log4j</groupId>
@@ -249,17 +264,23 @@
 		    <version>2.13.2</version>
 		</dependency>		
 		
+		<!-- 2021-06-21 remove -->
+		<!-- 
 		<dependency>
 		    <groupId>com.jcraft</groupId>
 		    <artifactId>jsch</artifactId>
 		    <version>0.1.55</version>
 		</dependency>		
+		-->
 		
+		<!-- 2021-06-21 remove -->
+		<!--  
 		<dependency>
 		    <groupId>net.lingala.zip4j</groupId>
 		    <artifactId>zip4j</artifactId>
 		    <version>2.6.2</version>
-		</dependency>			        
+		</dependency>			      
+		-->		        
 		
 		<dependency>
 		    <groupId>javax.xml.bind</groupId>
