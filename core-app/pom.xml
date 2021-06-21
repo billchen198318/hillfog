@@ -157,6 +157,8 @@
 		    <version>1.7</version>
 		</dependency>	
 				
+		<!-- 2021-06-21 remove -->
+		<!--
 		<dependency>
 		    <groupId>io.springfox</groupId>
 		    <artifactId>springfox-swagger2</artifactId>
@@ -167,6 +169,7 @@
 		    <artifactId>springfox-swagger-ui</artifactId>
 		    <version>2.9.2</version>
 		</dependency>
+		-->
 		
 		<!-- 2021-06-21 remove -->
 		<!-- 
@@ -282,11 +285,14 @@
 		</dependency>			      
 		-->		        
 		
+		<!-- 2021-06-21 remove -->
+		<!--
 		<dependency>
 		    <groupId>javax.xml.bind</groupId>
 		    <artifactId>jaxb-api</artifactId>
 		    <version>2.3.1</version>
-		</dependency>				
+		</dependency>		
+		-->				
 		
 <!-- 		<dependency> -->
 <!-- 		    <groupId>com.oracle</groupId> -->
