@@ -180,9 +180,38 @@ $( document ).ready(function() {
 		);		
 	});	
 	
+	$("#date1").change(function(){
+		var freq = $("#frequency").val();
+		var bDateStr = $("#date1").val();
+		if ( _qifu_please_select_id == freq ) {
+			return;
+		}
+		var nDateStr = getStartDate(freq, bDateStr);
+		if (bDateStr != nDateStr && nDateStr != null && nDateStr.length == 10) {
+			$("#date1").val(nDateStr);
+			parent.toastrInfo( 'reset start date!' );
+		}
+	});
+	$("#date2").change(function(){
+		var freq = $("#frequency").val();
+		var bDateStr = $("#date2").val();
+		if ( _qifu_please_select_id == freq ) {
+			return;
+		}
+		var nDateStr = getEndDate(freq, bDateStr);
+		if (bDateStr != nDateStr && nDateStr != null && nDateStr.length == 10) {
+			$("#date2").val(nDateStr);
+			parent.toastrInfo( 'reset end date!' );
+		}
+	});	
+	
+	$("#noDistinction").trigger('click');	
+	
 });
 
 function changeQueryButtonStatus() {
+	$("#date1").trigger('change');
+	$("#date2").trigger('change');			
 	var scorecardOid = $("#scorecardOid").val();
 	var freq = $("#frequency").val();
 	var kpiEmpl = $("#kpiEmpl").val();
@@ -330,6 +359,7 @@ function queryClear() {
 <br/>
 <br/>
 <script type="text/javascript" src="${qifu_basePath}js/hillfog/HF_PROG005D0001Q.js?ver=${qifu_jsVerBuild}"></script>
+<script type="text/javascript" src="${qifu_basePath}js/hillfog/HF_FREQUENCY_DAY.js?ver=${qifu_jsVerBuild}"></script>
 
 </body>
 </html>

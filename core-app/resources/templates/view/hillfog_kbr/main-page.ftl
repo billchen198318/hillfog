@@ -77,7 +77,7 @@ var dateStatus = "0";
 
 $( document ).ready(function() {
 	
-	$("#frequency").change(function(){
+	$("#frequency").change(function(){	
 		changeQueryButtonStatus();
 	});
 	$("#frequency").val('3'); // default month
@@ -183,6 +183,32 @@ $( document ).ready(function() {
 		);		
 	});
 	
+	$("#date1").change(function(){
+		var freq = $("#frequency").val();
+		var bDateStr = $("#date1").val();
+		if ( _qifu_please_select_id == freq ) {
+			return;
+		}
+		var nDateStr = getStartDate(freq, bDateStr);
+		if (bDateStr != nDateStr && nDateStr != null && nDateStr.length == 10) {
+			$("#date1").val(nDateStr);
+			parent.toastrInfo( 'reset start date!' );
+		}
+	});
+	$("#date2").change(function(){
+		var freq = $("#frequency").val();
+		var bDateStr = $("#date2").val();
+		if ( _qifu_please_select_id == freq ) {
+			return;
+		}
+		var nDateStr = getEndDate(freq, bDateStr);
+		if (bDateStr != nDateStr && nDateStr != null && nDateStr.length == 10) {
+			$("#date2").val(nDateStr);
+			parent.toastrInfo( 'reset end date!' );
+		}
+	});	
+	
+	$("#noDistinction").trigger('click');
 	
 	window.addEventListener('resize',function(){
 		for (var n = 0; !(_chartsArr === undefined) && null != _chartsArr && n < _chartsArr.length; n++) {
@@ -193,6 +219,8 @@ $( document ).ready(function() {
 });
 
 function changeQueryButtonStatus() {
+	$("#date1").trigger('change');
+	$("#date2").trigger('change');	
 	var freq = $("#frequency").val();
 	var kpiEmpl = $("#kpiEmpl").val();
 	var kpiOrga = $("#kpiOrga").val();
@@ -204,7 +232,7 @@ function changeQueryButtonStatus() {
 	}
 	$("#btnQuery").removeAttr('disabled');
 	$("#btnClear").removeAttr('disabled');
-	$("#content").html('&nbsp;');
+	$("#content").html('&nbsp;');		
 }
 
 function queryReport() {
@@ -348,6 +376,7 @@ function viewDetail(pdcaOid) {
 
 <script src="${qifu_basePath}echarts/echarts.min.js"></script>
 <script type="text/javascript" src="${qifu_basePath}js/hillfog/HF_PROG002D0001Q.js?ver=${qifu_jsVerBuild}"></script>
+<script type="text/javascript" src="${qifu_basePath}js/hillfog/HF_FREQUENCY_DAY.js?ver=${qifu_jsVerBuild}"></script>
 
 </body>
 </html>
