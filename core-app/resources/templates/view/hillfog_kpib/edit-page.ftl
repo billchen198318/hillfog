@@ -302,11 +302,15 @@ function removeArrayByPos(arr, pos) {
 	</div>
 	<div class="row">
 		<div class="col-xs-6 col-md-6 col-lg-6">
+			<@qifu.textbox name="unit" value="kpi.unit" id="unit" label="Unit" requiredFlag="Y" maxlength="20" placeholder="Enter unit" />
+			<!--  
 			<label for="weight" id="weightLabel">Weight&nbsp;(deprecated): </label>
-			<input type="range" class="custom-range" min="0" max="100" value="${kpi.weight}" id="weight" name="weight" readonly="readonly">								
+			<input type="range" class="custom-range" min="0" max="100" value="${kpi.weight}" id="weight" name="weight" readonly="readonly">			
+			-->
+			<input type="hidden" name="weight" id="weight" value="${kpi.weight}">					
 		</div>
 		<div class="col-xs-6 col-md-6 col-lg-6">
-			<@qifu.textbox name="unit" value="kpi.unit" id="unit" label="Unit" requiredFlag="Y" maxlength="20" placeholder="Enter unit" />
+			&nbsp;
 		</div>		
 	</div>
 	<div class="row">
@@ -361,16 +365,14 @@ function removeArrayByPos(arr, pos) {
 				<span id="selOrgDeptShowLabel">&nbsp;</span>
 			</div>					
 		</div>		
-	</div>		
-	<div class="row">
 		<div class="col-xs-6 col-md-6 col-lg-6">
 			<@qifu.textbox name="kpiEmpl" value="" id="kpiEmpl" label="Employee" requiredFlag="Y" maxlength="100" placeholder="Enter employee" />
 			<button type="button" class="btn btn-info" id="btnAddEmployee" title="add employee" onclick="addEmployee();"><i class="icon fa fa-plus"></i>&nbsp;ADD</button>
 			<div>
 				<span id="selEmpShowLabel">&nbsp;</span>
 			</div>					
-		</div>		
-	</div>		
+		</div>			
+	</div>				
 </div>
 <div class="form-group" id="form-group4">
 	<div class="row">
