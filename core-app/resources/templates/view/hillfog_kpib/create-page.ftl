@@ -306,6 +306,10 @@ function removeArrayByPos(arr, pos) {
 <#import "../common-f-head.ftl" as cfh />
 <@cfh.commonFormHeadContent /> 
 
+<div class="card border-secondary">
+  <div class="card-body">		
+			<h4><span class="badge badge-pill badge-dark">Basic</span></h4>
+			
 <div class="form-group" id="form-group1">
 	<div class="row">
 		<div class="col-xs-6 col-md-6 col-lg-6">
@@ -337,6 +341,16 @@ function removeArrayByPos(arr, pos) {
 		</div>
 	</div>
 </div>
+
+  </div>
+</div> 
+
+<p style="margin-bottom: 10px"></p>
+
+<div class="card border-secondary">
+  <div class="card-body">		
+			<h4><span class="badge badge-pill badge-dark">Parameter</span></h4>
+			
 <div class="form-group" id="form-group2">	
 	<div class="row">
 		<div class="col-xs-6 col-md-6 col-lg-6">
@@ -363,6 +377,16 @@ function removeArrayByPos(arr, pos) {
 		</div>
 	</div>			
 </div>
+
+  </div>
+</div> 
+
+<p style="margin-bottom: 10px"></p>
+
+<div class="card border-secondary">
+  <div class="card-body">		
+			<h4><span class="badge badge-pill badge-dark">Executor or executive department</span></h4>
+			
 <div class="form-group" id="form-group3">
 	<div class="row">
 		<div class="col-xs-6 col-md-6 col-lg-6">
@@ -389,6 +413,12 @@ function removeArrayByPos(arr, pos) {
 		</div>			
 	</div>			
 </div>
+
+  </div>
+</div> 
+
+<p style="margin-bottom: 10px"></p>
+
 <div class="form-group" id="form-group4">
 	<div class="row">
 		<div class="col-xs-6 col-md-6 col-lg-6">

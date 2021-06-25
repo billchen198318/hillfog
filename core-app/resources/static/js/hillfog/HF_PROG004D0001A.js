@@ -32,8 +32,8 @@ const PageEventHandling = {
 		
 	},
 	mounted() {
-		/*
 		this.addPlanItem();
+		/*
 		this.addDoItem();
 		this.addCheckItem();
 		this.addActItem();
