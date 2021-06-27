@@ -19,7 +19,7 @@ Features:<br>
 ### how to run hillfog (require JAVA11)
 `java -Xmx512M -jar hillfog-0.3.jar`
 
-use browser(Chrome or Firefox) open http://127.0.0.1:8088
+use browser(Chrome or Firefox) open `http://127.0.0.1:8088`
 
 ### Screenshot: 
 
