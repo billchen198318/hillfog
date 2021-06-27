@@ -251,7 +251,7 @@ function removeArrayByPos(arr, pos) {
 					</tr>
 					<tr>
 						<td colspan="3">
-							<select class="form-control" v-model="p.currentSelect1" v-on:change="kpisSelChange(index, pIndex, $event)">
+							<select class="form-control" v-model="p.currentSelect1" v-on:change="kpisSelChange(index, pIndex, $event)" style="color:#0F7CFF">
 								<option value="all">[&nbsp;&nbsp;&nbsp;Please&nbsp;&nbsp;select&nbsp;&nbsp;a&nbsp;&nbsp;KPI&nbsp;&nbsp;&nbsp;]</option>
 								<#list kpiMap?keys as k>
 								<option value="${k}">${kpiMap[k]}</option>
@@ -286,7 +286,7 @@ function removeArrayByPos(arr, pos) {
 					</tr>
 					<tr>
 						<td colspan="3">
-							<select class="form-control" v-model="p.currentSelect2" v-on:change="okrsSelChange(index, pIndex, $event)">
+							<select class="form-control" v-model="p.currentSelect2" v-on:change="okrsSelChange(index, pIndex, $event)" style="color:#0F7CFF">
 								<option value="all">[&nbsp;&nbsp;&nbsp;Please&nbsp;&nbsp;select&nbsp;&nbsp;a&nbsp;&nbsp;OKR&nbsp;&nbsp;&nbsp;]</option>
 								<#list okrMap?keys as k>
 								<option value="${k}">${okrMap[k]}</option>
