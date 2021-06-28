@@ -731,6 +731,39 @@ LOCK TABLES `hf_perspective` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `hf_sc_color`
+--
+
+DROP TABLE IF EXISTS `hf_sc_color`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `hf_sc_color` (
+  `OID` char(36) NOT NULL,
+  `SC_OID` char(36) NOT NULL,
+  `TYPE` varchar(1) NOT NULL DEFAULT 'C',
+  `RANGE1` int(9) NOT NULL DEFAULT 0,
+  `RANGE2` int(9) NOT NULL DEFAULT 0,
+  `FONT_COLOR` varchar(7) NOT NULL,
+  `BG_COLOR` varchar(7) NOT NULL,
+  `CUSERID` varchar(24) NOT NULL,
+  `CDATE` datetime NOT NULL,
+  `UUSERID` varchar(24) DEFAULT NULL,
+  `UDATE` datetime DEFAULT NULL,
+  PRIMARY KEY (`OID`),
+  UNIQUE KEY `UK_1` (`SC_OID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `hf_sc_color`
+--
+
+LOCK TABLES `hf_sc_color` WRITE;
+/*!40000 ALTER TABLE `hf_sc_color` DISABLE KEYS */;
+/*!40000 ALTER TABLE `hf_sc_color` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `hf_scorecard`
 --
 
@@ -1709,4 +1742,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-06-21 18:27:18
+-- Dump completed on 2021-06-29  7:18:21
