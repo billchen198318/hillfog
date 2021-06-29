@@ -62,6 +62,7 @@ import org.qifu.hillfog.vo.BscOkr;
 import org.qifu.hillfog.vo.BscPerspective;
 import org.qifu.hillfog.vo.BscStrategyObjective;
 import org.qifu.hillfog.vo.BscVision;
+import org.qifu.hillfog.vo.DateRangeScore;
 import org.qifu.hillfog.vo.ScoreCalculationData;
 
 public class BalancedScorecard {
@@ -193,6 +194,7 @@ public class BalancedScorecard {
 		if (null == this.vision) {
 			return this;
 		}
+		String scorecardOid = this.vision.getOid();
 		BigDecimal visScore = BigDecimal.ZERO;
 		for (BscPerspective perspective : this.vision.getPerspectives()) {
 			BigDecimal perScore = BigDecimal.ZERO;
@@ -202,23 +204,39 @@ public class BalancedScorecard {
 					ScoreCalculationData scd = KpiScore.build().add(kpi.getSource(), frequency, date1, date2, measureDataAccount, measureDataOrgId)
 							.processDefault().processDateRange().reduce().valueThrowMessage().get(0);
 					kpi.setScore( scd.getScore() );
+					/*
 					kpi.setFontColor( scd.getFontColor() );
 					kpi.setBgColor( scd.getBgColor() );
+					*/
+					
+					// reset color from scorecard-card settings
+					ScoreColor sc = ScoreColorUtils.get(scorecardOid, scd.getScore());
+					kpi.setFontColor( sc.getFontColor() );
+					kpi.setBgColor( sc.getBackgroundColor() );
+					
 					kpi.setDataRangeScores( scd.getDataRangeScores() );
 					soScore = soScore.add( kpi.getScore().multiply(this.getWeightPercentage(kpi.getWeight())) );
+					
+					// reset color from scorecard-card settings
+					for (DateRangeScore drs : kpi.getDataRangeScores()) {
+						sc = ScoreColorUtils.get(scorecardOid, drs.getScore());
+						drs.setFontColor( sc.getFontColor() );
+						drs.setBgColor( sc.getBackgroundColor() );
+					}
+					
 				}
 				soScore = soScore.setScale(SCALE, ROUND_MODE);
 				
 				for (BscOkr okr : so.getOkrs()) {
 					OkrProgressRateData oprd = OkrProgressRateUtils.build().fromObjective(okr.getSource()).process().value();
 					okr.setProgressPercentage( oprd.getValue() );
-					ScoreColor sc = ScoreColorUtils.get(okr.getProgressPercentage());
+					ScoreColor sc = ScoreColorUtils.get(scorecardOid, okr.getProgressPercentage());
 					okr.setBgColor( sc.getBackgroundColor() );
 					okr.setFontColor( sc.getFontColor() );
 				}
 				
 				so.setScore(soScore);
-				ScoreColor sc = ScoreColorUtils.get(soScore);
+				ScoreColor sc = ScoreColorUtils.get(scorecardOid, soScore);
 				so.setBgColor( sc.getBackgroundColor() );
 				so.setFontColor( sc.getFontColor() );
 				
@@ -227,7 +245,7 @@ public class BalancedScorecard {
 			}
 			perScore = perScore.setScale(SCALE, ROUND_MODE);
 			perspective.setScore(perScore);
-			ScoreColor sc = ScoreColorUtils.get(perScore);
+			ScoreColor sc = ScoreColorUtils.get(scorecardOid, perScore);
 			perspective.setBgColor( sc.getBackgroundColor() );
 			perspective.setFontColor( sc.getFontColor() );
 			
@@ -235,7 +253,7 @@ public class BalancedScorecard {
 		}
 		visScore = visScore.setScale(SCALE, ROUND_MODE);
 		this.vision.setScore(visScore);
-		ScoreColor sc = ScoreColorUtils.get(visScore);
+		ScoreColor sc = ScoreColorUtils.get(scorecardOid, visScore);
 		this.vision.setBgColor( sc.getBackgroundColor() );
 		this.vision.setFontColor( sc.getFontColor() );		
 		

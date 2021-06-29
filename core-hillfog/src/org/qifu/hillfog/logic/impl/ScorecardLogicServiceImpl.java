@@ -31,6 +31,7 @@ import java.util.Map;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.qifu.base.Constants;
@@ -46,18 +47,22 @@ import org.qifu.base.service.BaseLogicService;
 import org.qifu.hillfog.entity.HfKpi;
 import org.qifu.hillfog.entity.HfObjective;
 import org.qifu.hillfog.entity.HfPerspective;
+import org.qifu.hillfog.entity.HfScColor;
 import org.qifu.hillfog.entity.HfScorecard;
 import org.qifu.hillfog.entity.HfSoOwnerKpis;
 import org.qifu.hillfog.entity.HfSoOwnerOkrs;
 import org.qifu.hillfog.entity.HfStrategyObjective;
 import org.qifu.hillfog.logic.IScorecardLogicService;
+import org.qifu.hillfog.model.ScoreColor;
 import org.qifu.hillfog.service.IKpiService;
 import org.qifu.hillfog.service.IObjectiveService;
 import org.qifu.hillfog.service.IPerspectiveService;
+import org.qifu.hillfog.service.IScColorService;
 import org.qifu.hillfog.service.IScorecardService;
 import org.qifu.hillfog.service.ISoOwnerKpisService;
 import org.qifu.hillfog.service.ISoOwnerOkrsService;
 import org.qifu.hillfog.service.IStrategyObjectiveService;
+import org.qifu.hillfog.util.ScoreColorUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -92,6 +97,9 @@ public class ScorecardLogicServiceImpl extends BaseLogicService implements IScor
 	@Autowired
 	IObjectiveService<HfObjective, String> objectiveService;	
 	
+	@Autowired
+	IScColorService<HfScColor, String> scColorService;
+	
 	@ServiceMethodAuthority(type = ServiceMethodType.INSERT)
 	@Transactional(
 			propagation=Propagation.REQUIRED, 
@@ -109,6 +117,7 @@ public class ScorecardLogicServiceImpl extends BaseLogicService implements IScor
 		scorecard = result.getValueEmptyThrowMessage();
 		this.createPerspectives(scorecard, perspectivesDataMapList);
 		this.resetUpdateTabNum(scorecard);
+		this.createScoreColor(scorecard);
 		return result;
 	}
 	
@@ -150,6 +159,7 @@ public class ScorecardLogicServiceImpl extends BaseLogicService implements IScor
 			throw new ServiceException( BaseSystemMessage.parameterBlank() );
 		}
 		this.deletePerspectiveAndAllDetail(scorecard);
+		this.deleteScoreColor(scorecard);
 		return this.scorecardService.delete(scorecard);
 	}	
 	
@@ -223,6 +233,34 @@ public class ScorecardLogicServiceImpl extends BaseLogicService implements IScor
 		paramMap.clear();
 	}
 	
+	private void createScoreColor(HfScorecard scorecard) throws ServiceException, Exception {
+		ScoreColor sc = ScoreColorUtils.getUnknown();
+		HfScColor c = new HfScColor();
+		c.setScOid(scorecard.getOid());
+		c.setType("D");
+		c.setRange1(0);
+		c.setRange2(0);
+		c.setFontColor( sc.getFontColor() );
+		c.setBgColor( sc.getBackgroundColor() );
+		this.scColorService.insert(c);
+		Map<String, String> scoreMap = (Map<String, String>) ScoreColorUtils.getSrcMap().get("range");
+		for (Map.Entry<String, String> entry : scoreMap.entrySet()) {
+			String scoreVal[] = entry.getKey().split(Constants.DEFAULT_SPLIT_DELIMITER);
+			String colorVal[] = entry.getValue().split(Constants.DEFAULT_SPLIT_DELIMITER);
+			if (scoreVal.length != 2 || colorVal.length != 2) {
+				continue;
+			}
+			c = new HfScColor();
+			c.setScOid(scorecard.getOid());
+			c.setType("C");
+			c.setRange1( NumberUtils.toInt(StringUtils.deleteWhitespace(scoreVal[0])) );
+			c.setRange2( NumberUtils.toInt(StringUtils.deleteWhitespace(scoreVal[1])) );
+			c.setFontColor( StringUtils.deleteWhitespace(colorVal[1]) );
+			c.setBgColor( StringUtils.deleteWhitespace(colorVal[0]) );
+			this.scColorService.insert(c);
+		}
+	}
+	
 	private void deletePerspectiveAndAllDetail(HfScorecard scorecard) throws ServiceException, Exception {
 		Map<String, Object> paramMap = new HashMap<String, Object>();
 		paramMap.put("scOid", scorecard.getOid());
@@ -262,6 +300,16 @@ public class ScorecardLogicServiceImpl extends BaseLogicService implements IScor
 		List<HfSoOwnerOkrs> ownerOkrsList = this.soOwnerOkrsService.selectListByParams(paramMap).getValue();
 		for (HfSoOwnerOkrs ownerOkr : ownerOkrsList) {
 			this.soOwnerOkrsService.delete(ownerOkr);
+		}
+		paramMap.clear();
+	}
+	
+	private void deleteScoreColor(HfScorecard scorecard) throws ServiceException, Exception {
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("scOid", scorecard.getOid());
+		List<HfScColor> scoreColorList = this.scColorService.selectListByParams(paramMap).getValue();
+		for (HfScColor scc : scoreColorList) {
+			this.scColorService.delete(scc);
 		}
 		paramMap.clear();
 	}

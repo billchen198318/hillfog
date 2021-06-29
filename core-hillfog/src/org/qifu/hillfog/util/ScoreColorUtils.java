@@ -30,8 +30,11 @@ import java.util.Map;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.qifu.base.AppContext;
 import org.qifu.base.Constants;
+import org.qifu.hillfog.entity.HfScColor;
 import org.qifu.hillfog.model.ScoreColor;
+import org.qifu.hillfog.service.IScColorService;
 import org.qifu.util.SimpleUtils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -42,6 +45,8 @@ public class ScoreColorUtils {
 	private static Map<String, Object> srcMap = null;
 	
 	private static String _srcDatas = " { } ";
+	
+	private static IScColorService<HfScColor, String> scColorService;
 	
 	static {
 		try {
@@ -59,6 +64,10 @@ public class ScoreColorUtils {
 		}
 	}
 	
+	public static Map<String, Object> getSrcMap() {
+		return srcMap;
+	}
+
 	@SuppressWarnings("unchecked")
 	private static Map<String, Object> loadDatas() {
 		Map<String, Object> datas = null;
@@ -104,6 +113,48 @@ public class ScoreColorUtils {
 				sc.setBackgroundColor( StringUtils.deleteWhitespace(colorVal[0]) );
 				sc.setFontColor( StringUtils.deleteWhitespace(colorVal[1]) );				
 			}
+		}
+		return sc;
+	}
+	
+	public static ScoreColor get(String scorecardOid, BigDecimal score) {
+		ScoreColor sc = getUnknown();
+		if (null == score) {
+			return sc;
+		}
+		if (StringUtils.isBlank(scorecardOid) || null == score) {
+			return sc;
+		}
+		if (null == scColorService) {
+			try {
+				scColorService = (IScColorService<HfScColor, String>) AppContext.getBean(IScColorService.class);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		if (null == scColorService) {
+			return sc;
+		}
+		Integer scoreVal = (int) Math.floor( score.floatValue() );
+		HfScColor defaultColor = null;
+		HfScColor currColor = null;
+		try {
+			defaultColor = scColorService.findByDefault(scorecardOid);
+			currColor = scColorService.findByScore(scorecardOid, scoreVal);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		if (null != currColor) {
+			sc = new ScoreColor();
+			sc.setBackgroundColor( currColor.getBgColor() );
+			sc.setFontColor( currColor.getFontColor() );
+			return sc;
+		}
+		if (currColor == null && defaultColor != null) {
+			sc = new ScoreColor();
+			sc.setBackgroundColor( defaultColor.getBgColor() );
+			sc.setFontColor( defaultColor.getFontColor() );
+			return sc;			
 		}
 		return sc;
 	}
