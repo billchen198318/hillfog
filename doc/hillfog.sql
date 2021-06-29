@@ -750,7 +750,7 @@ CREATE TABLE `hf_sc_color` (
   `UUSERID` varchar(24) DEFAULT NULL,
   `UDATE` datetime DEFAULT NULL,
   PRIMARY KEY (`OID`),
-  UNIQUE KEY `UK_1` (`SC_OID`)
+  KEY `IDX_1` (`SC_OID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1742,4 +1742,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-06-29  7:18:21
+-- Dump completed on 2021-06-29  9:55:22
