@@ -3,8 +3,7 @@
 # hillfog - KPI, OKR(Objectives and Key Results), PDCA, BSC(Balanced Scorecard) web platform.
 <img alt="logo" src="https://raw.githubusercontent.com/billchen198318/hillfog/master/core-app/resources/static/images/logo.png">
 hillfog is an KPI, OKR, PDCA, BSC web platform. replace old version bambooBSC(https://github.com/billchen198318/bamboobsc)
-<br>
-current in developing, not yet completed.
+
 <br>
 <br>
 Features:<br>
