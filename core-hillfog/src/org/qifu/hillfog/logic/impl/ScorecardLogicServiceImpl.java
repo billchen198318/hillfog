@@ -237,7 +237,7 @@ public class ScorecardLogicServiceImpl extends BaseLogicService implements IScor
 		ScoreColor sc = ScoreColorUtils.getUnknown();
 		HfScColor c = new HfScColor();
 		c.setScOid(scorecard.getOid());
-		c.setType("D");
+		c.setType(ScoreColor.TYPE_DEFAULT);
 		c.setRange1(0);
 		c.setRange2(0);
 		c.setFontColor( sc.getFontColor() );
@@ -252,7 +252,7 @@ public class ScorecardLogicServiceImpl extends BaseLogicService implements IScor
 			}
 			c = new HfScColor();
 			c.setScOid(scorecard.getOid());
-			c.setType("C");
+			c.setType(ScoreColor.TYPE_CUSTOM);
 			c.setRange1( NumberUtils.toInt(StringUtils.deleteWhitespace(scoreVal[0])) );
 			c.setRange2( NumberUtils.toInt(StringUtils.deleteWhitespace(scoreVal[1])) );
 			c.setFontColor( StringUtils.deleteWhitespace(colorVal[1]) );

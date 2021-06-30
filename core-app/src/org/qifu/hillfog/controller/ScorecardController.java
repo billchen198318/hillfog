@@ -21,6 +21,7 @@
  */
 package org.qifu.hillfog.controller;
 
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,6 +34,7 @@ import org.qifu.base.controller.IPageNamespaceProvide;
 import org.qifu.base.exception.AuthorityException;
 import org.qifu.base.exception.ControllerException;
 import org.qifu.base.exception.ServiceException;
+import org.qifu.base.message.BaseSystemMessage;
 import org.qifu.base.model.CheckControllerFieldHandler;
 import org.qifu.base.model.ControllerMethodAuthority;
 import org.qifu.base.model.DefaultControllerJsonResultObj;
@@ -41,12 +43,16 @@ import org.qifu.base.model.PageOf;
 import org.qifu.base.model.QueryControllerJsonResultObj;
 import org.qifu.base.model.QueryResult;
 import org.qifu.base.model.SearchValue;
+import org.qifu.base.model.SortType;
 import org.qifu.hillfog.entity.HfKpi;
 import org.qifu.hillfog.entity.HfObjective;
+import org.qifu.hillfog.entity.HfScColor;
 import org.qifu.hillfog.entity.HfScorecard;
 import org.qifu.hillfog.logic.IScorecardLogicService;
+import org.qifu.hillfog.model.ScoreColor;
 import org.qifu.hillfog.service.IKpiService;
 import org.qifu.hillfog.service.IObjectiveService;
+import org.qifu.hillfog.service.IScColorService;
 import org.qifu.hillfog.service.IScorecardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -69,6 +75,9 @@ public class ScorecardController extends BaseControllerSupport implements IPageN
 	
 	@Autowired
 	IObjectiveService<HfObjective, String> objectiveService;
+	
+	@Autowired
+	IScColorService<HfScColor, String> scColorService;
 	
 	@Autowired
 	IScorecardLogicService scorecardLogicService;
@@ -162,6 +171,60 @@ public class ScorecardController extends BaseControllerSupport implements IPageN
 		}	
 		return viewName;
 	}
+	
+	@ControllerMethodAuthority(check = true, programId = "HF_PROG001D0008S")
+	@RequestMapping("/hfScorecardColorPage")
+	public String colorPage(ModelMap mm, HttpServletRequest request, @RequestParam(name="oid") String oid) {
+		String viewName = this.viewPageWithNamespace("color-page");
+		this.getDefaultModelMap(mm, this.currentMethodAuthority());
+		try {
+			this.fetch(mm, oid);
+			this.init("colorPage", mm);
+		} catch (AuthorityException e) {
+			viewName = this.getAuthorityExceptionPage(e, mm);
+		} catch (ControllerException | ServiceException e) {
+			viewName = this.getServiceOrControllerExceptionPage(e, mm);
+		} catch (Exception e) {
+			viewName = this.getExceptionPage(e, mm);
+		}	
+		return viewName;
+	}	
+	
+	private void queryScorecardColorDataForEdit(DefaultControllerJsonResultObj< Map<String, List<HfScColor>> > result, HfScorecard scorecard) throws AuthorityException, ControllerException, ServiceException, Exception {
+		Map<String, List<HfScColor>> dataMap = new HashMap<String, List<HfScColor>>();
+		result.setValue(dataMap);
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("scOid", scorecard.getOid());
+		paramMap.put("type", ScoreColor.TYPE_DEFAULT);
+		dataMap.put("defaultData", this.scColorService.selectListByParams(paramMap).getValue());
+		
+		paramMap.put("type", ScoreColor.TYPE_CUSTOM);
+		dataMap.put("customData", this.scColorService.selectListByParams(paramMap, "range1", SortType.ASC).getValue());
+		
+		if (dataMap.get("defaultData") != null) {
+			result.setSuccess( YES );
+			result.setMessage( "success!" );			
+		} else {
+			result.setMessage( BaseSystemMessage.searchNoData() );
+		}
+	}
+	
+	@ControllerMethodAuthority(check = true, programId = "HF_PROG001D0008S")
+	@RequestMapping(value = "/hfScorecardQuerColorDataJson", produces = MediaType.APPLICATION_JSON_VALUE)		
+	public @ResponseBody DefaultControllerJsonResultObj< Map<String, List<HfScColor>> > doQueryColorData(HttpServletRequest request, HfScorecard scorecard) {
+		DefaultControllerJsonResultObj< Map<String, List<HfScColor>> > result = this.getDefaultJsonResult(this.currentMethodAuthority());
+		if (!this.isAuthorizeAndLoginFromControllerJsonResult(result)) {
+			return result;
+		}
+		try {
+			this.queryScorecardColorDataForEdit(result, scorecard);
+		} catch (AuthorityException | ServiceException | ControllerException e) {
+			this.baseExceptionResult(result, e);	
+		} catch (Exception e) {
+			this.exceptionResult(result, e);
+		}
+		return result;		
+	}		
 	
 	private void queryPerspectivesAndDetailForEdit(DefaultControllerJsonResultObj<List<Map<String, Object>>> result, HfScorecard scorecard) throws AuthorityException, ControllerException, ServiceException, Exception {
 		DefaultResult<List<Map<String, Object>>> qResult = this.scorecardLogicService.findPerspectivesItemForEditPage(scorecard.getOid());

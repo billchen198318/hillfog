@@ -24,6 +24,8 @@ function getQueryGridFormatter(value) {
 	var str = '';
 	str += '<img alt="edit" title="Edit" src="./images/edit.png" onclick="editPage(\'' + value + '\');"/>';
 	str += '&nbsp;&nbsp;';		
+	str += '<img alt="color" title="Color" src="./images/view.png" onclick="colorPage(\'' + value + '\');"/>';
+	str += '&nbsp;&nbsp;';		
 	str += '<img alt="delete" title="Delete" src="./images/delete.png" onclick="deleteRecord(\'' + value + '\');"/>';
 	return str;
 }
@@ -44,6 +46,10 @@ function queryClear() {
 
 function editPage(oid) {
 	parent.addTab('HF_PROG001D0008E', parent.getProgUrlForOid('HF_PROG001D0008E', oid) );
+}
+
+function colorPage(oid) {
+	parent.addTab('HF_PROG001D0008S', parent.getProgUrlForOid('HF_PROG001D0008S', oid) );
 }
 
 function deleteRecord(oid) {

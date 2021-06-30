@@ -24,6 +24,9 @@ package org.qifu.hillfog.model;
 public class ScoreColor implements java.io.Serializable {
 	private static final long serialVersionUID = 458591037725272032L;
 	
+	public static final String TYPE_DEFAULT = "D";
+	public static final String TYPE_CUSTOM = "C";
+	
 	private String fontColor = "";
 	private String backgroundColor = "";
 	
