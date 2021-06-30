@@ -29,6 +29,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.qifu.base.controller.BaseControllerSupport;
 import org.qifu.base.controller.IPageNamespaceProvide;
 import org.qifu.base.exception.AuthorityException;
@@ -359,5 +360,73 @@ public class ScorecardController extends BaseControllerSupport implements IPageN
 		}
 		return result;
 	}
+	
+	private void updateColor(DefaultControllerJsonResultObj<Boolean> result, HttpServletRequest request, HfScorecard scorecard) throws AuthorityException, ControllerException, ServiceException, Exception {
+		String defaultColorItemJsonStr = StringUtils.defaultString( request.getParameter("defaultColors") );
+		String customColorItemJsonStr = StringUtils.defaultString( request.getParameter("customColors") );
+		
+		Map<String, List<Map<String, Object>>> defaultColorsJsonData = 
+				(Map<String, List<Map<String, Object>>>) new ObjectMapper().readValue( defaultColorItemJsonStr, LinkedHashMap.class );
+		List<Map<String, Object>> defaultColorsDataMapList = defaultColorsJsonData.get("items");
+
+		Map<String, List<Map<String, Object>>> customColorsJsonData = 
+				(Map<String, List<Map<String, Object>>>) new ObjectMapper().readValue( customColorItemJsonStr, LinkedHashMap.class );
+		List<Map<String, Object>> customColorsDataMapList = customColorsJsonData.get("items");
+		
+		if (defaultColorsDataMapList == null || defaultColorsDataMapList.size() != 1) {
+			throw new ControllerException( BaseSystemMessage.dataErrors() );
+		}
+		if (customColorsDataMapList == null || customColorsDataMapList.size() != 1) {
+			throw new ControllerException( "Please input any one color item." );
+		}
+		Map<String, String> startMap = new HashMap<String, String>();
+		Map<String, String> endMap = new HashMap<String, String>();
+		for (Map<String, Object> colorDataMap : customColorsDataMapList) {
+			Integer range1 = NumberUtils.toInt( String.valueOf( colorDataMap.get("range1") ), 0 );
+			Integer range2 = NumberUtils.toInt( String.valueOf( colorDataMap.get("range2") ), 0 );
+			if (range1.intValue() > 9999999 || range1.intValue() < -9999999) {
+				throw new ControllerException( "Score range start number allow value is -9999999 ~ 9999999." );
+			}
+			if (range2.intValue() > 9999999 || range2.intValue() < -9999999) {
+				throw new ControllerException( "Score range end number allow value is -9999999 ~ 9999999." );
+			}
+			if (range1.equals(range2)) {
+				throw new ControllerException( "Score range start/end cannot equals." );
+			}
+			if (range1.intValue() > range2.intValue()) {
+				throw new ControllerException( "Score range start cannot big than end." );
+			}
+			if (startMap.get(range1.toString()) != null) {
+				throw new ControllerException( "Score range start number has found other item." );
+			}
+			if (endMap.get(range2.toString()) != null) {
+				throw new ControllerException( "Score range end number has found other item." );
+			}
+			startMap.put(range1.toString(), range1.toString());
+			endMap.put(range2.toString(), range2.toString());
+		}
+		startMap.clear();
+		endMap.clear();
+		
+		DefaultResult<Boolean> uResult = this.scorecardLogicService.updateColor(scorecard, defaultColorsDataMapList, customColorsDataMapList);
+		this.setDefaultResponseJsonResult(result, uResult);
+	}
+	
+	@ControllerMethodAuthority(check = true, programId = "HF_PROG001D0008S")
+	@RequestMapping(value = "/hfScorecardUpdateColorJson", produces = MediaType.APPLICATION_JSON_VALUE)		
+	public @ResponseBody DefaultControllerJsonResultObj<Boolean> doUpdateColor(HttpServletRequest request, HfScorecard scorecard) {
+		DefaultControllerJsonResultObj<Boolean> result = this.getDefaultJsonResult(this.currentMethodAuthority());
+		if (!this.isAuthorizeAndLoginFromControllerJsonResult(result)) {
+			return result;
+		}
+		try {
+			this.updateColor(result, request, scorecard);
+		} catch (AuthorityException | ServiceException | ControllerException e) {
+			this.baseExceptionResult(result, e);	
+		} catch (Exception e) {
+			this.exceptionResult(result, e);
+		}
+		return result;		
+	}		
 	
 }

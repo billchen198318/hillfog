@@ -38,4 +38,7 @@ public interface IScorecardLogicService {
 	
 	public DefaultResult<List<Map<String, Object>>> findPerspectivesItemForEditPage(String scorecardOid) throws ServiceException, Exception;
 	
+	public DefaultResult<Boolean> updateColor(
+			HfScorecard scorecard, List<Map<String, Object>> defaultScoreColorDataMapList, List<Map<String, Object>> customScoreColorDataMapList) throws ServiceException, Exception;
+	
 }

@@ -11,7 +11,8 @@ const PageEventHandling = {
 		queryScorecardColors	:	queryScorecardColorsItem,
 		setQueryData			:	setScorecardColorData,
 		clearPage				:	clearEditPage,
-		removeColor				:	removeColorItem
+		removeColor				:	removeColorItem,
+		addColor				:	addColorItem
 	},
 	mounted() {
 		this.queryScorecardColors();
@@ -35,10 +36,6 @@ function setScorecardColorData(data) {
 	}		
 	this.scorecolorsDefault = data.value.defaultData;
 	this.scorecolorsCustom = data.value.customData;
-	
-	console.log(this.scorecolorsDefault);
-	console.log(this.scorecolorsCustom);
-	
 }
 
 function clearEditPage() {
@@ -57,6 +54,22 @@ function removeColorItem(index) {
 			removeArrayByPos(that.scorecolorsCustom, index);	
 		}
 	);		
+}
+
+function addColorItem() {
+	this.scorecolorsCustom.push({
+		'oid'		:	'',
+		'scOid'		:	_oid,
+		'type'		:	'C',
+		'range1'	:	0,
+		'range2'	:	0,
+		'fontColor'	:	'#ffffff',
+		'bgColor'	:	'#000000',
+		'cuserid'	:	'sys',
+		'cdate'		:	null,
+		'uuserid'	:	'',
+		'udate'		:	null
+	});
 }
 
 

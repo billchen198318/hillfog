@@ -17,7 +17,36 @@
 <script type="text/javascript">
 var _oid = '${scorecard.oid}';
 
+function btnUpdate() {
+	xhrSendParameter(
+		'./hfScorecardUpdateColorJson', 
+		{ 
+			'oid'			:	'${scorecard.oid}',
+			'defaultColors'	:	JSON.stringify( { 'items' : vm.scorecolorsDefault } ),
+			'customColors'	:	JSON.stringify( { 'items' : vm.scorecolorsCustom } )
+		},
+		function(data) {
+			updateSuccess(data);
+		}, 
+		function() {
+			clearUpdate();
+		},
+		_qifu_defaultSelfPleaseWaitShow
+	);	
+}
 
+function updateSuccess(data) {
+	if ( _qifu_success_flag != data.success ) {
+		parent.toastrWarning( data.message );
+		return;
+	}
+	parent.toastrInfo( data.message );
+}
+
+function clearUpdate() {
+	appUnmount();
+	window.location = parent.getProgUrlForOid('HF_PROG001D0008S', '${scorecard.oid}');	
+}
 
 // ====================================================================
 
@@ -68,17 +97,20 @@ function removeArrayByPos(arr, pos) {
 		<td width="15%">
 			{{currIndex+1}}
 			&nbsp;			
-			<button v-if=" currIndex+1 == scorecolorsCustom.length " type="button" class="btn btn-dark" title="remove score item" v-on:click="removeColor(currIndex)"><i class="icon fa fa-remove"></i></button>
+			<button v-if=" currIndex+1 == scorecolorsCustom.length " type="button" class="btn btn-dark" title="remove color item" v-on:click="removeColor(currIndex)"><i class="icon fa fa-remove"></i></button>
 			
 		</td>
 		<td width="20%"><input type="number" class="form-control" placeholder="Enter range start" min="-9999999" max="9999999" v-model="n.range1" maxlength="8"></td>
 		<td width="20%"><input type="number" class="form-control" placeholder="Enter range end" min="-9999999" max="9999999" v-model="n.range2" maxlength="8"></td>
 		<td width="15%"><input type="color" class="custom" v-model="n.fontColor"></td>
 		<td width="15%"><input type="color" class="custom" v-model="n.bgColor"></td>
-		<td width="15%"><span v-bind:style="'background: ' + n.bgColor"><font v-bind:color="'' + n.fontColor">TEST</font></span></td>
+		<td width="15%"><span v-bind:style="'border-radius: 9%; background: ' + n.bgColor"><font v-bind:color="'' + n.fontColor">&nbsp;TEST&nbsp;</font></span></td>
 	</tr>			        			
 </table>
 
+<button type="button" class="btn btn-primary btn-circle" title="add color item" v-on:click="addColor()"><i class="icon fa fa-plus"></i></button>
+
+<br><br>
 
 <table class="table">	
 	<thead class="thead-dark">

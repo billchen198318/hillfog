@@ -409,5 +409,40 @@ public class ScorecardLogicServiceImpl extends BaseLogicService implements IScor
 		result.setMessage( "success!" );
 		return result;
 	}
+
+	@ServiceMethodAuthority(type = ServiceMethodType.UPDATE)
+	@Transactional(
+			propagation=Propagation.REQUIRED, 
+			readOnly=false,
+			rollbackFor={RuntimeException.class, IOException.class, Exception.class} )		
+	@Override
+	public DefaultResult<Boolean> updateColor(
+			HfScorecard scorecard, List<Map<String, Object>> defaultScoreColorDataMapList, List<Map<String, Object>> customScoreColorDataMapList) throws ServiceException, Exception {
+		if (null == scorecard || this.isBlank(scorecard.getOid()) || null == defaultScoreColorDataMapList || defaultScoreColorDataMapList.size() < 1
+				|| null == customScoreColorDataMapList || customScoreColorDataMapList.size() < 1) {
+			throw new ServiceException( BaseSystemMessage.parameterBlank() );
+		}
+		scorecard = this.scorecardService.selectByEntityPrimaryKey(scorecard).getValueEmptyThrowMessage();
+		this.deleteScoreColor(scorecard);
+		DefaultResult<Boolean> result = new DefaultResult<Boolean>();
+		Map<String, Object> defaultColorDataMap = defaultScoreColorDataMapList.get(0);
+		defaultColorDataMap.remove("cdate");
+		defaultColorDataMap.remove("udate");
+		HfScColor defaultScColor = new HfScColor();
+		BeanUtils.populate(defaultScColor, defaultColorDataMap);
+		defaultScColor.setType(ScoreColor.TYPE_DEFAULT);
+		this.scColorService.insert(defaultScColor);
+		for (Map<String, Object> customColorDataMap : customScoreColorDataMapList) {
+			customColorDataMap.remove("cdate");
+			customColorDataMap.remove("udate");
+			HfScColor customScColor = new HfScColor();
+			BeanUtils.populate(customScColor, customColorDataMap);
+			customScColor.setType(ScoreColor.TYPE_CUSTOM);
+			this.scColorService.insert(customScColor);
+		}
+		result.setValue( true );
+		result.setMessage( BaseSystemMessage.updateSuccess() );
+		return result;
+	}
 	
 }
