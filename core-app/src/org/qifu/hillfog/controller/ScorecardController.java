@@ -21,6 +21,8 @@
  */
 package org.qifu.hillfog.controller;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -376,37 +378,68 @@ public class ScorecardController extends BaseControllerSupport implements IPageN
 		if (defaultColorsDataMapList == null || defaultColorsDataMapList.size() != 1) {
 			throw new ControllerException( BaseSystemMessage.dataErrors() );
 		}
-		if (customColorsDataMapList == null || customColorsDataMapList.size() != 1) {
+		if (customColorsDataMapList == null || customColorsDataMapList.size() < 1) {
 			throw new ControllerException( "Please input any one color item." );
 		}
-		Map<String, String> startMap = new HashMap<String, String>();
-		Map<String, String> endMap = new HashMap<String, String>();
+		List<String> startList = new ArrayList<String>();
+		List<String> endList = new ArrayList<String>();
 		for (Map<String, Object> colorDataMap : customColorsDataMapList) {
-			Integer range1 = NumberUtils.toInt( String.valueOf( colorDataMap.get("range1") ), 0 );
-			Integer range2 = NumberUtils.toInt( String.valueOf( colorDataMap.get("range2") ), 0 );
+			String range1Str = String.valueOf( colorDataMap.get("range1") );
+			String range2Str = String.valueOf( colorDataMap.get("range2") );
+			if (!NumberUtils.isCreatable(range1Str) || !NumberUtils.isCreatable(range2Str)) {
+				throw new ControllerException( "Score range number value format error." );
+			}
+			Integer range1 = NumberUtils.toInt( range1Str, 0 );
+			Integer range2 = NumberUtils.toInt( range2Str, 0 );
 			if (range1.intValue() > 9999999 || range1.intValue() < -9999999) {
-				throw new ControllerException( "Score range start number allow value is -9999999 ~ 9999999." );
+				throw new ControllerException( "Score range start number value only allow is -9999999 ~ 9999999." );
 			}
 			if (range2.intValue() > 9999999 || range2.intValue() < -9999999) {
-				throw new ControllerException( "Score range end number allow value is -9999999 ~ 9999999." );
+				throw new ControllerException( "Score range end number value only allow is -9999999 ~ 9999999." );
 			}
 			if (range1.equals(range2)) {
-				throw new ControllerException( "Score range start/end cannot equals." );
+				throw new ControllerException( "Score range start/end number value cannot equals." );
 			}
 			if (range1.intValue() > range2.intValue()) {
-				throw new ControllerException( "Score range start cannot big than end." );
+				throw new ControllerException( "Score range start number value cannot big than end number value." );
 			}
-			if (startMap.get(range1.toString()) != null) {
-				throw new ControllerException( "Score range start number has found other item." );
+			if (startList.contains(range1.toString())) {
+				throw new ControllerException( "Score range start number value has found other item." );
 			}
-			if (endMap.get(range2.toString()) != null) {
-				throw new ControllerException( "Score range end number has found other item." );
+			if (endList.contains(range2.toString())) {
+				throw new ControllerException( "Score range end number value has found other item." );
 			}
-			startMap.put(range1.toString(), range1.toString());
-			endMap.put(range2.toString(), range2.toString());
+			
+			// check number start/end duplicate
+			if (startList.contains(range2.toString())) {
+				throw new ControllerException( "Score range start/end number value duplicate." );
+			}
+			if (endList.contains(range1.toString())) {
+				throw new ControllerException( "Score range start/end number value duplicate." );
+			}
+			
+			startList.add(range1.toString());
+			endList.add(range2.toString());
 		}
-		startMap.clear();
-		endMap.clear();
+		startList.sort( Comparator.comparing( String::toString ) );
+		endList.sort( Comparator.comparing( String::toString ) );
+		for (int i = 0; i < startList.size(); i++) {
+			if ( (i+1) == startList.size() ) {
+				continue;
+			}
+			int prevRange1 = NumberUtils.toInt( startList.get(i), 0 );
+			int prevRange2 = NumberUtils.toInt( endList.get(i), 0 );
+			int nextRange1 = NumberUtils.toInt( startList.get(i+1), 0 );
+			//int nextRange2 = NumberUtils.toInt( endList.get(i+1), 0 );
+			if (prevRange2+1 != nextRange1) {
+				throw new ControllerException( "The start/end numbers value of the score range are not consecutive." );
+			}
+			if (prevRange1 >= nextRange1) {
+				throw new ControllerException( "Score range start number value cannot big than next item start number value." );
+			}
+		}
+		startList.clear();
+		endList.clear();
 		
 		DefaultResult<Boolean> uResult = this.scorecardLogicService.updateColor(scorecard, defaultColorsDataMapList, customColorsDataMapList);
 		this.setDefaultResponseJsonResult(result, uResult);
