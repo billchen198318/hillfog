@@ -34,6 +34,10 @@ iframe {
 .tabbable .nav-tabs .nav-link {
 	white-space: nowrap;
 }
+.nav-tabs .nav-link.active {
+	background-color: #f8f9fa;
+	background: linear-gradient(0deg, rgba(255,148,16,1) 0%, rgba(248,249,250,1) 22%);
+}
 
 /* Let's get this party started */
 ::-webkit-scrollbar {
