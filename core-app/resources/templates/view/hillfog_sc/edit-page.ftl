@@ -39,6 +39,27 @@
     line-height: 1.42857;
 }
 
+
+
+.nav-tabs .nav-link {
+    color: gray;
+    border: 0;
+    border-bottom: 1px solid grey;
+}
+
+.nav-tabs .nav-link:hover {
+    border: 0;
+    border-bottom: 1px solid grey;
+}
+
+.nav-tabs .nav-link.active {
+    color: #000000;
+    border: 0;
+    border-radius: 0;
+    border-bottom: 2px solid #007bff;
+    background-color: #FFEEBC;
+}
+
 </style>
 
 
