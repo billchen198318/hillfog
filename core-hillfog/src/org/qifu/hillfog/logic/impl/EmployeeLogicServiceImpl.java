@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.text.StringEscapeUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.qifu.base.exception.ServiceException;
@@ -279,6 +280,41 @@ public class EmployeeLogicServiceImpl extends BaseLogicService implements IEmplo
 		}
 		this.employeeService.delete(employee);
 		return this.accountService.delete(account);
+	}
+
+	@Override
+	public String findZtreeData() throws ServiceException, Exception {
+		List<HfEmployeeHier> empHierList = this.employeeHierService.selectList().getValue();
+		if (null == empHierList || empHierList.size() < 1) {
+			return "[ ]";
+		}
+		StringBuilder data = new StringBuilder();
+		data.append("[");
+		if (empHierList.size() > 0) {
+			data
+			.append("{")
+			.append("id:'").append(ZeroKeyProvide.OID_KEY).append("'").append(",")
+			.append("pId:'").append(ZeroKeyProvide.OID_KEY).append("'").append(",")
+			.append("name:'").append( "〔 Root" ).append(" - ").append( StringEscapeUtils.escapeJson("Hierarchy 〕") ).append("'").append(",")
+			.append( "open:true, drag:false" )
+			.append("},");			
+		}
+		for (int i = 0; i < empHierList.size(); i++) {
+			HfEmployeeHier d = empHierList.get(i);
+			HfEmployee e = this.employeeService.selectByPrimaryKey( d.getEmpOid() ).getValueEmptyThrowMessage();
+			data
+			.append("{")
+			.append("id:'").append(d.getEmpOid()).append("'").append(",")
+			.append("pId:'").append(d.getParentOid()).append("'").append(",")
+			.append("name:'").append( e.getEmpId() ).append(" - ").append( StringEscapeUtils.escapeJson(e.getName()) ).append("'").append(",")
+			.append( ZeroKeyProvide.OID_KEY.equals(d.getEmpOid()) ? "open:true, drag:false" : "open:true, drag:true" )
+			.append("}");
+			if (i < (empHierList.size()-1)) {
+				data.append(",");
+			}			
+		}
+		data.append("]");
+		return data.toString();
 	}
 	
 }

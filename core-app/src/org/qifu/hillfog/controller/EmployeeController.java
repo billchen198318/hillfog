@@ -83,6 +83,9 @@ public class EmployeeController extends BaseControllerSupport implements IPageNa
 			HfEmployee employee = (HfEmployee) mm.get("employee");
 			mm.put("orgInputAutocompleteValue", this.pageAutocompleteContent(this.orgDeptService.findInputAutocompleteByAccount(employee.getAccount())));
 		}
+		if ("hierarchyPage".equals(type)) {
+			mm.put("ztreeData", this.employeeLogicService.findZtreeData());
+		}
 	}
 	
 	private void fetch(ModelMap mm, String oid) throws AuthorityException, ControllerException, ServiceException, Exception {
@@ -275,5 +278,24 @@ public class EmployeeController extends BaseControllerSupport implements IPageNa
 		}
 		return result;
 	}
+	
+	@ControllerMethodAuthority(check = true, programId = "HF_PROG001D0002S")
+	@RequestMapping("/hfEmployeeHierarchyPage")
+	public String hierarchyPage(ModelMap mm, HttpServletRequest request) {
+		String viewName = this.viewPageWithNamespace("hierarchy-page");
+		this.getDefaultModelMap(mm, this.currentMethodAuthority());
+		try {
+			this.init("hierarchyPage", mm);
+		} catch (AuthorityException e) {
+			viewName = this.getAuthorityExceptionPage(e, mm);
+		} catch (ControllerException | ServiceException e) {
+			viewName = this.getServiceOrControllerExceptionPage(e, mm);
+		} catch (Exception e) {
+			viewName = this.getExceptionPage(e, mm);
+		}	
+		return viewName;
+	}
+	
+	//hfEmployeeHierarchyUpdateJson
 	
 }

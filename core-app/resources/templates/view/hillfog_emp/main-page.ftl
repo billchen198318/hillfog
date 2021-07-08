@@ -80,6 +80,10 @@ function deleteRecord(oid) {
 	);	
 }
 
+function hierarchyPage() {
+	parent.addTab('HF_PROG001D0002S', null);
+}
+
 </script>
 
 </head>
@@ -123,6 +127,8 @@ function deleteRecord(oid) {
       
 <button type="button" class="btn btn-primary" id="btnQuery" onclick="queryGrid();"><i class="icon fa fa-search"></i>&nbsp;Query</button>
 <button type="button" class="btn btn-primary" id="btnClear" onclick="queryClear();"><i class="icon fa fa-hand-paper-o"></i>&nbsp;Clear</button>
+&nbsp;&nbsp;
+<button type="button" class="btn btn-info" id="btnHierarchy" onclick="hierarchyPage();"><i class="icon fa fa-users"></i>&nbsp;Hierarchy</button>
 
 <p style="margin-bottom: 10px"></p>
 <p style="margin-bottom: 10px"></p>

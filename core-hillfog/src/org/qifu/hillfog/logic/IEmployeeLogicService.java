@@ -35,4 +35,6 @@ public interface IEmployeeLogicService {
 	
 	public DefaultResult<Boolean> delete(HfEmployee employee) throws ServiceException, Exception;
 	
+	public String findZtreeData() throws ServiceException, Exception;
+	
 }
