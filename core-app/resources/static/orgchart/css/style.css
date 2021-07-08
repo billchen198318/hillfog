@@ -1,0 +1,21 @@
+html,body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  padding: 1px;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial;
+  color: #333333;
+}
+
+#chart-container {
+  position: relative;
+  height: 2200px;
+  border: 1px solid #aaa;
+  margin: 0.5rem;
+  overflow: auto;
+  text-align: center;
+}
