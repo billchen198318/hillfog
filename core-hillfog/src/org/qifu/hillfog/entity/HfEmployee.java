@@ -17,6 +17,8 @@ public class HfEmployee implements java.io.Serializable {
 	private String empId;
 	private String name;
 	private String description;
+    private String uploadOid;
+    private String jobTitle;	
 	private String cuserid;
 	private Date cdate;
 	private String uuserid;
@@ -64,7 +66,23 @@ public class HfEmployee implements java.io.Serializable {
         this.description = description;
     }
     
-    @CreateUserField(name = "cuserid")
+    public String getUploadOid() {
+		return uploadOid;
+	}
+
+	public void setUploadOid(String uploadOid) {
+		this.uploadOid = uploadOid;
+	}
+
+	public String getJobTitle() {
+		return jobTitle;
+	}
+
+	public void setJobTitle(String jobTitle) {
+		this.jobTitle = jobTitle;
+	}
+
+	@CreateUserField(name = "cuserid")
     public String getCuserid() {
         return cuserid;
     }

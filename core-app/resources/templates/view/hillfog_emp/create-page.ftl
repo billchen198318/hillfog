@@ -89,6 +89,7 @@ msgFields['account'] 				= 'account';
 msgFields['password1'] 				= 'password1';
 msgFields['password2'] 				= 'password2';
 msgFields['name'] 					= 'name';
+msgFields['jobTitle'] 				= 'jobTitle';
 msgFields['employeeOrganization']	= 'employeeOrganization';
 
 var formGroups = new Object();
@@ -97,6 +98,7 @@ formGroups['account'] 				= 'form-group1';
 formGroups['password1'] 			= 'form-group1';
 formGroups['password2'] 			= 'form-group1';
 formGroups['name'] 					= 'form-group1';
+formGroups['jobTitle'] 				= 'form-group1';
 formGroups['employeeOrganization']	= 'form-group1';
 
 function saveSuccess(data) {
@@ -117,8 +119,10 @@ function clearSave() {
 	$("#password1").val('');
 	$("#password2").val('');
 	$("#name").val('');
+	$("#jobTitle").val('');
 	$("#description").val('');
 	$('#employeeOrganization').val('');
+	clearUpload();
 	selDeptList = [];
 	paintOrganization();
 }
@@ -167,6 +171,30 @@ function delAddOrganization(pos) {
 	removeArrayByPos(selDeptList, pos);
 	paintOrganization();	
 }
+
+function uploadModal() {
+	showCommonUploadModal(
+			'uploadOid', 
+			'tmp', 
+			'Y',
+			function() {
+				parent.toastrInfo('Upload success!');
+				var uploadOid = $("#uploadOid").val();
+				var imgStr = '<img src="./commonViewFile?oid=' + uploadOid + '" class="rounded-circle" style="max-height:128px;max-width:128px;">';
+				$("#uploadLabel").html( imgStr );
+			},
+			function() {
+				parent.toastrWarning('Upload fail!');
+				$("#uploadLabel").html( "&nbsp;" );
+			}
+	);
+}
+
+function clearUpload() {
+	$('#uploadOid').val('');
+	$("#uploadLabel").html( "" );	
+}
+
 function removeArrayByPos(arr, pos) {
     for (var i = arr.length; i--;) {
     	if (pos == i) {
@@ -195,38 +223,53 @@ function removeArrayByPos(arr, pos) {
 	programId="${programId}"
 	description="Create employee item." />		
 <#import "../common-f-head.ftl" as cfh />
-<@cfh.commonFormHeadContent /> 
+<@cfh.commonFormHeadContent imageUploadOnly="Y" /> 
+
+<input type="hidden" name="uploadOid" id="uploadOid" value="" />
 
 <div class="form-group" id="form-group1">
 	<div class="row">
 		<div class="col-xs-6 col-md-6 col-lg-6">
 			<@qifu.textbox name="empId" value="" id="empId" label="Id" requiredFlag="Y" maxlength="15" placeholder="Enter Id" />
 		</div>
-	</div>
-	<div class="row">
 		<div class="col-xs-6 col-md-6 col-lg-6">
 			<@qifu.textbox name="account" value="" id="account" label="Account" requiredFlag="Y" maxlength="24" placeholder="Enter account" />
-		</div>
-	</div>	
+		</div>		
+	</div>
 	<div class="row">
 		<div class="col-xs-6 col-md-6 col-lg-6">
 		    <label for="password1">Password&nbsp;<font color="RED">*</font></label>
 		    <input type="password" class="form-control" id="password1" name="password1" placeholder="Enter password" maxlength="12">		
     		<div class="form-control-feedback" id="password1-feedback"></div>
 		</div>
-	</div>		
-	<div class="row">
 		<div class="col-xs-6 col-md-6 col-lg-6">
 		    <label for="password2">Password(retry)&nbsp;<font color="RED">*</font></label>
 		    <input type="password" class="form-control" id="password2" name="password2" placeholder="Enter password(retry)" maxlength="12">		
     		<div class="form-control-feedback" id="password2-feedback"></div>
-		</div>
-	</div>		
+		</div>		
+	</div>	
 	<div class="row">
 		<div class="col-xs-6 col-md-6 col-lg-6">
 			<@qifu.textbox name="name" value="" id="name" label="Name" requiredFlag="Y" maxlength="25" placeholder="Enter organization name" />
 		</div>
-	</div>
+		<div class="col-xs-6 col-md-6 col-lg-6">
+			<@qifu.textbox name="jobTitle" value="" id="jobTitle" label="Job Title" requiredFlag="N" maxlength="100" placeholder="Enter job title" />
+		</div>		
+	</div>		
+	<div class="row">
+		<div class="col-xs-12 col-md-12 col-lg-12">
+		
+			<p style="margin-bottom: 10px"></p>
+			
+			<@qifu.button id="uploadBtn" label="<i class=\"icon fa fa-upload\"></i>&nbsp;Upload employee image" cssClass="btn btn-info" onclick="uploadModal();">&nbsp;</@qifu.button>
+			<button type="button" class="btn btn-dark" title="remove employee image" onclick="clearUpload();"><i class="icon fa fa-remove"></i></button>
+			
+			<p style="margin-bottom: 10px"></p>
+			<div id="uploadLabel"></div>
+			<p style="margin-bottom: 10px"></p>
+			
+		</div>		
+	</div>	
 	<div class="row">
 		<div class="col-xs-6 col-md-6 col-lg-6">
 			<@qifu.textbox name="employeeOrganization" value="" id="employeeOrganization" label="Organization" requiredFlag="Y" maxlength="100" placeholder="Enter organization" />
@@ -234,13 +277,11 @@ function removeArrayByPos(arr, pos) {
 			<div>
 				<span id="selOrgDeptShowLabel">&nbsp;</span>
 			</div>					
-		</div>		
-	</div>	
-	<div class="row">
+		</div>
 		<div class="col-xs-6 col-md-6 col-lg-6">
 			<@qifu.textarea name="description" value="" id="description" label="Description" rows="3" placeholder="Enter description"></@qifu.textarea>
-		</div>
-	</div>	
+		</div>			
+	</div>		
 </div>
 						
 <p style="margin-bottom: 10px"></p>
@@ -257,6 +298,8 @@ function removeArrayByPos(arr, pos) {
 				'password2'				:	$('#password2').val(),
 				'name'					:	$('#name').val(),
 				'description'			:	$('#description').val(),
+				'jobTitle'				:	$('#jobTitle').val(),
+				'uploadOid'				:	$('#uploadOid').val(),
 				'employeeOrganization'	:	JSON.stringify( { 'items' : selDeptList } )
 			}
 			"

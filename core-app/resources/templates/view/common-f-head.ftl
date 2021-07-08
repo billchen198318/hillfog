@@ -1,4 +1,4 @@
-<#macro commonFormHeadContent>
+<#macro commonFormHeadContent imageUploadOnly="N">
 <!-- 主要給 modal 模式的表單處理 xhr submit 出現 please wait 用的 -->
 <!-- Modal Start here -->
 <div class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel-${programId}" aria-hidden="true" id="myPleaseWait-${programId}" data-keyboard="false" data-backdrop="static">
@@ -109,6 +109,16 @@ function commonUploadDataEvent() {
 		parent.toastrWarning( "File exceeded upload size!" );
 		return;		
 	}	
+	
+	var imageUploadOnly = '${imageUploadOnly}';
+	if (_qifu_success_flag == imageUploadOnly) {
+		var fileVariable = document.getElementById('commonUploadFile').files[0];
+		if(!fileVariable.type.match('image.*')) {
+			parent.toastrWarning( "Please select an image file!" );
+			return;
+		}	
+	}
+	
 	
 	var form = document.forms.namedItem("commonUploadForm-${programId}")
 	var oData = new FormData(form);

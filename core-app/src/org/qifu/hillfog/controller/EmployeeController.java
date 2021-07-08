@@ -151,7 +151,7 @@ public class EmployeeController extends BaseControllerSupport implements IPageNa
 		}
 		try {
 			QueryResult<List<HfEmployee>> queryResult = this.employeeService.findPage(
-					this.queryParameter(searchValue).fullEquals("account").beginningLike("empIdLike").fullLink("nameLike").value(), 
+					this.queryParameter(searchValue).fullEquals("account").beginningLike("empIdLike").fullLink("nameLike").fullLink("jobTitleLike").value(), 
 					pageOf.orderBy("EMP_ID").sortTypeAsc());
 			this.setQueryGridJsonResult(result, queryResult, pageOf);
 		} catch (AuthorityException | ServiceException | ControllerException e) {

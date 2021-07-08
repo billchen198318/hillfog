@@ -33,6 +33,7 @@ function getQueryGridHeader() {
 		{ name: "Account", 		field: "account"		},
 		{ name: "Id",			field: "empId"			},
 		{ name: "Name",			field: "name"			},
+		{ name: "Job title",	field: "jobTitle"		},
 		{ name: "Description",	field: "description"	}
 	];
 }
@@ -41,6 +42,7 @@ function queryClear() {
 	$("#account").val('');
 	$("#empId").val('');
 	$("#nameLike").val('');
+	$("#jobTitleLike").val('');
 	
 	clearQueryGridTable();
 	
@@ -108,11 +110,13 @@ function deleteRecord(oid) {
         	<@qifu.textbox name="empId" value="" id="empId" label="Id" placeholder="Enter Id" maxlength="15" />
         </div>
       </div>
-      <div class="row">
-                
+      <div class="row">                
         <div class="col-xs-6 col-md-6 col-lg-6">
         	<@qifu.textbox name="nameLike" value="" id="nameLike" label="Name" placeholder="Enter name" maxlength="25" />
        </div>      
+        <div class="col-xs-6 col-md-6 col-lg-6">
+        	<@qifu.textbox name="jobTitleLike" value="" id="jobTitleLike" label="Job Title" placeholder="Enter job title" maxlength="100" />
+       </div>                   
       </div>
 
 <p style="margin-bottom: 10px"></p>
@@ -126,11 +130,12 @@ function deleteRecord(oid) {
 <@qifu.grid gridFieldStructure="getQueryGridHeader()" 
 	xhrParameter="
 	{
-		'parameter[account]'	: $('#account').val(),
-		'parameter[empId]'		: $('#empId').val(),
-		'parameter[nameLike]'	: $('#nameLike').val(),
-		'select'				: getQueryGridSelect(),
-		'showRow'				: getQueryGridShowRow()
+		'parameter[account]'		: $('#account').val(),
+		'parameter[empId]'			: $('#empId').val(),
+		'parameter[nameLike]'		: $('#nameLike').val(),
+		'parameter[jobTitleLike]'	: $('#jobTitleLike').val(),
+		'select'					: getQueryGridSelect(),
+		'showRow'					: getQueryGridShowRow()
 	}
 	"
 	xhrUrl="./hfEmployeeQueryGridJson" 

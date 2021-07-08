@@ -37,12 +37,16 @@ import org.qifu.base.model.ServiceAuthority;
 import org.qifu.base.model.ServiceMethodAuthority;
 import org.qifu.base.model.ServiceMethodType;
 import org.qifu.base.model.YesNo;
+import org.qifu.base.model.ZeroKeyProvide;
 import org.qifu.base.service.BaseLogicService;
 import org.qifu.core.entity.TbAccount;
 import org.qifu.core.entity.TbRole;
 import org.qifu.core.logic.IRoleLogicService;
+import org.qifu.core.model.UploadTypes;
 import org.qifu.core.service.IAccountService;
+import org.qifu.core.util.UploadSupportUtils;
 import org.qifu.hillfog.entity.HfEmployee;
+import org.qifu.hillfog.entity.HfEmployeeHier;
 import org.qifu.hillfog.entity.HfEmployeeOrg;
 import org.qifu.hillfog.entity.HfKpiEmpl;
 import org.qifu.hillfog.entity.HfMeasureData;
@@ -51,6 +55,7 @@ import org.qifu.hillfog.entity.HfOrgDept;
 import org.qifu.hillfog.entity.HfPdcaItemOwner;
 import org.qifu.hillfog.entity.HfPdcaOwner;
 import org.qifu.hillfog.logic.IEmployeeLogicService;
+import org.qifu.hillfog.service.IEmployeeHierService;
 import org.qifu.hillfog.service.IEmployeeOrgService;
 import org.qifu.hillfog.service.IEmployeeService;
 import org.qifu.hillfog.service.IKpiEmplService;
@@ -106,6 +111,9 @@ public class EmployeeLogicServiceImpl extends BaseLogicService implements IEmplo
     @Autowired
     IPdcaItemOwnerService<HfPdcaItemOwner, String> pdcaItemOwnerService;
     
+    @Autowired
+    IEmployeeHierService<HfEmployeeHier, String> employeeHierService;
+    
 	@ServiceMethodAuthority(type = ServiceMethodType.INSERT)
 	@Transactional(
 			propagation=Propagation.REQUIRED, 
@@ -137,6 +145,13 @@ public class EmployeeLogicServiceImpl extends BaseLogicService implements IEmplo
 		List<String> roles = new ArrayList<String>();
 		roles.add(roleEntity.getOid());
 		this.roleLogicService.updateUserRole(account.getOid(), roles);
+		HfEmployeeHier hier = new HfEmployeeHier();
+		hier.setEmpOid( employee.getOid() );
+		hier.setParentOid( ZeroKeyProvide.OID_KEY );
+		this.employeeHierService.insert(hier);
+		if (!this.isBlank(employee.getUploadOid())) {
+			UploadSupportUtils.updateType(employee.getUploadOid(), UploadTypes.IS_IMAGE);
+		}
 		return result;
 	}
 	
@@ -206,6 +221,15 @@ public class EmployeeLogicServiceImpl extends BaseLogicService implements IEmplo
 			account.setPassword(  this.passwordEncoder.encode(password) );
 			this.accountService.update(account);
 		}
+		if (!this.isBlank(employee.getUploadOid()) && !employee.getUploadOid().equals(oldEmployee.getUploadOid())) {
+			UploadSupportUtils.updateType(employee.getUploadOid(), UploadTypes.IS_IMAGE);
+		}
+		if (this.isBlank(employee.getUploadOid()) && !this.isBlank(oldEmployee.getUploadOid())) {
+			UploadSupportUtils.updateType(oldEmployee.getUploadOid(), UploadTypes.IS_TEMP);
+		}
+		if (!this.isBlank(employee.getUploadOid()) && !this.isBlank(oldEmployee.getUploadOid()) && !employee.getUploadOid().equals(oldEmployee.getUploadOid())) {
+			UploadSupportUtils.updateType(oldEmployee.getUploadOid(), UploadTypes.IS_TEMP);
+		}
 		return result;
 	}
 	
@@ -236,8 +260,23 @@ public class EmployeeLogicServiceImpl extends BaseLogicService implements IEmplo
 		if (this.pdcaOwnerService.count(paramMap) > 0 || this.pdcaItemOwnerService.count(paramMap) > 0) {
 			throw new ServiceException( BaseSystemMessage.dataCannotDelete() );
 		}
+		paramMap.clear();
+		paramMap.put("parentOid", employee.getOid());
+		if (this.employeeHierService.count(paramMap) > 0) {
+			throw new ServiceException( "This employee hierarchy has child, " + BaseSystemMessage.dataCannotDelete() );
+		}
+		paramMap.clear();
+		paramMap.put("empOid", employee.getOid());
+		List<HfEmployeeHier> empHierList = this.employeeHierService.selectListByParams(paramMap).getValueEmptyThrowMessage();
+		for (HfEmployeeHier hier : empHierList) {
+			this.employeeHierService.delete(hier);
+		}
+		paramMap.clear();
 		this.measureDataService.deleteByAccount(employee.getAccount());
 		this.deleteEmployeeOrganization(employee);
+		if (!this.isBlank(employee.getUploadOid())) {
+			UploadSupportUtils.updateType(employee.getUploadOid(), UploadTypes.IS_TEMP);
+		}
 		this.employeeService.delete(employee);
 		return this.accountService.delete(account);
 	}
