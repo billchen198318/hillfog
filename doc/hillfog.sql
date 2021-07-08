@@ -63,6 +63,8 @@ CREATE TABLE `hf_employee` (
   `EMP_ID` varchar(15) NOT NULL,
   `NAME` varchar(25) NOT NULL,
   `DESCRIPTION` varchar(500) NOT NULL DEFAULT '',
+  `UPLOAD_OID` char(36) DEFAULT NULL,
+  `JOB_TITLE` varchar(100) NOT NULL DEFAULT '',
   `CUSERID` varchar(24) NOT NULL,
   `CDATE` datetime NOT NULL,
   `UUSERID` varchar(24) DEFAULT NULL,
@@ -80,8 +82,38 @@ CREATE TABLE `hf_employee` (
 
 LOCK TABLES `hf_employee` WRITE;
 /*!40000 ALTER TABLE `hf_employee` DISABLE KEYS */;
-INSERT INTO `hf_employee` VALUES ('0','admin','EMP001','Administrator','','sys','2020-10-03 09:43:37',NULL,NULL),('35e73cc7-0519-11eb-b8a3-b35804e4e844','bill','EMP004','Bill chen','','admin','2020-10-03 01:39:00',NULL,NULL),('4e5d23ab-0519-11eb-b8a3-0762c594204e','frank','EMP002','Frank wang','','admin','2020-10-03 01:39:41',NULL,NULL),('640607df-0519-11eb-b8a3-5fb4ab04d7ee','cindy','EMP003','Cindy liu','','admin','2020-10-03 01:40:17',NULL,NULL);
+INSERT INTO `hf_employee` VALUES ('0','admin','EMP001','Administrator','',NULL,'','sys','2020-10-03 09:43:37',NULL,NULL),('35e73cc7-0519-11eb-b8a3-b35804e4e844','bill','EMP004','Bill chen','',NULL,'','admin','2020-10-03 01:39:00',NULL,NULL),('4e5d23ab-0519-11eb-b8a3-0762c594204e','frank','EMP002','Frank wang','',NULL,'','admin','2020-10-03 01:39:41',NULL,NULL),('640607df-0519-11eb-b8a3-5fb4ab04d7ee','cindy','EMP003','Cindy liu','',NULL,'','admin','2020-10-03 01:40:17',NULL,NULL);
 /*!40000 ALTER TABLE `hf_employee` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `hf_employee_hier`
+--
+
+DROP TABLE IF EXISTS `hf_employee_hier`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `hf_employee_hier` (
+  `OID` char(36) NOT NULL,
+  `EMP_OID` char(36) NOT NULL,
+  `PARENT_OID` char(36) NOT NULL DEFAULT '00000000-0000-0000-0000-000000000000',
+  `CUSERID` varchar(24) NOT NULL,
+  `CDATE` datetime NOT NULL,
+  `UUSERID` varchar(24) DEFAULT NULL,
+  `UDATE` datetime DEFAULT NULL,
+  PRIMARY KEY (`OID`),
+  UNIQUE KEY `UK_1` (`EMP_OID`),
+  KEY `IDX_1` (`PARENT_OID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `hf_employee_hier`
+--
+
+LOCK TABLES `hf_employee_hier` WRITE;
+/*!40000 ALTER TABLE `hf_employee_hier` DISABLE KEYS */;
+/*!40000 ALTER TABLE `hf_employee_hier` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -1742,4 +1774,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-06-29 18:38:14
+-- Dump completed on 2021-07-08 11:46:15
