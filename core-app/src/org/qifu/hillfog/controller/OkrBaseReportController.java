@@ -275,28 +275,11 @@ public class OkrBaseReportController extends BaseControllerSupport implements IP
 		datascourceMap.put("collapsed", false);
 		for (Map.Entry<String, EmployeeHierObjective> entry : employeeObjectivesMap.entrySet()) {
 			if (ZeroKeyProvide.OID_KEY.equals( entry.getValue().getEmployeeHier().getParentOid() )) {
-				HfEmployee e = entry.getValue().getEmployee();
+				EmployeeHierObjective eho = entry.getValue();
+				HfEmployee e = eho.getEmployee();
 				Map<String, Object> childMap = new HashMap<String, Object>();
 				childrenList.add(childMap);
-				String title = "";
-				if (!StringUtils.isBlank(e.getJobTitle())) {
-					title += StringEscapeUtils.escapeJson( e.getJobTitle() );
-				} else {
-					title += "(no title)";
-				}
-				String imgSrc = "<img src=\"./images/logo.png\" class=\"rounded-circle\" style=\"max-height:96px;max-width:96px;\">";
-				if (!StringUtils.isBlank( e.getUploadOid() )) {
-					imgSrc = "<img src=\"./commonViewFile?oid=" + e.getUploadOid() + "\" class=\"rounded-circle\" style=\"max-height:96px;max-width:96px;\">";
-				}				
-				if (entry.getValue().getObjectives().size() < 1) {
-					title += "<br>" + imgSrc + "<br>(no objecitves)";
-				} else {
-					title += "<br>" + imgSrc + "<br>OKRs process&nbsp;(" + entry.getValue().totalProgressPercentage() + "%)<br><div class=\"progress\"><div class=\"progress-bar bg-success\" role=\"progressbar\" style=\"width: " + entry.getValue().totalProgressPercentage() + "%\" aria-valuenow=\"" + entry.getValue().totalProgressPercentage() + "\" aria-valuemin=\"0\" aria-valuemax=\"100\"></div></div>";
-				}
-				childMap.put("oid", e.getOid());
-				childMap.put("name", StringEscapeUtils.escapeJson(e.getEmpId() + " - " + e.getName()));
-				childMap.put("title", title);
-				childMap.put("collapsed", false);
+				this.fillChildNodeData(childMap, e, eho.getObjectives().size(), eho.totalProgressPercentage());
 			}
 		}
 		for (Map<String, Object> firstLeveLChildMap : childrenList) {
@@ -325,28 +308,32 @@ public class OkrBaseReportController extends BaseControllerSupport implements IP
 				
 				Map<String, Object> childMap = new HashMap<String, Object>();
 				childrenList.add(childMap);
-				String title = "";
-				if (!StringUtils.isBlank(e.getJobTitle())) {
-					title += StringEscapeUtils.escapeJson( e.getJobTitle() );
-				} else {
-					title += "(no title)";
-				}
-				String imgSrc = "<img src=\"./images/logo.png\" class=\"rounded-circle\" style=\"max-height:96px;max-width:96px;\">";
-				if (!StringUtils.isBlank( e.getUploadOid() )) {
-					imgSrc = "<img src=\"./commonViewFile?oid=" + e.getUploadOid() + "\" class=\"rounded-circle\" style=\"max-height:96px;max-width:96px;\">";
-				}				
-				if (eho.getObjectives().size() < 1) {
-					title += "<br>" + imgSrc + "<br>(no objecitves)";
-				} else {
-					title += "<br>" + imgSrc + "<br>OKRs process&nbsp;(" + eho.totalProgressPercentage() + "%)<br><div class=\"progress\"><div class=\"progress-bar bg-success\" role=\"progressbar\" style=\"width: " + eho.totalProgressPercentage() + "%\" aria-valuenow=\"" + eho.totalProgressPercentage() + "\" aria-valuemin=\"0\" aria-valuemax=\"100\"></div></div>";
-				}
-				childMap.put("oid", e.getOid());
-				childMap.put("name", StringEscapeUtils.escapeJson(e.getEmpId() + " - " + e.getName()));
-				childMap.put("title", title);
-				
+				this.fillChildNodeData(childMap, e, eho.getObjectives().size(), eho.totalProgressPercentage());		
 				this.fillChildHierarchyData(childMap, employeeObjectivesMap, empHierList);
 			}
 		}
+	}
+	
+	private void fillChildNodeData(Map<String, Object> childMap, HfEmployee e, int okrSize, BigDecimal progressPercentage) {
+		String title = "";
+		if (!StringUtils.isBlank(e.getJobTitle())) {
+			title += StringEscapeUtils.escapeJson( e.getJobTitle() );
+		} else {
+			title += "(no title)";
+		}
+		String imgSrc = "<img src=\"./images/logo.png\" class=\"rounded-circle\" style=\"max-height:96px;max-width:96px;\">";
+		if (!StringUtils.isBlank( e.getUploadOid() )) {
+			imgSrc = "<img src=\"./commonViewFile?oid=" + e.getUploadOid() + "\" class=\"rounded-circle\" style=\"max-height:96px;max-width:96px;\">";
+		}				
+		if (okrSize < 1) {
+			title += "<br>" + imgSrc + "<br>(no objecitves)";
+		} else {
+			title += "<br>" + imgSrc + "<br>OKRs process&nbsp;(" + progressPercentage + "%)<br><div class=\"progress\"><div class=\"progress-bar bg-success\" role=\"progressbar\" style=\"width: " + progressPercentage + "%\" aria-valuenow=\"" + progressPercentage + "\" aria-valuemin=\"0\" aria-valuemax=\"100\"></div></div>";
+		}
+		childMap.put("oid", e.getOid());
+		childMap.put("name", StringEscapeUtils.escapeJson(e.getEmpId() + " - " + e.getName()));
+		childMap.put("title", title);		
+		childMap.put("collapsed", false);
 	}
 	
 }
