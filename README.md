@@ -16,7 +16,7 @@ Features:<br>
 
 
 ### how to run hillfog (require JAVA11)
-`java -Xmx512M -jar hillfog-0.3.jar`
+`java -Xmx512M -jar hillfog-0.4.jar`
 
 use browser(Chrome or Firefox) open `http://127.0.0.1:8088`
 
@@ -30,6 +30,9 @@ use browser(Chrome or Firefox) open `http://127.0.0.1:8088`
 
 ### OKR report detail view
 <img alt="demo2" src="https://raw.githubusercontent.com/billchen198318/hillfog/master/doc/P02.png">
+
+### OKRs process hierarchy view for employee
+<img alt="demo7" src="https://raw.githubusercontent.com/billchen198318/hillfog/master/doc/P07.png">
 
 ### KPI report
 <img alt="demo3" src="https://raw.githubusercontent.com/billchen198318/hillfog/master/doc/P03.png">
