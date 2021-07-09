@@ -187,7 +187,7 @@ public class EmployeeLogicServiceImpl extends BaseLogicService implements IEmplo
 		}
 		Map<String, Object> paramMap = new HashMap<String, Object>();
 		paramMap.put("account", employee.getAccount());
-		List<HfEmployeeOrg> employeeOrgList = this.employeeOrgService.selectListByParams(paramMap).getValueEmptyThrowMessage();
+		List<HfEmployeeOrg> employeeOrgList = this.employeeOrgService.selectListByParams(paramMap).getValue();
 		for (HfEmployeeOrg empOrg : employeeOrgList) {
 			this.employeeOrgService.delete(empOrg);
 		}
@@ -248,6 +248,9 @@ public class EmployeeLogicServiceImpl extends BaseLogicService implements IEmplo
 		TbAccount account = new TbAccount();
 		account.setAccount(employee.getAccount());
 		account = this.accountService.selectByUniqueKey(account).getValueEmptyThrowMessage();
+		if ("admin".equals( account.getAccount() )) {
+			throw new ServiceException( "admin account cannot delete!" );
+		}
 		Map<String, Object> paramMap = new HashMap<String, Object>();
 		paramMap.put("account", employee.getAccount());
 		if (this.kpiEmplService.count(paramMap) > 0) {

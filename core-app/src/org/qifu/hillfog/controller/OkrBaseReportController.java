@@ -284,13 +284,13 @@ public class OkrBaseReportController extends BaseControllerSupport implements IP
 				} else {
 					title += "(no title)";
 				}
+				String imgSrc = "<img src=\"./images/logo.png\" class=\"rounded-circle\" style=\"max-height:96px;max-width:96px;\">";
+				if (!StringUtils.isBlank( e.getUploadOid() )) {
+					imgSrc = "<img src=\"./commonViewFile?oid=" + e.getUploadOid() + "\" class=\"rounded-circle\" style=\"max-height:96px;max-width:96px;\">";
+				}				
 				if (entry.getValue().getObjectives().size() < 1) {
-					title += "<br>(no objecitves)";
+					title += "<br>" + imgSrc + "<br>(no objecitves)";
 				} else {
-					String imgSrc = "<img src=\"./images/logo.png\" class=\"rounded-circle\" style=\"max-height:96px;max-width:96px;\">";
-					if (!StringUtils.isBlank( e.getUploadOid() )) {
-						imgSrc = "<img src=\"./commonViewFile?oid=" + e.getUploadOid() + "\" class=\"rounded-circle\" style=\"max-height:96px;max-width:96px;\">";
-					}
 					title += "<br>" + imgSrc + "<br>OKRs process&nbsp;(" + entry.getValue().totalProgressPercentage() + "%)<br><div class=\"progress\"><div class=\"progress-bar bg-success\" role=\"progressbar\" style=\"width: " + entry.getValue().totalProgressPercentage() + "%\" aria-valuenow=\"" + entry.getValue().totalProgressPercentage() + "\" aria-valuemin=\"0\" aria-valuemax=\"100\"></div></div>";
 				}
 				childMap.put("oid", e.getOid());
@@ -331,13 +331,13 @@ public class OkrBaseReportController extends BaseControllerSupport implements IP
 				} else {
 					title += "(no title)";
 				}
+				String imgSrc = "<img src=\"./images/logo.png\" class=\"rounded-circle\" style=\"max-height:96px;max-width:96px;\">";
+				if (!StringUtils.isBlank( e.getUploadOid() )) {
+					imgSrc = "<img src=\"./commonViewFile?oid=" + e.getUploadOid() + "\" class=\"rounded-circle\" style=\"max-height:96px;max-width:96px;\">";
+				}				
 				if (eho.getObjectives().size() < 1) {
-					title += "<br>(no objecitves)";
+					title += "<br>" + imgSrc + "<br>(no objecitves)";
 				} else {
-					String imgSrc = "<img src=\"./images/logo.png\" class=\"rounded-circle\" style=\"max-height:96px;max-width:96px;\">";
-					if (!StringUtils.isBlank( e.getUploadOid() )) {
-						imgSrc = "<img src=\"./commonViewFile?oid=" + e.getUploadOid() + "\" class=\"rounded-circle\" style=\"max-height:96px;max-width:96px;\">";
-					}
 					title += "<br>" + imgSrc + "<br>OKRs process&nbsp;(" + eho.totalProgressPercentage() + "%)<br><div class=\"progress\"><div class=\"progress-bar bg-success\" role=\"progressbar\" style=\"width: " + eho.totalProgressPercentage() + "%\" aria-valuenow=\"" + eho.totalProgressPercentage() + "\" aria-valuemin=\"0\" aria-valuemax=\"100\"></div></div>";
 				}
 				childMap.put("oid", e.getOid());
