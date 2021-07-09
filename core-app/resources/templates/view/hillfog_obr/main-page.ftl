@@ -95,6 +95,10 @@ $( document ).ready(function() {
 	
 });
 
+function hierarchyPage() {
+	parent.addTab('HF_PROG003D0001H', null);
+}
+
 </script>
 
 </head>
@@ -118,6 +122,9 @@ $( document ).ready(function() {
 					<span class="btn badge btn-info" v-on:click="queryObjectives"><h6><i class="icon fa fa-search"></i>&nbsp;Query</h6></span>	
 					&nbsp;
 					<span class="btn badge btn-info" v-on:click="clearObjectives"><h6><i class="icon fa fa-hand-paper-o"></i>&nbsp;Clear</h6></span>	
+					&nbsp;&nbsp;
+					<span class="btn badge btn-info" onclick="hierarchyPage();"><h6><i class="icon fa fa-users"></i>&nbsp;Hierarchy</h6></span>					
+					
 				</div>
 			</div>			
 			<div class="row">

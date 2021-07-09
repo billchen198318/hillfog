@@ -21,6 +21,9 @@
  */
 package org.qifu.hillfog.controller;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,6 +31,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.text.StringEscapeUtils;
 import org.qifu.base.controller.BaseControllerSupport;
 import org.qifu.base.controller.IPageNamespaceProvide;
 import org.qifu.base.exception.AuthorityException;
@@ -38,12 +42,18 @@ import org.qifu.base.model.DefaultControllerJsonResultObj;
 import org.qifu.base.model.DefaultResult;
 import org.qifu.base.model.SortType;
 import org.qifu.base.model.YesNo;
+import org.qifu.base.model.ZeroKeyProvide;
 import org.qifu.hillfog.entity.HfEmployee;
+import org.qifu.hillfog.entity.HfEmployeeHier;
+import org.qifu.hillfog.entity.HfObjOwner;
 import org.qifu.hillfog.entity.HfObjective;
 import org.qifu.hillfog.entity.HfOrgDept;
 import org.qifu.hillfog.entity.HfPdca;
+import org.qifu.hillfog.model.EmployeeHierObjective;
 import org.qifu.hillfog.model.PDCABase;
+import org.qifu.hillfog.service.IEmployeeHierService;
 import org.qifu.hillfog.service.IEmployeeService;
+import org.qifu.hillfog.service.IObjOwnerService;
 import org.qifu.hillfog.service.IObjectiveService;
 import org.qifu.hillfog.service.IOrgDeptService;
 import org.qifu.hillfog.service.IPdcaService;
@@ -56,6 +66,8 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Controller
 public class OkrBaseReportController extends BaseControllerSupport implements IPageNamespaceProvide {
@@ -72,6 +84,12 @@ public class OkrBaseReportController extends BaseControllerSupport implements IP
 	@Autowired
 	IPdcaService<HfPdca, String> pdcaService;	
 	
+	@Autowired
+	IEmployeeHierService<HfEmployeeHier, String> employeeHierService;
+	
+	@Autowired
+	IObjOwnerService<HfObjOwner, String> objOwnerService;
+	
 	@Override
 	public String viewPageNamespace() {
 		return "hillfog_obr";
@@ -86,6 +104,9 @@ public class OkrBaseReportController extends BaseControllerSupport implements IP
 			HfObjective objective = (HfObjective) mm.get("objective");
 			mm.put("selOrgInputAutocomplete", pageAutocompleteContent(this.orgDeptService.findInputAutocompleteByObjectiveOid(objective.getOid())));
 			mm.put("selEmpInputAutocomplete", pageAutocompleteContent(this.employeeService.findInputAutocompleteByObjectiveOid(objective.getOid())));				
+		}
+		if ("hierarchyPage".equals(type)) {
+			this.okrHierarchyData(mm);
 		}
 	}
 	
@@ -178,5 +199,154 @@ public class OkrBaseReportController extends BaseControllerSupport implements IP
 		}
 		return viewName;
 	}	
+	
+	@ControllerMethodAuthority(check = true, programId = "HF_PROG003D0001H")
+	@RequestMapping("/hfOkrHierarchyViewPage")
+	public String hierarchyPage(ModelMap mm, HttpServletRequest request) {
+		String viewName = this.viewPageWithNamespace("hierarchy-page");
+		this.getDefaultModelMap(mm, this.currentMethodAuthority());
+		try {
+			this.init("hierarchyPage", mm);
+		} catch (AuthorityException e) {
+			viewName = this.getAuthorityExceptionPage(e, mm);
+		} catch (ControllerException | ServiceException e) {
+			viewName = this.getServiceOrControllerExceptionPage(e, mm);
+		} catch (Exception e) {
+			viewName = this.getExceptionPage(e, mm);
+		}
+		return viewName;
+	}	
+	
+	private void okrHierarchyData(ModelMap mm) throws AuthorityException, ControllerException, ServiceException, Exception {
+		String varName = "datascourceJsonData";
+		List<HfEmployeeHier> empHierList = this.employeeHierService.selectList().getValue();
+		if (null == empHierList || empHierList.size() < 1) {
+			mm.put(varName, "{ }");
+			return;
+		}
+		List<HfObjective> objectivesList = this.objectiveService.selectList().getValue();
+		if (null == objectivesList || objectivesList.size() < 1) {
+			mm.put(varName, "{ }");
+			return;			
+		}
+		Map<String, EmployeeHierObjective> employeeObjectivesMap = new HashMap<String, EmployeeHierObjective>();
+		Map<String, String> okrProcessMap = new HashMap<String, String>();
+		for (HfEmployeeHier h : empHierList) {
+			HfEmployee e = this.employeeService.selectByPrimaryKey( h.getEmpOid() ).getValueEmptyThrowMessage();
+			List<HfObjective> userObjectiveList = new ArrayList<HfObjective>();
+			EmployeeHierObjective eho = new EmployeeHierObjective(h, e, userObjectiveList);
+			employeeObjectivesMap.put(h.getEmpOid(), eho);
+			for (HfObjective o : objectivesList) {
+				Map<String, Object> paramMap = new HashMap<String, Object>();
+				paramMap.put("objOid", o.getOid());
+				paramMap.put("account", e.getAccount());
+				if (this.objOwnerService.count(paramMap) < 1) {
+					continue;
+				}
+				if (okrProcessMap.get(o.getOid()) == null) {
+					OkrProgressRateUtils.build().fromObjective(o).process();
+					okrProcessMap.put(o.getOid(), YesNo.YES);
+				}
+				eho.getObjectives().add(o);
+			}
+		}
+		
+		int hasOkrEmployeeSize = 0;
+		BigDecimal topTotalProgressPercentage = BigDecimal.ZERO;
+		for (Map.Entry<String, EmployeeHierObjective> entry : employeeObjectivesMap.entrySet()) {
+			if (entry.getValue().getObjectives().size() < 1) {
+				continue;
+			}
+			hasOkrEmployeeSize += 1;
+			topTotalProgressPercentage = topTotalProgressPercentage.add( entry.getValue().totalProgressPercentage() );
+		}
+		if ( topTotalProgressPercentage.floatValue() != 0.0f && hasOkrEmployeeSize > 0 ) {
+			topTotalProgressPercentage = topTotalProgressPercentage.divide(new BigDecimal(hasOkrEmployeeSize), 2, RoundingMode.HALF_UP);
+		}
+		
+		Map<String, Object> datascourceMap = new HashMap<String, Object>();
+		
+		// first node
+		List<Map<String, Object>> childrenList = new ArrayList<Map<String, Object>>();
+		datascourceMap.put("oid", ZeroKeyProvide.OID_KEY);
+		datascourceMap.put("name", "Employee hierarchy");
+		datascourceMap.put("title", "Total<br><img src=\"./images/logo.png\" class=\"rounded-circle\" style=\"max-height:96px;max-width:96px;\"><br>OKRs process&nbsp;(" + topTotalProgressPercentage + "%)<br><div class=\"progress\"><div class=\"progress-bar bg-success\" role=\"progressbar\" style=\"width: " + topTotalProgressPercentage + "%\" aria-valuenow=\"" + topTotalProgressPercentage + "\" aria-valuemin=\"0\" aria-valuemax=\"100\"></div></div>");
+		datascourceMap.put("children", childrenList);
+		datascourceMap.put("collapsed", false);
+		for (Map.Entry<String, EmployeeHierObjective> entry : employeeObjectivesMap.entrySet()) {
+			if (ZeroKeyProvide.OID_KEY.equals( entry.getValue().getEmployeeHier().getParentOid() )) {
+				HfEmployee e = entry.getValue().getEmployee();
+				Map<String, Object> childMap = new HashMap<String, Object>();
+				childrenList.add(childMap);
+				String title = "";
+				if (!StringUtils.isBlank(e.getJobTitle())) {
+					title += StringEscapeUtils.escapeJson( e.getJobTitle() );
+				} else {
+					title += "(no title)";
+				}
+				if (entry.getValue().getObjectives().size() < 1) {
+					title += "<br>(no objecitves)";
+				} else {
+					String imgSrc = "<img src=\"./images/logo.png\" class=\"rounded-circle\" style=\"max-height:96px;max-width:96px;\">";
+					if (!StringUtils.isBlank( e.getUploadOid() )) {
+						imgSrc = "<img src=\"./commonViewFile?oid=" + e.getUploadOid() + "\" class=\"rounded-circle\" style=\"max-height:96px;max-width:96px;\">";
+					}
+					title += "<br>" + imgSrc + "<br>OKRs process&nbsp;(" + entry.getValue().totalProgressPercentage() + "%)<br><div class=\"progress\"><div class=\"progress-bar bg-success\" role=\"progressbar\" style=\"width: " + entry.getValue().totalProgressPercentage() + "%\" aria-valuenow=\"" + entry.getValue().totalProgressPercentage() + "\" aria-valuemin=\"0\" aria-valuemax=\"100\"></div></div>";
+				}
+				childMap.put("oid", e.getOid());
+				childMap.put("name", StringEscapeUtils.escapeJson(e.getEmpId() + " - " + e.getName()));
+				childMap.put("title", title);
+				childMap.put("collapsed", false);
+			}
+		}
+		for (Map<String, Object> firstLeveLChildMap : childrenList) {
+			this.fillChildHierarchyData(firstLeveLChildMap, employeeObjectivesMap, empHierList);
+		}
+		
+		String json = new ObjectMapper().writeValueAsString(datascourceMap);
+		mm.put(varName, json);
+		
+	}
+	
+	private void fillChildHierarchyData(Map<String, Object> childrenDataMap, Map<String, EmployeeHierObjective> employeeObjectivesMap, List<HfEmployeeHier> empHierList) throws AuthorityException, ControllerException, ServiceException, Exception {
+		String currentEmpOid = (String) childrenDataMap.get("oid");
+		for (HfEmployeeHier h : empHierList) {
+			if (h.getParentOid().equals(currentEmpOid)) {
+				childrenDataMap.put("collapsed", false);
+				EmployeeHierObjective eho = employeeObjectivesMap.get(h.getEmpOid());
+				HfEmployee e = eho.getEmployee();
+				List<Map<String, Object>> childrenList = null;
+				if (childrenDataMap.get("children") == null) {
+					childrenList = new ArrayList<Map<String, Object>>();
+					childrenDataMap.put("children", childrenList);
+				} else {
+					childrenList = (List<Map<String, Object>>) childrenDataMap.get("children");
+				}
+				
+				Map<String, Object> childMap = new HashMap<String, Object>();
+				childrenList.add(childMap);
+				String title = "";
+				if (!StringUtils.isBlank(e.getJobTitle())) {
+					title += StringEscapeUtils.escapeJson( e.getJobTitle() );
+				} else {
+					title += "(no title)";
+				}
+				if (eho.getObjectives().size() < 1) {
+					title += "<br>(no objecitves)";
+				} else {
+					String imgSrc = "<img src=\"./images/logo.png\" class=\"rounded-circle\" style=\"max-height:96px;max-width:96px;\">";
+					if (!StringUtils.isBlank( e.getUploadOid() )) {
+						imgSrc = "<img src=\"./commonViewFile?oid=" + e.getUploadOid() + "\" class=\"rounded-circle\" style=\"max-height:96px;max-width:96px;\">";
+					}
+					title += "<br>" + imgSrc + "<br>OKRs process&nbsp;(" + eho.totalProgressPercentage() + "%)<br><div class=\"progress\"><div class=\"progress-bar bg-success\" role=\"progressbar\" style=\"width: " + eho.totalProgressPercentage() + "%\" aria-valuenow=\"" + eho.totalProgressPercentage() + "\" aria-valuemin=\"0\" aria-valuemax=\"100\"></div></div>";
+				}
+				childMap.put("oid", e.getOid());
+				childMap.put("name", StringEscapeUtils.escapeJson(e.getEmpId() + " - " + e.getName()));
+				childMap.put("title", title);
+				
+				this.fillChildHierarchyData(childMap, employeeObjectivesMap, empHierList);
+			}
+		}
+	}
 	
 }
