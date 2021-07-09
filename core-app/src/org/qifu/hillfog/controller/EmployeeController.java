@@ -43,6 +43,7 @@ import org.qifu.base.model.QueryControllerJsonResultObj;
 import org.qifu.base.model.QueryResult;
 import org.qifu.base.model.SearchValue;
 import org.qifu.hillfog.entity.HfEmployee;
+import org.qifu.hillfog.entity.HfEmployeeHier;
 import org.qifu.hillfog.entity.HfOrgDept;
 import org.qifu.hillfog.logic.IEmployeeLogicService;
 import org.qifu.hillfog.service.IEmployeeService;
@@ -296,6 +297,21 @@ public class EmployeeController extends BaseControllerSupport implements IPageNa
 		return viewName;
 	}
 	
-	//hfEmployeeHierarchyUpdateJson
+	@ControllerMethodAuthority(check = true, programId = "HF_PROG001D0002S")
+	@RequestMapping(value = "/hfEmployeeHierarchyUpdateJson", produces = MediaType.APPLICATION_JSON_VALUE)		
+	public @ResponseBody DefaultControllerJsonResultObj<HfEmployeeHier> doHierarchyUpdate(HttpServletRequest request, @RequestParam(name="empOid") String empOid, @RequestParam(name="parentOid") String parentOid) {
+		DefaultControllerJsonResultObj<HfEmployeeHier> result = this.getDefaultJsonResult(this.currentMethodAuthority());
+		if (!this.isAuthorizeAndLoginFromControllerJsonResult(result)) {
+			return result;
+		}
+		try {
+			this.setDefaultResponseJsonResult(result, this.employeeLogicService.updateHierarchy(empOid, parentOid));
+		} catch (AuthorityException | ServiceException | ControllerException e) {
+			this.baseExceptionResult(result, e);
+		} catch (Exception e) {
+			this.exceptionResult(result, e);
+		}
+		return result;
+	}	
 	
 }

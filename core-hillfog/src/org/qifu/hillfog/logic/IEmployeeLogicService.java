@@ -26,6 +26,7 @@ import java.util.List;
 import org.qifu.base.exception.ServiceException;
 import org.qifu.base.model.DefaultResult;
 import org.qifu.hillfog.entity.HfEmployee;
+import org.qifu.hillfog.entity.HfEmployeeHier;
 
 public interface IEmployeeLogicService {
 	
@@ -36,5 +37,7 @@ public interface IEmployeeLogicService {
 	public DefaultResult<Boolean> delete(HfEmployee employee) throws ServiceException, Exception;
 	
 	public String findZtreeData() throws ServiceException, Exception;
+	
+	public DefaultResult<HfEmployeeHier> updateHierarchy(String employeeOid, String parentEmployeeOid) throws ServiceException, Exception;
 	
 }

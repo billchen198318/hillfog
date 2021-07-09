@@ -316,5 +316,60 @@ public class EmployeeLogicServiceImpl extends BaseLogicService implements IEmplo
 		data.append("]");
 		return data.toString();
 	}
+
+	@ServiceMethodAuthority(type = ServiceMethodType.UPDATE)
+	@Transactional(
+			propagation=Propagation.REQUIRED, 
+			readOnly=false,
+			rollbackFor={RuntimeException.class, IOException.class, Exception.class} )		
+	@Override
+	public DefaultResult<HfEmployeeHier> updateHierarchy(String employeeOid, String parentEmployeeOid) throws ServiceException, Exception {
+		if (this.isBlank(employeeOid) || this.isBlank(parentEmployeeOid)) {
+			throw new ServiceException( BaseSystemMessage.parameterBlank() );
+		}		
+		HfEmployee employee = this.employeeService.selectByPrimaryKey(employeeOid).getValueEmptyThrowMessage();
+		HfEmployee parentEmployee = null;
+		if (!ZeroKeyProvide.OID_KEY.equals(parentEmployeeOid)) {
+			parentEmployee = this.employeeService.selectByPrimaryKey(parentEmployeeOid).getValueEmptyThrowMessage();
+		}
+		
+		HfEmployeeHier h = new HfEmployeeHier();
+		h.setEmpOid( employee.getOid() );
+		h = this.employeeHierService.selectByUniqueKey( h ).getValueEmptyThrowMessage();
+		if (null == parentEmployee) {
+			h.setParentOid( ZeroKeyProvide.OID_KEY );
+			return this.employeeHierService.update(h);
+		}
+		List<HfEmployeeHier> childHierList = new ArrayList<HfEmployeeHier>();
+		this.findFoundHierarchyChild(childHierList, h.getEmpOid());
+		boolean errorChangeToChild = false;
+		for (int i = 0; i < childHierList.size() && !errorChangeToChild; i++) {
+			HfEmployeeHier ch = childHierList.get(i);
+			if (h.getParentOid().equals(ch.getEmpOid())) {
+				errorChangeToChild = true;
+			}
+		}
+		if (errorChangeToChild) {
+			throw new ServiceException( "Cannot change current hierarchy to child node!" );
+		}
+		h.setParentOid(parentEmployeeOid);
+		return this.employeeHierService.update(h);
+	}
+	
+	private void findFoundHierarchyChild(List<HfEmployeeHier> childHierList, String currentEmployeeOid) throws ServiceException, Exception {
+		if (this.isBlank(currentEmployeeOid)) {
+			throw new ServiceException( BaseSystemMessage.parameterBlank() ); 
+		}
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("parentOid", currentEmployeeOid);
+		List<HfEmployeeHier> hierList = this.employeeHierService.selectListByParams(paramMap).getValue();
+		if (null == hierList || hierList.size() < 1) {
+			return;
+		}
+		for (HfEmployeeHier h : hierList) {
+			childHierList.add(h);
+			this.findFoundHierarchyChild(childHierList, h.getEmpOid());
+		}
+	}
 	
 }
