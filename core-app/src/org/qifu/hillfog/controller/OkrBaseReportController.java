@@ -328,7 +328,7 @@ public class OkrBaseReportController extends BaseControllerSupport implements IP
 		if (okrSize < 1) {
 			title += "<br>" + imgSrc + "<br>(no objecitves)";
 		} else {
-			title += "<br>" + imgSrc + "<br>OKRs process&nbsp;(" + progressPercentage + "%)<br><div class=\"progress\"><div class=\"progress-bar bg-success\" role=\"progressbar\" style=\"width: " + progressPercentage + "%\" aria-valuenow=\"" + progressPercentage + "\" aria-valuemin=\"0\" aria-valuemax=\"100\"></div></div>";
+			title += "<br>" + imgSrc + "<br>OKRs progress&nbsp;(" + progressPercentage + "%)<br><div class=\"progress\"><div class=\"progress-bar bg-success\" role=\"progressbar\" style=\"width: " + progressPercentage + "%\" aria-valuenow=\"" + progressPercentage + "\" aria-valuemin=\"0\" aria-valuemax=\"100\"></div></div>";
 		}
 		childMap.put("oid", e.getOid());
 		childMap.put("name", StringEscapeUtils.escapeJson(e.getEmpId() + " - " + e.getName()));
