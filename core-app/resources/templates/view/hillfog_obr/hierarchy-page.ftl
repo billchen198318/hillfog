@@ -31,6 +31,16 @@ $( document ).ready(function() {
     	'nodeContent'	: 'title'
     });
     
+	$('#chart-container').find('.node').on('click', function() {
+		var empOid = $(this).data('nodeData').oid;
+		if ('00000000-0000-0000-0000-000000000000' == empOid || '' == empOid) {
+			parent.toastrWarning( 'Please click employee node.' );
+			return;
+		}
+		var pageUrl = parent.getProgUrlForOid('HF_PROG003D0001Q', empOid);
+		parent.addTab( 'HF_PROG003D0001Q', pageUrl );
+	});
+	
 });
 
 </script>

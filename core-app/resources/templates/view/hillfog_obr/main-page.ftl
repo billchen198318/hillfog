@@ -140,7 +140,7 @@ function hierarchyPage() {
 					<@qifu.textbox name="objOrg" value="" id="objOrg" label="Organization" requiredFlag="N" maxlength="100" placeholder="Enter organization" />
 				</div>
 				<div class="col-xs-6 col-md-6 col-lg-6 text-white">
-					<@qifu.textbox name="objOwner" value="" id="objOwner" label="Employee" requiredFlag="N" maxlength="100" placeholder="Enter employee" />
+					<@qifu.textbox name="objOwner" value="defaultQuerySelectEmployee" id="objOwner" label="Employee" requiredFlag="N" maxlength="100" placeholder="Enter employee" />
 				</div>			
 			</div>
 			<div class="row">

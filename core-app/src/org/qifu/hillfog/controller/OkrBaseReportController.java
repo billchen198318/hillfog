@@ -130,6 +130,11 @@ public class OkrBaseReportController extends BaseControllerSupport implements IP
 		this.getDefaultModelMap(mm, this.currentMethodAuthority());
 		try {
 			this.init("mainPage", mm);
+			mm.put("defaultQuerySelectEmployee", "");
+			if (!StringUtils.isBlank(request.getParameter("oid"))) { // 由 hfOkrHierarchyViewPage 點選員工node帶入的 HF_EMPLOYEE.OID
+				HfEmployee employee = this.employeeService.selectByPrimaryKey( request.getParameter("oid") ).getValueEmptyThrowMessage();
+				mm.put("defaultQuerySelectEmployee", this.employeeService.getPagefieldValue(employee));
+			}
 		} catch (AuthorityException e) {
 			viewName = this.getAuthorityExceptionPage(e, mm);
 		} catch (ControllerException | ServiceException e) {

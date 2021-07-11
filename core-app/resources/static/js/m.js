@@ -60,7 +60,15 @@ function addTab( tabId, srcUrl ) {
 			 */
 			var src = $("#" + tabId).find('iframe').attr("src");
 			if ( '' == srcUrl || null == srcUrl) {
-				srcUrl = src;
+				//srcUrl = src; // 2021-07-12 rem
+				
+				// 2021-07-12 add
+				for (var i=0; _prog != null && i< _prog.length; i++) {
+					if ( _prog[i].id == tabId ) {
+						srcUrl = _prog[i].url;
+					}
+				}
+				
 			}
 			$("#" + tabId).find('iframe').attr("src", srcUrl);
 			//showPleaseWait();
