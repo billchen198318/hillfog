@@ -99,6 +99,10 @@ function hierarchyPage() {
 	parent.addTab('HF_PROG003D0001H', null);
 }
 
+function orgBarChartPage() {
+	parent.addTab('HF_PROG003D0001H', parent.getProgUrl('HF_PROG003D0001H') + '&organizationMode=' + _qifu_success_flag);
+}
+
 </script>
 
 </head>
@@ -124,7 +128,8 @@ function hierarchyPage() {
 					<span class="btn badge btn-info" v-on:click="clearObjectives"><h6><i class="icon fa fa-hand-paper-o"></i>&nbsp;Clear</h6></span>	
 					&nbsp;&nbsp;
 					<span class="btn badge btn-info" onclick="hierarchyPage();"><h6><i class="icon fa fa-users"></i>&nbsp;Hierarchy</h6></span>					
-					
+					&nbsp;
+					<span class="btn badge btn-info" onclick="orgBarChartPage();"><h6><i class="icon fa fa-bar-chart"></i>&nbsp;Organization progress</h6></span>
 				</div>
 			</div>			
 			<div class="row">

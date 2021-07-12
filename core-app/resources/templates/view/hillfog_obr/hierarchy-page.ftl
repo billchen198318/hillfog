@@ -65,6 +65,10 @@ $( document ).ready(function() {
 <#import "../common-f-head.ftl" as cfh />
 <@cfh.commonFormHeadContent /> 
 
+<@qifu.if test=" \"N\" == foundObjective ">
+<br>
+<h4><span class="badge badge-warning">No found employee's OKRs to display.</span></h4>
+</@qifu.if>
 
 <div id="chart-container"></div>
 

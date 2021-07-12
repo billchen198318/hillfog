@@ -25,6 +25,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -45,14 +46,17 @@ import org.qifu.base.model.YesNo;
 import org.qifu.base.model.ZeroKeyProvide;
 import org.qifu.hillfog.entity.HfEmployee;
 import org.qifu.hillfog.entity.HfEmployeeHier;
+import org.qifu.hillfog.entity.HfObjDept;
 import org.qifu.hillfog.entity.HfObjOwner;
 import org.qifu.hillfog.entity.HfObjective;
 import org.qifu.hillfog.entity.HfOrgDept;
 import org.qifu.hillfog.entity.HfPdca;
 import org.qifu.hillfog.model.EmployeeHierObjective;
+import org.qifu.hillfog.model.OrganizationObjective;
 import org.qifu.hillfog.model.PDCABase;
 import org.qifu.hillfog.service.IEmployeeHierService;
 import org.qifu.hillfog.service.IEmployeeService;
+import org.qifu.hillfog.service.IObjDeptService;
 import org.qifu.hillfog.service.IObjOwnerService;
 import org.qifu.hillfog.service.IObjectiveService;
 import org.qifu.hillfog.service.IOrgDeptService;
@@ -90,6 +94,9 @@ public class OkrBaseReportController extends BaseControllerSupport implements IP
 	@Autowired
 	IObjOwnerService<HfObjOwner, String> objOwnerService;
 	
+	@Autowired
+	IObjDeptService<HfObjDept, String> objDeptService;
+	
 	@Override
 	public String viewPageNamespace() {
 		return "hillfog_obr";
@@ -107,6 +114,9 @@ public class OkrBaseReportController extends BaseControllerSupport implements IP
 		}
 		if ("hierarchyPage".equals(type)) {
 			this.okrHierarchyData(mm);
+		}
+		if ("hierarchyPage-organizationMode".equals(type)) {
+			this.okrOrganizationProgressData(mm);
 		}
 	}
 	
@@ -211,7 +221,12 @@ public class OkrBaseReportController extends BaseControllerSupport implements IP
 		String viewName = this.viewPageWithNamespace("hierarchy-page");
 		this.getDefaultModelMap(mm, this.currentMethodAuthority());
 		try {
-			this.init("hierarchyPage", mm);
+			if (YES.equals(request.getParameter("organizationMode"))) {
+				viewName = this.viewPageWithNamespace("orgbarchart-page");
+				this.init("hierarchyPage-organizationMode", mm);
+			} else {
+				this.init("hierarchyPage", mm);
+			}
 		} catch (AuthorityException e) {
 			viewName = this.getAuthorityExceptionPage(e, mm);
 		} catch (ControllerException | ServiceException e) {
@@ -222,8 +237,66 @@ public class OkrBaseReportController extends BaseControllerSupport implements IP
 		return viewName;
 	}	
 	
+	private void okrOrganizationProgressData(ModelMap mm) throws AuthorityException, ControllerException, ServiceException, Exception {
+		String varName = "source";
+		mm.put(varName, "[ ]");
+		mm.put("foundObjective", NO);
+		List<HfObjective> objectivesList = this.objectiveService.selectList().getValue();
+		if (null == objectivesList || objectivesList.size() < 1) {
+			return;
+		}
+		mm.put("foundObjective", YES);
+		List<OrganizationObjective> organizationObjectiveList = new ArrayList<OrganizationObjective>();
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		for (HfObjective obj : objectivesList) {
+			paramMap.put("objOid", obj.getOid());
+			List<HfObjDept> objDeptList = this.objDeptService.selectListByParams(paramMap).getValue();
+			if (null == objDeptList || objDeptList.size() < 1) {
+				continue;
+			}
+			for (HfObjDept objDept : objDeptList) {
+				boolean found = false;
+				for (OrganizationObjective oo : organizationObjectiveList) {
+					if (oo.getOrgDept().getOrgId().equals(objDept.getOrgId())) {
+						found = true;
+					}
+				}
+				if (found) {
+					continue;
+				}
+				HfOrgDept orgDept = new HfOrgDept();
+				orgDept.setOrgId( objDept.getOrgId() );
+				orgDept = this.orgDeptService.selectByUniqueKey(orgDept).getValueEmptyThrowMessage();
+				organizationObjectiveList.add( new OrganizationObjective(orgDept, new ArrayList<HfObjective>()) );
+			}
+			for (HfObjDept objDept : objDeptList) {
+				for (OrganizationObjective oo : organizationObjectiveList) {
+					if (oo.getOrgDept().getOrgId().equals(objDept.getOrgId())) {
+						oo.getObjectives().add(obj);
+					}
+				}
+			}
+		}
+		for (OrganizationObjective oo : organizationObjectiveList) {
+			for (HfObjective obj : oo.getObjectives()) {
+				OkrProgressRateUtils.build().fromObjective(obj).process();
+			}
+		}
+		List< List<Object> > scores = new ArrayList< List<Object> >();
+		for (OrganizationObjective oo : organizationObjectiveList) {
+			List<Object> deptScore = new LinkedList<Object>();
+			deptScore.add( oo.getOrgDept().getOrgId() );
+			deptScore.add( StringEscapeUtils.escapeJson(oo.getOrgDept().getName()) );
+			deptScore.add( oo.totalProgressPercentage() );
+			scores.add(deptScore);
+		}
+		String json = new ObjectMapper().writeValueAsString(scores);
+		mm.put(varName, json);
+	}
+	
 	private void okrHierarchyData(ModelMap mm) throws AuthorityException, ControllerException, ServiceException, Exception {
 		String varName = "datascourceJsonData";
+		mm.put("foundObjective", NO);
 		List<HfEmployeeHier> empHierList = this.employeeHierService.selectList().getValue();
 		if (null == empHierList || empHierList.size() < 1) {
 			mm.put(varName, "{ }");
@@ -293,6 +366,7 @@ public class OkrBaseReportController extends BaseControllerSupport implements IP
 		
 		String json = new ObjectMapper().writeValueAsString(datascourceMap);
 		mm.put(varName, json);
+		mm.put("foundObjective", YES);
 		
 	}
 	
