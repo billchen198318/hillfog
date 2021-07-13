@@ -46,7 +46,7 @@ function orgBarChartPage() {
 <h4><span class="badge badge-warning">No found organization/department 's OKRs to display.</span></h4>
 </@qifu.if>
 
-<div id="container" style="height: 100%; width: 100%; min-height: 600px; min-width: 800px;"></div>
+<div id="container" style="height: 90%; width: 100%; min-height: 600px; min-width: 800px;"></div>
 
 <br/>
 <br/>
@@ -78,7 +78,36 @@ option = {
     series: {
         type: 'bar',
         encode: { x: 'name', y: 'score' },
-        datasetIndex: 1
+        datasetIndex: 1,
+        itemStyle: {
+            normal: {
+              color: new echarts.graphic.LinearGradient(
+                0, 0, 0, 1,
+                [
+                  { offset: 0, color: '#83bff6' },
+                  { offset: 0.5, color: '#188df0' },
+                  { offset: 1, color: '#188df0' }
+                ]
+              )
+            },
+            emphasis: {
+              name: 'OKRs progress',
+              color: new echarts.graphic.LinearGradient(
+                0, 0, 0, 1,
+                [
+                  { offset: 0, color: '#2378f7' },
+                  { offset: 0.7, color: '#2378f7' },
+                  { offset: 1, color: '#83bff6' }
+                ]
+              )
+            }
+        },        
+        label: {
+            normal: {
+            	show: true,
+            	position: 'top'
+            }
+        }        
     }
 };
 
