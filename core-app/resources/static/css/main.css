@@ -3,8 +3,15 @@
  * Vali Admin
  * Author: Pratik Borsadiya
  * ================================*/
+/* 2021-07-15 add */
+@import url(./fonts_googleapis/fonts.css?family=Lato:300,400,400i,700);
+@import url(./fonts_googleapis/fonts.css?family=Lato);
+/* 2021-07-15 rem */
+/* 
 @import url(https://fonts.googleapis.com/css?family=Lato:300,400,400i,700);
 @import url(https://fonts.googleapis.com/css?family=Lato);
+*/
+
 /*!
  * Bootstrap v4.3.1 (https://getbootstrap.com/)
  * Copyright 2011-2019 The Bootstrap Authors
