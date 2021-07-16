@@ -16,7 +16,39 @@ pre {
 	text-align: left;
     white-space: pre-line;
 }
-  
+
+.styled-table {
+    border-collapse: collapse;
+    margin: 25px 0;
+    font-size: 0.9em;
+    font-family: sans-serif;
+    min-width: 400px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+.styled-table thead tr {
+    background-color: #454545;
+    color: #ffffff;
+    text-align: left;
+}
+.styled-table th,
+.styled-table td {
+    padding: 12px 15px;
+    border-left: 1px solid #dddddd;
+}
+.styled-table tbody tr {
+    border-bottom: 1px solid #dddddd;
+}
+.styled-table tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+}
+.styled-table tbody tr:last-of-type {
+    border-bottom: 2px solid #454545;
+}
+.styled-table tbody tr.active-row {
+    font-weight: bold;
+    color: #454545;
+}
+
 </style>
 
 
@@ -214,13 +246,15 @@ function pdcaProjectChartFillItems(pdcaItems) {
 function paintPdcaProjectTableContent(data) {
 	var itemList = [];
 	var str = `
-		<table border="1" width="100%" cellspacing="1" cellpadding="1" style="border:1px #3B3B3B solid; border-radius: 5px; background: #3B3B3B;">
-		<tr>
-		<td width="25%" align="center" bgcolor="#454545"><b><font color="#FBFBFB">Plan</font></b></td>
-		<td width="25%" align="center" bgcolor="#454545"><b><font color="#FBFBFB">Do</font></b></td>
-		<td width="25%" align="center" bgcolor="#454545"><b><font color="#FBFBFB">Check</font></b></td>
-		<td width="25%" align="center" bgcolor="#454545"><b><font color="#FBFBFB">Act</font></b></td>
-		</tr>	
+		<table width="100%" class="styled-table">
+		<thead>
+			<tr>
+				<th width="25%" align="center">Plan</th>
+				<th width="25%" align="center">Do</th>
+				<th width="25%" align="center">Check</th>
+				<th width="25%" align="center">Act</th>
+			</tr>	
+		</thead>
 	`;
 	//str += '<tbody>';
 	for (var p = 0; p < data.planItemList.length; p++) {

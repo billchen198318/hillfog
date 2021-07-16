@@ -4,12 +4,14 @@ function paintContent() {
 	}
 	var str = '';
 	str += `
-	<table border="1" width="100%" cellspacing="1" cellpadding="1" style="border:1px #3B3B3B solid; border-radius: 5px; background: #3B3B3B;">
-	<tr>
-		<td width="30%" align="center" bgcolor="#454545"><b><font color="#FBFBFB">Organization/Department</font></b></td>
-		<td width="35%" align="center" bgcolor="#454545"><b><font color="#FBFBFB">Objectives</font></b></td>
-		<td width="35%" align="center" bgcolor="#454545"><b><font color="#FBFBFB">Key results</font></b></td>
-	</tr>	
+	<table width="100%" class="styled-table">
+	<thead>
+		<tr>
+			<th width="30%" align="center">Organization/Department</th>
+			<th width="35%" align="center">Objectives</th>
+			<th width="35%" align="center">Key results</th>
+		</tr>	
+	</thead>
 	`;
 	for (var o in objectivesData) {
 		var oo = objectivesData[o];
