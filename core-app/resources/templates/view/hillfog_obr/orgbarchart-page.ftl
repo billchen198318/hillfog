@@ -16,9 +16,19 @@
 
 
 <script type="text/javascript">
+
+var objectivesData = ${objectivesJson};
+
 function orgBarChartPage() {
 	parent.addTab('HF_PROG003D0001H', parent.getProgUrl('HF_PROG003D0001H') + '&organizationMode=' + _qifu_success_flag);
 }
+
+$( document ).ready(function() {
+	
+	paintContent();
+	
+});
+
 </script>
 
 </head>
@@ -47,6 +57,10 @@ function orgBarChartPage() {
 </@qifu.if>
 
 <div id="container" style="height: 90%; width: 100%; min-height: 600px; min-width: 800px;"></div>
+
+<br>
+<div id="orgOkrsContent"></div>
+
 
 <br/>
 <br/>
@@ -116,6 +130,8 @@ if (option && typeof option === 'object') {
 }
 </script>
 </@qifu.if>
+
+<script type="text/javascript" src="${qifu_basePath}js/hillfog/HF_PROG003D0001H_OM.js?ver=${qifu_jsVerBuild}"></script>
 
 </body>
 </html>

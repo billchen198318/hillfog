@@ -67,6 +67,10 @@ public class EmployeeHierObjective implements java.io.Serializable {
 		this.objectives = objectives;
 	}
 	
+	public BigDecimal getTotalProgressPercentage() {
+		return this.totalProgressPercentage();
+	}	
+	
 	public BigDecimal totalProgressPercentage() {
 		if (this.objectives == null || this.objectives.size() < 1) {
 			return BigDecimal.ZERO;

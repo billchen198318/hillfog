@@ -26,7 +26,7 @@ public class HfObjective implements java.io.Serializable {
     private Date udate;
     
     // =====================================================================
-    // 查詢顯示用
+    // 查詢顯示用 - for query id: selectQueryObjectiveList
     private int keyResultSize = 0;
     private int initiativeSize = 0;
     

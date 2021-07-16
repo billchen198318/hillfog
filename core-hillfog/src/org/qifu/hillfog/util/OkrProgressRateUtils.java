@@ -242,6 +242,13 @@ public class OkrProgressRateUtils {
 			this.progressRateData.getObjective().setProgressPercentage( fullPercentage );
 		}
 		this.progressRateData.setValue( this.progressRateData.getObjective().getProgressPercentage() );
+		
+		// 如果不是透過 HfObjectiveMapper.selectQueryObjectiveList 查出的 HF_OBJECTIVE 時, 它的 keyResultSize 與 initiativeSize 不會有值
+		if ( this.progressRateData.getObjective().getKeyResultSize() == 0 ) {
+			this.progressRateData.getObjective().setKeyResultSize( this.progressRateData.getObjective().getKeyResList() != null ? this.progressRateData.getObjective().getKeyResList().size() : 0 );
+			this.progressRateData.getObjective().setInitiativeSize( this.progressRateData.getObjective().getInitiativeList() != null ? this.progressRateData.getObjective().getInitiativeList().size() : 0 );
+		}
+		
 		return this;
 	}
 	

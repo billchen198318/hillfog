@@ -239,8 +239,10 @@ public class OkrBaseReportController extends BaseControllerSupport implements IP
 	
 	private void okrOrganizationProgressData(ModelMap mm) throws AuthorityException, ControllerException, ServiceException, Exception {
 		String varName = "source";
+		String varObjectivesName = "objectivesJson";
 		mm.put(varName, "[ ]");
 		mm.put("foundObjective", NO);
+		mm.put(varObjectivesName, "[ ]");
 		List<HfObjective> objectivesList = this.objectiveService.selectList().getValue();
 		if (null == objectivesList || objectivesList.size() < 1) {
 			return;
@@ -292,6 +294,9 @@ public class OkrBaseReportController extends BaseControllerSupport implements IP
 		}
 		String json = new ObjectMapper().writeValueAsString(scores);
 		mm.put(varName, json);
+		
+		String objectivesJson = new ObjectMapper().writeValueAsString(organizationObjectiveList);
+		mm.put(varObjectivesName, objectivesJson);		
 	}
 	
 	private void okrHierarchyData(ModelMap mm) throws AuthorityException, ControllerException, ServiceException, Exception {
