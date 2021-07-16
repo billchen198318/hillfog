@@ -34,6 +34,9 @@ use browser(Chrome or Firefox) open `http://127.0.0.1:8088`
 ### OKRs progress hierarchy view for employee
 <img alt="demo7" src="https://raw.githubusercontent.com/billchen198318/hillfog/master/doc/P07.png">
 
+### OKRs progress view for organization/department
+<img alt="demo8" src="https://raw.githubusercontent.com/billchen198318/hillfog/master/doc/P08.png">
+
 ### KPI report
 <img alt="demo3" src="https://raw.githubusercontent.com/billchen198318/hillfog/master/doc/P03.png">
 
