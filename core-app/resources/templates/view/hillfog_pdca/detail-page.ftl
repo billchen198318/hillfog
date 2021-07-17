@@ -29,10 +29,12 @@ pre {
     background-color: #454545;
     color: #ffffff;
     text-align: left;
+    font-size: 16px;
 }
 .styled-table th,
 .styled-table td {
-    padding: 12px 15px;
+    /* padding: 12px 15px; */
+    padding: 2px 2px;
     border-left: 1px solid #dddddd;
 }
 .styled-table tbody tr {
