@@ -27,6 +27,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.qifu.base.controller.BaseControllerSupport;
 import org.qifu.base.controller.IPageNamespaceProvide;
@@ -187,7 +188,7 @@ public class EmployeeController extends BaseControllerSupport implements IPageNa
 		}
 		Map<String, List<Map<String, Object>>> jsonData = (Map<String, List<Map<String, Object>>>) new ObjectMapper().readValue( orgInputAutocompleteJsonStr, LinkedHashMap.class );
 		List orgInputAutocompleteList = jsonData.get("items");
-		if (null == orgInputAutocompleteList || orgInputAutocompleteList.size() < 1) {
+		if (CollectionUtils.isEmpty(orgInputAutocompleteList)) {
 			checkHandler.throwMessage("employeeOrganization", "Please add organization!");
 		}
 	}

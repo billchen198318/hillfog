@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.qifu.base.exception.ServiceException;
 import org.qifu.base.mapper.IBaseMapper;
@@ -76,7 +77,7 @@ public class ObjectiveServiceImpl extends BaseService<HfObjective, String> imple
 			paramMap.put("name", "%"+name+"%");
 		}
 		List<HfObjective> searchList = this.hfObjectiveMapper.selectQueryObjectiveList(paramMap);
-		if (searchList.size() < 1) {
+		if (CollectionUtils.isEmpty(searchList)) {
 			result.setMessage( BaseSystemMessage.searchNoData() );
 		} else {
 			result.setValue( searchList );

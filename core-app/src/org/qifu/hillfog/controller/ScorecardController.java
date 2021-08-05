@@ -30,6 +30,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.qifu.base.controller.BaseControllerSupport;
@@ -262,7 +263,7 @@ public class ScorecardController extends BaseControllerSupport implements IPageN
 		Map<String, List<Map<String, Object>>> perspectivesJsonData = 
 				(Map<String, List<Map<String, Object>>>) new ObjectMapper().readValue( perspectivesItemJsonStr, LinkedHashMap.class );
 		List<Map<String, Object>> perspectivesDataMapList = perspectivesJsonData.get("items");
-		if (null == perspectivesDataMapList || perspectivesDataMapList.size() < 1) {
+		if (CollectionUtils.isEmpty(perspectivesDataMapList)) {
 			checkHandler.throwMessage("perspective", "At least one Perspective item is required!");
 		}
 		for (Map<String, Object> perDataMap : perspectivesDataMapList) {
@@ -271,7 +272,7 @@ public class ScorecardController extends BaseControllerSupport implements IPageN
 				checkHandler.throwMessage("perspective", "Perspective item name is blank!");
 			}
 			List<Map<String, Object>> strategyObjectivesDataMapList = (List<Map<String, Object>>) perDataMap.get("strategyObjectives");
-			if (null == strategyObjectivesDataMapList || strategyObjectivesDataMapList.size() < 1) {
+			if (CollectionUtils.isEmpty(strategyObjectivesDataMapList)) {
 				checkHandler.throwMessage("strategyObjective", "Perspective (" + perName + ") At least one Strategy-objective item is required!");
 			}
 			for (Map<String, Object> soDataMap : strategyObjectivesDataMapList) {
@@ -280,7 +281,7 @@ public class ScorecardController extends BaseControllerSupport implements IPageN
 					checkHandler.throwMessage("strategyObjective", "Perspective (" + perName + ") 's Strategy-objective item name is blank!");
 				}
 				List<Map<String, Object>> kpisDataMapList = (List<Map<String, Object>>) soDataMap.get("kpis");
-				if (null == kpisDataMapList || kpisDataMapList.size() < 1) {
+				if (CollectionUtils.isEmpty(kpisDataMapList)) {
 					checkHandler.throwMessage("strategyObjective", "Perspective (" + perName + ") 's Strategy-objective (" + soName + ") At least one KPI item is required!");
 				}
 			}
@@ -378,7 +379,7 @@ public class ScorecardController extends BaseControllerSupport implements IPageN
 		if (defaultColorsDataMapList == null || defaultColorsDataMapList.size() != 1) {
 			throw new ControllerException( BaseSystemMessage.dataErrors() );
 		}
-		if (customColorsDataMapList == null || customColorsDataMapList.size() < 1) {
+		if (CollectionUtils.isEmpty(customColorsDataMapList)) {
 			throw new ControllerException( "Please input any one color item." );
 		}
 		List<String> startList = new ArrayList<String>();

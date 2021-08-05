@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -119,10 +120,10 @@ public class PdcaLogicServiceImpl extends BaseLogicService implements IPdcaLogic
 				|| null == planMapList || null == doMapList || null == checkMapList || null == actMapList) {
 			throw new ServiceException( BaseSystemMessage.objectNull() );
 		}
-		if (ownerList.size() < 1) {
+		if (CollectionUtils.isEmpty(ownerList)) {
 			throw new ServiceException("Need add PDCA owner!");
 		}
-		if (planMapList.size() < 1) {
+		if (CollectionUtils.isEmpty(planMapList)) {
 			throw new ServiceException("Need add Plan result!");
 		}
 		String head = "OKR";
@@ -219,7 +220,7 @@ public class PdcaLogicServiceImpl extends BaseLogicService implements IPdcaLogic
 		Map<String, Object> paramMap = new HashMap<String, Object>();
 		paramMap.put("pdcaOid", pdca.getOid());
 		List<HfPdcaAttc> attcList = this.pdcaAttcService.selectListByParams(paramMap).getValue();
-		if (null == attcList || attcList.size() < 1) {
+		if (CollectionUtils.isEmpty(attcList)) {
 			return;
 		}
 		for (HfPdcaAttc attc : attcList) {
@@ -342,10 +343,10 @@ public class PdcaLogicServiceImpl extends BaseLogicService implements IPdcaLogic
 				|| null == planMapList || null == doMapList || null == checkMapList || null == actMapList) {
 			throw new ServiceException( BaseSystemMessage.objectNull() );
 		}
-		if (ownerList.size() < 1) {
+		if (CollectionUtils.isEmpty(ownerList)) {
 			throw new ServiceException("Need add PDCA owner!");
 		}
-		if (planMapList.size() < 1) {
+		if (CollectionUtils.isEmpty(planMapList)) {
 			throw new ServiceException("Need add Plan result!");
 		}
 		
@@ -410,7 +411,7 @@ public class PdcaLogicServiceImpl extends BaseLogicService implements IPdcaLogic
 	 * @throws Exception
 	 */
 	private void updateNoNeedAttcUploadTypeForBeforeData(List<String> uploadOidsList, List<HfPdcaAttc> beforeAttcList) throws ServiceException, Exception {
-		if (null == uploadOidsList || uploadOidsList.size() < 1 || null == beforeAttcList || beforeAttcList.size() < 1) {
+		if (CollectionUtils.isEmpty(uploadOidsList) || CollectionUtils.isEmpty(beforeAttcList)) {
 			return;
 		}
 		for (HfPdcaAttc attc : beforeAttcList) {

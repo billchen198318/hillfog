@@ -31,6 +31,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.StringEscapeUtils;
 import org.qifu.base.controller.BaseControllerSupport;
@@ -244,7 +245,7 @@ public class OkrBaseReportController extends BaseControllerSupport implements IP
 		mm.put("foundObjective", NO);
 		mm.put(varObjectivesName, "[ ]");
 		List<HfObjective> objectivesList = this.objectiveService.selectList().getValue();
-		if (null == objectivesList || objectivesList.size() < 1) {
+		if (CollectionUtils.isEmpty(objectivesList)) {
 			return;
 		}
 		mm.put("foundObjective", YES);
@@ -253,7 +254,7 @@ public class OkrBaseReportController extends BaseControllerSupport implements IP
 		for (HfObjective obj : objectivesList) {
 			paramMap.put("objOid", obj.getOid());
 			List<HfObjDept> objDeptList = this.objDeptService.selectListByParams(paramMap).getValue();
-			if (null == objDeptList || objDeptList.size() < 1) {
+			if (CollectionUtils.isEmpty(objDeptList)) {
 				continue;
 			}
 			for (HfObjDept objDept : objDeptList) {
@@ -303,12 +304,12 @@ public class OkrBaseReportController extends BaseControllerSupport implements IP
 		String varName = "datascourceJsonData";
 		mm.put("foundObjective", NO);
 		List<HfEmployeeHier> empHierList = this.employeeHierService.selectList().getValue();
-		if (null == empHierList || empHierList.size() < 1) {
+		if (CollectionUtils.isEmpty(empHierList)) {
 			mm.put(varName, "{ }");
 			return;
 		}
 		List<HfObjective> objectivesList = this.objectiveService.selectList().getValue();
-		if (null == objectivesList || objectivesList.size() < 1) {
+		if (CollectionUtils.isEmpty(objectivesList)) {
 			mm.put(varName, "{ }");
 			return;			
 		}
@@ -337,7 +338,7 @@ public class OkrBaseReportController extends BaseControllerSupport implements IP
 		int hasOkrEmployeeSize = 0;
 		BigDecimal topTotalProgressPercentage = BigDecimal.ZERO;
 		for (Map.Entry<String, EmployeeHierObjective> entry : employeeObjectivesMap.entrySet()) {
-			if (entry.getValue().getObjectives().size() < 1) {
+			if (CollectionUtils.isEmpty(entry.getValue().getObjectives())) {
 				continue;
 			}
 			hasOkrEmployeeSize += 1;

@@ -30,6 +30,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.joda.time.DateTime;
@@ -179,14 +180,14 @@ public class OkrBaseController extends BaseControllerSupport implements IPageNam
 		List objDeptList = objDeptJsonData.get("items");
 		Map<String, List<Map<String, Object>>> objOwnerJsonData = (Map<String, List<Map<String, Object>>>) new ObjectMapper().readValue( objOwner, LinkedHashMap.class );
 		List objOwnerList = objOwnerJsonData.get("items");
-		if (objDeptList.size() < 1 &&  objOwnerList.size() < 1) {
+		if (CollectionUtils.isEmpty(objDeptList)) {
 			checkHandler.throwMessage("objOrg", "Please select organization or employee!");
 		}
 		
 		String keyResults = request.getParameter("keyResults");
 		Map<String, List<Map<String, Object>>> keyResultsJsonData = (Map<String, List<Map<String, Object>>>) new ObjectMapper().readValue( keyResults, LinkedHashMap.class );
 		List keyResultsList = keyResultsJsonData.get("items");
-		if (keyResultsList == null || keyResultsList.size() < 1) {
+		if (CollectionUtils.isEmpty(keyResultsList)) {
 			checkHandler.throwMessage("", "Please input any one key result!");
 		}
 		for (int i = 0; i < keyResultsList.size(); i++) {

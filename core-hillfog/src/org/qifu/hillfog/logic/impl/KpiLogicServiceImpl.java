@@ -26,6 +26,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -103,12 +104,12 @@ public class KpiLogicServiceImpl extends BaseLogicService implements IKpiLogicSe
 			throw new ServiceException( BaseSystemMessage.parameterBlank() );
 		}
 		if (KpiBasicCode.DATA_TYPE_BOTH.equals(kpi.getDataType()) || KpiBasicCode.DATA_TYPE_DEPARTMENT.equals(kpi.getDataType())) {
-			if (null == orgInputAutocompleteList || orgInputAutocompleteList.size() < 1) {
+			if (CollectionUtils.isEmpty(orgInputAutocompleteList)) {
 				throw new ServiceException( BaseSystemMessage.parameterBlank() );
 			}
 		}
 		if (KpiBasicCode.DATA_TYPE_BOTH.equals(kpi.getDataType()) || KpiBasicCode.DATA_TYPE_PERSONAL.equals(kpi.getDataType())) {
-			if (null == empInputAutocompleteList || empInputAutocompleteList.size() < 1) {
+			if (CollectionUtils.isEmpty(empInputAutocompleteList)) {
 				throw new ServiceException( BaseSystemMessage.parameterBlank() ); 
 			}
 		}		
@@ -138,12 +139,12 @@ public class KpiLogicServiceImpl extends BaseLogicService implements IKpiLogicSe
 			throw new ServiceException( BaseSystemMessage.parameterIncorrect() );
 		}
 		if (KpiBasicCode.DATA_TYPE_BOTH.equals(kpi.getDataType()) || KpiBasicCode.DATA_TYPE_DEPARTMENT.equals(kpi.getDataType())) {
-			if (null == orgInputAutocompleteList || orgInputAutocompleteList.size() < 1) {
+			if (CollectionUtils.isEmpty(orgInputAutocompleteList)) {
 				throw new ServiceException( BaseSystemMessage.parameterBlank() );
 			}
 		}
 		if (KpiBasicCode.DATA_TYPE_BOTH.equals(kpi.getDataType()) || KpiBasicCode.DATA_TYPE_PERSONAL.equals(kpi.getDataType())) {
-			if (null == empInputAutocompleteList || empInputAutocompleteList.size() < 1) {
+			if (CollectionUtils.isEmpty(empInputAutocompleteList)) {
 				throw new ServiceException( BaseSystemMessage.parameterBlank() ); 
 			}
 		}		
@@ -225,7 +226,7 @@ public class KpiLogicServiceImpl extends BaseLogicService implements IKpiLogicSe
 		if (null == kpi || this.isBlank(kpi.getId())) {
 			return;
 		}
-		if (null == empInputAutocompleteList || empInputAutocompleteList.size() < 1) {
+		if (CollectionUtils.isEmpty(empInputAutocompleteList)) {
 			return;
 		}
 		int size = 0;
@@ -253,7 +254,7 @@ public class KpiLogicServiceImpl extends BaseLogicService implements IKpiLogicSe
 		if (null == kpi || this.isBlank(kpi.getId())) {
 			return;
 		}
-		if (null == orgInputAutocompleteList || orgInputAutocompleteList.size() < 1) {
+		if (CollectionUtils.isEmpty(orgInputAutocompleteList)) {
 			return;
 		}		
 		int size = 0;

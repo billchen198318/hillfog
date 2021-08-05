@@ -27,6 +27,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.qifu.base.controller.BaseControllerSupport;
 import org.qifu.base.controller.IPageNamespaceProvide;
@@ -213,7 +214,7 @@ public class KpiBaseController extends BaseControllerSupport implements IPageNam
 			checkHandler.testField("kpiOrga", StringUtils.isBlank(selKpiDept), "Please add organization!").throwMessage();
 			Map<String, List<Map<String, Object>>> jsonData = (Map<String, List<Map<String, Object>>>) new ObjectMapper().readValue( selKpiDept, LinkedHashMap.class );
 			List orgInputAutocompleteList = jsonData.get("items");
-			if (null == orgInputAutocompleteList || orgInputAutocompleteList.size() < 1) {
+			if (CollectionUtils.isEmpty(orgInputAutocompleteList)) {
 				checkHandler.throwMessage("kpiOrga", "Please add organization!");
 			}			
 		}
@@ -221,7 +222,7 @@ public class KpiBaseController extends BaseControllerSupport implements IPageNam
 			checkHandler.testField("kpiEmpl", StringUtils.isBlank(selKpiDept), "Please add employee!").throwMessage();
 			Map<String, List<Map<String, Object>>> jsonData = (Map<String, List<Map<String, Object>>>) new ObjectMapper().readValue( selKpiEmp, LinkedHashMap.class );
 			List orgInputAutocompleteList = jsonData.get("items");
-			if (null == orgInputAutocompleteList || orgInputAutocompleteList.size() < 1) {
+			if (CollectionUtils.isEmpty(orgInputAutocompleteList)) {
 				checkHandler.throwMessage("kpiEmpl", "Please add employee!");
 			}			
 		}

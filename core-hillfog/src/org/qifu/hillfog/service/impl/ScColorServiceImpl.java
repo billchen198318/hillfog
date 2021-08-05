@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.qifu.base.exception.ServiceException;
 import org.qifu.base.mapper.IBaseMapper;
@@ -60,7 +61,7 @@ public class ScColorServiceImpl extends BaseService<HfScColor, String> implement
 		Map<String, Object> paramMap = new HashMap<String, Object>();
 		paramMap.put("scOid", scorecardOid);
 		List<HfScColor> searchList = this.hfScColorMapper.findByDefault(paramMap);
-		if (null == searchList || searchList.size() < 1) {
+		if (CollectionUtils.isEmpty(searchList)) {
 			return null;
 		}
 		return searchList.get(0);
@@ -75,7 +76,7 @@ public class ScColorServiceImpl extends BaseService<HfScColor, String> implement
 		paramMap.put("scOid", scorecardOid);
 		paramMap.put("score", score);
 		List<HfScColor> searchList = this.hfScColorMapper.findByScore(paramMap);
-		if (null == searchList || searchList.size() < 1) {
+		if (CollectionUtils.isEmpty(searchList)) {
 			return null;
 		}
 		return searchList.get(0);

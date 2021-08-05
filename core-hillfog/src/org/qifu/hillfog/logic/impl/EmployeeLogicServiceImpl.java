@@ -27,6 +27,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.StringEscapeUtils;
 import org.apache.logging.log4j.LogManager;
@@ -122,7 +123,7 @@ public class EmployeeLogicServiceImpl extends BaseLogicService implements IEmplo
 			rollbackFor={RuntimeException.class, IOException.class, Exception.class} )    
 	@Override
 	public DefaultResult<HfEmployee> create(HfEmployee employee, String password, List<String> orgInputAutocompleteList) throws ServiceException, Exception {
-		if (null == employee || StringUtils.isBlank(password) || null == orgInputAutocompleteList || orgInputAutocompleteList.size() < 1) {
+		if (null == employee || StringUtils.isBlank(password) || CollectionUtils.isEmpty(orgInputAutocompleteList)) {
 			throw new ServiceException( BaseSystemMessage.parameterBlank() );
 		}
 		TbAccount account = new TbAccount();
@@ -200,7 +201,7 @@ public class EmployeeLogicServiceImpl extends BaseLogicService implements IEmplo
 			rollbackFor={RuntimeException.class, IOException.class, Exception.class} )  	
 	@Override
 	public DefaultResult<HfEmployee> update(HfEmployee employee, String password, List<String> orgInputAutocompleteList) throws ServiceException, Exception {
-		if (null == employee || null == orgInputAutocompleteList || orgInputAutocompleteList.size() < 1) {
+		if (null == employee || CollectionUtils.isEmpty(orgInputAutocompleteList)) {
 			throw new ServiceException( BaseSystemMessage.parameterBlank() );
 		}
 		HfEmployee oldEmployee = this.employeeService.selectByEntityPrimaryKey(employee).getValueEmptyThrowMessage();
@@ -288,7 +289,7 @@ public class EmployeeLogicServiceImpl extends BaseLogicService implements IEmplo
 	@Override
 	public String findZtreeData() throws ServiceException, Exception {
 		List<HfEmployeeHier> empHierList = this.employeeHierService.selectList().getValue();
-		if (null == empHierList || empHierList.size() < 1) {
+		if (CollectionUtils.isEmpty(empHierList)) {
 			return "[ ]";
 		}
 		StringBuilder data = new StringBuilder();
@@ -366,7 +367,7 @@ public class EmployeeLogicServiceImpl extends BaseLogicService implements IEmplo
 		Map<String, Object> paramMap = new HashMap<String, Object>();
 		paramMap.put("parentOid", currentEmployeeOid);
 		List<HfEmployeeHier> hierList = this.employeeHierService.selectListByParams(paramMap).getValue();
-		if (null == hierList || hierList.size() < 1) {
+		if (CollectionUtils.isEmpty(hierList)) {
 			return;
 		}
 		for (HfEmployeeHier h : hierList) {

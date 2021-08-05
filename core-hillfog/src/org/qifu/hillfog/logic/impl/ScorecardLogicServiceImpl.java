@@ -30,6 +30,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.logging.log4j.LogManager;
@@ -107,7 +108,7 @@ public class ScorecardLogicServiceImpl extends BaseLogicService implements IScor
 			rollbackFor={RuntimeException.class, IOException.class, Exception.class} )		
 	@Override
 	public DefaultResult<HfScorecard> create(HfScorecard scorecard, List<Map<String, Object>> perspectivesDataMapList) throws ServiceException, Exception {
-		if (null == scorecard || null == perspectivesDataMapList || perspectivesDataMapList.size() < 1) {
+		if (null == scorecard || CollectionUtils.isEmpty(perspectivesDataMapList)) {
 			throw new ServiceException( BaseSystemMessage.objectNull() );
 		}
 		this.checkPerspectivesDataParam(perspectivesDataMapList);
@@ -128,7 +129,7 @@ public class ScorecardLogicServiceImpl extends BaseLogicService implements IScor
 			rollbackFor={RuntimeException.class, IOException.class, Exception.class} )		
 	@Override
 	public DefaultResult<HfScorecard> update(HfScorecard scorecard, List<Map<String, Object>> perspectivesDataMapList) throws ServiceException, Exception {
-		if (null == scorecard || this.isBlank(scorecard.getOid()) || null == perspectivesDataMapList || perspectivesDataMapList.size() < 1) {
+		if (null == scorecard || this.isBlank(scorecard.getOid()) || CollectionUtils.isEmpty(perspectivesDataMapList)) {
 			throw new ServiceException( BaseSystemMessage.parameterBlank() );
 		}
 		this.checkPerspectivesDataParam(perspectivesDataMapList);
@@ -321,7 +322,7 @@ public class ScorecardLogicServiceImpl extends BaseLogicService implements IScor
 				throw new ServiceException( "Perspective item name is blank!" );
 			}
 			List<Map<String, Object>> strategyObjectivesDataMapList = (List<Map<String, Object>>) perDataMap.get("strategyObjectives");
-			if (null == strategyObjectivesDataMapList || strategyObjectivesDataMapList.size() < 1) {
+			if (CollectionUtils.isEmpty(strategyObjectivesDataMapList)) {
 				throw new ServiceException( "Perspective (" + perName + ") At least one Strategy-objective item is required!" );
 			}
 			for (Map<String, Object> soDataMap : strategyObjectivesDataMapList) {
@@ -330,7 +331,7 @@ public class ScorecardLogicServiceImpl extends BaseLogicService implements IScor
 					throw new ServiceException( "Perspective (" + perName + ") 's Strategy-objective item name is blank!" );
 				}
 				List<Map<String, Object>> kpisDataMapList = (List<Map<String, Object>>) soDataMap.get("kpis");
-				if (null == kpisDataMapList || kpisDataMapList.size() < 1) {
+				if (CollectionUtils.isEmpty(kpisDataMapList)) {
 					throw new ServiceException( "Perspective (" + perName + ") 's Strategy-objective (" + soName + ") At least one KPI item is required!" );
 				}
 			}
@@ -418,8 +419,7 @@ public class ScorecardLogicServiceImpl extends BaseLogicService implements IScor
 	@Override
 	public DefaultResult<Boolean> updateColor(
 			HfScorecard scorecard, List<Map<String, Object>> defaultScoreColorDataMapList, List<Map<String, Object>> customScoreColorDataMapList) throws ServiceException, Exception {
-		if (null == scorecard || this.isBlank(scorecard.getOid()) || null == defaultScoreColorDataMapList || defaultScoreColorDataMapList.size() < 1
-				|| null == customScoreColorDataMapList || customScoreColorDataMapList.size() < 1) {
+		if (null == scorecard || this.isBlank(scorecard.getOid()) || CollectionUtils.isEmpty(defaultScoreColorDataMapList) || CollectionUtils.isEmpty(customScoreColorDataMapList)) {
 			throw new ServiceException( BaseSystemMessage.parameterBlank() );
 		}
 		scorecard = this.scorecardService.selectByEntityPrimaryKey(scorecard).getValueEmptyThrowMessage();

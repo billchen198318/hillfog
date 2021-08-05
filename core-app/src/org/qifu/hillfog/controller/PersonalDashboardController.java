@@ -27,6 +27,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.qifu.base.controller.BaseControllerSupport;
 import org.qifu.base.controller.IPageNamespaceProvide;
 import org.qifu.base.exception.AuthorityException;
@@ -67,7 +68,7 @@ public class PersonalDashboardController extends BaseControllerSupport implement
 			empList = new ArrayList<String>();
 			empList.add( this.employeeService.getPagefieldValue(employee) );				
 		}
-		if (empList == null || empList.size() < 1) {
+		if (CollectionUtils.isEmpty(empList)) {
 			throw new ControllerException( BaseSystemMessage.dataErrors() );
 		}
 		mm.put("employee", employee);

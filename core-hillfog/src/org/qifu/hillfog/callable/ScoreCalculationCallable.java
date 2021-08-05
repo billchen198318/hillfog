@@ -26,6 +26,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.Callable;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.qifu.base.model.YesNo;
 import org.qifu.hillfog.entity.HfKpi;
 import org.qifu.hillfog.model.ScoreColor;
@@ -50,7 +51,7 @@ public class ScoreCalculationCallable implements Callable<ScoreCalculationData> 
 		if (this.data.getFormula() == null) {
 			this.data.setFormula( FormulaUtils.getFormulaById(this.data.getKpi().getForId()) );
 		}
-		if (this.data.getMeasureDatas() == null || this.data.getMeasureDatas().size() < 1) {
+		if (CollectionUtils.isEmpty(this.data.getMeasureDatas())) {
 			this.data.setMeasureDatas( QueryMeasureDataUtils.queryForScoreCalculationData(this.data) );
 		}
 		this.data.setAggregationMethodName( AggregationMethodUtils.findAggregationMethodNameById( this.data.getKpi().getAggrId()) );

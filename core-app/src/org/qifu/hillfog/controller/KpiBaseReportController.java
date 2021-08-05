@@ -28,6 +28,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.qifu.base.controller.BaseControllerSupport;
 import org.qifu.base.controller.IPageNamespaceProvide;
 import org.qifu.base.exception.AuthorityException;
@@ -153,7 +154,7 @@ public class KpiBaseReportController extends BaseControllerSupport implements IP
 			kpis = new ArrayList<HfKpi>();
 			kpis.add(kpi);
 		}
-		if (null == kpis || kpis.size() < 1) {
+		if (CollectionUtils.isEmpty(kpis)) {
 			throw new ControllerException( BaseSystemMessage.dataErrors() );
 		}
 		MeasureDataQueryParam queryParam = MeasureDataCode.queryParam(request);
@@ -183,7 +184,7 @@ public class KpiBaseReportController extends BaseControllerSupport implements IP
 			paramMap.put("mstOid", data.getKpi().getOid());
 			paramMap.put("isNotConfirm", YesNo.YES);
 			List<HfPdca> pdcaList = this.pdcaService.selectListByParams(paramMap, "START_DATE", SortType.ASC).getValue();
-			if (pdcaList == null || pdcaList.size() < 1) {
+			if (CollectionUtils.isEmpty(pdcaList)) {
 				continue;
 			}
 			for (HfPdca pdca : pdcaList) {

@@ -30,6 +30,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.qifu.base.controller.BaseControllerSupport;
@@ -274,7 +275,7 @@ public class PdcaController extends BaseControllerSupport implements IPageNamesp
 			}
 			result.setValue( this.pdcaService.selectPdcaOidListForOwnerBeRelated(accountId) );
 			result.setSuccess( YES );
-			if ( result.getValue() == null || result.getValue().size() < 1 ) {
+			if ( CollectionUtils.isEmpty(result.getValue()) ) {
 				result.setMessage( BaseSystemMessage.searchNoData() );
 			}
 		} catch (AuthorityException | ServiceException | ControllerException e) {
@@ -328,14 +329,14 @@ public class PdcaController extends BaseControllerSupport implements IPageNamesp
 		String owner = StringUtils.defaultString( request.getParameter("owner") );
 		Map<String, List<Map<String, Object>>> ownerJsonData = (Map<String, List<Map<String, Object>>>) new ObjectMapper().readValue( owner, LinkedHashMap.class );
 		List ownerList = ownerJsonData.get("items");
-		if (ownerList.size() < 1) {
+		if (CollectionUtils.isEmpty(ownerList)) {
 			checkHandler.throwMessage("owner", "Please add owner employee!");
 		}		
 		
 		String planStr = StringUtils.defaultString( request.getParameter("planList") );
 		Map<String, List<Map<String, Object>>> planJsonData = (Map<String, List<Map<String, Object>>>) new ObjectMapper().readValue( planStr, LinkedHashMap.class );
 		List planMapList = planJsonData.get("items");		
-		if (planMapList.size() < 1) {
+		if (CollectionUtils.isEmpty(planMapList)) {
 			checkHandler.throwMessage("plan", "At least one Plan item is required!");
 		}
 		
@@ -376,9 +377,8 @@ public class PdcaController extends BaseControllerSupport implements IPageNamesp
 			}
 			if (SimpleUtils.getDaysBetween(itemEndDate, projectEndDate) < 0) {
 				checkHandler.throwMessage("itemStartDate", "[" + itemType + "] The end date of PDCA Item cannot be greater than the end date of the project!");
-			}			
-			List<String> ownerList = (List<String>) itemDataMap.get("ownerList");
-			checkHandler.testField("pdcaItemOwner", null == ownerList || ownerList.size() < 1, "[" + itemType + "] Please input PDCA item owner!").throwMessage();
+			}
+			checkHandler.testField("pdcaItemOwner", itemDataMap, "@org.apache.commons.collections.CollectionUtils@isEmpty(ownerList)", "[" + itemType + "] Please input PDCA item owner!").throwMessage();
 		}
 	}
 	

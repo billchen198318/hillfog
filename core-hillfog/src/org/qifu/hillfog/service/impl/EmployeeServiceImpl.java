@@ -26,6 +26,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.qifu.base.exception.ServiceException;
 import org.qifu.base.mapper.IBaseMapper;
@@ -116,7 +117,7 @@ public class EmployeeServiceImpl extends BaseService<HfEmployee, String> impleme
 	public List<String> findInputAutocompleteByKpiId(String kpiId) throws ServiceException, Exception {
 		DefaultResult<List<HfEmployee>> result = this.findKpiOwner(kpiId);
 		List<String> dataList = new ArrayList<String>();
-		if (result.getValue() == null || result.getValue().size() < 1) {
+		if (CollectionUtils.isEmpty(result.getValue())) {
 			return dataList;
 		}
 		for (HfEmployee employee : result.getValue()) {
@@ -142,7 +143,7 @@ public class EmployeeServiceImpl extends BaseService<HfEmployee, String> impleme
 		paramMap.put("objOid", oid);
 		List<HfEmployee> empList = this.employeeMapper.findObjectiveOwner(paramMap);
 		List<String> dataList = new ArrayList<String>();
-		if (empList == null || empList.size() < 1) {
+		if (CollectionUtils.isEmpty(empList)) {
 			return dataList;
 		}
 		for (HfEmployee employee : empList) {
@@ -215,7 +216,7 @@ public class EmployeeServiceImpl extends BaseService<HfEmployee, String> impleme
 	public List<String> findInputAutocompleteByPdcaOid(String pdcaOid) throws ServiceException, Exception {
 		DefaultResult<List<HfEmployee>> result = this.findPdcaOwner(pdcaOid);
 		List<String> dataList = new ArrayList<String>();
-		if (result.getValue() == null || result.getValue().size() < 1) {
+		if (CollectionUtils.isEmpty(result.getValue())) {
 			return dataList;
 		}
 		for (HfEmployee employee : result.getValue()) {
@@ -237,7 +238,7 @@ public class EmployeeServiceImpl extends BaseService<HfEmployee, String> impleme
 	public List<String> findInputAutocompleteByPdcaItemOid(String pdcaOid, String itemOid) throws ServiceException, Exception {
 		DefaultResult<List<HfEmployee>> result = this.findPdcaItemOwner(pdcaOid, itemOid);
 		List<String> dataList = new ArrayList<String>();
-		if (result.getValue() == null || result.getValue().size() < 1) {
+		if (CollectionUtils.isEmpty(result.getValue())) {
 			return dataList;
 		}
 		for (HfEmployee employee : result.getValue()) {
@@ -283,7 +284,7 @@ public class EmployeeServiceImpl extends BaseService<HfEmployee, String> impleme
 	public List<String> findInputAutocompleteByScorecard(String scorecardOid) throws ServiceException, Exception {
 		DefaultResult<List<HfEmployee>> result = this.findScorecardKpisOwner(scorecardOid);
 		List<String> dataList = new ArrayList<String>();
-		if (result.getValue() == null || result.getValue().size() < 1) {
+		if (CollectionUtils.isEmpty(result.getValue())) {
 			return dataList;
 		}
 		for (HfEmployee employee : result.getValue()) {

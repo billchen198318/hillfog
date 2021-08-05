@@ -26,6 +26,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.qifu.base.exception.ServiceException;
 import org.qifu.base.mapper.IBaseMapper;
@@ -131,7 +132,7 @@ public class OrgDeptServiceImpl extends BaseService<HfOrgDept, String> implement
 	public List<String> findInputAutocompleteByKpiId(String kpiId) throws ServiceException, Exception {
 		DefaultResult<List<HfOrgDept>> result = this.findKpiDepartment(kpiId);
 		List<String> dataList = new ArrayList<String>();
-		if (result.getValue() == null || result.getValue().size() < 1) {
+		if (CollectionUtils.isEmpty(result.getValue())) {
 			return dataList;
 		}		
 		for (HfOrgDept orgDept : result.getValue()) {
@@ -157,7 +158,7 @@ public class OrgDeptServiceImpl extends BaseService<HfOrgDept, String> implement
 		paramMap.put("objOid", oid);		
 		List<HfOrgDept> orgList = this.orgDeptMapper.findObjectiveDepartment(paramMap);
 		List<String> dataList = new ArrayList<String>();
-		if (orgList == null || orgList.size() < 1) {
+		if (CollectionUtils.isEmpty(orgList)) {
 			return dataList;
 		}		
 		for (HfOrgDept orgDept : orgList) {
@@ -203,7 +204,7 @@ public class OrgDeptServiceImpl extends BaseService<HfOrgDept, String> implement
 	public List<String> findInputAutocompleteByScorecard(String scorecardOid) throws ServiceException, Exception {
 		DefaultResult<List<HfOrgDept>> result = this.findScorecardDepartment(scorecardOid);
 		List<String> dataList = new ArrayList<String>();
-		if (result.getValue() == null || result.getValue().size() < 1) {
+		if (CollectionUtils.isEmpty(result.getValue())) {
 			return dataList;
 		}		
 		for (HfOrgDept orgDept : result.getValue()) {

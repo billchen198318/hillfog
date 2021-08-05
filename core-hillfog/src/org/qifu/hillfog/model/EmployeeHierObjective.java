@@ -25,6 +25,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.qifu.hillfog.entity.HfEmployee;
 import org.qifu.hillfog.entity.HfEmployeeHier;
 import org.qifu.hillfog.entity.HfObjective;
@@ -72,7 +73,7 @@ public class EmployeeHierObjective implements java.io.Serializable {
 	}	
 	
 	public BigDecimal totalProgressPercentage() {
-		if (this.objectives == null || this.objectives.size() < 1) {
+		if (CollectionUtils.isEmpty(objectives)) {
 			return BigDecimal.ZERO;
 		}
 		if (this.objectives.size() == 1) {

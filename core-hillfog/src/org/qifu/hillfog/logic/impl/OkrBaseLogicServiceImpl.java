@@ -27,6 +27,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.logging.log4j.LogManager;
@@ -114,7 +115,7 @@ public class OkrBaseLogicServiceImpl extends BaseLogicService implements IOkrBas
 		if (null == objective || null == objDeptList || null == objOwnerList || null == keyResultMapList || null == initiativesMapList) {
 			throw new ServiceException( BaseSystemMessage.objectNull() );
 		}
-		if (keyResultMapList.size() < 1) {
+		if (CollectionUtils.isEmpty(keyResultMapList)) {
 			throw new ServiceException("Need key result!");
 		}
 		this.setStringValueMaxLength(objective, "description", MAX_LENGTH);
@@ -142,7 +143,7 @@ public class OkrBaseLogicServiceImpl extends BaseLogicService implements IOkrBas
 		if (null == objective || this.isBlank(objective.getOid()) || null == objDeptList || null == objOwnerList || null == keyResultMapList || null == initiativesMapList) {
 			throw new ServiceException( BaseSystemMessage.objectNull() );
 		}
-		if (keyResultMapList.size() < 1) {
+		if (CollectionUtils.isEmpty(keyResultMapList)) {
 			throw new ServiceException("Need key result!");
 		}
 		this.setStringValueMaxLength(objective, "description", MAX_LENGTH);

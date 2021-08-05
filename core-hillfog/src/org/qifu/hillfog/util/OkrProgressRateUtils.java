@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.qifu.base.AppContext;
 import org.qifu.base.exception.ServiceException;
@@ -109,7 +110,7 @@ public class OkrProgressRateUtils {
 		Map<String, Object> paramMap = new HashMap<String, Object>();
 		paramMap.put("objOid", objectiveOid);
 		progressRateData.getObjective().setKeyResList( this.keyResService.selectListByParams(paramMap).getValue() );
-		if (progressRateData.getObjective().getKeyResList() == null || progressRateData.getObjective().getKeyResList().size() < 1) {
+		if (CollectionUtils.isEmpty(progressRateData.getObjective().getKeyResList())) {
 			throw new ServiceException( BaseSystemMessage.dataErrors() );
 		}
 		String startDate = progressRateData.getObjective().getStartDate();
@@ -136,7 +137,7 @@ public class OkrProgressRateUtils {
 	 */
 	private void setPeriodMeasureDataValue(HfObjective objective) {
 		for (HfKeyRes keyRes : objective.getKeyResList()) {
-			if (keyRes.getKeyResValList() == null || keyRes.getKeyResValList().size() < 1) {
+			if (CollectionUtils.isEmpty(keyRes.getKeyResValList())) {
 				continue;
 			}
 			for (HfKeyResVal resVal : keyRes.getKeyResValList()) {
@@ -181,7 +182,7 @@ public class OkrProgressRateUtils {
 		BigDecimal fullPercentage = new BigDecimal("100");
 		BigDecimal sumKeyResProgress = BigDecimal.ZERO;
 		for (HfKeyRes keyRes : this.progressRateData.getObjective().getKeyResList()) {
-			if (keyRes.getKeyResValList() == null || keyRes.getKeyResValList().size() < 1) {
+			if (CollectionUtils.isEmpty(keyRes.getKeyResValList())) {
 				continue;
 			}			
 			if ("1".equals(keyRes.getOpTarget())) { // >
