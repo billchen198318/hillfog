@@ -25,7 +25,7 @@
   <div class="modal-dialog modal-sm">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title" id="mySmallModalLabel">Please wait!</h4>
+        <h4 class="modal-title" id="mySmallModalLabel"><@spring.message code="page.index.pleaseWait"/></h4>
       </div>
       <div class="modal-body">
         <img alt="loading" src="./images/loadingAnimation.gif" border="0">
@@ -40,7 +40,7 @@
   <div class="modal-dialog modal-sm">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title" id="mySmallQueryGridModalLabel">Please wait!</h4>
+        <h4 class="modal-title" id="mySmallQueryGridModalLabel"><@spring.message code="page.index.pleaseWait"/></h4>
       </div>
       <div class="modal-body">
         <img alt="loading" src="./images/loadingAnimation.gif" border="0">
@@ -64,7 +64,7 @@ ${menuResult.modalHtmlData}
         <!-- User Menu-->
         <li class="dropdown"><a class="app-nav__item" href="#" data-toggle="dropdown" aria-label="Open Profile Menu"><i class="fa fa-user fa-lg"></i></a>
           <ul class="dropdown-menu settings-menu dropdown-menu-right">
-            <li><a class="dropdown-item" href="javascript:logoutEvent();"><i class="fa fa-sign-out fa-lg"></i> Logout</a></li>
+            <li><a class="dropdown-item" href="javascript:logoutEvent();"><i class="fa fa-sign-out fa-lg"></i> <@spring.message code="page.index.logout"/></a></li>
           </ul>
         </li>
       </ul>
@@ -79,8 +79,8 @@ ${menuResult.modalHtmlData}
         ${menuResult.navItemHtmlData}
         
         
-       	<li><a class="app-menu__item" href="#" onclick="addTab('CORE_PROG999D9999Q', null);"><i class="app-menu__icon fa fa-info-circle"></i><span class="app-menu__label">About</span></a></li>
-       	<li><a class="app-menu__item" href="#" onclick="logoutEvent();"><i class="app-menu__icon fa fa-power-off"></i><span class="app-menu__label">Logout</span></a></li>
+       	<li><a class="app-menu__item" href="#" onclick="addTab('CORE_PROG999D9999Q', null);"><i class="app-menu__icon fa fa-info-circle"></i><span class="app-menu__label"><@spring.message code="page.index.about"/></span></a></li>
+       	<li><a class="app-menu__item" href="#" onclick="logoutEvent();"><i class="app-menu__icon fa fa-power-off"></i><span class="app-menu__label"><@spring.message code="page.index.logout"/></span></a></li>
        	        
         
       </ul>

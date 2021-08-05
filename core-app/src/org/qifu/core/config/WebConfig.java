@@ -21,6 +21,8 @@
  */
 package org.qifu.core.config;
 
+import java.util.Locale;
+
 import javax.annotation.PostConstruct;
 
 import org.qifu.base.CoreAppConstants;
@@ -31,12 +33,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.context.request.RequestContextListener;
+import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.i18n.CookieLocaleResolver;
+import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 
 @Configuration
@@ -85,6 +90,24 @@ public class WebConfig implements WebMvcConfigurer {
     }
     */
     
+    // ============================================================================
+    // for messages
+    // ============================================================================
+    @Bean
+    public LocaleResolver localeResolver() {
+        CookieLocaleResolver lr = new CookieLocaleResolver();
+        lr.setDefaultLocale(Locale.US);
+        return lr;
+    }
+    
+    @Bean
+    public LocaleChangeInterceptor localeChangeInterceptor() {
+    	LocaleChangeInterceptor lci = new LocaleChangeInterceptor();
+        lci.setParamName("_lang");
+        return lci;
+    }
+    // ============================================================================
+    
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(MDCInterceptor())
@@ -95,6 +118,8 @@ public class WebConfig implements WebMvcConfigurer {
         	.addPathPatterns("/*", "/**")
         	.excludePathPatterns( CoreAppConstants.getWebConfiginterceptorExcludePathPatterns() );
         
+        // for messages
+        registry.addInterceptor(localeChangeInterceptor());
         
         /*
         registry.addInterceptor(UserBuilderInterceptor())
