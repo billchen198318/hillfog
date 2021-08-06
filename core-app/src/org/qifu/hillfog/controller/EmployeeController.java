@@ -73,9 +73,6 @@ public class EmployeeController extends BaseControllerSupport implements IPageNa
 	@Autowired
 	IEmployeeLogicService employeeLogicService;
 	
-	@Autowired
-	LocaleMessageSourceUtils localeMessageSourceUtils;	
-	
 	@Override
 	public String viewPageNamespace() {
 		return "hillfog_emp";
@@ -173,18 +170,18 @@ public class EmployeeController extends BaseControllerSupport implements IPageNa
 	
 	private void checkFields(DefaultControllerJsonResultObj<HfEmployee> result, HfEmployee employee, String password1, String password2, String orgInputAutocompleteJsonStr, boolean createMode) throws ControllerException, Exception {
 		CheckControllerFieldHandler<HfEmployee> checkHandler = this.getCheckControllerFieldHandler(result)
-		.testField("account", employee, "@org.apache.commons.lang3.StringUtils@isBlank(account)", localeMessageSourceUtils.getMessage("page.employee.message01"))
-		.testField("account", ( PleaseSelect.noSelect(employee.getAccount()) ), localeMessageSourceUtils.getMessage("page.employee.message02")) // ORG_ID 不能用  "all" 這個下拉值
-		.testField("account", ( !SimpleUtils.checkBeTrueOf_azAZ09Id(super.defaultString(employee.getAccount())) ), localeMessageSourceUtils.getMessage("page.employee.message03"))
-		.testField("empId", employee, "@org.apache.commons.lang3.StringUtils@isBlank(empId)", localeMessageSourceUtils.getMessage("page.employee.message04"))
-		.testField("empId", ( PleaseSelect.noSelect(employee.getEmpId()) ), localeMessageSourceUtils.getMessage("page.employee.message05")) // ORG_ID 不能用  "all" 這個下拉值
-		.testField("empId", ( !SimpleUtils.checkBeTrueOf_azAZ09Id(super.defaultString(employee.getEmpId())) ), localeMessageSourceUtils.getMessage("page.employee.message06"))
-		.testField("name", employee, "@org.apache.commons.lang3.StringUtils@isBlank(name)", localeMessageSourceUtils.getMessage("page.employee.message07"))
-		.testField("employeeOrganization", StringUtils.isBlank(orgInputAutocompleteJsonStr), localeMessageSourceUtils.getMessage("page.employee.message08"));
+		.testField("account", employee, "@org.apache.commons.lang3.StringUtils@isBlank(account)", LocaleMessageSourceUtils.getMessage("page.employee.message01"))
+		.testField("account", ( PleaseSelect.noSelect(employee.getAccount()) ), LocaleMessageSourceUtils.getMessage("page.employee.message02")) // ORG_ID 不能用  "all" 這個下拉值
+		.testField("account", ( !SimpleUtils.checkBeTrueOf_azAZ09Id(super.defaultString(employee.getAccount())) ), LocaleMessageSourceUtils.getMessage("page.employee.message03"))
+		.testField("empId", employee, "@org.apache.commons.lang3.StringUtils@isBlank(empId)", LocaleMessageSourceUtils.getMessage("page.employee.message04"))
+		.testField("empId", ( PleaseSelect.noSelect(employee.getEmpId()) ), LocaleMessageSourceUtils.getMessage("page.employee.message05")) // ORG_ID 不能用  "all" 這個下拉值
+		.testField("empId", ( !SimpleUtils.checkBeTrueOf_azAZ09Id(super.defaultString(employee.getEmpId())) ), LocaleMessageSourceUtils.getMessage("page.employee.message06"))
+		.testField("name", employee, "@org.apache.commons.lang3.StringUtils@isBlank(name)", LocaleMessageSourceUtils.getMessage("page.employee.message07"))
+		.testField("employeeOrganization", StringUtils.isBlank(orgInputAutocompleteJsonStr), LocaleMessageSourceUtils.getMessage("page.employee.message08"));
 		checkHandler.throwMessage();
 		if (createMode) {
-			checkHandler.testField("password1", StringUtils.isBlank(password1), localeMessageSourceUtils.getMessage("page.employee.message09")).throwMessage();
-			checkHandler.testField("password2", StringUtils.isBlank(password2), localeMessageSourceUtils.getMessage("page.employee.message09")).throwMessage();
+			checkHandler.testField("password1", StringUtils.isBlank(password1), LocaleMessageSourceUtils.getMessage("page.employee.message09")).throwMessage();
+			checkHandler.testField("password2", StringUtils.isBlank(password2), LocaleMessageSourceUtils.getMessage("page.employee.message09")).throwMessage();
 			this.checkFieldsForPassword(checkHandler, password1, password2);
 		}
 		if (!createMode && !StringUtils.isBlank(password1) && !StringUtils.isBlank(password2)) {
@@ -193,13 +190,13 @@ public class EmployeeController extends BaseControllerSupport implements IPageNa
 		Map<String, List<Map<String, Object>>> jsonData = (Map<String, List<Map<String, Object>>>) new ObjectMapper().readValue( orgInputAutocompleteJsonStr, LinkedHashMap.class );
 		List orgInputAutocompleteList = jsonData.get("items");
 		if (CollectionUtils.isEmpty(orgInputAutocompleteList)) {
-			checkHandler.throwMessage("employeeOrganization", localeMessageSourceUtils.getMessage("page.employee.message08"));
+			checkHandler.throwMessage("employeeOrganization", LocaleMessageSourceUtils.getMessage("page.employee.message08"));
 		}
 	}
 	
 	private void checkFieldsForPassword(CheckControllerFieldHandler<HfEmployee> checkHandler, String password1, String password2) throws ControllerException, Exception {
-		checkHandler.testField("password1", !password1.equals(password2), localeMessageSourceUtils.getMessage("page.employee.message10"));
-		checkHandler.testField("password1", !SimpleUtils.checkBeTrueOf_azAZ09(4, 15, password1), localeMessageSourceUtils.getMessage("page.employee.message10"));
+		checkHandler.testField("password1", !password1.equals(password2), LocaleMessageSourceUtils.getMessage("page.employee.message10"));
+		checkHandler.testField("password1", !SimpleUtils.checkBeTrueOf_azAZ09(4, 15, password1), LocaleMessageSourceUtils.getMessage("page.employee.message10"));
 		checkHandler.throwMessage();
 	}
 	

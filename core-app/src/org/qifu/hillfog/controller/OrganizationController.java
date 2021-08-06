@@ -63,9 +63,6 @@ public class OrganizationController extends BaseControllerSupport implements IPa
 	@Autowired
 	IOrganizationLogicService organizationLogicService;
 	
-	@Autowired
-	LocaleMessageSourceUtils localeMessageSourceUtils;
-	
 	@Override
 	public String viewPageNamespace() {
 		return "hillfog_org";
@@ -154,10 +151,10 @@ public class OrganizationController extends BaseControllerSupport implements IPa
 	
 	private void checkFields(DefaultControllerJsonResultObj<HfOrgDept> result, HfOrgDept orgDept) throws ControllerException, Exception {
 		this.getCheckControllerFieldHandler(result)
-		.testField("orgId", orgDept, "@org.apache.commons.lang3.StringUtils@isBlank(orgId)", localeMessageSourceUtils.getMessage("page.organization.message01"))
-		.testField("orgId", ( PleaseSelect.noSelect(orgDept.getOrgId()) ), localeMessageSourceUtils.getMessage("page.organization.message02")) // ORG_ID 不能用  "all" 這個下拉值
-		.testField("orgId", ( !SimpleUtils.checkBeTrueOf_azAZ09(super.defaultString(orgDept.getOrgId()).replaceAll("-", "").replaceAll("_", "")) ), localeMessageSourceUtils.getMessage("page.organization.message03"))
-		.testField("name", orgDept, "@org.apache.commons.lang3.StringUtils@isBlank(name)", localeMessageSourceUtils.getMessage("page.organization.message04"))
+		.testField("orgId", orgDept, "@org.apache.commons.lang3.StringUtils@isBlank(orgId)", LocaleMessageSourceUtils.getMessage("page.organization.message01"))
+		.testField("orgId", ( PleaseSelect.noSelect(orgDept.getOrgId()) ), LocaleMessageSourceUtils.getMessage("page.organization.message02")) // ORG_ID 不能用  "all" 這個下拉值
+		.testField("orgId", ( !SimpleUtils.checkBeTrueOf_azAZ09(super.defaultString(orgDept.getOrgId()).replaceAll("-", "").replaceAll("_", "")) ), LocaleMessageSourceUtils.getMessage("page.organization.message03"))
+		.testField("name", orgDept, "@org.apache.commons.lang3.StringUtils@isBlank(name)", LocaleMessageSourceUtils.getMessage("page.organization.message04"))
 		.throwMessage();		
 		orgDept.setName( orgDept.getName().replaceAll("/", "") );
 	}	

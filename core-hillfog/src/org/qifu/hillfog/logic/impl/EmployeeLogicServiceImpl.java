@@ -117,9 +117,6 @@ public class EmployeeLogicServiceImpl extends BaseLogicService implements IEmplo
     @Autowired
     IEmployeeHierService<HfEmployeeHier, String> employeeHierService;
     
-	@Autowired
-	LocaleMessageSourceUtils localeMessageSourceUtils;    
-    
 	@ServiceMethodAuthority(type = ServiceMethodType.INSERT)
 	@Transactional(
 			propagation=Propagation.REQUIRED, 
@@ -303,7 +300,7 @@ public class EmployeeLogicServiceImpl extends BaseLogicService implements IEmplo
 			.append("{")
 			.append("id:'").append(ZeroKeyProvide.OID_KEY).append("'").append(",")
 			.append("pId:'").append(ZeroKeyProvide.OID_KEY).append("'").append(",")
-			.append("name:'").append( StringEscapeUtils.escapeJson( localeMessageSourceUtils.getMessage("page.employee.hierarchyRoot") ) ).append("'").append(",")
+			.append("name:'").append( StringEscapeUtils.escapeJson( LocaleMessageSourceUtils.getMessage("page.employee.hierarchyRoot") ) ).append("'").append(",")
 			.append( "open:true, drag:false" )
 			.append("},");			
 		}
