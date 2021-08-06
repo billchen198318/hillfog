@@ -70,17 +70,17 @@ function clearSave() {
 <div class="form-group" id="form-group1">
 	<div class="row">
 		<div class="col-xs-6 col-md-6 col-lg-6">
-			<@qifu.textbox name="orgId" value="" id="orgId" label="Id" requiredFlag="Y" maxlength="15" placeholder="Enter organization Id" />
+			<@qifu.textbox name="orgId" value="" id="orgId" label="${getText('page.organization.id')}" requiredFlag="Y" maxlength="15" placeholder="Enter organization Id" />
 		</div>
 	</div>
 	<div class="row">
 		<div class="col-xs-6 col-md-6 col-lg-6">
-			<@qifu.textbox name="name" value="" id="name" label="Name" requiredFlag="Y" maxlength="25" placeholder="Enter organization name" />
+			<@qifu.textbox name="name" value="" id="name" label="${getText('page.organization.name')}" requiredFlag="Y" maxlength="25" placeholder="Enter organization name" />
 		</div>
 	</div>
 	<div class="row">
 		<div class="col-xs-6 col-md-6 col-lg-6">
-			<@qifu.textarea name="description" value="" id="description" label="Description" rows="3" placeholder="Enter description"></@qifu.textarea>
+			<@qifu.textarea name="description" value="" id="description" label="${getText('page.organization.description')}" rows="3" placeholder="Enter description"></@qifu.textarea>
 		</div>
 	</div>	
 </div>
@@ -89,7 +89,7 @@ function clearSave() {
 
 <div class="row">
 	<div class="col-xs-6 col-md-6 col-lg-6">
-		<@qifu.button id="btnSave" label="<i class=\"icon fa fa-floppy-o\"></i>&nbsp;Save"
+		<@qifu.button id="btnSave" label="<i class=\"icon fa fa-floppy-o\"></i>&nbsp;${getText('page.button.save')}"
 			xhrUrl="./hfOrgDeptSaveJson"
 			xhrParameter="
 			{
@@ -101,7 +101,7 @@ function clearSave() {
 			onclick="btnSave();"
 			loadFunction="saveSuccess(data);"
 			errorFunction="clearSave();" />
-		<@qifu.button id="btnClear" label="<i class=\"icon fa fa-hand-paper-o\"></i>&nbsp;Clear" onclick="clearSave();" />
+		<@qifu.button id="btnClear" label="<i class=\"icon fa fa-hand-paper-o\"></i>&nbsp;${getText('page.button.clear')}" onclick="clearSave();" />
 	</div>
 </div>
 

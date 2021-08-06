@@ -100,17 +100,17 @@ function deleteRecord(oid) {
       
       <div class="row">
         <div class="col-xs-6 col-md-6 col-lg-6">
-        	<@qifu.textbox name="orgId" value="" id="orgId" label="Id" placeholder="Enter Id" maxlength="50" />
+        	<@qifu.textbox name="orgId" value="" id="orgId" label="${getText('page.organization.id')}" placeholder="Enter Id" maxlength="50" />
         </div>
         <div class="col-xs-6 col-md-6 col-lg-6">
-        	<@qifu.textbox name="nameLike" value="" id="nameLike" label="Name" placeholder="Enter name" maxlength="100" />
+        	<@qifu.textbox name="nameLike" value="" id="nameLike" label="${getText('page.organization.name')}" placeholder="Enter name" maxlength="100" />
        </div>
       </div>
 
 <p style="margin-bottom: 10px"></p>
       
-<button type="button" class="btn btn-primary" id="btnQuery" onclick="queryGrid();"><i class="icon fa fa-search"></i>&nbsp;Query</button>
-<button type="button" class="btn btn-primary" id="btnClear" onclick="queryClear();"><i class="icon fa fa-hand-paper-o"></i>&nbsp;Clear</button>
+<button type="button" class="btn btn-primary" id="btnQuery" onclick="queryGrid();"><i class="icon fa fa-search"></i>&nbsp;<@spring.message code="page.button.query"/></button>
+<button type="button" class="btn btn-primary" id="btnClear" onclick="queryClear();"><i class="icon fa fa-hand-paper-o"></i>&nbsp;<@spring.message code="page.button.clear"/></button>
 
 <p style="margin-bottom: 10px"></p>
 <p style="margin-bottom: 10px"></p>

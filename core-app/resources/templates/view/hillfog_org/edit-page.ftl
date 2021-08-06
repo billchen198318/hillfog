@@ -68,17 +68,17 @@ function clearUpdate() {
 <div class="form-group" id="form-group1">
 	<div class="row">
 		<div class="col-xs-6 col-md-6 col-lg-6">
-			<@qifu.textbox name="orgId" value="orgDept.orgId" id="orgId" label="Id" requiredFlag="Y" maxlength="15" placeholder="Enter organization Id" readonly="Y" />
+			<@qifu.textbox name="orgId" value="orgDept.orgId" id="orgId" label="${getText('page.organization.id')}" requiredFlag="Y" maxlength="15" placeholder="Enter organization Id" readonly="Y" />
 		</div>
 	</div>
 	<div class="row">
 		<div class="col-xs-6 col-md-6 col-lg-6">
-			<@qifu.textbox name="name" value="orgDept.name" id="name" label="Name" requiredFlag="Y" maxlength="25" placeholder="Enter organization name" />
+			<@qifu.textbox name="name" value="orgDept.name" id="name" label="${getText('page.organization.name')}" requiredFlag="Y" maxlength="25" placeholder="Enter organization name" />
 		</div>
 	</div>
 	<div class="row">
 		<div class="col-xs-6 col-md-6 col-lg-6">
-			<@qifu.textarea name="description" value="orgDept.description" id="description" label="Description" rows="3" placeholder="Enter description"></@qifu.textarea>
+			<@qifu.textarea name="description" value="orgDept.description" id="description" label="${getText('page.organization.description')}" rows="3" placeholder="Enter description"></@qifu.textarea>
 		</div>
 	</div>	
 </div>
@@ -87,7 +87,7 @@ function clearUpdate() {
 
 <div class="row">
 	<div class="col-xs-6 col-md-6 col-lg-6">
-		<@qifu.button id="btnUpdate" label="<i class=\"icon fa fa-floppy-o\"></i>&nbsp;Save"
+		<@qifu.button id="btnUpdate" label="<i class=\"icon fa fa-floppy-o\"></i>&nbsp;${getText('page.button.save')}"
 			xhrUrl="./hfOrgDeptUpdateJson"
 			xhrParameter="
 			{
@@ -100,7 +100,7 @@ function clearUpdate() {
 			onclick="btnUpdate();"
 			loadFunction="updateSuccess(data);"
 			errorFunction="clearUpdate();" />
-		<@qifu.button id="btnClear" label="<i class=\"icon fa fa-hand-paper-o\"></i>&nbsp;Clear" onclick="clearUpdate();" />
+		<@qifu.button id="btnClear" label="<i class=\"icon fa fa-hand-paper-o\"></i>&nbsp;${getText('page.button.clear')}" onclick="clearUpdate();" />
 	</div>
 </div>
 
