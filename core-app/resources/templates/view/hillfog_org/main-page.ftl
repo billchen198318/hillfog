@@ -29,10 +29,10 @@ function getQueryGridFormatter(value) {
 }
 function getQueryGridHeader() {
 	return [
-		{ name: "#", 			field: "oid", 	formatter: getQueryGridFormatter },
-		{ name: "Id", 			field: "orgId"			},
-		{ name: "Name",			field: "name"			},
-		{ name: "Description",	field: "description"	}
+		{ name: "#",											field: "oid",		formatter: getQueryGridFormatter },
+		{ name: "${getText('page.organization.id')}", 			field: "orgId"			},
+		{ name: "${getText('page.organization.name')}",			field: "name"			},
+		{ name: "${getText('page.organization.description')}",	field: "description"	}
 	];
 }
 
