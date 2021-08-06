@@ -46,6 +46,7 @@ import org.qifu.core.entity.TbRole;
 import org.qifu.core.logic.IRoleLogicService;
 import org.qifu.core.model.UploadTypes;
 import org.qifu.core.service.IAccountService;
+import org.qifu.core.util.LocaleMessageSourceUtils;
 import org.qifu.core.util.UploadSupportUtils;
 import org.qifu.hillfog.entity.HfEmployee;
 import org.qifu.hillfog.entity.HfEmployeeHier;
@@ -115,6 +116,9 @@ public class EmployeeLogicServiceImpl extends BaseLogicService implements IEmplo
     
     @Autowired
     IEmployeeHierService<HfEmployeeHier, String> employeeHierService;
+    
+	@Autowired
+	LocaleMessageSourceUtils localeMessageSourceUtils;    
     
 	@ServiceMethodAuthority(type = ServiceMethodType.INSERT)
 	@Transactional(
@@ -299,7 +303,7 @@ public class EmployeeLogicServiceImpl extends BaseLogicService implements IEmplo
 			.append("{")
 			.append("id:'").append(ZeroKeyProvide.OID_KEY).append("'").append(",")
 			.append("pId:'").append(ZeroKeyProvide.OID_KEY).append("'").append(",")
-			.append("name:'").append( "〔 Root" ).append(" - ").append( StringEscapeUtils.escapeJson("Hierarchy 〕") ).append("'").append(",")
+			.append("name:'").append( StringEscapeUtils.escapeJson( localeMessageSourceUtils.getMessage("page.employee.hierarchyRoot") ) ).append("'").append(",")
 			.append( "open:true, drag:false" )
 			.append("},");			
 		}

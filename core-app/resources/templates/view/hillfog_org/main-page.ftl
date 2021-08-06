@@ -50,7 +50,7 @@ function editPage(oid) {
 
 function deleteRecord(oid) {
 	parent.bootbox.confirm(
-			"Delete?", 
+			"${getText('page.info.delete')}", 
 			function(result) { 
 				if (!result) {
 					return;

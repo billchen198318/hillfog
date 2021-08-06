@@ -43,7 +43,7 @@
 <#import "../common-f-head.ftl" as cfh />
 <@cfh.commonFormHeadContent /> 
 
-<h3><span class="badge badge-pill badge-secondary">Drag and Drop change employee hierarchy</span></h3>
+<h3><span class="badge badge-pill badge-secondary">${getText('page.employee.hierarchy')}</span></h3>
 
 <div class="row">
 	<div class="col-xs-12 col-md-12 col-lg-12">

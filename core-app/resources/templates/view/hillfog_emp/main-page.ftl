@@ -29,12 +29,12 @@ function getQueryGridFormatter(value) {
 }
 function getQueryGridHeader() {
 	return [
-		{ name: "#", 			field: "oid", 	formatter: getQueryGridFormatter },
-		{ name: "Account", 		field: "account"		},
-		{ name: "Id",			field: "empId"			},
-		{ name: "Name",			field: "name"			},
-		{ name: "Job title",	field: "jobTitle"		},
-		{ name: "Description",	field: "description"	}
+		{ name: "#", 										field: "oid", 	formatter: getQueryGridFormatter },
+		{ name: "${getText('page.employee.account')}",		field: "account"		},
+		{ name: "${getText('page.employee.empId')}",		field: "empId"			},
+		{ name: "${getText('page.employee.nameLike')}",		field: "name"			},
+		{ name: "${getText('page.employee.jobTitleLike')}",	field: "jobTitle"		},
+		{ name: "${getText('page.employee.description')}",	field: "description"	}
 	];
 }
 
@@ -54,7 +54,7 @@ function editPage(oid) {
 
 function deleteRecord(oid) {
 	parent.bootbox.confirm(
-			"Delete?", 
+			"${getText('page.info.delete')}", 
 			function(result) { 
 				if (!result) {
 					return;
@@ -108,27 +108,27 @@ function hierarchyPage() {
       
       <div class="row">
         <div class="col-xs-6 col-md-6 col-lg-6">
-        	<@qifu.textbox name="account" value="" id="account" label="Account" placeholder="Enter account" maxlength="24" />
+        	<@qifu.textbox name="account" value="" id="account" label="${getText('page.employee.account')}" placeholder="Enter account" maxlength="24" />
         </div>
         <div class="col-xs-6 col-md-6 col-lg-6">
-        	<@qifu.textbox name="empId" value="" id="empId" label="Id" placeholder="Enter Id" maxlength="15" />
+        	<@qifu.textbox name="empId" value="" id="empId" label="${getText('page.employee.empId')}" placeholder="Enter Id" maxlength="15" />
         </div>
       </div>
       <div class="row">                
         <div class="col-xs-6 col-md-6 col-lg-6">
-        	<@qifu.textbox name="nameLike" value="" id="nameLike" label="Name" placeholder="Enter name" maxlength="25" />
+        	<@qifu.textbox name="nameLike" value="" id="nameLike" label="${getText('page.employee.nameLike')}" placeholder="Enter name" maxlength="25" />
        </div>      
         <div class="col-xs-6 col-md-6 col-lg-6">
-        	<@qifu.textbox name="jobTitleLike" value="" id="jobTitleLike" label="Job Title" placeholder="Enter job title" maxlength="100" />
+        	<@qifu.textbox name="jobTitleLike" value="" id="jobTitleLike" label="${getText('page.employee.jobTitleLike')}" placeholder="Enter job title" maxlength="100" />
        </div>                   
       </div>
 
 <p style="margin-bottom: 10px"></p>
       
-<button type="button" class="btn btn-primary" id="btnQuery" onclick="queryGrid();"><i class="icon fa fa-search"></i>&nbsp;Query</button>
-<button type="button" class="btn btn-primary" id="btnClear" onclick="queryClear();"><i class="icon fa fa-hand-paper-o"></i>&nbsp;Clear</button>
+<button type="button" class="btn btn-primary" id="btnQuery" onclick="queryGrid();"><i class="icon fa fa-search"></i>&nbsp;${getText('page.button.query')}</button>
+<button type="button" class="btn btn-primary" id="btnClear" onclick="queryClear();"><i class="icon fa fa-hand-paper-o"></i>&nbsp;${getText('page.button.clear')}</button>
 &nbsp;&nbsp;
-<button type="button" class="btn btn-info" id="btnHierarchy" onclick="hierarchyPage();"><i class="icon fa fa-users"></i>&nbsp;Hierarchy</button>
+<button type="button" class="btn btn-info" id="btnHierarchy" onclick="hierarchyPage();"><i class="icon fa fa-users"></i>&nbsp;${getText('page.employee.btnHierarchy')}</button>
 
 <p style="margin-bottom: 10px"></p>
 <p style="margin-bottom: 10px"></p>

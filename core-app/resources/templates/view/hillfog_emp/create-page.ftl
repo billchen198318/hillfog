@@ -230,30 +230,30 @@ function removeArrayByPos(arr, pos) {
 <div class="form-group" id="form-group1">
 	<div class="row">
 		<div class="col-xs-6 col-md-6 col-lg-6">
-			<@qifu.textbox name="empId" value="" id="empId" label="Id" requiredFlag="Y" maxlength="15" placeholder="Enter Id" />
+			<@qifu.textbox name="empId" value="" id="empId" label="${getText('page.employee.empId')}" requiredFlag="Y" maxlength="15" placeholder="Enter Id" />
 		</div>
 		<div class="col-xs-6 col-md-6 col-lg-6">
-			<@qifu.textbox name="account" value="" id="account" label="Account" requiredFlag="Y" maxlength="24" placeholder="Enter account" />
+			<@qifu.textbox name="account" value="" id="account" label="${getText('page.employee.account')}" requiredFlag="Y" maxlength="24" placeholder="Enter account" />
 		</div>		
 	</div>
 	<div class="row">
 		<div class="col-xs-6 col-md-6 col-lg-6">
-		    <label for="password1">Password&nbsp;<font color="RED">*</font></label>
+		    <label for="password1">${getText('page.employee.password1')}&nbsp;<font color="RED">*</font></label>
 		    <input type="password" class="form-control" id="password1" name="password1" placeholder="Enter password" maxlength="12">		
     		<div class="form-control-feedback" id="password1-feedback"></div>
 		</div>
 		<div class="col-xs-6 col-md-6 col-lg-6">
-		    <label for="password2">Password(retry)&nbsp;<font color="RED">*</font></label>
+		    <label for="password2">${getText('page.employee.password2')}&nbsp;<font color="RED">*</font></label>
 		    <input type="password" class="form-control" id="password2" name="password2" placeholder="Enter password(retry)" maxlength="12">		
     		<div class="form-control-feedback" id="password2-feedback"></div>
 		</div>		
 	</div>	
 	<div class="row">
 		<div class="col-xs-6 col-md-6 col-lg-6">
-			<@qifu.textbox name="name" value="" id="name" label="Name" requiredFlag="Y" maxlength="25" placeholder="Enter organization name" />
+			<@qifu.textbox name="name" value="" id="name" label="${getText('page.employee.nameLike')}" requiredFlag="Y" maxlength="25" placeholder="Enter organization name" />
 		</div>
 		<div class="col-xs-6 col-md-6 col-lg-6">
-			<@qifu.textbox name="jobTitle" value="" id="jobTitle" label="Job Title" requiredFlag="N" maxlength="100" placeholder="Enter job title" />
+			<@qifu.textbox name="jobTitle" value="" id="jobTitle" label="${getText('page.employee.jobTitleLike')}" requiredFlag="N" maxlength="100" placeholder="Enter job title" />
 		</div>		
 	</div>		
 	<div class="row">
@@ -261,7 +261,7 @@ function removeArrayByPos(arr, pos) {
 		
 			<p style="margin-bottom: 10px"></p>
 			
-			<@qifu.button id="uploadBtn" label="<i class=\"icon fa fa-upload\"></i>&nbsp;Upload employee image" cssClass="btn btn-info" onclick="uploadModal();">&nbsp;</@qifu.button>
+			<@qifu.button id="uploadBtn" label="<i class=\"icon fa fa-upload\"></i>&nbsp;${getText('page.employee.uploadImage')}" cssClass="btn btn-info" onclick="uploadModal();">&nbsp;</@qifu.button>
 			<button type="button" class="btn btn-dark" title="remove employee image" onclick="clearUpload();"><i class="icon fa fa-remove"></i></button>
 			
 			<p style="margin-bottom: 10px"></p>
@@ -272,14 +272,14 @@ function removeArrayByPos(arr, pos) {
 	</div>	
 	<div class="row">
 		<div class="col-xs-6 col-md-6 col-lg-6">
-			<@qifu.textbox name="employeeOrganization" value="" id="employeeOrganization" label="Organization" requiredFlag="Y" maxlength="100" placeholder="Enter organization" />
-			<button type="button" class="btn btn-info" id="btnAddOrganization" title="add organization" onclick="addOrganization();"><i class="icon fa fa-plus"></i>&nbsp;ADD</button>
+			<@qifu.textbox name="employeeOrganization" value="" id="employeeOrganization" label="${getText('page.employee.employeeOrganization')}" requiredFlag="Y" maxlength="100" placeholder="Enter organization" />
+			<button type="button" class="btn btn-info" id="btnAddOrganization" title="add organization" onclick="addOrganization();"><i class="icon fa fa-plus"></i>&nbsp;${getText('page.button.add')}</button>
 			<div>
 				<span id="selOrgDeptShowLabel">&nbsp;</span>
 			</div>					
 		</div>
 		<div class="col-xs-6 col-md-6 col-lg-6">
-			<@qifu.textarea name="description" value="" id="description" label="Description" rows="3" placeholder="Enter description"></@qifu.textarea>
+			<@qifu.textarea name="description" value="" id="description" label="${getText('page.employee.description')}" rows="3" placeholder="Enter description"></@qifu.textarea>
 		</div>			
 	</div>		
 </div>
@@ -288,7 +288,7 @@ function removeArrayByPos(arr, pos) {
 
 <div class="row">
 	<div class="col-xs-6 col-md-6 col-lg-6">
-		<@qifu.button id="btnSave" label="<i class=\"icon fa fa-floppy-o\"></i>&nbsp;Save"
+		<@qifu.button id="btnSave" label="<i class=\"icon fa fa-floppy-o\"></i>&nbsp;${getText('page.button.save')}"
 			xhrUrl="./hfEmployeeSaveJson"
 			xhrParameter="
 			{
@@ -306,7 +306,7 @@ function removeArrayByPos(arr, pos) {
 			onclick="btnSave();"
 			loadFunction="saveSuccess(data);"
 			errorFunction="clearSave();" />
-		<@qifu.button id="btnClear" label="<i class=\"icon fa fa-hand-paper-o\"></i>&nbsp;Clear" onclick="clearSave();" />
+		<@qifu.button id="btnClear" label="<i class=\"icon fa fa-hand-paper-o\"></i>&nbsp;${getText('page.button.clear')}" onclick="clearSave();" />
 	</div>
 </div>
 
