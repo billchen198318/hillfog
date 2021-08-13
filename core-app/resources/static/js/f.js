@@ -285,22 +285,28 @@ function setWarningMessageField(formGroups, fields, checkFields) {
 		if (null == idKey || idKey == '') {
 			continue;
 		}
+		$("#"+idKey+"-feedback").addClass( "invalid-feedback" );
 		$("#"+idKey+"-feedback").html( msgContent );
-		$("#"+idKey).addClass( "form-control-warning" );
+		$("#"+idKey).addClass( "is-invalid" );
+		/*
 		if (null != formGroupId && formGroupId != '') {
 			$("#"+formGroupId).addClass( "has-warning" );
 		}
+		*/
 	}
 }
 function clearWarningMessageField(formGroups, fields) {
 	for (var k in fields) {
 		var idKey = fields[k];
+		$("#"+idKey+"-feedback").removeClass( "invalid-feedback" );
 		$("#"+idKey+"-feedback").html( "" );
-		$("#"+idKey).removeClass( "form-control-warning" );		
+		$("#"+idKey).removeClass( "is-invalid" );
 	}
+	/*
 	for (var g in formGroups) {
 		$("#"+formGroups[g]).removeClass( "has-warning" );
 	}
+	*/
 }
 
 function commonOpenJasperReport(jreportId, paramData) {
