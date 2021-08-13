@@ -50,7 +50,7 @@
             </#if>
             
             <br>
-            <a href="./loginPage?_lang=en_US">EN</a>&nbsp;|&nbsp;<a href="./loginPage?_lang=zh_TW">ZH</a>
+            <a href="./loginPage?_lang=zh_CN">CN</a>&nbsp;|&nbsp;<a href="./loginPage?_lang=en_US">EN</a>&nbsp;|&nbsp;<a href="./loginPage?_lang=zh_TW">TW</a>
             
           </div>
         </form>
