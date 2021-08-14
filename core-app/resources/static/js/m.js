@@ -266,24 +266,42 @@ function hidePleaseWaitForQueryGrid() {
 	bootbox.hideAll();
 }
 
-function toastrInfo(message) {
-	toastr.options = { 
-		onclick: function () { alert(message); },
-		positionClass: 'toast-bottom-right'
-	}
-	toastr.info( message.replace(/\n/gi, "<br>").replace("/\r\n", "<br>") );
+function notifyInfo(message) {
+	$.notify({
+		title: "<b>Info</b><br>",
+		message: message.replace(/\n/gi, "<br>").replace("/\r\n", "<br>"),
+		icon: 'fa fa-info-circle' 
+	},{
+		type: "info",
+		placement: {
+			from: "bottom",
+			align: "right"
+		}
+	});
 }
-function toastrWarning(message) {
-	toastr.options = { 
-		onclick: function () { alert(message); },
-		positionClass: 'toast-bottom-right'
-	}
-	toastr.warning( message.replace(/\n/gi, "<br>").replace("/\r\n", "<br>") );
+function notifyWarning(message) {
+	$.notify({
+		title: "<b>Warning</b><br>",
+		message: message.replace(/\n/gi, "<br>").replace("/\r\n", "<br>"),
+		icon: 'fa fa-warning' 
+	},{
+		type: "warning",
+		placement: {
+			from: "bottom",
+			align: "right"
+		}
+	});
 }
-function toastrError(message) {
-	toastr.options = { 
-		onclick: function () { alert(message); },
-		positionClass: 'toast-bottom-right'
-	}
-	toastr.error( message.replace(/\n/gi, "<br>").replace("/\r\n", "<br>") );
+function notifyError(message) {
+	$.notify({
+		title: "<b>Error</b><br>",
+		message: message.replace(/\n/gi, "<br>").replace("/\r\n", "<br>"),
+		icon: 'fa fa-bug' 
+	},{
+		type: "danger",
+		placement: {
+			from: "bottom",
+			align: "right"
+		}
+	});
 }

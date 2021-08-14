@@ -143,10 +143,10 @@ function btnSave() {
 			function(data) {
 				if ( _qifu_success_flag != data.success ) {
 					setWarningMessageField(formGroups, msgFields, data.checkFields);
-					parent.toastrWarning( data.message );
+					parent.notifyWarning( data.message );
 					return;
 				}
-				parent.toastrInfo( data.message );
+				parent.notifyInfo( data.message );
 			}, 
 			function() {
 				btnClear();
@@ -165,7 +165,7 @@ function btnClear() {
 function addOrganization() {
 	var inputOrgDept = $("#objOrg").val();
 	if (null == inputOrgDept || '' == inputOrgDept) {
-		parent.toastrInfo( 'Please input organization!' );
+		parent.notifyInfo( 'Please input organization!' );
 		return;
 	}
 	var checkInOrgDept = false;
@@ -176,7 +176,7 @@ function addOrganization() {
 		}
 	}
 	if (!checkInOrgDept) {
-		parent.toastrInfo( 'Please input organization!' );
+		parent.notifyInfo( 'Please input organization!' );
 		return;		
 	}
 	for (var n in selDeptList) {
@@ -185,7 +185,7 @@ function addOrganization() {
 		}
 	}
 	if (checkInSelOrgDept) {
-		parent.toastrInfo( 'Organization is add found!' );
+		parent.notifyInfo( 'Organization is add found!' );
 		return;
 	}
 	selDeptList.push( inputOrgDept );
@@ -209,7 +209,7 @@ function delAddOrganization(pos) {
 function addEmployee() {
 	var inputEmployee = $("#objOwner").val();
 	if (null == inputEmployee || '' == inputEmployee) {
-		parent.toastrInfo( 'Please input employee!' );
+		parent.notifyInfo( 'Please input employee!' );
 		return;
 	}
 	var checkInEmployee = false;
@@ -220,7 +220,7 @@ function addEmployee() {
 		}
 	}
 	if (!checkInEmployee) {
-		parent.toastrInfo( 'Please input employee!' );
+		parent.notifyInfo( 'Please input employee!' );
 		return;		
 	}
 	for (var n in selEmpList) {
@@ -229,7 +229,7 @@ function addEmployee() {
 		}
 	}
 	if (checkInSelEmployee) {
-		parent.toastrInfo( 'Employee is add found!' );
+		parent.notifyInfo( 'Employee is add found!' );
 		return;
 	}
 	selEmpList.push( inputEmployee );

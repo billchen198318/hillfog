@@ -31,7 +31,7 @@ function queryScorecardColorsItem() {
 
 function setScorecardColorData(data) {
 	if ( _qifu_success_flag != data.success ) {
-		parent.toastrWarning( data.message );
+		parent.notifyWarning( data.message );
 		return;
 	}		
 	this.scorecolorsDefault = data.value.defaultData;

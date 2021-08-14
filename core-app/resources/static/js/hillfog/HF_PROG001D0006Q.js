@@ -33,9 +33,9 @@ function deleteObjectiveItem(oid) {
 					}, 
 					function(data) {
 						if ( _qifu_success_flag != data.success ) {
-							parent.toastrWarning( data.message );
+							parent.notifyWarning( data.message );
 						} else {
-							parent.toastrInfo( data.message );
+							parent.notifyInfo( data.message );
 						}
 						that.queryObjectives();
 					}, 
@@ -58,7 +58,7 @@ function editObjectiveItem(oid)	{
 
 function setObjectiveList(data) {
 	if ( _qifu_success_flag != data.success ) {
-		parent.toastrWarning( data.message );
+		parent.notifyWarning( data.message );
 	}
 	if (data.value != null) {
 		this.objectives = data.value;

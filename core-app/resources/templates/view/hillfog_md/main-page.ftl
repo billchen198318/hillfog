@@ -152,11 +152,11 @@ $( document ).ready(function() {
 
 function updateSuccess(data) {
 	if ( _qifu_success_flag != data.success ) {
-		parent.toastrWarning( data.message );
+		parent.notifyWarning( data.message );
 		paintContent();
 		return;
 	}
-	parent.toastrInfo( data.message );
+	parent.notifyInfo( data.message );
 	//paintContent();
 }
 
@@ -172,7 +172,7 @@ function clearUpdate() {
 
 function btnUpdateTBclick() {
 	if ($("#btnUpdate").is(':disabled')) {
-		parent.toastrWarning( 'Please select Frequency and Organization or Employee!' );
+		parent.notifyWarning( 'Please select Frequency and Organization or Employee!' );
 		return;
 	}
 	btnUpdate();
@@ -215,7 +215,7 @@ function paintContent() {
 			function(data) {
 				dateStatus = "0";
 				if ( _qifu_success_flag != data.success ) {
-					parent.toastrWarning( data.message );
+					parent.notifyWarning( data.message );
 				}
 				if ( _qifu_success_flag == data.success ) {
 					$("#content").html( data.value.content );

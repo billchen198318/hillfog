@@ -102,11 +102,11 @@ var _commonUploadErrorFn = null;
 function commonUploadDataEvent() {
 	
 	if (document.getElementById('commonUploadFile').value == '' ) {
-		parent.toastrWarning( "Please select an file!" );
+		parent.notifyWarning( "Please select an file!" );
 		return;
 	}
 	if (document.getElementById('commonUploadFile').files[0].size > _qifu_maxUploadSize ) {
-		parent.toastrWarning( "File exceeded upload size!" );
+		parent.notifyWarning( "File exceeded upload size!" );
 		return;		
 	}	
 	
@@ -114,7 +114,7 @@ function commonUploadDataEvent() {
 	if (_qifu_success_flag == imageUploadOnly) {
 		var fileVariable = document.getElementById('commonUploadFile').files[0];
 		if(!fileVariable.type.match('image.*')) {
-			parent.toastrWarning( "Please select an image file!" );
+			parent.notifyWarning( "Please select an image file!" );
 			return;
 		}	
 	}
@@ -148,10 +148,10 @@ function commonUploadDataEvent() {
 				return;        				
 			}
 			if ( 'E' == data.success ) { // xhr load success, but has Exception or Error
-				parent.toastrError( data.message );
+				parent.notifyError( data.message );
 				return;
 			}			
-			parent.toastrInfo( data.message );
+			parent.notifyInfo( data.message );
 			$("#" + _commonUploadFieldId).val( data.value );
 			
 			document.getElementById('commonUploadFile').value = '';

@@ -81,10 +81,10 @@ function confirmPdca(pdcaOid) {
 						}, 
 						function(data) {
 							if ( _qifu_success_flag != data.success ) {
-								parent.toastrWarning( data.message );
+								parent.notifyWarning( data.message );
 							}
 							if ( _qifu_success_flag == data.success ) {
-								parent.toastrInfo( data.message );
+								parent.notifyInfo( data.message );
 								window.location = parent.getProgUrlForOid('HF_PROG004D0001V', pdcaOid);
 							}
 						}, 
@@ -109,7 +109,7 @@ function queryPdcaChart(pdcaOid) {
 			}, 
 			function(data) {
 				if ( _qifu_success_flag != data.success ) {
-					parent.toastrWarning( data.message );
+					parent.notifyWarning( data.message );
 					return;
 				}
 				if ( _qifu_success_flag == data.success ) {

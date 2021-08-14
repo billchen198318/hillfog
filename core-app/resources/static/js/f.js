@@ -76,7 +76,7 @@ function xhrSendParameterForQueryGrid(xhrUrl, jsonParam, successFn, errorFn, sel
 				return;        				
 			}        						
 			if ( 'E' == data.success ) { // xhr load success, but has Exception or Error
-				parent.toastrError( data.message );
+				parent.notifyError( data.message );
 				return;
 			}
 			successFn(data, textStatus);
@@ -126,7 +126,7 @@ function xhrSendParameter(xhrUrl, jsonParam, successFn, errorFn, selfPleaseWaitS
 				return;        				
 			}        						
 			if ( 'E' == data.success ) { // xhr load success, but has Exception or Error
-				parent.toastrError( data.message );
+				parent.notifyError( data.message );
 				return;
 			}			
 			successFn(data, textStatus);
@@ -176,7 +176,7 @@ function xhrSendForm(xhrUrl, formId, successFn, errorFn, selfPleaseWaitShow) {
 				return;        				
 			}        			
 			if ( 'E' == data.success ) { // xhr load success, but has Exception or Error
-				parent.toastrError( data.message );
+				parent.notifyError( data.message );
 				return;
 			}			
 			successFn(data, textStatus);
@@ -216,7 +216,7 @@ function xhrSendParameterNoPleaseWait(xhrUrl, jsonParam, successFn, errorFn) {
 				return;        				
 			}        					
 			if ( 'E' == data.success ) { // xhr load success, but has Exception or Error
-				parent.toastrError( data.message );
+				parent.notifyError( data.message );
 				return;
 			}			
 			successFn(data, textStatus);
@@ -251,7 +251,7 @@ function xhrSendFormNoPleaseWait(xhrUrl, formId, successFn, errorFn) {
 				return;        				
 			}        			
 			if ( 'E' == data.success ) { // xhr load success, but has Exception or Error
-				parent.toastrError( data.message );
+				parent.notifyError( data.message );
 				return;
 			}			
 			successFn(data, textStatus);

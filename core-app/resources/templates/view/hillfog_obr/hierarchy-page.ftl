@@ -34,7 +34,7 @@ $( document ).ready(function() {
 	$('#chart-container').find('.node').on('click', function() {
 		var empOid = $(this).data('nodeData').oid;
 		if ('00000000-0000-0000-0000-000000000000' == empOid || '' == empOid) {
-			parent.toastrWarning( 'Please click employee node.' );
+			parent.notifyWarning( 'Please click employee node.' );
 			return;
 		}
 		var pageUrl = parent.getProgUrlForOid('HF_PROG003D0001Q', empOid);

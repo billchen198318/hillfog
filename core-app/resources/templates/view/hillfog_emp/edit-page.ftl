@@ -111,11 +111,11 @@ formGroups['employeeOrganization']	= 'form-group1';
 function updateSuccess(data) {
 	clearWarningMessageField(formGroups, msgFields);
 	if ( _qifu_success_flag != data.success ) {
-		parent.toastrWarning( data.message );
+		parent.notifyWarning( data.message );
 		setWarningMessageField(formGroups, msgFields, data.checkFields);
 		return;
 	}
-	parent.toastrInfo( data.message );
+	parent.notifyInfo( data.message );
 	clearUpdate();
 }
 
@@ -128,7 +128,7 @@ function clearUpdate() {
 function addOrganization() {
 	var inputOrgDept = $("#employeeOrganization").val();
 	if (null == inputOrgDept || '' == inputOrgDept) {
-		parent.toastrInfo( 'Please input organization!' );
+		parent.notifyInfo( 'Please input organization!' );
 		return;
 	}
 	var checkInOrgDept = false;
@@ -139,7 +139,7 @@ function addOrganization() {
 		}
 	}
 	if (!checkInOrgDept) {
-		parent.toastrInfo( 'Please input organization!' );
+		parent.notifyInfo( 'Please input organization!' );
 		return;		
 	}
 	for (var n in selDeptList) {
@@ -148,7 +148,7 @@ function addOrganization() {
 		}
 	}
 	if (checkInSelOrgDept) {
-		parent.toastrInfo( 'Organization is add found!' );
+		parent.notifyInfo( 'Organization is add found!' );
 		return;
 	}
 	selDeptList.push( inputOrgDept );
@@ -175,13 +175,13 @@ function uploadModal() {
 			'tmp', 
 			'Y',
 			function() {
-				parent.toastrInfo('Upload success!');
+				parent.notifyInfo('Upload success!');
 				var uploadOid = $("#uploadOid").val();
 				var imgStr = '<img src="./commonViewFile?oid=' + uploadOid + '" class="rounded-circle" style="max-height:128px;max-width:128px;">';
 				$("#uploadLabel").html( imgStr );
 			},
 			function() {
-				parent.toastrWarning('Upload fail!');
+				parent.notifyWarning('Upload fail!');
 				$("#uploadLabel").html( "&nbsp;" );
 			}
 	);

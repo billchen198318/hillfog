@@ -151,11 +151,11 @@ formGroups['kpiEmpl'] 		= 'form-group3';
 function saveSuccess(data) {
 	clearWarningMessageField(formGroups, msgFields);
 	if ( _qifu_success_flag != data.success ) {
-		parent.toastrWarning( data.message );
+		parent.notifyWarning( data.message );
 		setWarningMessageField(formGroups, msgFields, data.checkFields);
 		return;
 	}
-	parent.toastrInfo( data.message );
+	parent.notifyInfo( data.message );
 	clearSave();
 }
 
@@ -189,7 +189,7 @@ function clearSave() {
 function addOrganization() {
 	var inputOrgDept = $("#kpiOrga").val();
 	if (null == inputOrgDept || '' == inputOrgDept) {
-		parent.toastrInfo( 'Please input organization!' );
+		parent.notifyInfo( 'Please input organization!' );
 		return;
 	}
 	var checkInOrgDept = false;
@@ -200,7 +200,7 @@ function addOrganization() {
 		}
 	}
 	if (!checkInOrgDept) {
-		parent.toastrInfo( 'Please input organization!' );
+		parent.notifyInfo( 'Please input organization!' );
 		return;		
 	}
 	for (var n in selDeptList) {
@@ -209,7 +209,7 @@ function addOrganization() {
 		}
 	}
 	if (checkInSelOrgDept) {
-		parent.toastrInfo( 'Organization is add found!' );
+		parent.notifyInfo( 'Organization is add found!' );
 		return;
 	}
 	selDeptList.push( inputOrgDept );
@@ -233,7 +233,7 @@ function delAddOrganization(pos) {
 function addEmployee() {
 	var inputEmployee = $("#kpiEmpl").val();
 	if (null == inputEmployee || '' == inputEmployee) {
-		parent.toastrInfo( 'Please input employee!' );
+		parent.notifyInfo( 'Please input employee!' );
 		return;
 	}
 	var checkInEmployee = false;
@@ -244,7 +244,7 @@ function addEmployee() {
 		}
 	}
 	if (!checkInEmployee) {
-		parent.toastrInfo( 'Please input employee!' );
+		parent.notifyInfo( 'Please input employee!' );
 		return;		
 	}
 	for (var n in selEmpList) {
@@ -253,7 +253,7 @@ function addEmployee() {
 		}
 	}
 	if (checkInSelEmployee) {
-		parent.toastrInfo( 'Employee is add found!' );
+		parent.notifyInfo( 'Employee is add found!' );
 		return;
 	}
 	selEmpList.push( inputEmployee );

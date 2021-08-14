@@ -163,11 +163,11 @@ $( document ).ready(function() {
 				}, 
 				function(data) {
 					if ( _qifu_success_flag != data.success ) {
-						parent.toastrWarning( data.message );
+						parent.notifyWarning( data.message );
 						return;
 					}
 					if ( _qifu_success_flag == data.success ) {
-						parent.toastrInfo( data.message );
+						parent.notifyInfo( data.message );
 						for (var d in data.value.org) {
 							orgDeptList.push( data.value.org[d] );
 						}
@@ -192,7 +192,7 @@ $( document ).ready(function() {
 		var nDateStr = getStartDate(freq, bDateStr);
 		if (bDateStr != nDateStr && nDateStr != null && nDateStr.length == 10) {
 			$("#date1").val(nDateStr);
-			parent.toastrInfo( 'reset start date!' );
+			parent.notifyInfo( 'reset start date!' );
 		}
 	});
 	$("#date2").change(function(){
@@ -204,7 +204,7 @@ $( document ).ready(function() {
 		var nDateStr = getEndDate(freq, bDateStr);
 		if (bDateStr != nDateStr && nDateStr != null && nDateStr.length == 10) {
 			$("#date2").val(nDateStr);
-			parent.toastrInfo( 'reset end date!' );
+			parent.notifyInfo( 'reset end date!' );
 		}
 	});	
 	
@@ -237,13 +237,13 @@ function changeQueryButtonStatus() {
 
 function queryReport() {
 	if ($("#btnQuery").is(':disabled')) {
-		parent.toastrWarning( 'Please select Frequency and Organization or Employee!' );
+		parent.notifyWarning( 'Please select Frequency and Organization or Employee!' );
 		return;
 	}
 	var date1 = $("#date1").val();
 	var date2 = $("#date2").val();
 	if ('' == date1 || '' == date2) {
-		parent.toastrWarning( 'Please input start & end date!' );
+		parent.notifyWarning( 'Please input start & end date!' );
 		return;		
 	}
 	$("#content").html( '&nbsp;' );
@@ -259,12 +259,12 @@ function queryReport() {
 			}, 
 			function(data) {
 				if ( _qifu_success_flag != data.success ) {
-					parent.toastrWarning( data.message );
+					parent.notifyWarning( data.message );
 					$("#content").html('<br><span class="badge badge-warning"><h6>' + data.message + '</h6></span><br>');
 					return;
 				}
 				if ( _qifu_success_flag == data.success ) {
-					parent.toastrInfo( data.message );
+					parent.notifyInfo( data.message );
 					showContent( data.value );
 				}
 			}, 

@@ -189,10 +189,10 @@ function btnUpdate() {
 			function(data) {
 				if ( _qifu_success_flag != data.success ) {
 					setWarningMessageField(formGroups, msgFields, data.checkFields);
-					parent.toastrWarning( data.message );
+					parent.notifyWarning( data.message );
 					return;
 				}
-				parent.toastrInfo( data.message );
+				parent.notifyInfo( data.message );
 				btnClear();
 				parent.addTab('HF_PROG004D0001V', parent.getProgUrlForOid('HF_PROG004D0001V', data.value.oid));
 			}, 
@@ -212,7 +212,7 @@ function btnClear() {
 function addEmployee() {
 	var inputEmployee = $("#ownerUid").val();
 	if (null == inputEmployee || '' == inputEmployee) {
-		parent.toastrInfo( 'Please input employee!' );
+		parent.notifyInfo( 'Please input employee!' );
 		return;
 	}
 	var checkInEmployee = false;
@@ -223,7 +223,7 @@ function addEmployee() {
 		}
 	}
 	if (!checkInEmployee) {
-		parent.toastrInfo( 'Please input employee!' );
+		parent.notifyInfo( 'Please input employee!' );
 		return;		
 	}
 	for (var n in selEmpList) {
@@ -232,7 +232,7 @@ function addEmployee() {
 		}
 	}
 	if (checkInSelEmployee) {
-		parent.toastrInfo( 'Employee is add found!' );
+		parent.notifyInfo( 'Employee is add found!' );
 		return;
 	}
 	selEmpList.push( inputEmployee );
@@ -259,7 +259,7 @@ function uploadModal() {
 			'tmp', 
 			'Y',
 			function() {
-				parent.toastrInfo('Upload success!');
+				parent.notifyInfo('Upload success!');
 				var uploadOid = $("#uploadOid").val();
 				xhrSendParameterNoPleaseWait(
 						'./hfPdcaLoadUploadFileShowName', 
@@ -278,7 +278,7 @@ function uploadModal() {
 				);
 			},
 			function() {
-				parent.toastrWarning('Upload fail!');
+				parent.notifyWarning('Upload fail!');
 				paintAttc();
 			}
 	);

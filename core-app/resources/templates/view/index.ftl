@@ -10,10 +10,6 @@
     <!-- Font-icon css-->
     <link rel="stylesheet" type="text/css" href="${qifu_basePath}font-awesome/css/font-awesome.min.css">
     
-    <!-- toastr css -->
-    <link rel="stylesheet" type="text/css" href="${qifu_basePath}toastr/toastr.min.css">
-    
-    
     <link rel="stylesheet" type="text/css" href="${qifu_basePath}css/m.css">
     
   </head>
@@ -145,7 +141,8 @@ function getIconUrlFromId(id) {
     
     <!-- bootbox & toastr -->
     <script src="${qifu_basePath}bootbox/bootbox.all.js"></script>
-    <script src="${qifu_basePath}toastr/toastr.min.js"></script>
+    
+    <script type="text/javascript" src="js/plugins/bootstrap-notify.min.js"></script>
     
     <!-- custom function -->
     <script src="${qifu_basePath}js/m.js"></script>

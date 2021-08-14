@@ -27,7 +27,7 @@ function progressDivFormatter(val) {
 
 function setObjectiveList(data) {
 	if ( _qifu_success_flag != data.success ) {
-		parent.toastrWarning( data.message );
+		parent.notifyWarning( data.message );
 	}
 	if (data.value != null) {
 		this.objectives = data.value;

@@ -56,7 +56,7 @@ function queryEditData() {
 }
 function setEditData(data) {
 	if ( _qifu_success_flag != data.success ) {
-		parent.toastrWarning( data.message );
+		parent.notifyWarning( data.message );
 		return;
 	}
 	for (var n in data.value.planItemList) {

@@ -57,7 +57,7 @@ function paintContent() {
 			function(data) {
 				dateStatus = "0";
 				if ( _qifu_success_flag != data.success ) {
-					parent.toastrWarning( data.message );
+					parent.notifyWarning( data.message );
 				}
 				if ( _qifu_success_flag == data.success ) {
 					$("#content").html( data.value.content );
@@ -82,11 +82,11 @@ function btnSave() {
 			'measureDataForm', 
 			function(data) {
 				if ( _qifu_success_flag != data.success ) {
-					parent.toastrWarning( data.message );
+					parent.notifyWarning( data.message );
 					paintContent();
 					return;
 				}
-				parent.toastrInfo( data.message );
+				parent.notifyInfo( data.message );
 			}, 
 			function() {
 				btnClear();
