@@ -21,6 +21,10 @@
  */
 package org.qifu.core.config;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import org.apache.commons.lang3.StringUtils;
 import org.qifu.base.properties.LdapLoginConfigProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -37,6 +41,11 @@ public class LdapConfig {
     @Bean
     public LdapContextSource contextSource() {
     	LdapContextSource contextSource = new LdapContextSource();
+    	if ( !StringUtils.isBlank(ldapLoginConfigProperties.getJavaNamingReferral()) ) {
+        	Map<String, Object> p = new HashMap<String, Object>();
+        	p.put("java.naming.referral", StringUtils.deleteWhitespace(ldapLoginConfigProperties.getJavaNamingReferral()));    	
+        	contextSource.setBaseEnvironmentProperties(p);    		
+    	}    	
     	contextSource.setUrl( ldapLoginConfigProperties.getContextUrl() );
     	contextSource.setBase( ldapLoginConfigProperties.getContextBase() );
     	contextSource.setUserDn( ldapLoginConfigProperties.getContextUserDn() );
