@@ -187,6 +187,7 @@ function btnSave() {
 }
 
 function btnClear() {
+	clearWarningMessageField(formGroups, msgFields);
 	$("#name").val( '' );
 	$("#startDate").val( '' );
 	$("#endDate").val( '' );

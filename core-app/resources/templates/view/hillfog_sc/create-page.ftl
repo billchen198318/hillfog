@@ -128,6 +128,7 @@ function saveSuccess(data) {
 }
 
 function btnClear() {
+	clearWarningMessageField(formGroups, msgFields);
 	clearSave();
 }
 
