@@ -27,7 +27,7 @@ try {
 	employee.setName( user.username );
 	employee.setUploadOid("");
 	employee.setJobTitle( "normal" );
-	employee.setDescription( user.username + " 's role, create by LDAP login!");
+	employee.setDescription( "create account data by LDAP login : " + user.username );
 	employeeLogicService.create(employee, user.password, orgList);
 	System.out.println("create account data by LDAP login : " + user.username);
 } catch (Exception e) {
