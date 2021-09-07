@@ -1,5 +1,6 @@
 {
 	"excludePathPatterns" : [
+		"/favicon.ico",
 		"/highcharts**",
 		"/highcharts/**",
 		"/highcharts-gantt**",
