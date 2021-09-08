@@ -289,7 +289,8 @@ public class OkrBaseReportController extends BaseControllerSupport implements IP
 		for (OrganizationObjective oo : organizationObjectiveList) {
 			List<Object> deptScore = new LinkedList<Object>();
 			deptScore.add( oo.getOrgDept().getOrgId() );
-			deptScore.add( StringEscapeUtils.escapeJson(oo.getOrgDept().getName()) );
+			//deptScore.add( StringEscapeUtils.escapeJson(oo.getOrgDept().getName()) );
+			deptScore.add( oo.getOrgDept().getName() );
 			deptScore.add( oo.totalProgressPercentage() );
 			scores.add(deptScore);
 		}
@@ -402,7 +403,8 @@ public class OkrBaseReportController extends BaseControllerSupport implements IP
 	private void fillChildNodeData(Map<String, Object> childMap, HfEmployee e, int okrSize, BigDecimal progressPercentage) {
 		String title = "";
 		if (!StringUtils.isBlank(e.getJobTitle())) {
-			title += StringEscapeUtils.escapeJson( e.getJobTitle() );
+			//title += StringEscapeUtils.escapeJson( e.getJobTitle() );
+			title += e.getJobTitle();
 		} else {
 			title += "(no title)";
 		}
@@ -416,7 +418,8 @@ public class OkrBaseReportController extends BaseControllerSupport implements IP
 			title += "<br>" + imgSrc + "<br>OKRs progress&nbsp;(" + progressPercentage + "%)<br><div class=\"progress\"><div class=\"progress-bar bg-success\" role=\"progressbar\" style=\"width: " + progressPercentage + "%\" aria-valuenow=\"" + progressPercentage + "\" aria-valuemin=\"0\" aria-valuemax=\"100\"></div></div>";
 		}
 		childMap.put("oid", e.getOid());
-		childMap.put("name", StringEscapeUtils.escapeJson(e.getEmpId() + " - " + e.getName()));
+		//childMap.put("name", StringEscapeUtils.escapeJson(e.getEmpId() + " - " + e.getName()));
+		childMap.put("name", e.getEmpId() + " - " + e.getName());
 		childMap.put("title", title);		
 		childMap.put("collapsed", false);
 	}
