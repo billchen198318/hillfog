@@ -2179,10 +2179,12 @@
       }
 
 	  // 2021-09-08 rem, it no work with bootbox hideAll() , maybe need rem
+	  /*
       if (!this._isShown || this._isTransitioning) {
         return;
       }
-
+	  */
+	
       var hideEvent = $__default['default'].Event(EVENT_HIDE$2);
       $__default['default'](this._element).trigger(hideEvent);
 
