@@ -65,18 +65,11 @@ msgFields['type'] 			= 'type';
 msgFields['expression1'] 	= 'expression1';
 msgFields['expression2'] 	= 'expression2';
 
-var formGroups = new Object();
-formGroups['aggrId'] 		= 'form-group1';
-formGroups['name'] 			= 'form-group1';
-formGroups['type'] 			= 'form-group1';
-formGroups['expression1'] 	= 'form-group2';
-formGroups['expression2'] 	= 'form-group2';
-
 function updateSuccess(data) {
-	clearWarningMessageField(formGroups, msgFields);
+	clearWarningMessageField(msgFields);
 	if ( _qifu_success_flag != data.success ) {
 		parent.notifyWarning( data.message );
-		setWarningMessageField(formGroups, msgFields, data.checkFields);
+		setWarningMessageField(msgFields, data.checkFields);
 		return;
 	}
 	parent.notifyInfo( data.message );
@@ -84,7 +77,7 @@ function updateSuccess(data) {
 }
 
 function clearUpdate() {
-	clearWarningMessageField(formGroups, msgFields);
+	clearWarningMessageField(msgFields);
 	window.location=parent.getProgUrlForOid('HF_PROG001D0004E', '${aggrMethod.oid}');
 }
 

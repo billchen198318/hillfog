@@ -84,20 +84,11 @@ msgFields['returnMode'] 	= 'returnMode';
 msgFields['returnVar'] 		= 'returnVar';
 msgFields['expression'] 	= 'expression';
 
-var formGroups = new Object();
-formGroups['forId'] 		= 'form-group1';
-formGroups['name'] 			= 'form-group1';
-formGroups['type'] 			= 'form-group1';
-formGroups['returnMode'] 	= 'form-group1';
-formGroups['returnVar'] 	= 'form-group1';
-formGroups['description'] 	= 'form-group1';
-formGroups['expression'] 	= 'form-group2';
-
 function saveSuccess(data) {
-	clearWarningMessageField(formGroups, msgFields);
+	clearWarningMessageField(msgFields);
 	if ( _qifu_success_flag != data.success ) {
 		parent.notifyWarning( data.message );
-		setWarningMessageField(formGroups, msgFields, data.checkFields);
+		setWarningMessageField(msgFields, data.checkFields);
 		return;
 	}
 	parent.notifyInfo( data.message );
@@ -105,7 +96,7 @@ function saveSuccess(data) {
 }
 
 function clearSave() {
-	clearWarningMessageField(formGroups, msgFields);
+	clearWarningMessageField(msgFields);
 	$("#forId").val('');
 	$("#name").val('');
 	$("#type").val( _qifu_please_select_id );
@@ -130,10 +121,10 @@ function clsFormulaValue() {
 }
 
 function testFormulaSuccess(data) {
-	clearWarningMessageField(formGroups, msgFields);
+	clearWarningMessageField(msgFields);
 	if ( _qifu_success_flag != data.success ) {
 		parent.notifyWarning( data.message );
-		setWarningMessageField(formGroups, msgFields, data.checkFields);
+		setWarningMessageField(msgFields, data.checkFields);
 		return;
 	}
 	parent.notifyInfo( data.message );	

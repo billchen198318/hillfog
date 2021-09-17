@@ -23,15 +23,11 @@ var msgFields = new Object();
 msgFields['orgId'] 			= 'orgId';
 msgFields['name'] 			= 'name';
 
-var formGroups = new Object();
-formGroups['orgId'] 		= 'form-group1';
-formGroups['name'] 			= 'form-group1';
-
 function saveSuccess(data) {
-	clearWarningMessageField(formGroups, msgFields);
+	clearWarningMessageField(msgFields);
 	if ( _qifu_success_flag != data.success ) {
 		parent.notifyWarning( data.message );
-		setWarningMessageField(formGroups, msgFields, data.checkFields);
+		setWarningMessageField(msgFields, data.checkFields);
 		return;
 	}
 	parent.notifyInfo( data.message );
@@ -39,7 +35,7 @@ function saveSuccess(data) {
 }
 
 function clearSave() {
-	clearWarningMessageField(formGroups, msgFields);
+	clearWarningMessageField(msgFields);
 	$("#orgId").val('');
 	$("#name").val('');
 	$("#description").val('');

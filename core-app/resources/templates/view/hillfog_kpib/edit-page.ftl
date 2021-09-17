@@ -135,29 +135,11 @@ msgFields['dataType'] 		= 'dataType';
 msgFields['kpiOrga'] 		= 'kpiOrga';
 msgFields['kpiEmpl'] 		= 'kpiEmpl';
 
-var formGroups = new Object();
-formGroups['aggrId'] 		= 'form-group1';
-formGroups['aggrOid'] 		= 'form-group1';
-formGroups['forOid'] 		= 'form-group1';
-formGroups['id'] 			= 'form-group1';
-formGroups['name'] 			= 'form-group1';
-formGroups['weight'] 		= 'form-group1';
-formGroups['unit'] 			= 'form-group1';
-formGroups['max'] 			= 'form-group2';
-formGroups['target'] 		= 'form-group2';
-formGroups['min'] 			= 'form-group2';
-formGroups['management'] 	= 'form-group2';
-formGroups['quasiRange'] 	= 'form-group2';
-formGroups['compareType'] 	= 'form-group2';
-formGroups['dataType'] 		= 'form-group3';
-formGroups['kpiOrga'] 		= 'form-group3';
-formGroups['kpiEmpl'] 		= 'form-group3';
-
 function updateSuccess(data) {
-	clearWarningMessageField(formGroups, msgFields);
+	clearWarningMessageField(msgFields);
 	if ( _qifu_success_flag != data.success ) {
 		parent.notifyWarning( data.message );
-		setWarningMessageField(formGroups, msgFields, data.checkFields);
+		setWarningMessageField(msgFields, data.checkFields);
 		return;
 	}
 	parent.notifyInfo( data.message );
@@ -165,7 +147,7 @@ function updateSuccess(data) {
 }
 
 function clearUpdate() {
-	clearWarningMessageField(formGroups, msgFields);
+	clearWarningMessageField(msgFields);
 	window.location=parent.getProgUrlForOid('HF_PROG001D0005E', '${kpi.oid}');
 }
 

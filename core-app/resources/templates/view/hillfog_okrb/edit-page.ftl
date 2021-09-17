@@ -119,14 +119,8 @@ msgFields['date1'] 		= 'date1';
 msgFields['date2'] 		= 'date2';
 msgFields['objOrg'] 	= 'objOrg';
 
-var formGroups = new Object();
-formGroups['name'] 		= 'form-group1';
-formGroups['date1'] 	= 'form-group1';
-formGroups['date2'] 	= 'form-group1';
-formGroups['objOrg'] 	= 'form-group1';
-
 function btnSave() {
-	clearWarningMessageField(formGroups, msgFields);
+	clearWarningMessageField(msgFields);
 	xhrSendParameter(
 			'./hfOkrBaseUpdateJson', 
 			{ 
@@ -142,7 +136,7 @@ function btnSave() {
 			}, 
 			function(data) {
 				if ( _qifu_success_flag != data.success ) {
-					setWarningMessageField(formGroups, msgFields, data.checkFields);
+					setWarningMessageField(msgFields, data.checkFields);
 					parent.notifyWarning( data.message );
 					return;
 				}

@@ -137,16 +137,8 @@ msgFields['kpiFrequency'] 		= 'kpiFrequency';
 msgFields['kpiMeasureDate1'] 	= 'kpiMeasureDate1';
 msgFields['kpiMeasureDate2'] 	= 'kpiMeasureDate2';
 
-var formGroups = new Object();
-formGroups['name'] 				= 'form-group1';
-formGroups['startDate'] 		= 'form-group1';
-formGroups['endDate'] 			= 'form-group1';
-formGroups['kpiFrequency'] 		= 'form-group2';
-formGroups['kpiMeasureDate1'] 	= 'form-group2';
-formGroups['kpiMeasureDate2'] 	= 'form-group2';
-
 function btnSave() {
-	clearWarningMessageField(formGroups, msgFields);
+	clearWarningMessageField(msgFields);
 	xhrSendParameter(
 			'./hfPdcaSaveJson', 
 			{ 
@@ -170,7 +162,7 @@ function btnSave() {
 			}, 
 			function(data) {
 				if ( _qifu_success_flag != data.success ) {
-					setWarningMessageField(formGroups, msgFields, data.checkFields);
+					setWarningMessageField(msgFields, data.checkFields);
 					parent.notifyWarning( data.message );
 					return;
 				}
@@ -187,7 +179,7 @@ function btnSave() {
 }
 
 function btnClear() {
-	clearWarningMessageField(formGroups, msgFields);
+	clearWarningMessageField(msgFields);
 	$("#name").val( '' );
 	$("#startDate").val( '' );
 	$("#endDate").val( '' );

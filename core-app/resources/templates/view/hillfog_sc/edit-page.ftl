@@ -84,11 +84,6 @@ msgFields['name']		= 'name';
 msgFields['content']	= 'content';
 msgFields['mission']	= 'mission';
 
-var formGroups = new Object();
-formGroups['name']		= 'form-group1';
-formGroups['content']	= 'form-group1';
-formGroups['mission']	= 'form-group1';
-
 $( document ).ready(function() {
 	
 	
@@ -118,10 +113,10 @@ function btnUpdate() {
 }
 
 function updateSuccess(data) {
-	clearWarningMessageField(formGroups, msgFields);
+	clearWarningMessageField(msgFields);
 	if ( _qifu_success_flag != data.success ) {
 		parent.notifyWarning( data.message );
-		setWarningMessageField(formGroups, msgFields, data.checkFields);
+		setWarningMessageField(msgFields, data.checkFields);
 		return;
 	}
 	parent.notifyInfo( data.message );

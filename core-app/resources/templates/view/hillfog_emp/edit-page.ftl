@@ -99,20 +99,11 @@ msgFields['name'] 					= 'name';
 msgFields['jobTitle'] 				= 'jobTitle';
 msgFields['employeeOrganization']	= 'employeeOrganization';
 
-var formGroups = new Object();
-formGroups['empId'] 				= 'form-group1';
-formGroups['account'] 				= 'form-group1';
-formGroups['password1'] 			= 'form-group1';
-formGroups['password2'] 			= 'form-group1';
-formGroups['name'] 					= 'form-group1';
-formGroups['jobTitle'] 				= 'form-group1';
-formGroups['employeeOrganization']	= 'form-group1';
-
 function updateSuccess(data) {
-	clearWarningMessageField(formGroups, msgFields);
+	clearWarningMessageField(msgFields);
 	if ( _qifu_success_flag != data.success ) {
 		parent.notifyWarning( data.message );
-		setWarningMessageField(formGroups, msgFields, data.checkFields);
+		setWarningMessageField(msgFields, data.checkFields);
 		return;
 	}
 	parent.notifyInfo( data.message );
@@ -120,7 +111,7 @@ function updateSuccess(data) {
 }
 
 function clearUpdate() {
-	clearWarningMessageField(formGroups, msgFields);
+	clearWarningMessageField(msgFields);
 	window.location=parent.getProgUrlForOid('HF_PROG001D0002E', '${employee.oid}');
 }
 
