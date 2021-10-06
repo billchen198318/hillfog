@@ -6,11 +6,12 @@ const PageEventHandling = {
 		}
 	},
 	methods: {
-		queryObjectives		:	queryObjectiveList,
-		setObjectives		:	setObjectiveList,
-		clearObjectives		:	clearObjectiveList,
-		viewDetail			:	viewDetailItem,
-		progressDiv			:	progressDivFormatter
+		queryObjectives			:	queryObjectiveList,
+		setObjectives			:	setObjectiveList,
+		clearObjectives			:	clearObjectiveList,
+		viewDetail				:	viewDetailItem,
+		progressDiv				:	progressDivFormatter,
+		paintCurrentGaugeChart	:	paintGaugeChart
 	},
 	mounted() {
 		this.queryObjectives();
@@ -26,11 +27,16 @@ function progressDivFormatter(val) {
 }
 
 function setObjectiveList(data) {
+	var ths = this;
 	if ( _qifu_success_flag != data.success ) {
 		parent.notifyWarning( data.message );
 	}
 	if (data.value != null) {
 		this.objectives = data.value;
+		setTimeout(function(){  
+			console.log('setTimeout, because document.getElementById will miss!');
+			ths.paintCurrentGaugeChart();
+		}, 50);		
 	} else {
 		this.objectives = [];
 	}
@@ -64,6 +70,13 @@ function queryObjectiveList() {
 function viewDetailItem(oid) {
 	appUnmount();
 	window.location = parent.getProgUrlForOid('HF_PROG003D0001Q01D', oid);
+}
+
+function paintGaugeChart() {
+	for (var n in this.objectives) {
+		var o = this.objectives[n];
+		gaugeChart('gauge_' + o.oid, o.name, o.progressPercentage, 'The completion rate');
+	}
 }
 
 function appUnmount() {

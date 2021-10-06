@@ -103,6 +103,48 @@ function orgBarChartPage() {
 	parent.addTab('HF_PROG003D0001H', parent.getProgUrl('HF_PROG003D0001H') + '&organizationMode=' + _qifu_success_flag);
 }
 
+function gaugeChart(chartId, seriesName, dataValue, dataName) {
+	var myChart = echarts.init(document.getElementById( chartId ));
+	var option = {
+	    tooltip: {
+	        formatter: '{a} <br/>Progress : {c}%'
+	    },
+	    toolbox: {
+	        feature: {
+	            restore: {},
+	            saveAsImage: {}
+	        }
+	    },
+	    series: [
+	        {
+				title:{
+					show:true,
+					offsetCenter:[0,-130],
+					color:'#1C1C1C',
+					//fontWeight:'bold',
+					fontSize:14
+				},  
+				clockwise:true,
+				startAngle:180,
+				endAngle:0,			      
+				pointer:{show:true},
+				axisTick:{show:true},
+				splitLine:{show:false},        
+	            name: seriesName,
+	            type: 'gauge',
+	            detail: {
+	            	offsetCenter:[5,30],
+	            	formatter: '{value}%'
+	            },
+	            data: [{value: dataValue, name: seriesName}] // [{value: dataValue, name: dataName}]
+	        }
+	    ]
+	};
+	
+	myChart.setOption(option, true);
+	myChart.resize();
+}
+
 </script>
 
 </head>
@@ -167,6 +209,10 @@ function orgBarChartPage() {
 			    <div class="card-body">
 			      <h5 class="card-title">{{ d.name }}</h5>
 			      
+			    <div class="row mx-auto flex-column">
+			    	<div class="col-6 align-self-center" v-bind:id="'gauge_'+d.oid" style="min-width: 350px;width: 400px;height:350px;"></div>
+			    </div>
+			    
 				Progress:&nbsp;{{ d.progressPercentage }}%
 				<div v-html=" progressDiv(d.progressPercentage) "></div>		
 				<br>	      
@@ -196,6 +242,7 @@ function orgBarChartPage() {
 <br/>
 <br/>
 
+<script src="${qifu_basePath}echarts/echarts.min.js"></script>
 <script type="text/javascript" src="${qifu_basePath}js/hillfog/HF_PROG003D0001Q.js?ver=${qifu_jsVerBuild}"></script>
 
 </body>
