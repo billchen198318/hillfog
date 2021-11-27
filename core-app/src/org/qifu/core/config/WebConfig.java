@@ -34,7 +34,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.context.request.RequestContextListener;
-import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -96,7 +95,7 @@ public class WebConfig implements WebMvcConfigurer {
     // for messages
     // ============================================================================
     @Bean
-    public LocaleResolver localeResolver() {
+    public CookieLocaleResolver localeResolver() {
         CookieLocaleResolver lr = new CookieLocaleResolver();
         lr.setDefaultLocale(Locale.US);
         return lr;
@@ -121,7 +120,7 @@ public class WebConfig implements WebMvcConfigurer {
         	.excludePathPatterns( CoreAppConstants.getWebConfiginterceptorExcludePathPatterns() );
         
         // for messages
-        registry.addInterceptor(localeChangeInterceptor());
+        registry.addInterceptor(localeChangeInterceptor()).addPathPatterns("/loginPage");
         
         /*
         registry.addInterceptor(UserBuilderInterceptor())
@@ -133,7 +132,8 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
     	registry.addMapping("/**")
-    		.allowedOrigins("*")
+    		//.allowedOrigins("*")
+    		.allowedOriginPatterns("*")
     		.allowedMethods("GET", "HEAD", "POST", "PUT", "DELETE", "OPTIONS")
     		.allowCredentials(true)
     		.maxAge(3600)
