@@ -25,17 +25,21 @@ import javax.sql.DataSource;
 
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
+import org.mybatis.spring.SqlSessionTemplate;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
@@ -72,17 +76,31 @@ public class MyBatisConfig implements EnvironmentAware {
 		return this.dataSource;
 	}	
 	
+	@Bean(name = "db1JdbcTemplate")
+	@DependsOn("dataSource")
+	public NamedParameterJdbcTemplate db1JdbcTemplate() {
+		return new NamedParameterJdbcTemplate(this.dataSource);
+	}
+	
 	@Bean(name = "sqlSessionFactory")
 	@Primary
+	@DependsOn("dataSource")
     public SqlSessionFactory sqlSessionFactory() throws Exception {
         SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
         sqlSessionFactoryBean.setDataSource(this.dataSource);
         return sqlSessionFactoryBean.getObject();
     }
 	
+	@Bean("sqlSessionTemplate")
+	@DependsOn("sqlSessionFactory")
+	public SqlSessionTemplate sqlSessionTemplate(@Qualifier("sqlSessionFactory") SqlSessionFactory sessionFactory) {
+		return new SqlSessionTemplate(sessionFactory);
+	}
+	
     @Bean(name = "transactionManager")
-    public DataSourceTransactionManager transactionManager() {
-    	return new DataSourceTransactionManager(dataSource());
+    @DependsOn("dataSource")
+    public DataSourceTransactionManager transactionManager(@Qualifier("dataSource") DataSource dataSource) {
+    	return new DataSourceTransactionManager(dataSource);
     }
     
 }
