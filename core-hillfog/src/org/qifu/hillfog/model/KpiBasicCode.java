@@ -21,25 +21,18 @@
  */
 package org.qifu.hillfog.model;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import org.apache.commons.io.IOUtils;
-import org.qifu.base.Constants;
 import org.qifu.base.model.PleaseSelect;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
+import org.qifu.util.LoadResources;
 
 public class KpiBasicCode {
 	
 	private static final String _CONFIG = "org/qifu/hillfog/model/KpiBasicCode.json";
 	
 	private static Map<String, Object> srcMap = null;
-	
-	private static String _srcDatas = " { } ";	
 	
 	private static final String[][] QUASI_RANGE_TABLE = new String[][] {
 		{ "0", 		"0%" },
@@ -66,12 +59,17 @@ public class KpiBasicCode {
 	
 	static {
 		try {
-			InputStream is = KpiBasicCode.class.getClassLoader().getResource( _CONFIG ).openStream();
-			_srcDatas = IOUtils.toString(is, Constants.BASE_ENCODING);
-			is.close();
-			is = null;
-			srcMap = loadDatas();
-		} catch (IOException e) {
+			srcMap = LoadResources.objectMapperReadValue(_CONFIG, LinkedHashMap.class, KpiBasicCode.class);
+			if (srcMap.get("management") != null) {
+				managementMap.putAll( (Map<? extends String, ? extends String>) srcMap.get("management") );
+			}
+			if (srcMap.get("compareType") != null) {
+				compareTypeMap.putAll( (Map<? extends String, ? extends String>) srcMap.get("compareType") );
+			}
+			if (srcMap.get("dataType") != null) {
+				dataTypeMap.putAll( (Map<? extends String, ? extends String>) srcMap.get("dataType") );
+			}			
+		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			if (null==srcMap) {
@@ -81,28 +79,6 @@ public class KpiBasicCode {
 		for (int i=0; i<QUASI_RANGE_TABLE.length; i++) {
 			quasiRangeMap.put(QUASI_RANGE_TABLE[i][0], QUASI_RANGE_TABLE[i][1]);
 		}
-	}
-	
-	@SuppressWarnings("unchecked")
-	private static Map<String, Object> loadDatas() {
-		Map<String, Object> datas = null;
-		try {
-			datas = (Map<String, Object>)new ObjectMapper().readValue( _srcDatas, LinkedHashMap.class );
-			if (datas.get("management") != null) {
-				managementMap.putAll( (Map<? extends String, ? extends String>) datas.get("management") );
-			}
-			if (datas.get("compareType") != null) {
-				compareTypeMap.putAll( (Map<? extends String, ? extends String>) datas.get("compareType") );
-			}
-			if (datas.get("dataType") != null) {
-				dataTypeMap.putAll( (Map<? extends String, ? extends String>) datas.get("dataType") );
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			checkDataMap();
-		}
-		return datas;
 	}
 	
 	private static void checkDataMap() {

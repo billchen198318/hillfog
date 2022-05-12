@@ -21,24 +21,19 @@
  */
 package org.qifu.hillfog.model;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.qifu.base.Constants;
 import org.qifu.base.exception.ServiceException;
 import org.qifu.base.message.BaseSystemMessage;
 import org.qifu.base.model.PleaseSelect;
 import org.qifu.hillfog.vo.MeasureDataQueryParam;
+import org.qifu.util.LoadResources;
 import org.qifu.util.SimpleUtils;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class MeasureDataCode {
 	
@@ -46,34 +41,17 @@ public class MeasureDataCode {
 	
 	private static Map<String, String> srcMap = null;
 	
-	private static String _srcDatas = " { } ";
-	
 	static {
 		try {
-			InputStream is = MeasureDataCode.class.getClassLoader().getResource( _CONFIG ).openStream();
-			_srcDatas = IOUtils.toString(is, Constants.BASE_ENCODING);
-			is.close();
-			is = null;
-			srcMap = loadDatas();
-		} catch (IOException e) {
+			srcMap = LoadResources.objectMapperReadValue(_CONFIG, LinkedHashMap.class, MeasureDataCode.class);
+		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			if (null==srcMap) {
 				srcMap = new HashMap<String, String>();
 			}
 		}
-	}
-	
-	@SuppressWarnings("unchecked")
-	private static Map<String, String> loadDatas() {
-		Map<String, String> datas = null;
-		try {
-			datas = (Map<String, String>)new ObjectMapper().readValue( _srcDatas, LinkedHashMap.class );
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return datas;
-	}		
+	}	
 	
 	/**
 	 * 不區分員工/部門的衡量資料

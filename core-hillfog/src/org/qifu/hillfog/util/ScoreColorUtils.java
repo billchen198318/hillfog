@@ -21,41 +21,31 @@
  */
 package org.qifu.hillfog.util;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.qifu.base.AppContext;
 import org.qifu.base.Constants;
 import org.qifu.hillfog.entity.HfScColor;
 import org.qifu.hillfog.model.ScoreColor;
 import org.qifu.hillfog.service.IScColorService;
+import org.qifu.util.LoadResources;
 import org.qifu.util.SimpleUtils;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class ScoreColorUtils {
 	private static final String _CONFIG = "org/qifu/hillfog/util/ScoreColorUtils.json";
 	
 	private static Map<String, Object> srcMap = null;
 	
-	private static String _srcDatas = " { } ";
-	
 	private static IScColorService<HfScColor, String> scColorService;
 	
 	static {
 		try {
-			InputStream is = ScoreColorUtils.class.getClassLoader().getResource( _CONFIG ).openStream();
-			_srcDatas = IOUtils.toString(is, Constants.BASE_ENCODING);
-			is.close();
-			is = null;
-			srcMap = loadDatas();
-		} catch (IOException e) {
+			srcMap = LoadResources.objectMapperReadValue(_CONFIG, LinkedHashMap.class, ScoreColorUtils.class);
+		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			if (null==srcMap) {
@@ -66,17 +56,6 @@ public class ScoreColorUtils {
 	
 	public static Map<String, Object> getSrcMap() {
 		return srcMap;
-	}
-
-	@SuppressWarnings("unchecked")
-	private static Map<String, Object> loadDatas() {
-		Map<String, Object> datas = null;
-		try {
-			datas = (Map<String, Object>)new ObjectMapper().readValue( _srcDatas, LinkedHashMap.class );
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return datas;
 	}	
 	
 	public static ScoreColor getUnknown() {

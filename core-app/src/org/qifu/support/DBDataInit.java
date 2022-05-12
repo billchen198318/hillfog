@@ -21,19 +21,15 @@
  */
 package org.qifu.support;
 
-import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.qifu.base.Constants;
 import org.qifu.util.DataUtils;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
+import org.qifu.util.LoadResources;
 
 public class DBDataInit {
 	
@@ -45,21 +41,6 @@ public class DBDataInit {
 			processH2(conn);
 			return;
 		}
-	}
-	
-	private static String loadSqlResource(String fileRes) throws Exception {
-		String sqlStr = "";
-		InputStream is = null;
-		try {
-			is = DBDataInit.class.getClassLoader().getResource( fileRes ).openStream();
-			sqlStr = IOUtils.toString(is, Constants.BASE_ENCODING);
-			is.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			is = null;
-		}		
-		return sqlStr;
 	}
 	
 	private static void doSqlCommand(Connection conn, String sqlStr) throws SQLException, Exception {
@@ -89,9 +70,8 @@ public class DBDataInit {
 	}
 	
 	private static void processH2(Connection conn) throws SQLException, Exception {
-		String initScriptResJson = loadSqlResource("org/qifu/support/DBDataInit.json");
-		Map<String, String> jsonData = (Map<String, String>) new ObjectMapper().readValue( initScriptResJson, LinkedHashMap.class );
-		String sqlStr = loadSqlResource(RES_HEAD + jsonData.get("initScript"));
+		Map<String, String> jsonData = LoadResources.objectMapperReadValue("org/qifu/support/DBDataInit.json", LinkedHashMap.class, DBDataInit.class);
+		String sqlStr = LoadResources.read(RES_HEAD + jsonData.get("initScript"), DBDataInit.class);
 		if (StringUtils.isBlank(sqlStr)) {
 			return;
 		}	

@@ -21,17 +21,12 @@
  */
 package org.qifu.hillfog.model;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import org.apache.commons.io.IOUtils;
-import org.qifu.base.Constants;
 import org.qifu.base.model.PleaseSelect;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
+import org.qifu.util.LoadResources;
 
 public class FormulaMode {
 	
@@ -59,34 +54,17 @@ public class FormulaMode {
 	
 	private static Map<String, String> srcMap = null;
 	
-	private static String _srcDatas = " { } ";
-	
 	static {
 		try {
-			InputStream is = FormulaMode.class.getClassLoader().getResource( _CONFIG ).openStream();
-			_srcDatas = IOUtils.toString(is, Constants.BASE_ENCODING);
-			is.close();
-			is = null;
-			srcMap = loadDatas();
-		} catch (IOException e) {
+			srcMap = LoadResources.objectMapperReadValue(_CONFIG, LinkedHashMap.class, FormulaMode.class);
+		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			if (null==srcMap) {
 				srcMap = new HashMap<String, String>();
 			}
 		}
-	}
-	
-	@SuppressWarnings("unchecked")
-	private static Map<String, String> loadDatas() {
-		Map<String, String> datas = null;
-		try {
-			datas = (Map<String, String>)new ObjectMapper().readValue( _srcDatas, LinkedHashMap.class );
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return datas;
-	}		
+	}	
 	
 	public static Map<String, String> getReturnModeMap(boolean pleaseSelect) {
 		Map<String, String> dataMap = PleaseSelect.pageSelectMap(pleaseSelect);
